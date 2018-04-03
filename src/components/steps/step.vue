@@ -128,7 +128,7 @@ export default {
       style.width = space
       if (this.isVertical) return style
       if (this.isLast) {
-        style.maxWidth = 100 / this.stepsCount + '%'
+        // style.maxWidth = 100 / this.stepsCount + '%'
       } else {
         style.marginRight = -this.$parent.stepOffset + 'px'
       }

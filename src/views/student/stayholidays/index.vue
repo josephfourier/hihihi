@@ -13,48 +13,6 @@
         @view="view"
       >
       </zjy-table>
-    <!--<div class="zjy-table">-->
-      <!--<div class="zjy-table-oper">-->
-        <!--<div class="zjy-table-oper__item">-->
-          <!--<div class="zjy-table-oper&#45;&#45;create">-->
-            <!--<a href="javascript:;" @click="create">新增</a>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<el-table :data="list" style="width: 100%" v-loading="loading">-->
-        <!--<el-table-column type="selection" width="30">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column type="index" label="序号" :index="1" width="50">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column prop="studentNo" label="学号" width="100">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column prop="studentName" label="学生姓名" width="120">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column prop="facultyName" label="院系" width="120">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column prop="applyDate" label="申请日期" :formatter="dateFormat" width="120">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column prop="applyYear" label="申请年份" width="120">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column prop="holidayName" label="假期名称" width="120">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column prop="phone" label="电话" width="120">-->
-        <!--</el-table-column>-->
-
-        <!--<el-table-column prop="dataStatus" label="状态" width="80" :formatter="statusFormate">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="操作">-->
-          <!--<template slot-scope="scope">-->
-            <!--<a href="javascript:" @click="view(scope.row)" class="zjy-btn-view">-->
-              <!--<i class="zjy-icon"></i>-->
-              <!--<span>查看</span>-->
-            <!--</a>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-
-        <!--<span slot="empty">{{ empty }}</span>-->
-      <!--</el-table>-->
-    <!--</div>-->
 
     <div class="zjy-pagination" v-if="list.length !== 0">
       <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
@@ -63,13 +21,14 @@
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
       <student-process
+        v-if="visible"
         :data="data"
         v-model="value"
         :visible.sync="visible"
         @submit="handleSubmit"
       >
         <template slot-scope="props">
-          <zjy-form :data="props.formData"></zjy-form>
+          <zjy-form :data="props.formData" :reason.sync="reason" :type.sync="type" :hasError="hasError"></zjy-form>
         </template>
       </student-process>
     </el-dialog>
@@ -151,7 +110,10 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      reason: '',
+      type: '',
+      hasError: false
     }
   },
 
@@ -169,9 +131,7 @@ export default {
           this.value = r1.data   // 流程数据传入组件即可
           Object.assign(this.data, {
             student: r3.data,
-            holidayType: r2.data,
-            reason: '',
-            type: ''
+            holidayType: r2.data
           })
           this.title = '留校申请'
           this.visible = true
@@ -188,10 +148,21 @@ export default {
     },
 
     handleSubmit (data, steps) {
-      console.log(data)
-      console.log(steps)
-      if (!this.data.type || !this.data.reason) {
-        this.$alert('请填写原因')
+      if (!this.type || !this.reason) {
+        this.hasError = true
+      } else {
+        const arg = this.makeFormData(data, steps)
+        stayholidaysAPI.create(arg).then(response => {
+          console.log(response)
+          if (response.code !== 1) {
+            this.$alert(response.message)
+          } else {
+            this.visible = false
+            this.refresh()
+          }
+        }).catch(error => {
+          console.log(error)
+        })
       }
     },
 
@@ -201,6 +172,17 @@ export default {
 
     currentChange (pageNumber) {
       this.currentPage = pageNumber
+    },
+
+    makeFormData (data, steps) {
+      return {
+        'studentId': data.student.studentId,
+        'holidayId': this.type,
+        'holidayName': this.data.holidayType.find(i => i.valueKey == this.type).valueName,
+        'stayReason': this.reason,
+        'schoolCode': data.student.schoolCode,
+        'swmsApprovalList': steps
+      }
     },
 
     refresh () {
@@ -234,6 +216,9 @@ export default {
           this.loading = false
         })
       }
+    },
+    visible (val) {
+      if (!val) this.hasError = false
     }
   }
 }

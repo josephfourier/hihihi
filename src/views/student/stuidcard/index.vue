@@ -37,8 +37,8 @@
     </div>
     <div v-if="steps.length !== 0">
       <div class="zjy-steps">
-        <p>申请流程配置</p>
-        <zjy-steps :active="step" :space="130">
+        <p class="step-title">申请流程配置</p>
+        <zjy-steps :active="step" align-center>
           <zjy-step title="发起人" :description="'(' + student.studentName + ')'" v-if="steps.length !== 0">
           </zjy-step>
           <zjy-step v-for="(item,index) in steps" :key="item.approvalStep" :title="item.postName" :custom="item">
@@ -69,9 +69,17 @@
             <!-- 只初始化当前流程的教师列表 (index === step - 1) -->
             <!-- 对于学生只初始化第一步 (index = 0) -->
             <!-- 若存在流程状态属性则不初始化 (approvalStatus)-->
-            <el-select class="zjy-select" v-model="value" placeholder="请选择审批人" slot="custom" slot-scope="props" ref="sl"
-                       @change="handleChange"
-                       v-if="props.data.approvalType == 1 && index === 0 && !props.data.approvalStatus">
+            <el-select
+              class="zjy-select"
+              v-model="value"
+              placeholder="请选择审批人"
+              slot="custom"
+              slot-scope="props"
+              ref="sl"
+              @change="handleChange"
+              v-if="props.data.approvalType == 1
+              && index === 0
+              && !props.data.approvalStatus">
               <el-option v-for="item in approverList" :key="item.teacherId" :label="item.teacherName"
                          :value="item.teacherId">
               </el-option>
@@ -97,7 +105,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import cardAPI from '@/api/student/stuidcard'
 import ZjyInput from '@/components/input'
 import ZjyButton from '@/components/button'
@@ -342,55 +349,9 @@ export default {
     }
   }
 
-  .zjy-steps {
-    width: 1129px;
-    overflow: auto;
-    margin-top: 20px;
-    padding-bottom: 10px;
-    p {
-      margin-left: 10px;
-      margin-bottom: 10px;
-    }
-  }
-
   .zjy-btn-group {
     padding: 50px 0;
     text-align: center;
-  }
-
-  .el-select.zjy-select {
-    .el-input__inner,
-    .el-input__inner:focus {
-      border-color: #ed7734 !important;
-      color: #ed7734;
-      // width: 140px;
-    }
-  }
-
-  .el-select .el-input .el-select__caret {
-    color: #ed7734;
-  }
-
-  .el-select-dropdown.el-popper {
-    .el-select-dropdown__item {
-      font-size: 12px;
-      height: 24px;
-      line-height: 24px;
-
-      &.selected {
-        color: #37c6d4;
-      }
-    }
-
-    .el-select-dropdown__item span {
-      line-height: 24px !important;
-    }
-  }
-
-  .el-step__title {
-    font-size: 16px;
-    line-height: 24px;
-    margin: 5px 0 0 0;
   }
 
 </style>

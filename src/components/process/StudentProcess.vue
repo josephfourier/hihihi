@@ -1,12 +1,12 @@
 <template>
   <div>
     <slot :formData="data"></slot>
-    <p v-if="!hasStep && isApply">还未配置流程</p>
+    <p v-if="!hasStep && isApply" class="warning">{{ $t('zjy.process.none') }}</p>
     <div class="zjy-steps" v-if="hasStep && isApply">
-      <p>审批流程</p>
-      <zjy-steps :active="step">
+      <p class="step-title">{{$t('zjy.process.title')}}</p>
+      <zjy-steps :active="step" align-center>
 
-        <zjy-step title="发起人" :description="'(' + user.fullName + ')'">
+        <zjy-step :title="$t('zjy.process.start')" :description="'(' + user.fullName + ')'">
         </zjy-step>
         <zjy-step v-for="(item, index) in steps" :key="item.approvalStep" :title="item.postName" :custom="item">
           <div slot="description">
@@ -14,9 +14,9 @@
               ({{ item.teacherName }})
             </div>
             <div v-else>
-              <p v-if="index === step - 1 && approver">
-                ({{ nextApproverName }})
-              </p>
+              <!--<p v-if="index === step - 1 && approver">-->
+                <!--({{ nextApproverName }})-->
+              <!--</p>-->
 
             </div>
             <!-- 审批状态 -->
@@ -33,34 +33,40 @@
             </div>
           </div>
           <!-- 学生端只初始化第一步的审批人 index === 0 -->
-          <el-select
-            class="zjy-select"
-            v-model="approver"
-            placeholder="请选择审批人"
-            slot="custom"
-            slot-scope="props"
-            @change="handleChange"
-            v-if="props.data.approvalType == 1
+          <div class="validate"
+               slot="custom"
+               slot-scope="props">
+            <el-select
+              class="zjy-select"
+              v-model="approver"
+              :placeholder="$t('zjy.process.selectPlaceholder')"
+              @change="handleChange"
+              v-if="props.data.approvalType == 1
               && index === 0
               && !props.data.approvalStatus"
-          >
-            <el-option
-              v-for="item in approverList"
-              :key="item.teacherId"
-              :label="item.teacherName"
-              :value="item.teacherId"
             >
-            </el-option>
-          </el-select>
+              <el-option
+                v-for="item in approverList"
+                :key="item.teacherId"
+                :label="item.teacherName"
+                :value="item.teacherId"
+              >
+              </el-option>
+            </el-select>
+            <transition name="el-zoom-in-top">
+              <span class="tip" v-if="hasError && index === 0">{{ error }}</span>
+            </transition>
+          </div>
         </zjy-step>
       </zjy-steps>
     </div>
-    <div class="zjy-footer" v-if="!hasFooter">
+    <div class="zjy-footer" v-if="!hasFooter && hasStep">
       <template v-if="isApply && hasStep">
-        <zjy-button type="plain" @click="$emit('update:visible', false)">取消</zjy-button>
-        <zjy-button type="primary" @click="create">确认</zjy-button>
+        <zjy-button type="plain" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.cancel')}}</zjy-button>
+        <zjy-button type="primary" @click="create">{{$t('zjy.messagebox.confirm')}}</zjy-button>
       </template>
-      <zjy-button v-if="isView" type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
+      <zjy-button v-if="isView" type="primary" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.close')}}
+      </zjy-button>
     </div>
     <slot name="footer" :data="data"></slot>
   </div>
@@ -81,7 +87,9 @@ export default {
       approverList: [],       // 下一步需要初始化的审批教师列表
       hasNextApprover: false, // 是否需要初始化第一步的教师列表
       nextApproverName: '',
-      nextApproverId: ''
+      nextApproverId: '',
+
+      error: ''
     }
   },
   computed: {
@@ -97,6 +105,9 @@ export default {
     },
     isApply () {
       return this.type === 2
+    },
+    hasError () {
+      return !!this.error
     }
   },
 
@@ -106,11 +117,13 @@ export default {
       if (this.hasNextApprover) {
         this.nextApproverName = this.approverList.find(x => x.teacherId === val).teacherName
       }
+      this.error = ''
     },
 
     create () {
       if (this.hasNextApprover && !this.approver) {
-        this.$alert('请填写审批人')
+        this.error = '请选择审批人'
+        // this.$alert(this.$t('zjy.process.selectPlaceholder'))
         return
       }
 
@@ -156,5 +169,9 @@ export default {
 </script>
 
 <style scoped>
-
+  .warning {
+    color: #ED7734;
+    text-align: center;
+    font-weight: bold;
+  }
 </style>

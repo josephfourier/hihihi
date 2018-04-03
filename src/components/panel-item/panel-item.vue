@@ -19,7 +19,8 @@ export default {
 
   props: {
     label: String,
-    labelWidth: String
+    labelWidth: String,
+    labelAlign: String
   },
 
   computed: {
@@ -28,6 +29,11 @@ export default {
       var labelWidth = this.labelWidth
       if (labelWidth) {
         ret.width = labelWidth
+      }
+
+      var labelAlign = this.labelAlign
+      if (this.labelAlign) {
+        ret.textAlign = labelAlign
       }
       return ret
     },

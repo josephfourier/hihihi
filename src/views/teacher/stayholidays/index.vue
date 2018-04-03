@@ -41,7 +41,6 @@
           v-if="visible"
           :data="data"
           v-model="value"
-          @close="visible = false"
           @submit="handleSubmit"
         >
           <template slot-scope="props">
@@ -196,7 +195,7 @@ export default {
 
     // --------------- 搜索 END ---------------
 
-    refresh () { _refresh.call(this) },
+    refresh (auto) { _refresh.call(this, auto) },
 
     // --------------- table操作 ---------------
     batchRemove () {
@@ -220,10 +219,10 @@ export default {
     },
 
     _delete (row) {
+
       stayholidaysAPI.delete(row.stayholidayUid).then(response => {
         if (response.code === 1) {
-          this.$alert('删除成功')
-          this.refresh()
+          this.refresh(true)
         }
       })
     },
@@ -258,8 +257,8 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
-        if (val === -1) return
+      handler (val) {
+        if (val === -1 || val === 0) return
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)

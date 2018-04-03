@@ -1,4 +1,16 @@
 .zjy-steps {
+  .tip {
+
+      font-size: 12px;
+      display: inline-block;
+
+      color: #f56c6c;
+
+  }
+  padding-bottom: 50px;
+  .step-title {
+    padding: 0 0 10px 0;
+  }
   // 已完成流程
   .el-step__head.is-finish {
     .el-step__icon {
@@ -6,6 +18,18 @@
       background-color: #37c6d3;
     }
   }
+  //select2
+  .el-select .el-input__inner:focus,
+  .el-select .el-input.is-focus .el-input__inner,
+  .el-input.is-active .el-input__inner,
+  .el-input__inner:focus {
+    border-color: #ED7734;
+  }
+
+  .el-select-dropdown__item span {
+    line-height: 24px !important;
+  }
+
   // 进行中流程
   .el-step__head.is-process {
     .el-step__icon {
@@ -26,6 +50,7 @@
   }
   .el-step__title {
     font-size: 12px;
+    line-height: 22px;
     color: #333333;
     font-weight: normal;
   }
@@ -64,13 +89,13 @@
     color: #333333;
   }
 
-  .el-step.is-center .el-step__description {
+  .el-step .el-step__description {
     padding: 0;
     width: 130px;
     margin: 0 auto;
   }
 
-  
+
 .status {
   font-size: 14px;
   color: #ed7734;
@@ -87,11 +112,6 @@
     color: #ed7734;
   }
 }
-
-
-  .title {
-    font-weight: bold;
-  }
 
 }
 

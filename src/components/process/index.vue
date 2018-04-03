@@ -3,10 +3,10 @@
   <div>
     <slot :formData="data"></slot>
     <div v-if="!isFinished || reason">
-      <p v-if="steps.length === 0"> 还未配置流程</p>
+      <p v-if="!hasStep"> {{ $t('zjy.process.none') }}</p>
       <div class="zjy-steps" v-else>
-        <zjy-steps :active="step">
-          <zjy-step title="发起人" :description="'(' + data.studentName + ')'">
+        <zjy-steps :active="step" align-center>
+          <zjy-step :title="$t('zjy.process.start')" :description="'(' + data.studentName + ')'">
           </zjy-step>
           <zjy-step v-for="(item,index) in steps" :key="item.approvalStep" :title="item.postName" :custom="item">
             <div slot="description">
@@ -15,7 +15,8 @@
               </div>
               <div v-else>
                 <p v-if="index === step - 1 && approver">
-                  ({{ nextApproverName }})
+                  <!--({{ nextApproverName }})-->
+                  <!--选中后再显示会有跳动先去掉-->
                 </p>
 
               </div>
@@ -34,7 +35,7 @@
             <el-select
               class="zjy-select"
               v-model="approver"
-              placeholder="请选择审批人"
+              :placeholder="$t('zjy.process.selectPlaceholder')"
               slot="custom"
               slot-scope="props"
               @change="handleChange"
@@ -115,7 +116,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
+    hasStep () {
+      return this.steps.length > 0
+    },
+    hasFooter () {
+      return this.$slots.footer
+    },
   },
 
   components: {

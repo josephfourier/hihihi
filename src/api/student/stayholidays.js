@@ -23,5 +23,9 @@ export default {
         }
       }
     })
+  },
+
+  create (arg) {
+    return ajax.post('manage/student/swmsStayholiday', arg)
   }
 }

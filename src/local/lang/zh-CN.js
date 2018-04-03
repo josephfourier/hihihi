@@ -1,5 +1,11 @@
 export default {
   zjy: {
+    process: {
+      none: '还未配置流程',
+      title: '流程审批',
+      start: '发起人',
+      selectPlaceholder: '请选择审批人'
+    },
     operator: {
       VIEW: '0',
       EDIT: '1',
@@ -84,7 +90,8 @@ export default {
       title: '提示',
       confirm: '确定',
       cancel: '取消',
-      error: '输入的数据不合法!'
+      error: '输入的数据不合法!',
+      close: '关闭'
     },
     upload: {
       deleteTip: '按 delete 键可删除',

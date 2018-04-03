@@ -8,19 +8,33 @@
       data.student.enterYear }}</p></panel-item>
     <panel-item class="item" label="院系：" labelWidth="70px"><p class="text" :title="data.insuranceLimit">{{
       data.student.facultyName }}</p></panel-item>
-    <panel-item class="item" label="电话：" labelWidth="70px"><p class="text" :title="data.insuranceLimit">{{
+    <panel-item class="item" label="电话：" labelWidth="70px" labelAlign="right"><p class="text"
+                                                                                 :title="data.insuranceLimit">{{
       data.student.phone }}</p></panel-item>
-    <el-select v-model="data.type">
-      <el-option
-        v-for="item in data.holidayType"
-        :key="item.valueId"
-        :label="item.valueName"
-        :value="item.valueKey"
-      >
-      </el-option>
-    </el-select>
+    <panel-item label="假期类型: " labelWidth="70px">
+      <el-select v-model="innerType" @change="$emit('update:type', innerType)">
+        <el-option
+          v-for="item in data.holidayType"
+          :key="item.valueId"
+          :label="item.valueName"
+          :value="item.valueKey"
+        >
+        </el-option>
 
-    <zjy-input type="textarea" v-model="data.reason"></zjy-input>
+      </el-select>
+    </panel-item>
+    <div class="tip-box">
+      <transition name="el-zoom-in-top">
+        <span class="tip type" v-if="hasError && !innerType">请选择假期类型</span>
+      </transition>
+    </div>
+
+    <zjy-input type="textarea" v-model="innerReason" @change="$emit('update:reason', innerReason)"></zjy-input>
+    <div class="tip-box">
+      <transition name="el-zoom-in-top">
+        <span class="tip reason" v-if="hasError && !innerReason">请填写申请原因</span>
+      </transition>
+    </div>
   </panel>
 </template>
 
@@ -28,15 +42,26 @@
 import Panel from '@/components/panel/panel'
 import PanelItem from '@/components/panel-item/panel-item'
 import ZjyInput from '@/components/input'
+
 export default {
   name: 'ZjyForm',
   data () {
     return {
-      type: ''
+      innerType: '',
+      innerReason: ''
     }
   },
   props: {
-    data: Object
+    data: Object,
+    reason: String,
+    type: String,
+    hasError: Boolean
+  },
+  methods: {
+    handleChange (val) {
+      alert(val)
+      this.$emit('update:type', val)
+    }
   },
   components: {
     ZjyInput,
@@ -47,6 +72,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .el-select {
+    top: -5px;
+  }
   .item {
     .text {
       text-overflow: ellipsis;
@@ -56,43 +84,32 @@ export default {
     width: 180px;
     margin-right: 20px;
     margin-bottom: 15px;
-    &:first-child {
-      width: 300px
-    }
+
     &:nth-of-type(3) {
       width: 150px;
     }
-    &:nth-of-type(4) {
-      width: 300px;
-    }
-    &.block {
-      width: 100%;
-      .zjy-panel-item__label {
-        display: block;
-      }
-    }
   }
 
-  .status {
-    > span,
-    > img {
-      vertical-align: middle;
-    }
-    margin-bottom: 10px;
+  .tip-box {
+    height: 20px;
+    position: relative;
   }
 
-  .details {
-    padding: 20px;
-    background-color: #f5f5f5;
-    .title {
-      color: #333333;
-      font-weight: bold;
-    }
-    margin-bottom: 15px;
-  }
+  .tip {
 
-  .content {
-    overflow-y: auto;
-    max-height: 200px;
+    font-size: 12px;
+    display: inline-block;
+
+    color: #f56c6c;
+    &.type {
+      position: absolute;
+      right: 158px;
+      top: -3px;
+
+    }
+    &.reason {
+      top: -6px;
+      position: absolute;
+    }
   }
 </style>

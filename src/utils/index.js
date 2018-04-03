@@ -114,12 +114,16 @@ let export2excel = (header, filter, data, filename, formatter) => {
   })
 }
 
-function refresh ()  {
-  const old = this.currentPage
-  this.currentPage = -1
-  setTimeout(_ => {
-    this.currentPage = old
-  }, +this.$t('zjy.refresh.delay'))
+function refresh (auto)  {
+  if (auto) {
+    this.currentPage--
+  } else {
+    const old = this.currentPage
+    this.currentPage = -1
+    setTimeout(_ => {
+      this.currentPage = old
+    }, +this.$t('zjy.refresh.delay'))
+  }
 }
 
 export {

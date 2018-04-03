@@ -1,0 +1,14 @@
+@mixin menu-width {
+  width: 160px; // 菜单宽度
+}
+@mixin menu-width-collapse {
+  width: 54px; // 折叠后宽度
+}
+
+@mixin clearfix {
+  &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+}

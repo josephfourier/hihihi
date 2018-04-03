@@ -1,0 +1,57 @@
+.zjy-pagination {
+  text-align: center;
+  padding: 35px 0;
+
+  button {
+    border: 1px solid #dcdfe6;
+    &:not(.disabled):hover {
+      color: #37c6d4;
+    }
+  }
+
+  .el-pagination {
+    .btn-next,.btn-prev{
+      margin-right: 5px;
+      padding-right: 6px;
+    }
+
+    .el-pager {
+      li {
+        border: 1px solid #dcdfe6;
+        margin-right: 5px;
+        font-weight: normal;
+
+        &.active {
+          background-color: #37c6d4;
+          color: #fff;
+          border-color: #37c6d4;
+        }
+        &:not(.active):hover {
+          color: #37c6d4;
+        }
+      }
+    }
+
+    .el-pagination__jump {
+      .jumper-text {
+        margin-right: 10px;
+      }
+      .el-input__inner {
+        border-radius: 0;
+      }
+    }
+
+    .goto {
+      border: 1px solid #dcdfe6;
+      display: inline-block;
+      height: 26px;
+      padding: 0 5px;
+      margin: 0 10px;
+    }
+  }
+  .el-input.is-active 
+  .el-input__inner, 
+  .el-input__inner:focus {
+    border-color: #37c6d4;
+  }
+}

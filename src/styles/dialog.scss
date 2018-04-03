@@ -1,0 +1,22 @@
+.zjy-dialog, .el-dialog__wrapper {
+  .el-dialog__header {
+    background-color: rgba(55, 198, 212, 0.1);
+    padding: 13px 40px 13px;
+    .el-dialog__title {
+      font-size: 16px;
+      color: #222222;
+    }
+    .el-dialog__headerbtn {
+      top: 17px;
+    }
+  }
+
+  .el-dialog__body {
+    padding: 15px 40px;
+  }
+
+  .el-dialog__footer, .zjy-footer {
+    text-align: center;
+    padding: 15px 0 35px 0;
+  }
+}

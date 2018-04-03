@@ -1,0 +1,57 @@
+.zjy-el-menu.el-menu {
+  border-right: none;
+  .el-submenu__title {
+      height: 50px;
+      line-height: 50px;
+  }
+
+ .el-submenu__title:hover,
+ .el-submenu__title:focus,
+ .el-submenu__title .el-menu-item:hover {
+      background-color: #26334b;
+  }
+
+  // 一级菜单项
+  .el-menu-item {
+      height: 50px;
+      line-height: 50px;
+      &:hover,&:focus {
+          background-color: #26334b;
+      }
+      &.is-active {
+          background-color: #324362;
+      }
+  }
+ 
+  // 二级菜单
+  .el-submenu .el-menu-item {
+      min-width: 160px;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 40px;
+      background-color: #26334b;
+      // 二级菜单激活
+      &.is-active, 
+      &:hover {
+          background-color: #324362;
+          .zjy-bar {
+              height: 100%;
+              top: 0;
+              transition: all .3s;
+          }
+      }
+  }
+
+  // 二级菜单激活时标题文字颜色
+  .el-submenu.is-opened {
+      background-color: #26334b;
+      &.is-active {
+          .el-submenu__title {
+              color: #ffffff !important;
+          }
+      }
+  }
+  .el-submenu__icon-arrow {
+      margin-top: -2px;
+  }
+}

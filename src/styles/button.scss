@@ -1,0 +1,67 @@
+.zjy-button {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  border-color: #dcdfe6;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  transition: .1s;
+  font-weight: 500;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+.zjy-button.btn-lg {
+  width: 130px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.zjy-button.zjy-button--primary {
+  background-color: #36c6d3;
+  border-color: #36c6d3;
+  color: #fff;
+
+  // &:hover {
+  //     background-color: #36c6d3;
+  //     border-color: #36c6d3;
+  //     color: #fff;
+  // }
+}
+
+.zjy-button.zjy-button--plain {
+  background: none;
+  border-color: #36c6d3;
+  color: #36c6d3;
+
+  // &:hover {
+  //     background-color: #36c6d3;
+  //     border-color: #36c6d3;
+  //     color: #fff;
+  // }
+}
+
+.zjy-button.is-disabled, 
+.zjy-button.is-disabled:focus, 
+.zjy-button.is-disabled:hover {
+  cursor: not-allowed;
+}
+
+.zjy-button--primary.is-disabled, 
+.zjy-button--primary--primary.is-disabled:active, 
+.zjy-button--primary--primary.is-disabled:focus, 
+.zjy-button--primary--primary.is-disabled:hover {
+  color: #fff;
+  background-color: #79d9e2;
+  border-color: #79d9e2;
+}

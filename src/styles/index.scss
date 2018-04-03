@@ -1,0 +1,168 @@
+@import './menu.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './table.scss';
+@import './pagination.scss';
+@import './search.scss';
+@import './dialog.scss';
+@import './button.scss';
+@import './input.scss';
+@import './steps.scss';
+@import './select.scss';
+@import './form.scss';
+@import './el-input.scss';
+@import './tabs.scss';
+@import './panel.scss';
+@import './radio.scss';
+@import './date.scss';
+
+@import "./search-panel.scss";
+@import "./icon.scss";
+
+.main-container {
+  margin-left: 160px;
+  &.hideSide {
+    margin-left: 54px;
+  }
+}
+
+.zjy-main {
+  position: relative;
+}
+
+.zjy-header {
+  height: 60px;
+  line-height: 60px;
+  position: relative;
+  z-index: 999;
+  margin-left: 160px;
+}
+
+#nprogress .bar {
+  background: #37c6d4 !important; // position: fixed;
+  // z-index: 1031;
+  // top: 0;
+  // left: 0;
+  // width: 100%;
+  // height: 2px;
+}
+
+// router-link
+.spacer {
+  height: 20px;
+  background-color: #dddddd;
+  display: inline-block;
+  width: 1px;
+  vertical-align: text-bottom;
+  margin: 0 5px;
+}
+
+// breadcrumb
+.el-breadcrumb__inner a:hover, .el-breadcrumb__inner:hover {
+  color: #37c6d4;
+}
+
+// icon
+.zjy-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+// 每个路由页面设置
+.zjy-app {
+  padding: 10px 20px;
+}
+
+.zjy-btn-view {
+  .zjy-icon {
+    background: url('../assets/images/zjy-icon-view.png') no-repeat 0 2px;
+  }
+}
+
+.zjy-btn-edit {
+  .zjy-icon {
+    background: url('../assets/images/zjy-icon-edit.png') no-repeat 0 2px;
+  }
+}
+
+.zjy-btn-delete {
+  .zjy-icon {
+    background: url('../assets/images/zjy-icon-delete.png') no-repeat 3px 0;
+  }
+}
+
+
+.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+  color: #36c6d3;
+}
+
+// table-search
+
+.zjy-table-oper {
+  .zjy-table-oper__item {
+    margin-right: 5px;
+  }
+  padding: 10px 0;
+  .zjy-table-oper__item {
+    display: inline-block;
+    font-size: 12px;
+  }
+  [class*=zjy-table-oper--] {
+    padding: 5px 10px;
+    border-radius: 25px;
+    color: #ed7734;
+    border: 1px solid #ed7734;
+  }
+  .zjy-table-oper--del {
+    color: #ed7734;
+    border: 1px solid #ed7734;
+  }
+  .zjy-table-oper--create {
+    color: #0593fd;
+    border: 1px solid #0593fd;
+  }
+}
+
+.table-oper-group {
+  width: 120px;
+  margin: 0 auto;
+  text-align: left;
+  &>a{
+    margin-right: 10px;
+  }
+  &>a:last-child {
+    margin-right: 0;
+  }
+}
+
+.zjy-line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  left: 0;
+  background-color: #e8edf2;
+}
+
+.el-picker-panel.el-date-picker.el-popper {
+  // position: absolute !important;
+}
+// 学生档案上传
+#zjy-upload-form {
+  .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
+    border-right: 0;
+  }
+  .el-progress-bar__inner {
+    background-color: #36c6d3
+  }
+}
+
+
+.zjy-panel-item.steps {
+  .zjy-panel-item__content {
+    display: block;
+  }
+}
+

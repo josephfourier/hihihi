@@ -116,14 +116,13 @@
 }
 
 .refused {
-  height: 54px;
   background-color: #f5f5f5;
   font-size: 14px;
   color: #333333;
-  line-height: 54px;
+  padding: 15px 0;
   text-indent: 15px;
-  margin: 0px 0 35px 0;
-   font-weight: bold;
+  margin: -20px 0 5px 0;
+  font-weight: bold;
 }
 
 .reason {

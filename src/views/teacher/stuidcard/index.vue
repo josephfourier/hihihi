@@ -254,7 +254,7 @@ export default {
       immediate: true,
       handler (val, oldval) {
         if (val === -1 || val === 0) return
-
+        this.loading = true
         this.query.offset = this.query.limit * (val - 1)
         cardAPI.queryForList(this.query).then(response => {
           if (response.code !== 1) {

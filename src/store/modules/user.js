@@ -34,8 +34,12 @@ const actions = {
   getAccessed ({ commit }) {
     return new Promise((resolve, reject) => {
       userAPI.getAccessed().then(response => {
-        commit(types.SET_ACCESSED, response.data)
-        resolve(response.data)
+        if (response.code !== 1) {
+          reject(response)
+        } else {
+          commit(types.SET_ACCESSED, response.data)
+          resolve(response.data)
+        }
       }).catch(error => {
         reject(error)
       })

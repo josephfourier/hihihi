@@ -86,13 +86,7 @@ let dateFormat =  val => {
   const date = new Date(val)
   const m = date.getMonth() + 1
   const d = date.getDate() + 1
-  return (
-    date.getFullYear() +
-    '-' +
-    (m < 10 ? '0' + m : m) +
-    '-' +
-    (d < 10 ? '0' + d : d)
-  )
+  return (date.getFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (d < 10 ? '0' + d : d))
 }
 
 let statusFormat = (cellValue) =>  ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]

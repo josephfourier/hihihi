@@ -35,5 +35,9 @@ export default {
 
   delete (id) {
     return ajax.delete('/manage/student/swmsStayholiday/' + id)
+  },
+
+  update (arg) {
+    return ajax.put('/manage/teacher/swmsStayholiday', arg)
   }
 }

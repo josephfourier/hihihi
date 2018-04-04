@@ -63,7 +63,7 @@ export default {
   name: 'ZjyTable',
   data () {
     return {
-      empty: this.$t('zjy.table.emptyText')
+      empty: this.$t('zjy.table.loadingText')
     }
   },
   props: {
@@ -98,6 +98,17 @@ export default {
   methods: {
     handleSelectionChange (val) {
       this.$emit('selection-change', val)
+    }
+  },
+
+  watch: {
+    data: {
+      deep: true,
+      handler (val) {
+        if (val) {
+          this.empty = val.length === 0 ? this.$t('zjy.table.emptyText') : this.$t('zjy.table.loadingText')
+        }
+      }
     }
   },
 

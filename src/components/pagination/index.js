@@ -239,6 +239,7 @@ export default {
 
     prev () {
       const newVal = this.internalCurrentPage - 1
+      if (newVal < 0) return
       this.internalCurrentPage = this.getValidCurrentPage(newVal)
     },
 
@@ -293,7 +294,9 @@ export default {
     currentPage: {
       immediate: true,
       handler (val) {
-        this.internalCurrentPage = val
+        // this.internalCurrentPage = val
+        // 每次更新时使用-1
+        if (val > 0) { this.internalCurrentPage = val }
       }
     },
 

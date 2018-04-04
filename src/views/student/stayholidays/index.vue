@@ -203,7 +203,7 @@ export default {
     currentPage: {
       immediate: true,
       handler (val, oldval) {
-        if (val === -1) return
+        if (val === -9527 || val === 0) return
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
@@ -218,7 +218,11 @@ export default {
       }
     },
     visible (val) {
-      if (!val) this.hasError = false
+      if (!val) {
+        this.type = ''
+        this.reason = ''
+        this.hasError = false
+      }
     }
   }
 }

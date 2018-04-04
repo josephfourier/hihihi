@@ -163,7 +163,7 @@ export default {
     currentPage: {
       immediate: true,
       handler (val) {
-        if (val === -1) return
+        if (val === -1 || val === 0) return
         this.loading = true
         accountAPI.queryForList((val - 1) * this.query.limit, this.query.limit, this.teacherName).then(resp => {
           this.list = resp.items

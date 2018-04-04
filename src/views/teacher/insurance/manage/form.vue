@@ -24,7 +24,7 @@
 import Panel from '@/components/panel/panel'
 import PanelItem from '@/components/panel-item/panel-item'
 export default {
-  name: 'form',
+  name: 'ZjyForm',
   props: {
     data: Object
   },

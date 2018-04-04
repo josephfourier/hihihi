@@ -44,7 +44,7 @@
           @submit="handleSubmit"
         >
           <template slot-scope="props">
-            <!--<zjy-form :data="props.formData"></zjy-form>-->
+            <zjy-form :data="props.formData"></zjy-form>
           </template>
         </zjy-process>
       </el-dialog>
@@ -64,6 +64,7 @@ import OperatorItem from '@/components/table-operator/operator-item'
 import ZjyPagination from '@/components/pagination'
 
 import ZjyProcess from '@/components/process'
+import ZjyForm from './form'
 
 import {dateFormat as _dateFormat, _refresh} from '@/utils'
 
@@ -181,6 +182,7 @@ export default {
       //  --------------- 表格数据 END ---------------
     }
   },
+
   methods: {
     // 搜索
     searchFilter () {
@@ -203,7 +205,6 @@ export default {
     },
 
     view (row) {
-      console.log(row)
       commonAPI.queryApprovalProcess(row.studentId, row.stayholidayUid).then(response => {
         this.data = row
         this.value = response.data
@@ -219,10 +220,10 @@ export default {
     },
 
     _delete (row) {
-
+      const auto = this.list.length === 1
       stayholidaysAPI.delete(row.stayholidayUid).then(response => {
         if (response.code === 1) {
-          this.refresh(true)
+          this.refresh(false)
         }
       })
     },
@@ -232,9 +233,31 @@ export default {
     dateFormat (cellValue) { return _dateFormat(cellValue) },
     statusFormat (cellValue) { return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue] },
 
+    makeFormData (data, steps) {
+      return {
+        'applyDate': data.applyDate,
+        'applyYear': data.applyYear,
+        'dataStatus': data.dataStatus,
+        'holidayId': data.holidayId,
+        'holidayName': data.holidayName,
+        'stayReason': data.stayReason,
+        'stayholidayUid': data.stayholidayUid,
+        'studentId': data.studentId,
+        'swmsApprovalList': steps
+      }
+    },
     //  审批操作
-    handleSubmit () {
-
+    handleSubmit (data, steps) {
+      stayholidaysAPI.update(this.makeFormData(data, steps)).then(response => {
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          this.refresh(false)
+          this.visible = false
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
 
   //  --------------- 审批操作 END ---------------
@@ -251,7 +274,9 @@ export default {
     OperatorItem,
 
     ZjyPagination,
-    ZjyProcess
+    ZjyProcess,
+
+    ZjyForm
   },
 
   watch: {

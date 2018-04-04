@@ -35,8 +35,9 @@
         <zjy-process
           v-if="visible"
           :data="data"
+          :space="120"
           v-model="value"
-          @close="visible = false"
+          :visible.sync="visible"
           @submit="handleSubmit"
         >
           <template slot-scope="props">
@@ -252,7 +253,7 @@ export default {
     currentPage: {
       immediate: true,
       handler (val, oldval) {
-        if (val === -1) return
+        if (val === -1 || val === 0) return
 
         this.query.offset = this.query.limit * (val - 1)
         cardAPI.queryForList(this.query).then(response => {

@@ -88,7 +88,7 @@ export default {
         },
         {
           label: '2018级',
-          value: 201
+          value: 2018
         }
       ],
       facultyList: [],

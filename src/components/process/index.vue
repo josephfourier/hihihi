@@ -1,11 +1,12 @@
 <!-- 教师审批流程组件 -->
 <template>
-  <div>
+  <div class="zjy-process">
     <slot :formData="data"></slot>
-    <div v-if="!isFinished || reason">
+    <!--<template v-if="!isFinished || reason">-->
+    <template>
       <p v-if="!hasStep"> {{ $t('zjy.process.none') }}</p>
       <div class="zjy-steps" v-else>
-        <zjy-steps :active="step" align-center>
+        <zjy-steps :active="step" align-center :space="space">
           <zjy-step :title="$t('zjy.process.start')" :description="'(' + data.studentName + ')'">
           </zjy-step>
           <zjy-step v-for="(item,index) in steps" :key="item.approvalStep" :title="item.postName" :custom="item">
@@ -52,7 +53,7 @@
           </zjy-step>
         </zjy-steps>
       </div>
-    </div>
+    </template>
 
     <div class="zjy-footer" v-if="!isFinished">
       <template v-if="!isApprovered">
@@ -62,9 +63,9 @@
       <zjy-button type="primary" v-else @click="submit">提交</zjy-button>
     </div>
 
-    <div class="zjy-footer" v-if="isFinished && !reason">
-      <zjy-button type="primary" @click="$emit('close')">关闭</zjy-button>
-    </div>
+    <!--<div class="zjy-footer" v-if="isFinished && !reason">-->
+      <!--<zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>-->
+    <!--</div>-->
 
     <el-dialog class="inner" width="30%" title="请输入拒绝原因" :visible.sync="innerVisible" append-to-body>
       <zjy-input type="textarea" v-model="reason"></zjy-input>
@@ -112,7 +113,9 @@ export default {
 
   props: {
     data: Object,
-    value: Object
+    value: Object,
+    space: Number,
+    visible: Boolean // 弹窗时
   },
 
   computed: {
@@ -122,7 +125,7 @@ export default {
     },
     hasFooter () {
       return this.$slots.footer
-    },
+    }
   },
 
   components: {

@@ -1,9 +1,9 @@
-<!-- 学生端我的保险查看 -->
+<!-- 学生端流程进度查看，不包含任何操作 -->
 <template>
   <div>
-    <slot :formData="data"></slot>
+    <slot :formData="data" name="header"></slot>
     <div class="zjy-steps" v-if="hasStep">
-      <p>审批流程</p>
+      <p class="step-title">{{$t('zjy.process.schedule')}}</p>
       <zjy-steps :active="step" align-center>
         <zjy-step title="发起人" :description="'(' + user.fullName + ')'">
         </zjy-step>
@@ -35,13 +35,12 @@
     </div>
 
     <p v-if="reason && isFinished" class="refused">拒绝原因: {{ reason }}</p>
-    <div class="zjy-footer" v-if="!hasFooter && isFinished && !reason">
-      <zjy-button type="plain" @click="$emit('update:visible', false)">取 消</zjy-button>
-      <zjy-button type="primary" @click="pay">立即支付</zjy-button>
-    </div>
+    <!--<div class="zjy-footer" v-if="!hasFooter && isFinished && !reason">-->
+      <!--<zjy-button type="plain" @click="$emit('update:visible', false)">取 消</zjy-button>-->
+      <!--<zjy-button type="primary" @click="pay">立即支付</zjy-button>-->
+    <!--</div>-->
     <!-- 根据数据状态可以定制显示操作按钮 -->
-    <slot :data="data" :steps="steps"></slot>
-
+      <slot :data="data" :steps="steps" name="footer"></slot>
   </div>
 
 </template>
@@ -81,8 +80,6 @@ export default {
   },
 
   methods: {
-    pay () {
-    }
   },
 
   watch: {

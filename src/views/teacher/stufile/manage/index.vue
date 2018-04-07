@@ -138,12 +138,10 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view'
             },
             {
               label: '编辑',
-              render: true,
               cmd: 'edit'
             }
           ]

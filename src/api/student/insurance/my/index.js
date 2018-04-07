@@ -10,6 +10,7 @@ export default {
         if (json.code !== 1) return json
 
         const total = json.data.total
+        const code = json.code
         let rows = []
 
         for (let i = 0; i < json.data.rows.length; ++i) {
@@ -18,6 +19,7 @@ export default {
           rows.push(row)
         }
         return {
+          code,
           total,
           rows
         }

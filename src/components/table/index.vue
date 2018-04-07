@@ -39,7 +39,7 @@
               :render="child.render"
               :cmd="child.cmd"
               :formatter="child.formatter"
-              @operator="$emit(child.cmd,scope.row)"
+              @operator="$emit(child.cmd, scope.row)"
             >
             </operator-content>
           </template>
@@ -117,7 +117,7 @@ export default {
       props: {
         data: Object,
         label: String,
-        render: Boolean,
+        render: Function,
         cmd: String,
         formatter: Function
       },
@@ -133,6 +133,13 @@ export default {
           if (this.formatter) {
             return this.formatter(this.data, this.label)
           } else return this.label
+        },
+        innerRender () {
+          if (this.render) {
+            return this.render(this.data)
+          } else {
+            return true
+          }
         }
       },
 
@@ -143,10 +150,11 @@ export default {
             click: this.handleClick
           }
         }
-        return (<a {...data}>
-          <i class="zjy-icon"></i>
-          <span>{this._label}</span>
-        </a>)
+        return this.innerRender
+          ? (<a {...data}>
+            <i class="zjy-icon"></i>
+            <span>{this._label}</span>
+          </a>) : ''
       }
     }
   }

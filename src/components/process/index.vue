@@ -1,7 +1,7 @@
 <!-- 教师审批流程组件 -->
 <template>
   <div class="zjy-process">
-    <slot :formData="data"></slot>
+    <slot :formData="data" name="header"></slot>
     <!--<template v-if="!isFinished || reason">-->
     <template>
       <p v-if="!hasStep"> {{ $t('zjy.process.none') }}</p>

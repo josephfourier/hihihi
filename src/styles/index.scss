@@ -167,3 +167,20 @@
 }
 
 // 审批流程样式
+
+.zjy-process {
+  .process-table {
+    width: 100%;
+    td {
+      padding-bottom: 10px;
+    }
+  }
+  .process-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .content {
+    word-break: break-all;
+    margin-bottom: 15px;
+  }
+}

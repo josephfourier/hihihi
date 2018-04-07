@@ -21,16 +21,19 @@
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
       <student-process
+        v-if="type === +$t('zjy.operator.CREATE')"
         :data="data"
         v-model="value"
-        :type="type"
         :visible.sync="visible"
         @submit="handleSubmit"
       >
-        <template slot-scope="props">
-          <zjy-form :data="props.formData"></zjy-form>
+        <template slot-scope="props" slot="header">
+          <view-apply :data="props.formData"></view-apply>
         </template>
       </student-process>
+
+      <view-setting v-else :data="data" :visible.sync="visible">
+      </view-setting>
     </el-dialog>
   </div>
 </template>
@@ -42,10 +45,12 @@ import ZjyPagination from '@/components/pagination'
 import {getPermissionId, _refresh} from '@/utils'
 
 import StudentProcess from '@/components/process/StudentProcess'
-import ZjyForm from './form'
+import ViewSetting from './ViewSetting'
 import axios from 'axios'
 
 import ZjyTable from '@/components/table'
+import ZjyButton from '@/components/button'
+import ViewApply from './ViewApply'
 
 export default {
   data () {
@@ -93,12 +98,10 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view'
             },
             {
               label: '申请',
-              render: true,
               cmd: 'create'
             }
           ]
@@ -116,8 +119,7 @@ export default {
       insuranceAPI.create(data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
           this.$alert('申请成功')
-          this.visible = false
-          this.refresh()
+          this.refresh().visible = false
         } else {
           this.$alert(response.message)
         }
@@ -129,10 +131,8 @@ export default {
     view (row) {
       this.title = '保单详情'
       this.type = +this.$t('zjy.operator.VIEW')
-      insuranceAPI.queryForObject(row.inssettingUid).then(response => {
-        this.data = response.data
-        this.visible = true
-      }).catch(error => {})
+      this.data = row
+      this.visible = true
     },
 
     create (row) {
@@ -152,16 +152,17 @@ export default {
       this.currentPage = pageNumber
     },
 
-    refresh () {
-      _refresh.call(this)
+    refresh (auto) {
+      return _refresh.call(this, auto)
     }
   },
 
   components: {
+    ViewApply,
     ZjyPagination,
-
+    ZjyButton,
     StudentProcess,
-    ZjyForm,
+    ViewSetting,
 
     ZjyTable
   },

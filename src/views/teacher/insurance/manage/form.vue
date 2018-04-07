@@ -26,17 +26,11 @@
 </template>
 <!--{{ data.applyReason }}-->
 <script>
-import Panel from '@/components/panel/panel'
-import PanelItem from '@/components/panel-item/panel-item'
 
 export default {
   name: 'ZjyFrom',
   props: {
     data: Object
-  },
-  components: {
-    Panel,
-    PanelItem
   }
 }
 </script>
@@ -44,23 +38,23 @@ export default {
 <style scoped lang="scss">
 
   .zjy-process {
-    .process-table {
-      width: 100%;
-      td {
-        padding-bottom: 10px;
-        color: #323232;
-        span{
-          color: #666666;
-        }
-      }
-    }
-    .process-title {
-      font-weight: bold;
-      margin-top: 5px;
-      &:last-child {
-        margin-bottom: 10px;
-      }
-    }
+    /*.process-table {*/
+      /*width: 100%;*/
+      /*td {*/
+        /*padding-bottom: 10px;*/
+        /*color: #323232;*/
+        /*span{*/
+          /*color: #666666;*/
+        /*}*/
+      /*}*/
+    /*}*/
+    /*.process-title {*/
+      /*font-weight: bold;*/
+      /*margin-top: 5px;*/
+      /*&:last-child {*/
+        /*margin-bottom: 10px;*/
+      /*}*/
+    /*}*/
     .content {
       word-break: break-all;
       margin-bottom: 15px;

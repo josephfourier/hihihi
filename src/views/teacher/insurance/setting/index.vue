@@ -113,7 +113,6 @@ export default {
             },
             {
               label: '编辑',
-              render: true,
               cmd: 'edit'
             }
           ]
@@ -165,7 +164,7 @@ export default {
       let ids = ''
       this.selectedRows.forEach(x => {
         console.log(x)
-        ids += '-' + x.inssettingUid + '-'
+        ids += x.inssettingUid + '-'
       })
 
       this.loading = true

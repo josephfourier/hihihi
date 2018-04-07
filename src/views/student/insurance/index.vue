@@ -1,6 +1,5 @@
 <!-- 投保理赔管理 学生  -->
 <template>
-  <div class="wrapper">
     <div class="zjy-tabs">
       <el-tabs type="border-card" v-model="current" @tab-click="tabClick">
         <el-tab-pane label="我的保险" name="my">
@@ -11,7 +10,6 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-  </div>
 </template>
 
 <script>

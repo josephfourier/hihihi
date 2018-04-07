@@ -90,7 +90,6 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view'
             }
           ]

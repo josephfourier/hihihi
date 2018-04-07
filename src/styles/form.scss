@@ -38,8 +38,8 @@
   }
   // #36c6d3
   // .el-form-item.is-validating .el-input__inner,
-  // .el-form-item.is-validating .el-input__inner:focus, 
-  // .el-form-item.is-validating .el-textarea__inner, 
+  // .el-form-item.is-validating .el-input__inner:focus,
+  // .el-form-item.is-validating .el-textarea__inner,
   // .el-form-item.is-validating .el-textarea__inner:focus {
   //   border-color: #67c23a;
   //  }
@@ -64,7 +64,7 @@
   }
   .el-input__inner {
     border-right:none;
-    
+
   }
   &.is-error {
     .el-input__inner {
@@ -76,6 +76,13 @@
       border-color: #67c23a;
     }
   }
-  
+
 }
+  .el-select {
+    width: 185px;
+  }
+  .el-select .el-input .el-input__inner {
+    height: 40px;
+    line-height: 40px;
+  }
 }

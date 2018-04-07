@@ -1,8 +1,9 @@
 <template>
   <div>
-    <slot :formData="data"></slot>
-    <p v-if="!hasStep && isApply" class="warning">{{ $t('zjy.process.none') }}</p>
-    <div class="zjy-steps" v-if="hasStep && isApply">
+    <slot :formData="data" name="header"></slot>
+    <slot name="warning" v-if="$slots.warning"></slot>
+    <p v-if="!hasStep && !$slots.warning" class="warning">{{ $t('zjy.process.none') }}</p>
+    <div class="zjy-steps" v-if="hasStep">
       <p class="step-title">{{$t('zjy.process.title')}}</p>
       <zjy-steps :active="step" align-center>
 
@@ -53,20 +54,22 @@
               >
               </el-option>
             </el-select>
-            <transition name="el-zoom-in-top">
-              <span class="tip" v-if="hasError && index === 0">{{ error }}</span>
-            </transition>
+            <div class="tip-box">
+              <transition name="el-zoom-in-top">
+                <span class="tip" v-if="hasError && index === 0">{{ error }}</span>
+              </transition>
+            </div>
           </div>
         </zjy-step>
       </zjy-steps>
     </div>
     <div class="zjy-footer" v-if="!hasFooter && hasStep">
-      <template v-if="isApply && hasStep">
+      <template v-if="hasStep">
         <zjy-button type="plain" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.cancel')}}</zjy-button>
         <zjy-button type="primary" @click="create">{{$t('zjy.messagebox.confirm')}}</zjy-button>
       </template>
-      <zjy-button v-if="isView" type="primary" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.close')}}
-      </zjy-button>
+      <!--<zjy-button v-if="isView" type="primary" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.close')}}-->
+      <!--</zjy-button>-->
     </div>
     <slot name="footer" :data="data"></slot>
   </div>
@@ -100,12 +103,12 @@ export default {
     hasFooter () {
       return this.$slots.footer
     },
-    isView () {
-      return this.type === 1
-    },
-    isApply () {
-      return this.type === 2
-    },
+    // isView () {
+    //   return this.type === 1
+    // },
+    // isApply () {
+    //   return this.type === 2
+    // },
     hasError () {
       return !!this.error
     }
@@ -122,7 +125,7 @@ export default {
 
     create () {
       if (this.hasNextApprover && !this.approver) {
-        this.error = '请选择审批人'
+        this.error = this.$t('zjy.process.selectPlaceholder')
         // this.$alert(this.$t('zjy.process.selectPlaceholder'))
         return
       }
@@ -139,15 +142,14 @@ export default {
   },
 
   props: {
-    type: {
-      type: Number,
-      default: 2
-    },
+    // type: {
+    //   type: Number,
+    //   default: 2
+    // },
     data: Object,
     value: Object,
     visible: Boolean
   },
-  // type不是必须的这里只是针对保险设置（查看保险信息)0 查看 1编辑 2申请
   components: {
     ZjyButton,
     ZjyStep,
@@ -173,5 +175,9 @@ export default {
     color: #ED7734;
     text-align: center;
     font-weight: bold;
+  }
+  .tip-box {
+    height: 20px;
+    position: relative;
   }
 </style>

@@ -23,7 +23,7 @@ props: [
           operators: [
             {
               label: '查看',
-              render: true,
+              render: render: (row) => row.dataStatus === '1' || row.dataStatus === '2' 若不提供render则默认显示(true)，添加主要为有些操作不显示
               cmd: 'view',
               formatter (row, cellValue)
             }

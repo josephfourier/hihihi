@@ -149,12 +149,10 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view'
             },
             {
               label: '删除',
-              render: true,
               cmd: 'delete'
             }
           ]
@@ -201,7 +199,7 @@ export default {
 
       let ids = ''
       this.selectedRows.forEach(x => {
-        ids += '-' + x.studentId + '-'
+        ids += x.studentId + '-'
       })
       this.loading = true
       cardAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {

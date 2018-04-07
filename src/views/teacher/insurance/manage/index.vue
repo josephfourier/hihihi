@@ -42,7 +42,7 @@
           @close="visible = false"
           @submit="handleSubmit"
         >
-          <template slot-scope="props">
+          <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
         </zjy-process>
@@ -51,7 +51,7 @@
       <el-dialog title="批量投保" :visible.sync="visible2" width="800px">
         <batch-insurance
           v-if="visible2"
-          @closed="visible2 = false"
+          :visible.sync="visible2"
         >
         </batch-insurance>
       </el-dialog>
@@ -82,6 +82,7 @@ export default {
   data () {
     return {
       list: [],
+      setting: '',
       query: {
         offset: 0,
         limit: 2,
@@ -166,7 +167,6 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view',
               formatter: this.operFormat
             }

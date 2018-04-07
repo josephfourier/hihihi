@@ -43,7 +43,7 @@
           v-model="value"
           @submit="handleSubmit"
         >
-          <template slot-scope="props">
+          <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
         </zjy-process>
@@ -168,12 +168,10 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view'
             },
             {
               label: '删除',
-              render: true,
               cmd: 'delete'
             }
           ]
@@ -220,10 +218,10 @@ export default {
     },
 
     _delete (row) {
-      const auto = this.list.length === 1
+      const auto = this.list.length === 1 && this.currentPage !== 1
       stayholidaysAPI.delete(row.stayholidayUid).then(response => {
         if (response.code === 1) {
-          this.refresh(false)
+          this.refresh(auto)
         }
       })
     },

@@ -17,13 +17,13 @@
 
       <div class="zjy-dialog">
         <el-dialog title="请输入档案材料名称" :visible.sync="visible" width="800px">
-          <stufile
+          <stufile-setting
             v-if="visible"
             :formData="stufile"
             :list="list"
             :type="type"
             @close="handleClose"
-          ></stufile>
+          ></stufile-setting>
         </el-dialog>
       </div>
     </div>
@@ -32,7 +32,7 @@
 
 <script>
 import stufileAPI from '@/api/teacher/stufile/setting'
-import Stufile from './Stufile'
+import StufileSetting from './StufileSetting'
 import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
@@ -45,7 +45,7 @@ export default {
         stufileName: '',
         status: '1'
       },
-      type: 1, // 1编辑 2新增
+      type: +this.$t('zjy.operator.EDIT'), // 1编辑 2新增
       loading: false,
       visible: false,
       columns: [
@@ -64,12 +64,10 @@ export default {
           operators: [
             {
               label: '编辑',
-              render: true,
               cmd: 'edit'
             },
             {
               label: '删除',
-              render: true,
               cmd: 'delete'
             }
           ]
@@ -80,7 +78,7 @@ export default {
 
   methods: {
     create () {
-      this.type = 2
+      this.type = +this.$t('zjy.operator.CREATE')
       this.visible = true
     },
 
@@ -94,7 +92,7 @@ export default {
     },
 
     edit (row) {
-      this.type = 1
+      this.type = +this.$t('zjy.operator.EDIT')
       this.stufile = {...row}
       this.visible = true
     },
@@ -119,7 +117,7 @@ export default {
   },
 
   components: {
-    Stufile,
+    StufileSetting,
     ZjyTable,
     ZjyTableOperator,
     OperatorItem

@@ -24,14 +24,14 @@
       </el-form-item>
       <el-form-item label="开放申请">
         <el-radio-group v-model="formData.isOpen">
-          <el-radio :label="'1'">开放</el-radio>
-          <el-radio :label="'0'">不开放</el-radio>
+          <el-radio label="1">开放</el-radio>
+          <el-radio label="0">不开放</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="在线支付">
         <el-radio-group v-model="formData.isPay">
-          <el-radio :label="'1'">开启</el-radio>
-          <el-radio :label="'0'">关闭</el-radio>
+          <el-radio label="1">开启</el-radio>
+          <el-radio label="0">关闭</el-radio>
         </el-radio-group>
       </el-form-item>
       <div class="zjy-footer">

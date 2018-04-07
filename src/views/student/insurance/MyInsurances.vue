@@ -16,13 +16,23 @@
 
     <el-dialog title="审批进度" :visible.sync="visible" width="800px">
       <process-view
-        :data="setting"
+        :data="data"
         v-model="value"
         v-if="visible"
         :visible.sync="visible"
       >
-        <template slot-scope="props">
-          <form-view :data="props.formData"></form-view>
+        <template slot-scope="props" slot="header">
+          <view-apply :data="props.formData"></view-apply>
+        </template>
+
+        <!-- 因审批进度中可能会出现付款因此需要自定义操作 -->
+        <template slot-scope="props" slot="footer">
+          <zjy-footer
+            :data="props.data"
+            :steps="props.steps"
+            @submit="pay"
+            :visible.sync="visible"
+          ></zjy-footer>
         </template>
       </process-view>
     </el-dialog>
@@ -35,15 +45,15 @@ import commonAPI from '@/api/common'
 
 import ZjyPagination from '@/components/pagination'
 import ProcessView from '@/components/process/ProcessView'
-import FormView from './FormView'
-
+import ZjyFooter from './Footer'
 import ZjyTable from '@/components/table'
 import { _refresh } from '@/utils'
+import ViewApply from './ViewApply'
 
 export default {
   data () {
     return {
-      setting: {},
+      data: {},
       value: {},
       list: [],
       currentPage: 1,
@@ -85,7 +95,6 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view'
             }
           ]
@@ -99,12 +108,16 @@ export default {
       return ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款'][+cellValue]
     },
 
+    pay () {
+      alert('付款')
+    },
+
     handleSubmit () {
     },
 
     view (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.insuranceUid).then(response => {
-        this.setting = row
+        this.data = row
         this.value = response.data
         this.visible = true
       })
@@ -119,9 +132,10 @@ export default {
     }
   },
   components: {
+    ViewApply,
     ZjyPagination,
     ProcessView,
-    FormView,
+    ZjyFooter,
 
     ZjyTable
   },

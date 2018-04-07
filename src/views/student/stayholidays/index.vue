@@ -27,10 +27,33 @@
         :visible.sync="visible"
         @submit="handleSubmit"
       >
-        <template slot-scope="props">
-          <zjy-form :data="props.formData" :reason.sync="reason" :type.sync="type" :hasError="hasError"></zjy-form>
+        <template slot-scope="props" slot="header">
+          <zjy-form
+            :data="props.formData"
+            :reason.sync="reason"
+            :type.sync="type"
+            :hasError="hasError"
+          ></zjy-form>
         </template>
       </student-process>
+    </el-dialog>
+
+    <el-dialog :title="title" :visible.sync="visible2" width="800px">
+      <process-view
+        :data="data"
+        v-model="value"
+        :visible.sync="visible2"
+        @submit="handleSubmit"
+      >
+        <template slot-scope="props" slot="header">
+          <zjy-form-view
+            :data="props.formData"
+            :reason.sync="reason"
+            :type.sync="type"
+            :hasError="hasError"
+          ></zjy-form-view>
+        </template>
+      </process-view>
     </el-dialog>
 
   </div>
@@ -45,7 +68,9 @@ import OperatorItem from '@/components/table-operator/operator-item'
 import ZjyTable from '@/components/table'
 import ZjyPagination from '@/components/pagination'
 import StudentProcess from '@/components/process/StudentProcess'
+import ProcessView from '@/components/process/ProcessView'
 import ZjyForm from './form'
+import ZjyFormView from './FormView'
 
 import commonAPI from '@/api/common'
 import axios from 'axios'
@@ -66,6 +91,7 @@ export default {
       title: '',
       loading: false,
       visible: false,
+      visible2: false,
 
       columns: [
         {
@@ -105,12 +131,12 @@ export default {
           operators: [
             {
               label: '查看',
-              render: true,
               cmd: 'view'
             }
           ]
         }
       ],
+      // 业务数据
       reason: '',
       type: '',
       hasError: false
@@ -129,6 +155,7 @@ export default {
           this.$alert('获取数据失败')
         } else {
           this.value = r1.data   // 流程数据传入组件即可
+          // 添加业务数据
           Object.assign(this.data, {
             student: r3.data,
             holidayType: r2.data
@@ -143,7 +170,7 @@ export default {
       return _dateFormat(cellValue)
     },
 
-    statusFormate (cellValue) {
+    statusFormat (cellValue) {
       return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
     },
 
@@ -153,7 +180,6 @@ export default {
       } else {
         const arg = this.makeFormData(data, steps)
         stayholidaysAPI.create(arg).then(response => {
-          console.log(response)
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
@@ -167,7 +193,12 @@ export default {
     },
 
     view (row) {
-
+      commonAPI.queryApprovalProcess(row.studentId, row.stayholidayUid).then(response => {
+        this.title = '留校申请'
+        this.data = row
+        this.value = response.data
+        this.visible2 = true
+      })
     },
 
     currentChange (pageNumber) {
@@ -196,7 +227,9 @@ export default {
     OperatorItem,
     ZjyTable,
     StudentProcess,
-    ZjyForm
+    ProcessView,
+    ZjyForm,
+    ZjyFormView
   },
 
   watch: {

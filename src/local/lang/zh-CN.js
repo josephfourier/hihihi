@@ -3,6 +3,7 @@ export default {
     process: {
       none: '还未配置流程',
       title: '流程审批',
+      schedule: '审批进度',
       start: '发起人',
       selectPlaceholder: '请选择审批人'
     },

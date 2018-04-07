@@ -73,5 +73,40 @@ export default {
 
   queryStudent () {
     return ajax.get('/manage/common/ucenterStudent')
+  },
+
+  // ---------- 班级、院系荣誉称号公用api ----------
+  // 1-院系，2-班级，3-个人
+  queryHonoraryList (type, query) {
+    return ajax.get('/manage/honorary-setting/category/' + type, {
+      params: query,
+      transformResponse: data => {
+        const json = JSON.parse(data)
+        if (json.code !== 1) return json
+
+        const total = json.data.total
+        const rows = json.data.rows
+        const code = json.code
+
+        return {
+          code,
+          total,
+          rows
+        }
+      }
+    })
+  },
+
+  queryMyClassList () {
+    return ajax.get('/manage/common/datascope/class')
+  },
+
+  initApproval (permissionId, honoraryType, dataId) {
+    return ajax.get('/manage/swmsApproval/initSwmsApproval/' +  permissionId + '/' + honoraryType + '/' + dataId)
+  },
+
+  queryNextApproval (dataId, dataUid, honoraryType) {
+    return ajax.get('/manage/swmsApproval/' + dataId + '/' + dataUid + '/' + honoraryType)
   }
+  // ---------- 班级、院系荣誉称号公用api END ----------
 }

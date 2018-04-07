@@ -118,6 +118,8 @@ function refresh (auto)  {
       this.currentPage = old
     }, +this.$t('zjy.refresh.delay'))
   }
+
+  return this
 }
 
 export {

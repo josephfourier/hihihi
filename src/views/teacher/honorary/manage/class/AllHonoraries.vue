@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import bus from './bus'
 import clzAPI from '@/api/teacher/honorary/clz'
 import commonAPI from '@/api/common'
 import ZjyPagination from '@/components/pagination'
@@ -74,7 +75,7 @@ export default {
       // 申请的班级
       clz: 0,
 
-      active: false
+      innerActive: false
     }
   },
 
@@ -98,6 +99,7 @@ export default {
           if (response.code === 1) {
             this.$alert('申请成功')
             this.refresh().visible = false
+            bus.$emit('applied')
           } else {
             this.$alert(response.message)
           }
@@ -146,9 +148,13 @@ export default {
   },
 
   props: {
-    // active: Boolean
   },
 
+  created () {
+    bus.$on('clzChanged', function () {
+      this.refresh()
+    })
+  },
   computed: {
     title () {
       return this.type === +this.$t('zjy.operator.CREATE') ? '荣誉称号申请' : '荣誉称号详情'
@@ -179,10 +185,6 @@ export default {
         console.log(response)
         this.value = response.data
       })
-    },
-
-    active (val) {
-      if (val) this.refresh()
     },
 
     visible (val) {

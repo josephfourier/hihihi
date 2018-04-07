@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-
     <zjy-table
       :data="list"
       :loading="loading"
@@ -54,7 +53,7 @@ import ZjyTable from '@/components/table'
 import { _refresh } from '@/utils'
 
 import properties from './properties'
-
+import bus from './bus'
 export default {
   data () {
     return {
@@ -74,7 +73,6 @@ export default {
   },
 
   methods: {
-
     makeFormData (data, steps) {
       return {
         'applyReson': this.applyReason,
@@ -137,8 +135,14 @@ export default {
     ZjyTable
   },
 
+  created () {
+    var that = this
+    bus.$on('applied', function () {
+      that.refresh()
+    })
+  },
+
   props: {
-    active: Boolean
   },
   watch: {
     currentPage: {
@@ -156,9 +160,6 @@ export default {
       }
     },
 
-    active (val) {
-      if (val) this.refresh()
-    },
     visible (val) {
       if (!val) {
         this.applyReason = ''

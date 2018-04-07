@@ -4,7 +4,16 @@
 
 <script>
 export default {
-  name: 'honoraries-manage'
+  name: 'honoraries-manage',
+  props: {
+  },
+  methods: {
+    refresh () {
+      console.log('managefresh')
+    }
+  },
+  watch: {
+  }
 }
 </script>
 

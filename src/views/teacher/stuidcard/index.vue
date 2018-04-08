@@ -12,7 +12,7 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="batchRemove">批量删除</operator-item>
+      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
     </zjy-table-operator>
 
     <div class="zjy-table">
@@ -40,7 +40,7 @@
           :visible.sync="visible"
           @submit="handleSubmit"
         >
-          <template slot-scope="props">
+          <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
         </zjy-process>

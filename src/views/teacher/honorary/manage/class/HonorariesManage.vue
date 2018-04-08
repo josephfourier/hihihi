@@ -10,8 +10,8 @@
 
     <zjy-table-operator>
       <operator-item @click="create" clz="create">新增</operator-item>
-      <operator-item @click="batchRemove" clz="create">批量删除</operator-item>
-      <operator-item @click="_export" clz="create">导出</operator-item>
+      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
     <div class="zjy-table">

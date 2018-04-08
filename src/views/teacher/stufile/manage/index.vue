@@ -11,9 +11,9 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="create">新增</operator-item>
-      <operator-item @click="_import">导入</operator-item>
-      <operator-item @click="_export">导出</operator-item>
+      <operator-item @click="create" clz="create">新增</operator-item>
+      <operator-item @click="_import" clz="import">导入</operator-item>
+      <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
     <div class="zjy-table">

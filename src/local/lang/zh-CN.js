@@ -2,6 +2,7 @@ export default {
   zjy: {
     process: {
       none: '还未配置流程',
+      loading: '流程加载中...',
       title: '流程审批',
       schedule: '审批进度',
       start: '发起人',

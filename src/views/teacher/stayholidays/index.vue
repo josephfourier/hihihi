@@ -12,8 +12,8 @@
 
     <zjy-table-operator>
       <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
-      <operator-item @click="_import" clz="_import">导入</operator-item>
-      <operator-item @click="_export" clz="_export">导出</operator-item>
+      <operator-item @click="_import" clz="import">导入</operator-item>
+      <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
     <div class="zjy-table">

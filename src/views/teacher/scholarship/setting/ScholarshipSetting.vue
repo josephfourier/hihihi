@@ -41,7 +41,7 @@
             <el-date-picker type="date" placeholder="选择结束日期" value-format="timestamp"  v-model="formData.endDate" style="width: 100%;" :picker-options="endOption"></el-date-picker>
           </el-form-item>
       </el-form-item>
-      <el-form-item label="奖学金申请说明" prop="description">
+      <el-form-item label="申请说明" prop="description">
         <el-input type="textarea" v-model="formData.description"></el-input>
       </el-form-item>
       <el-form-item label="开放申请" prop="isOpen">
@@ -60,6 +60,7 @@
 
 <script>
 import ZjyButton from '@/components/button'
+import commonAPI from '@/api/common'
 
 export default {
   name: 'scholarship-setting',
@@ -104,20 +105,7 @@ export default {
           return false
         }
       },
-      optionsWays: [
-        {
-          label: '每学期',
-          value: '1'
-        },
-        {
-          label: '每月',
-          value: '2'
-        },
-        {
-          label: '每年',
-          value: '3'
-        }
-      ],
+      optionsWays: [],
       rules: {
         scholarshipName: [
           { required: true, message: '请输入奖学金名称', trigger: 'blur' }
@@ -171,6 +159,20 @@ export default {
       })
     }
   },
+
+  created () {
+    commonAPI.queryGrantWay().then(response => {
+      this.optionsWays = response.data.map(i => {
+        return {
+          label: i.valueName,
+          value: i.valueKey
+        }
+      })
+    }).catch(error => {
+      console.warn('get way error -> ' + error)
+    })
+  },
+
   props: {
     formData: Object,
     type: Number,

@@ -2,7 +2,7 @@
   <div>
     <slot :formData="data" name="header"></slot>
     <slot name="warning" v-if="$slots.warning"></slot>
-    <p v-if="!hasStep && !$slots.warning" class="warning">{{ $t('zjy.process.none') }}</p>
+    <p v-if="!hasStep && !$slots.warning" class="warning">{{ empty || $t('zjy.process.none') }}</p>
     <div class="zjy-steps" v-if="hasStep">
       <p class="step-title">{{$t('zjy.process.title')}}</p>
       <zjy-steps :active="step" align-center>
@@ -126,7 +126,6 @@ export default {
     create () {
       if (this.hasNextApprover && !this.approver) {
         this.error = this.$t('zjy.process.selectPlaceholder')
-        // this.$alert(this.$t('zjy.process.selectPlaceholder'))
         return
       }
 
@@ -142,12 +141,10 @@ export default {
   },
 
   props: {
-    // type: {
-    //   type: Number,
-    //   default: 2
-    // },
     data: Object,
     value: Object,
+    // 流程为空时提示
+    empty: String,
     visible: Boolean
   },
   components: {

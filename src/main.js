@@ -15,32 +15,17 @@ import VueI18n from 'vue-i18n'
 import './router-interceptor'
 import '@/styles/index.scss'
 
+import filters from './filters'
+
 Vue.use(VueI18n)
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-Vue.prototype.$empty = obj => {
-  if (!obj) return true
-  return Object.keys(obj).length === 0
-}
-
+Vue.prototype.$empty = obj => !obj ? true : Object.keys(obj).length === 0
 Vue.prototype.$hasPermission = permission => store.getters.permissions.indexOf(permission) !== -1
 
-Vue.filter('statusFormat', val => ['待审批', '已通过', '已拒绝', '审批中'][+val])
-Vue.filter('dateFormat', val => {
-  if (!val) return
-  const date = new Date(val)
-  const m = date.getMonth() + 1
-  const d = date.getDate() + 1
-  return (
-    date.getFullYear() +
-    '-' +
-    (m < 10 ? '0' + m : m) +
-    '-' +
-    (d < 10 ? '0' + d : d)
-  )
-})
+Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
 
 const i18n = new VueI18n({
   locale: 'zh-CN',

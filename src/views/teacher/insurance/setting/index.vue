@@ -2,8 +2,8 @@
 <template>
   <div class="zjy-app">
       <zjy-table-operator>
-        <operator-item clz="create" @click="create">新增</operator-item>
-        <operator-item @click="batchRemove">批量删除</operator-item>
+        <operator-item clz="create" @click="create" class="create">新增</operator-item>
+        <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
       </zjy-table-operator>
 
       <zjy-table

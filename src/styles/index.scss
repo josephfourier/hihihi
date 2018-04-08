@@ -76,6 +76,10 @@
   padding: 10px 20px;
 }
 
+// table 行操作图标
+[class*=zjy-btn-] {
+  margin-right: 10px;
+}
 .zjy-btn-view {
   .zjy-icon {
     background: url('../assets/images/zjy-icon-view.png') no-repeat 0 2px;
@@ -84,7 +88,7 @@
 
 .zjy-btn-edit {
   .zjy-icon {
-    background: url('../assets/images/zjy-icon-edit.png') no-repeat 0 2px;
+    background: url('../assets/images/zjy-icon-edit.png') no-repeat 3px 1px;
   }
 }
 
@@ -113,16 +117,30 @@
   [class*=zjy-table-oper--] {
     padding: 5px 10px;
     border-radius: 25px;
-    color: #ed7734;
-    border: 1px solid #ed7734;
+    color: #0aacf8;
+    border: 1px solid #0aacf8;
   }
-  .zjy-table-oper--del {
-    color: #ed7734;
-    border: 1px solid #ed7734;
+  .zjy-table-oper--delete {
+    color: #ef7727;
+    border: 1px solid #ef7727;
+    &:hover {
+      background-color: rgba(239,119,39,.1);
+    }
   }
-  .zjy-table-oper--create {
-    color: #0593fd;
-    border: 1px solid #0593fd;
+  .zjy-table-oper--create,
+  .zjy-table-oper--import{
+    color: #0aacf8;
+    border: 1px solid #0aacf8;
+    &:hover {
+      background-color: rgba(10,172,248,.1);
+    }
+  }
+  .zjy-table-oper--export {
+    color: #8b6aff;
+    border: 1px solid #8b6aff;
+    &:hover {
+      background-color: rgba(139,106,255,.1);
+    }
   }
 }
 

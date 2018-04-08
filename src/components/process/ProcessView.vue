@@ -57,7 +57,7 @@ export default {
       step: 1,
       steps: [], // 审批流程步骤
       isFinished: false,
-      reason: '' // 拒绝原因
+      reason: '', // 拒绝原因
     }
   },
 

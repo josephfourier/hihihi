@@ -34,23 +34,30 @@
               </div>
             </div>
 
-            <el-select
-              class="zjy-select"
-              v-model="approver"
-              :placeholder="$t('zjy.process.selectPlaceholder')"
-              slot="custom"
-              slot-scope="props"
-              @change="handleChange"
-              v-if="props.data.approvalType == 1
-              && index === step - 1
-              && !props.data.approvalStatus
-              && isApprovered
-              && !reason"
-            >
-              <el-option v-for="item in approverList" :key="item.teacherId" :label="item.teacherName"
-                         :value="item.teacherId">
-              </el-option>
-            </el-select>
+            <div class="validate"
+                 slot="custom"
+                 slot-scope="props">
+                <el-select
+                  class="zjy-select"
+                  v-model="approver"
+                  :placeholder="$t('zjy.process.selectPlaceholder')"
+                  @change="handleChange"
+                  v-if="props.data.approvalType == 1
+                  && index === step - 1
+                  && !props.data.approvalStatus
+                  && isApprovered
+                  && !reason"
+                >
+                  <el-option v-for="item in approverList" :key="item.teacherId" :label="item.teacherName"
+                             :value="item.teacherId">
+                  </el-option>
+                </el-select>
+                <div class="tip-box">
+                  <transition name="el-zoom-in-top">
+                    <span class="tip" v-if="hasError && index === step - 1">{{ error }}</span>
+                  </transition>
+                </div>
+            </div>
           </zjy-step>
         </zjy-steps>
       </div>
@@ -63,10 +70,6 @@
       </template>
       <zjy-button type="primary" v-else @click="submit">提交</zjy-button>
     </div>
-
-    <!--<div class="zjy-footer" v-if="isFinished && !reason">-->
-      <!--<zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>-->
-    <!--</div>-->
 
     <el-dialog class="inner" width="30%" title="请输入拒绝原因" :visible.sync="innerVisible" append-to-body>
       <zjy-input type="textarea" v-model="reason"></zjy-input>
@@ -108,7 +111,8 @@ export default {
         no: '2'
       },
 
-      innerVisible: false
+      innerVisible: false,
+      error: ''
     }
   },
 
@@ -126,6 +130,9 @@ export default {
     },
     hasFooter () {
       return this.$slots.footer
+    },
+    hasError () {
+      return !!this.error
     }
   },
 
@@ -144,6 +151,7 @@ export default {
       if (this.hasNextApprover) {
         this.nextApproverName = this.approverList.find(x => x.teacherId === val).teacherName
       }
+      this.error = ''
     },
 
     yes () {
@@ -178,7 +186,9 @@ export default {
 
     submit () {
       if (this.hasNextApprover && !this.approver && !this.reason) {
-        this.$alert('请选择下一步审批人')
+        this.error = this.$t('zjy.process.selectPlaceholder')
+
+        // this.$alert('请选择下一步审批人')
         return
       }
 
@@ -248,22 +258,13 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-
-  /*.status {*/
-    /*> span,*/
-    /*> img {*/
-      /*vertical-align: middle;*/
-    /*}*/
-    /*margin-bottom: 10px;*/
-  /*}*/
-
-  /*.details {*/
-    /*padding: 20px;*/
-    /*background-color: #f5f5f5;*/
-    /*.title {*/
-      /*color: #333333;*/
-      /*font-weight: bold;*/
-    /*}*/
-    /*margin-bottom: 15px;*/
-  /*}*/
+  .warning {
+    color: #ED7734;
+    text-align: center;
+    font-weight: bold;
+  }
+  .tip-box {
+    height: 20px;
+    position: relative;
+  }
 </style>

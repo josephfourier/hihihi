@@ -107,6 +107,15 @@ export default {
 
   queryNextApproval (dataId, dataUid, honoraryType) {
     return ajax.get('/manage/swmsApproval/' + dataId + '/' + dataUid + '/' + honoraryType)
-  }
+  },
   // ---------- 班级、院系荣誉称号公用api END ----------
+
+  // 奖学金发放方式
+  queryGrantWay () {
+    return ajax.get('/manage/common/dict/DICT_GRANT_WAY')
+  },
+
+  queryPolitics () {
+    return ajax.get('/manage/common/dict/DICT_POLITICS')
+  }
 }

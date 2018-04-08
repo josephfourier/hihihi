@@ -26,10 +26,10 @@ export default {
   optionsStatus: [
     {
       label: '已生效',
-      value: 0
+      value: 1
     }, {
       label: '已撤销',
-      value: 1
+      value: 2
     }
   ],
   columns: [

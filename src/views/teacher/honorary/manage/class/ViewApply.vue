@@ -1,15 +1,21 @@
 <!--设置详情数据查看 -->
 <template>
   <div class="zjy-process">
-    {{ data }}
     <table class="process-table">
       <tr>
         <td>荣誉称号名称: {{ data.honoraryName }}</td>
-        <td>人数限制: {{ data.numberLimit }}</td>
-        <td>奖学金级别: {{ data.scholarshipLevel }}</td>
-      </tr>
-      <tr>
-        <td>金额: {{ data.money }}</td>
+        <td>申请人: {{ user.fullName }}</td>
+        <td style="width: 300px;text-align: right">申请班级:
+          <el-select v-model="innerClz" @change="$emit('update:clz', innerClz)">
+          <el-option
+            v-for="item in clzs"
+            :key="item.classId"
+            :label="item.className"
+            :value="item.classId"
+          >
+          </el-option>
+
+        </el-select></td>
       </tr>
     </table>
     <p class="process-title">申请原因</p>
@@ -22,23 +28,13 @@
       </div>
     </div>
 
-    <el-select v-model="innerClz" @change="$emit('update:clz', innerClz)">
-      <el-option
-        v-for="item in clzs"
-        :key="item.classId"
-        :label="item.className"
-        :value="item.classId"
-      >
-      </el-option>
-
-    </el-select>
   </div>
 </template>
 
 <script>
 import ZjyInput from '@/components/input'
 import commonAPI from '@/api/common'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'view-apply',
   data () {
@@ -48,11 +44,13 @@ export default {
       clzs: []
     }
   },
-  methods: {
+  computed: {
+    ...mapGetters(['user'])
   },
+
   props: {
     data: Object,
-    clz: Number,
+    clz: [Number, String],
     applyReason: String,
     hasError: Boolean
   },

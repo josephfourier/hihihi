@@ -23,10 +23,12 @@
         v-if="visible && type === +$t('zjy.operator.CREATE')"
         :data="data"
         v-model="value"
+        :empty="empty"
         :visible.sync="visible"
+        v-loading="loading"
         @submit="handleSubmit"
       >
-        <p slot="warning" v-if="!clz">请先选择班级</p>
+        <p slot="warning" v-if="!clz" class="warning">请先选择班级</p>
         <template slot-scope="props" slot="header">
           <view-apply
             :data="props.formData"
@@ -73,17 +75,13 @@ export default {
       applyReason: '',
       hasError: false,
       // 申请的班级
-      clz: 0,
-
+      clz: '',
+      empty: '',
       innerActive: false
     }
   },
 
   methods: {
-    statusFormat (cellValue) {
-      return ['可申请', '申请中'][+cellValue]
-    },
-
     makeFormData (data, steps) {
       return {
         'applyReson': this.applyReason,
@@ -103,9 +101,7 @@ export default {
           } else {
             this.$alert(response.message)
           }
-        }).catch(error => {
-
-        })
+        }).catch(error => {})
       }
     },
 
@@ -161,7 +157,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -178,10 +174,15 @@ export default {
     },
     // 当教师选择了班级后则需要初始化审批流程
     clz (val) {
-      commonAPI.initApproval(getPermissionId(this.$route), 2, val).then(response => {
-        console.log(response)
-        this.value = response.data
-      })
+      if (val) {
+        this.loading = true
+        this.empty = this.$t('zjy.process.loading')
+        commonAPI.initApproval(getPermissionId(this.$route), 2, val).then(response => {
+          this.value = response.data
+          if (this.$empty(this.value)) this.empty = this.$t('zjy.process.none')
+          this.loading = false
+        })
+      }
     },
 
     visible (val) {
@@ -190,7 +191,7 @@ export default {
         this.hasError = false
         this.type = ''
         this.value = {}
-        this.clz = 0
+        this.clz = ''
       }
     }
   }

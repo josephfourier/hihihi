@@ -29,20 +29,20 @@
         :visible.sync="visible"
         width="800px"
       >
-        <honorary-setting
+        <punish-setting
           v-if="visible"
           :formData="formData"
           :visible.sync="visible"
           @submit="handleSubmit"
         >
-        </honorary-setting>
+        </punish-setting>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import settingAPI from '@/api/teacher/Honorary/setting'
+import settingAPI from './api'
 
 import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
@@ -53,7 +53,7 @@ import ZjyPagination from '@/components/pagination'
 import {_refresh} from '@/utils'
 
 import properties from './properties'
-import HonorarySetting from './HonorarySetting'
+import PunishSetting from './PunishSetting'
 
 export default {
   name: 'index',
@@ -89,16 +89,16 @@ export default {
     batchRemove () {
 
     },
-    //  ------------ 表格头操作 END ------------
 
     edit (row) {
+      console.log(row)
       this.formData = row
       this.visible = true
     },
 
     _delete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
-      settingAPI.delete(row.honorarysettingUid).then(response => {
+      settingAPI.delete(row.punishsettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
         } else {
@@ -106,12 +106,10 @@ export default {
         }
       })
     },
-    //  ------------ 表格操作 END ------------
 
-    //  验证成功提交表单数据
     handleSubmit (formData) {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
-        settingAPI.update(formData.honorarysettingUid, formData).then(response => {
+        settingAPI.update(formData.punishsettingUid, formData).then(response => {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
@@ -134,10 +132,10 @@ export default {
 
   computed: {
     title () {
-      return !this.formData.honorarysettingUid ? '新增荣誉称号' : '修改荣誉称号'
+      return !this.formData.punishsettingUid ? '新增违纪类型' : '修改违纪类型'
     },
     type () {
-      return !this.formData.honorarysettingUid ? +this.$t('zjy.operator.CREATE') : +this.$t('zjy.operator.EDIT')
+      return !this.formData.punishsettingUid ? +this.$t('zjy.operator.CREATE') : +this.$t('zjy.operator.EDIT')
     }
   },
 
@@ -147,7 +145,7 @@ export default {
     ZjyTableOperator,
     OperatorItem,
 
-    HonorarySetting
+    PunishSetting
   },
 
   watch: {

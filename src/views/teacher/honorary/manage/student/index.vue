@@ -2,7 +2,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="申请状态" :options="optionsStauts" :value.sync="dataStatus"></search-select>
+      <search-select label="申请状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
       <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
@@ -91,7 +91,7 @@ export default {
 
       optionsYears: properties.optionsYears,
 
-      optionsStauts: properties.optionsStauts,
+      optionsStatus: properties.optionsStatus,
 
       columns: properties.columns
     }

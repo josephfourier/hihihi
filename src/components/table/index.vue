@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="zjy-table"
-  >
+  <div class="zjy-table">
     <el-table
       :data="data"
       style="width: 100%"

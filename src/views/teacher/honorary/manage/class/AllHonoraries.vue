@@ -151,9 +151,6 @@ export default {
   },
 
   created () {
-    bus.$on('clzChanged', function () {
-      this.refresh()
-    })
   },
   computed: {
     title () {

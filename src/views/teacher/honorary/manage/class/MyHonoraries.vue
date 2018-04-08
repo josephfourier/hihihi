@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper">
-    <zjy-table
-      :data="list"
-      :loading="loading"
-      :columns="columns"
-      @view="view"
-    >
-    </zjy-table>
+     <zjy-table
+       :data="list"
+       :loading="loading"
+       :columns="columns"
+       @view="view"
+     >
+     </zjy-table>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
       <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
@@ -53,7 +53,7 @@ import ZjyTable from '@/components/table'
 import { _refresh } from '@/utils'
 
 import properties from './properties'
-import bus from './bus'
+// import bus from './bus'
 export default {
   data () {
     return {
@@ -136,10 +136,10 @@ export default {
   },
 
   created () {
-    var that = this
-    bus.$on('applied', function () {
-      that.refresh()
-    })
+    // var that = this
+    // bus.$on('applied', function () {
+    //   that.refresh()
+    // })
   },
 
   props: {
@@ -170,5 +170,9 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-
+.zjy-table {
+  table {
+    width: 100% !important;
+  }
+}
 </style>

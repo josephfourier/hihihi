@@ -1,8 +1,8 @@
 <template>
 <div class="zjy-app">
   <zjy-table-search>
-    <search-select label="保单状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
-    <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
+    <search-select label="处分状态" :options="optionsStatus" :value.sync="punishStatus"></search-select>
+    <search-select label="申请年份" :options="optionsYears" :value.sync="punishYear"></search-select>
     <search-input label="学号" :value.sync="studentCode"></search-input>
     <search-button @query="searchFilter"></search-button>
   </zjy-table-search>
@@ -37,26 +37,24 @@
   </div>
 
   <div class="zjy-dialog">
-    <el-dialog title="奖学金审批" :visible.sync="visible" width="800px">
-      <zjy-process
+
+    <el-dialog title="查看处分" :visible.sync="visible" width="800px">
+      <zjy-form
         v-if="visible"
-        :data="setting"
-        v-model="value"
-        @close="visible = false"
-        @submit="handleSubmit"
+        :data="data"
+        :visible.sync="visible"
+        @submit="rescind"
       >
-        <template slot-scope="props" slot="header">
-          <zjy-form :data="props.formData"></zjy-form>
-        </template>
-      </zjy-process>
+      </zjy-form>
     </el-dialog>
 
-    <el-dialog title="新增奖学金" :visible.sync="visible2" width="800px">
-      <scholarship
+    <el-dialog title="新增处分" :visible.sync="visible2" width="800px">
+      <punish
         v-if="visible2"
-        :visible.sync="visible"
+        :visible.sync="visible2"
+        @submit="rescind"
       >
-      </scholarship>
+      </punish>
     </el-dialog>
   </div>
 
@@ -74,34 +72,34 @@ import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
 
-import scholarshipManageAPI from '@/api/teacher/scholarship/manage'
-import commonAPI from '@/api/common'
+import api from './api'
 
-import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
-import Scholarship from './Scholarship'
+import Punish from './Punish'
 
 import { _refresh } from '@/utils'
-import common from './common'
+import properties from './properties'
+
 export default {
   name: 'index',
   data () {
     return {
       list: [],
-      setting: '',
-      query: common.query,
+      data: {},
+      query: properties.query,
       currentPage: 1,
-      dataStatus: '',
-      applyYear: '',
+      punishStatus: '',
+      punishYear: '',
       studentCode: '',
+
       selectedRows: [],
       // ---------------- 搜索 ----------------
       loading: false,
       visible: false,
       visible2: false,
-      optionsYears: common.optionsYear,
-      optionsStatus: common.optionsStatus,
-      columns: common.columns
+      optionsYears: properties.optionsYear,
+      optionsStatus: properties.optionsStatus,
+      columns: properties.columns
     // ---------------- 表格 ----------------
     }
   },
@@ -109,9 +107,10 @@ export default {
     refresh (auto) {
       return _refresh.call(this, auto)
     },
+
     searchFilter () {
-      this.query.dataStatus = this.dataStatus
-      this.query.applyYear = this.applyYear
+      this.query.punishStatus = this.punishStatus
+      this.query.punishYear = this.punishYear
       this.query.studentCode = this.studentCode
       this.currentPage = 1
       this.refresh()
@@ -122,16 +121,30 @@ export default {
       this.visible2 = true
     },
 
+    // 撤销处分
+    rescind (data) {
+      api.update(data.punishUid, data).then(response => {
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          this.$alert('撤销成功')
+          this.refresh().visible = false
+        }
+        this.loading = false
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
     batchRemove () {
       let ids = ''
       this.selectedRows.forEach(x => {
-        ids += x.scholarshipUid + '-'
+        ids += x.punishUid + '-'
       })
       this.loading = true
-      // 修复只有一页无法刷新
       const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
 
-      scholarshipManageAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
+      api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
@@ -151,15 +164,13 @@ export default {
     //  ---------------- 表格头操作 ----------------
 
     handleView (row) {
-      commonAPI.queryApprovalProcess(row.studentId, row.scholarshipUid).then(response => {
-        this.setting = row
-        this.value = response.data
-        this.visible = true
-      })
+      this.data = row
+      this.visible = true
     },
+
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
-      scholarshipManageAPI.delete(row.scholarshipUid).then(response => {
+      api.delete(row.punishUid).then(response => {
         if (response.code === 1) {
           this.$alert('删除成功')
           this.refresh(auto)
@@ -180,7 +191,7 @@ export default {
     //  ---------------- formatter ----------------
 
     handleSubmit (data, steps) {
-      scholarshipManageAPI.submit(data.scholarshipUid, steps).then(response => {
+      api.submit(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
           this.$alert('保存成功')
           this.refresh().visible = false
@@ -206,10 +217,8 @@ export default {
     ZjyTable,
     ZjyPagination,
 
-    ZjyProcess,
     ZjyForm,
-
-    Scholarship
+    Punish
   },
 
   watch: {
@@ -220,7 +229,7 @@ export default {
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
-        scholarshipManageAPI.queryForList(this.query).then(response => {
+        api.queryForList(this.query).then(response => {
           if (response.code !== 1) {
             alert(response.message)
           } else {
@@ -233,6 +242,10 @@ export default {
           this.loading = false
         })
       }
+    },
+
+    visible2 (val) {
+      if (!val) this.data = {}
     }
   }
 }

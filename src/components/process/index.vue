@@ -7,7 +7,8 @@
       <p v-if="!hasStep"> {{ $t('zjy.process.none') }}</p>
       <div class="zjy-steps" v-else>
         <zjy-steps :active="step" align-center :space="space">
-          <zjy-step :title="$t('zjy.process.start')" :description="'(' + data.studentName + ')'">
+          <!-- 新添加teacherName 有可能是来自教师的申请 -->
+          <zjy-step :title="$t('zjy.process.start')" :description="'(' + (data.studentName ? data.studentName : data.teacherName) + ')'">
           </zjy-step>
           <zjy-step v-for="(item,index) in steps" :key="item.approvalStep" :title="item.postName" :custom="item">
             <div slot="description">
@@ -55,7 +56,7 @@
       </div>
     </template>
 
-    <div class="zjy-footer" v-if="!isFinished">
+    <div class="zjy-footer" v-if="!isFinished && hasStep">
       <template v-if="!isApprovered">
         <zjy-button type="plain" @click="no">拒绝</zjy-button>
         <zjy-button type="primary" @click="yes">同意</zjy-button>

@@ -1,4 +1,7 @@
-import { dateFormat } from '@/utils'
+
+const dateFormat = (cellValue) => {
+  return _dateFormat(cellValue)
+}
 
 const statusFormat = (cellValue) => {
   return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
@@ -7,41 +10,12 @@ const statusFormat = (cellValue) => {
 export default {
   query: {
     offset: 0,
-    limit: 10,
-    dataStatus: '',
-    applyYear: '',
-    studentCode: ''
+    limit: 10
   },
-  optionsYears: [
-    {
-      label: '2017年',
-      value: 2017
-    },
-    {
-      label: '2018年',
-      value: 2018
-    }
-  ],
-  optionsStatus: [
-    {
-      label: '待审批',
-      value: 0
-    }, {
-      label: '已通过',
-      value: 1
-    }, {
-      label: '已拒绝',
-      value: 2
-
-    }, {
-      label: '审批中',
-      value: 3
-    }
-  ],
   columns: [
     {
       index: true,
-      select: true
+      indexWidth: 50
     }, {
       label: '学号',
       prop: 'studentNo',
@@ -55,13 +29,13 @@ export default {
     }, {
       label: '申请日期',
       prop: 'applyDate',
-      formatter: dateFormat
+      formatter: this.dateFormat
     }, {
       label: '申请年份',
       prop: 'applyYear'
     }, {
-      label: '荣誉称号名称',
-      prop: 'honoraryName'
+      label: '假期名称',
+      prop: 'holidayName'
     }, {
       label: '电话',
       prop: 'phone'
@@ -69,7 +43,7 @@ export default {
     }, {
       label: '状态',
       prop: 'dataStatus',
-      formatter: statusFormat
+      formatter: this.statusFormat
     }, {
       label: '操作',
       width: '200',
@@ -77,11 +51,6 @@ export default {
         {
           label: '查看',
           cmd: 'view'
-        },
-        {
-          label: '删除',
-          render: (row) => row.dataStatus === '1' || row.dataStatus === '2',
-          cmd: 'delete'
         }
       ]
     }

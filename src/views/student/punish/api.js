@@ -3,13 +3,12 @@ import { selfMerge } from '@/utils'
 
 export default {
   queryForList (query) {
-    return ajax.get('/manage/student/swmsStayholidays', {
+    return ajax.get('/manage/punish/student', {
       params: query,
       transformResponse: data => {
         const json = JSON.parse(data)
         if (json.code !== 1) return json
 
-        const code = json.code
         const total = json.data.total
         let rows = []
 
@@ -19,7 +18,6 @@ export default {
           rows.push(row)
         }
         return {
-          code,
           total,
           rows
         }
@@ -28,6 +26,6 @@ export default {
   },
 
   create (arg) {
-    return ajax.post('manage/student/swmsStayholiday', arg)
+    return ajax.post('/manage/punish/student', arg)
   }
 }

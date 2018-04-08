@@ -127,14 +127,8 @@ export default {
     }
   },
 
-  filters: {
-    test (val) {
-      return 'he'
-    }
-  },
   props: {
     formData: Object,
-    type: Number,
     visible: Boolean
   },
   components: {

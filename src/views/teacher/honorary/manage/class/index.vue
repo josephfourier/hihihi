@@ -2,33 +2,41 @@
   <div class="zjy-tabs">
     <el-tabs type="border-card" v-model="current" @tab-click="tabClick">
       <el-tab-pane label="荣誉称号管理" name="manage">
-        <honoraries-manage class="zjy-tab__item"></honoraries-manage>
+        <honoraries-manage class="zjy-tab__item" v-if="active.manage"></honoraries-manage>
       </el-tab-pane>
       <el-tab-pane label="班级荣誉称号" name="clz">
-        <my-honoraries class="zjy-tab__item"></my-honoraries>
+        <my-honoraries class="zjy-tab__item" v-if="active.clz"></my-honoraries>
       </el-tab-pane>
       <el-tab-pane label="全部荣誉称号" name="all">
-        <all-honoraries class="zjy-tab__item"></all-honoraries>
+        <all-honoraries class="zjy-tab__item" v-if="active.all"></all-honoraries>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
 import AllHonoraries from './AllHonoraries'
 import MyHonoraries from './MyHonoraries'
 import HonorariesManage from './HonorariesManage'
-var bus = new Vue()
 
 export default {
   data () {
     return {
-      current: 'manage'
+      current: 'manage',
+      active: {
+        'manage': true,
+        'clz': false,
+        'all': false
+      }
     }
   },
   methods: {
     tabClick (tab, event) {
+      // 每次打开均刷新
+      for (let key in this.active) {
+        this.active[key] = false
+      }
+      this.active[tab.name] = true
     }
   },
   components: {

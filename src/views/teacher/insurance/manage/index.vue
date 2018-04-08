@@ -2,7 +2,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="保单状态" :options="optionsStauts" :value.sync="dataStatus"></search-select>
+      <search-select label="保单状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
       <search-select label="申请年份" :options="optionsYear" :value.sync="applyYear"></search-select>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
@@ -111,7 +111,7 @@ export default {
         }
       ],
 
-      optionsStauts: [
+      optionsStatus: [
         {
           label: '待审批',
           value: 0

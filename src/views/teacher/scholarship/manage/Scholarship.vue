@@ -1,44 +1,12 @@
 <template>
   <div class="zjy-form">
-    <el-form :model="formData" :rules="rules" ref="formData" label-width="80px" v-loading="loading">
-      <el-form-item label="投保年级" prop="enterYear" class="inline">
-        <el-select v-model="formData.enterYear">
-          <el-option
-            v-for="item in optionsYear"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="投保院系" prop="factoryCode" class="inline pull-right">
-        <el-select v-model="formData.factoryCode">
-          <el-option
-            v-for="item in facultyList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="投保专业" prop="specialtyCode" class="inline">
-        <el-select v-model="formData.specialtyCode">
+    <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
 
+      <el-form-item label="奖学金名称" prop="scholarshipsettingUid" class="inline">
+
+        <el-select v-model="formData.scholarshipsettingUid" @change="handleChange">
           <el-option
-            v-for="item in specialtyList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="险种名称" prop="inssettingUid" class="inline pull-right">
-        <el-select v-model="formData.inssettingUid">
-          <el-option
-            v-for="item in insuranceSettingList"
+            v-for="item in settingList"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -47,11 +15,41 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="强制投保" prop="forceInsure">
-        <el-radio-group v-model="formData.forceInsure">
-          <el-radio :label="1">是</el-radio>
-          <el-radio :label="0">否</el-radio>
-        </el-radio-group>
+      <el-form-item label="发放方式" prop="studentCode" class="inline pull-right">
+        <el-input v-model="formData.studentCode" disabled></el-input>
+      </el-form-item>
+
+      <el-form-item label="奖学金级别:" prop="studentName" class="inline">
+        <el-input v-model="formData.studentName" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="金额:" prop="className" class="inline pull-right">
+        <el-input v-model="formData.className" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="学号:" prop="facultyName" class="inline">
+        <el-input v-model="formData.facultyName"></el-input>
+        <a href="javascript:;" class="search-button" @click="query">搜索</a>
+      </el-form-item>
+
+      <el-form-item label="申请时间" prop="punishDate" class="inline pull-right">
+        <el-date-picker type="date" placeholder="选择日期" v-model="formData.punishDate" style="width: 100%"></el-date-picker>
+      </el-form-item>
+
+      <el-form-item label="入学年份" prop="enterYear" class="inline">
+        <el-input v-model="formData.facultyName" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="院系" prop="factoryCode" class="inline pull-right">
+        <el-input v-model="formData.facultyName" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="专业" prop="specialtyCode" class="inline">
+        <el-input v-model="formData.facultyName" disabled></el-input>
+      </el-form-item>
+
+      <el-form-item label="政治面貌" prop="specialtyCode" class="inline pull-right">
+        <el-input v-model="formData.facultyName" disabled></el-input>
+      </el-form-item>
+
+      <el-form-item label="申请原因" prop="applyReson">
+        <el-input type="textarea" v-model="formData.applyReson"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -63,25 +61,55 @@
 </template>
 
 <script>
-import commonAPI from '@/api/common'
-import insuranceSettingAPI from '@/api/teacher/insurance/setting'
-import insuranceManageAPI from '@/api/teacher/insurance/manage'
-
-import axios from 'axios'
-
 import ZjyButton from '@/components/button'
+
+import api from './api'
 
 export default {
   data () {
+    var checkStudent = (rule, value, callback) => {
+      if (!value) {
+        this.doQuery = false
+        return callback(new Error('请输入学号'))
+      } else {
+        if (!this.doQuery) return
+        api.queryStudent(value).then(response => {
+          if (response.code !== 1) {
+            callback(new Error('输入学号有误'))
+          } else {
+            this.formData = response.data
+            callback()
+          }
+          this.doQuery = false
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+    }
     return {
-      formData: {
-        enterYear: '',
-        factoryCode: '',
-        specialtyCode: '',
-        inssettingUid: '',
-        forceInsure: ''
+      doQuery: false,
+      settingList: [],
+      student: {},
+      formData: {},
+      rules: {
+        studentCode: [
+          // { required: true, message: '请输入学生学号', trigger: 'blur' },
+          { validator: checkStudent, trigger: 'change' }
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        scholarshipsettingUid: [
+          { required: true, message: '请选择奖学金名称', trigger: 'change' }
+        ],
+
+        punishDate: [
+          // { validator: validateStartDate, trigger: 'blur' },
+          { required: true, message: '请选择处分日期', trigger: 'blur' }
+        ],
+        applyReson: [
+          { required: true, message: '请填写申请原因', trigger: 'blur' }
+        ]
       },
-      optionsYear: [
+      optionsYears: [
         {
           label: '2017级',
           value: 2017
@@ -93,49 +121,44 @@ export default {
       ],
       facultyList: [],
       specialtyList: [],
-      insuranceSettingList: [],
-      rules: {
-        enterYear: [
-          {required: true, message: '请选择投保年级', trigger: 'blur'}
-
-        ],
-        factoryCode: [
-          {required: true, message: '请选择投保院系', trigger: 'blur'}
-        ],
-        specialtyCode: [
-          {required: true, message: '请选择投保专业', trigger: 'blur'}
-        ],
-        inssettingUid: [
-          {required: true, message: '请选择险种名称', trigger: 'blur'}
-        ],
-        forceInsure: [
-          {required: true, message: '请选择投保方式', trigger: 'blur'}
-        ]
-      },
-
-      loading: false
+      politicsList: []
     }
   },
 
-  props: {
-    visible: Boolean
+  // 带分页先取1000
+  created () {
+    api.querySettingList().then(response => {
+      if (response.code !== 1) {
+        this.$alert('获取奖学金设置失败')
+      } else {
+        this.settingList = response.data.rows
+      }
+    })
+    // api.queryPunishSettingList({
+    //   offset: 0,
+    //   limit: 1000
+    // }).then(response => {
+    //   console.log(response)
+    //   this.options = response.rows.map(i => {
+    //     return {
+    //       label: i.punishName,
+    //       value: i.punishsettingUid
+    //     }
+    //   })
+    // })
   },
 
   methods: {
+    query () {
+      this.doQuery = true
+      this.$refs.formData.validateField('studentCode')
+    },
     submitForm (formName) {
+      this.doQuery = true
+      this.$refs.formData.validateField('studentCode')
       this.$refs[formName].validate(valid => {
         if (valid) {
-          insuranceManageAPI.batch(this.formData).then(response => {
-            console.log(response)
-            if (response.code !== 1) {
-              this.$alert(response.message)
-            } else {
-              this.$alert('投保成功')
-              this.$emit('closed')
-            }
-          }).catch(error => {
-            console.log(error)
-          })
+          this.$emit('submit', this.formData)
         } else {
           return false
         }
@@ -143,72 +166,26 @@ export default {
     }
   },
   computed: {
-    factoryCode () {
-      return this.formData.factoryCode
-    }
+  },
+  props: {
+    visible: Boolean
   },
   components: {
     ZjyButton
   },
-
-  created () {
-    this.loading = true
-    axios.all([commonAPI.queryFacultyList(), insuranceSettingAPI.queryForList()])
-      .then(axios.spread((r1, r2) => {
-        console.log(r1)
-        console.log(r2)
-        if (r1.code !== 1 || r2.code !== 1) {
-          this.$alert('获取数据失败')
-        } else {
-          this.facultyList = r1.data.map(x => {
-            return {
-              label: x.facultyName,
-              value: x.facultyCode
-            }
-          })
-
-          this.insuranceSettingList = r2.rows.map(x => {
-            return {
-              label: x.insuranceName,
-              value: x.inssettingUid
-            }
-          })
-        }
-        this.loading = false
-      })).catch(error => {
-        console.log(error)
-      })
-  },
-
   watch: {
-    factoryCode (val) {
-      if (val) {
-        this.formData.specialtyCode = ''
-        commonAPI.querySpecialtyByFaculty(val).then(response => {
-          if (response.code !== 1) {
-            this.specialtyList = []
-          } else {
-            this.specialtyList = response.data.map(x => {
-              return {
-                label: x.specialtyName,
-                value: x.specialtyNo
-              }
-            })
-          }
-        }).catch(error => {
-          console.log(error)
-        })
-      }
-    }
-  }
 
+  }
 }
 </script>
 
-<style lang="scss" scoped>
-  .inline {
-    .el-input {
-      width: 250px;
-    }
+<style scoped>
+  .el-input,.el-select {
+    width: 215px;
+  }
+  .search-button {
+    position: absolute;
+    right: -30px;
+    top: 0;
   }
 </style>

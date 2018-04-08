@@ -4,7 +4,7 @@
       <el-form-item label="投保年级" prop="enterYear" class="inline">
         <el-select v-model="formData.enterYear">
           <el-option
-            v-for="item in optionsYear"
+            v-for="item in optionsYears"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -81,7 +81,7 @@ export default {
         inssettingUid: '',
         forceInsure: ''
       },
-      optionsYear: [
+      optionsYears: [
         {
           label: '2017级',
           value: 2017

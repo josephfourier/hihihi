@@ -82,14 +82,14 @@ import ZjyForm from './form'
 import Scholarship from './Scholarship'
 
 import { _refresh } from '@/utils'
-import common from './common'
+import properties from './properties'
 export default {
   name: 'index',
   data () {
     return {
       list: [],
       setting: '',
-      query: common.query,
+      query: properties.query,
       currentPage: 1,
       dataStatus: '',
       applyYear: '',
@@ -99,9 +99,9 @@ export default {
       loading: false,
       visible: false,
       visible2: false,
-      optionsYears: common.optionsYear,
-      optionsStatus: common.optionsStatus,
-      columns: common.columns
+      optionsYears: properties.optionsYear,
+      optionsStatus: properties.optionsStatus,
+      columns: properties.columns
     // ---------------- 表格 ----------------
     }
   },

@@ -7,23 +7,23 @@
         <el-select v-model="formData.scholarshipsettingUid" @change="handleChange">
           <el-option
             v-for="item in settingList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.scholarshipName"
+            :label="item.scholarshipName"
+            :value="item.scholarshipsettingUid"
           >
           </el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="发放方式" prop="studentCode" class="inline pull-right">
-        <el-input v-model="formData.studentCode" disabled></el-input>
+      <el-form-item label="发放方式" class="inline pull-right">
+        <el-input v-model="setting.grantWay" disabled></el-input>
       </el-form-item>
 
-      <el-form-item label="奖学金级别:" prop="studentName" class="inline">
-        <el-input v-model="formData.studentName" disabled></el-input>
+      <el-form-item label="奖学金级别:" class="inline">
+        <el-input v-model="setting.scholarshipLevel" disabled></el-input>
       </el-form-item>
-      <el-form-item label="金额:" prop="className" class="inline pull-right">
-        <el-input v-model="formData.className" disabled></el-input>
+      <el-form-item label="金额:" class="inline pull-right">
+        <el-input v-model="setting.money" disabled></el-input>
       </el-form-item>
       <el-form-item label="学号:" prop="facultyName" class="inline">
         <el-input v-model="formData.facultyName"></el-input>
@@ -89,6 +89,8 @@ export default {
     return {
       doQuery: false,
       settingList: [],
+      // 选中的设置
+      setting: '',
       student: {},
       formData: {},
       rules: {
@@ -132,23 +134,16 @@ export default {
         this.$alert('获取奖学金设置失败')
       } else {
         this.settingList = response.data.rows
+        console.log(this.settingList)
       }
     })
-    // api.queryPunishSettingList({
-    //   offset: 0,
-    //   limit: 1000
-    // }).then(response => {
-    //   console.log(response)
-    //   this.options = response.rows.map(i => {
-    //     return {
-    //       label: i.punishName,
-    //       value: i.punishsettingUid
-    //     }
-    //   })
-    // })
   },
 
   methods: {
+    handleChange (val) {
+      this.setting = this.settingList.find(i => i.scholarshipsettingUid === val)
+    },
+
     query () {
       this.doQuery = true
       this.$refs.formData.validateField('studentCode')

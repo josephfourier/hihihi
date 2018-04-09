@@ -49,6 +49,15 @@
           </template>
         </zjy-process>
       </el-dialog>
+
+      <el-dialog title="个人荣誉称号" :visible.sync="visible2" width="800px">
+        <honorary
+          v-if="visible2"
+          :visible.sync="visible2"
+          @submit="handleCreate"
+        >
+        </honorary>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -70,7 +79,9 @@ import properties from './proerties'
 import {_refresh} from '@/utils'
 
 import stuAPI from '@/api/teacher/honorary/stu'
+import api from './api'
 import commonAPI from '@/api/common'
+import Honorary from './Honorary'
 
 export default {
   name: 'index',
@@ -82,6 +93,7 @@ export default {
       query: properties.query,
 
       visible: false,
+      visible2: false,
 
       list: [],
       currentPage: 1,
@@ -115,26 +127,40 @@ export default {
     },
 
     batchRemove () {
-      let ids = ''
-      this.selectedRows.forEach(x => {
-        ids += x.stuhonoraryUid + '-'
-      })
+
+      let stuhonoraryUids = []
+      this.selectedRows.forEach(x => stuhonoraryUid.push(x.stuhonoraryUid))
 
       this.loading = true
       const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
-      stuAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
+
+      api.batchRemove(stuhonoraryUids).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
+          this.$alert('删除成功')
           this.refresh(auto)
         }
         this.loading = false
       }).catch(error => {
         console.log(error)
+        this.loading = false
       })
     },
 
-    create () {},
+    create () {
+      this.visible2 = true
+    },
+    handleCreate (id, arg) {
+      api.create(id, arg).then(response => {
+        if (response.code === 1) {
+          this.$alert('新增成功')
+          this.refresh().visible2 = false
+        } else {
+          this.$alert(response.message)
+        }
+      })
+    },
 
     view (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.stuhonoraryUid).then(response => {
@@ -192,7 +218,8 @@ export default {
     ZjyPagination,
     ZjyProcess,
 
-    ZjyForm
+    ZjyForm,
+    Honorary
   },
 
   watch: {

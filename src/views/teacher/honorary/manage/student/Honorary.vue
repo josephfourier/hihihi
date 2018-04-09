@@ -1,12 +1,19 @@
+<!-- 教师新增学生荣誉称号 -->
 <template>
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
 
-      <el-form-item label="奖学金名称" prop="scholarshipsettingUid" class="inline">
+      <el-form-item label="荣誉称号类别" class="inline">
+        <el-select v-model="type" disabled>
+          <el-option label="个人" value="3">
+          </el-option>
+        </el-select>
+      </el-form-item>
 
-        <el-select v-model="formData.scholarshipsettingUid" @change="handleChange">
+      <el-form-item label="荣誉称号名称" prop="honorarysettingUid" class="inline pull-right">
+        <el-select v-model="formData.honorarysettingUid">
           <el-option
-            v-for="item in settingList"
+            v-for="item in nameList"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -15,17 +22,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="发放方式" class="inline pull-right">
-        <el-input :value="setting.grantWay | scholarshipGrantWayFormat" disabled></el-input>
-      </el-form-item>
-
-      <el-form-item label="奖学金级别:" class="inline">
-        <el-input v-model="setting.scholarshipLevel" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="金额:" class="inline pull-right">
-        <el-input v-model="setting.money" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="学号:" prop="studentCode" class="inline">
+      <el-form-item label="申请人学号:" prop="studentCode" class="inline">
         <el-input v-model="formData.studentCode"></el-input>
         <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>
@@ -68,16 +65,17 @@ import api from './api'
 export default {
   data () {
     const checkStudent = (rule, value, callback) => {
-      if (!this.formData.scholarshipsettingUid) {
+      if (!this.formData.honorarysettingUid) {
         this.doQuery = false
-        return callback(new Error('请先选择奖学金名称'))
+        return callback(new Error('请先选择荣誉称号名称'))
       }
       if (!value) {
         this.doQuery = false
-        return callback(new Error('请输入学号'))
+        return callback(new Error('请输入学生学号'))
       } else {
         if (!this.doQuery) return
-        api.queryStudent(value, this.formData.scholarshipsettingUid).then(response => {
+        // 查询是否已经申请过该类别的奖学金
+        api.queryStudent(value, this.formData.honorarysettingUid).then(response => {
           if (response.code !== 1) {
             callback(new Error(response.message))
           } else {
@@ -90,21 +88,21 @@ export default {
         })
       }
     }
+
     return {
       doQuery: false,
-      settingList: [],
-      // 选中的设置
-      setting: '',
+
+      nameList: [],
       student: {},
+      type: '个人',
       formData: {},
       rules: {
         studentCode: [
           { required: true, message: '请输入学生学号', trigger: 'blur' },
           { validator: checkStudent, trigger: 'change' }
-          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
-        scholarshipsettingUid: [
-          { required: true, message: '请选择奖学金名称', trigger: 'change' }
+        honorarysettingUid: [
+          { required: true, message: '请选择荣誉称号名称', trigger: 'change' }
         ],
 
         applyDate: [
@@ -114,44 +112,22 @@ export default {
         applyReson: [
           { required: true, message: '请填写申请原因', trigger: 'blur' }
         ]
-      },
-      optionsYears: [
-        {
-          label: '2017级',
-          value: 2017
-        },
-        {
-          label: '2018级',
-          value: 2018
-        }
-      ]
+      }
     }
   },
 
   created () {
-    api.querySettingList().then(response => {
-      if (response.code !== 1) {
-        this.$alert('获取奖学金设置失败')
-      } else {
-        console.log(response.data.rows)
-        this.settingList = response.data.rows.map(i => {
-          return {
-            label: i.scholarshipName,
-            value: i.scholarshipsettingUid,
-            grantWay: i.grantWay,
-            money: i.money,
-            scholarshipLevel: i.scholarshipLevel
-          }
-        })
-        console.log(this.settingList)
-      }
+    api.queryNameByTyep(3).then(response => {
+      this.nameList = response.data.map(i => {
+        return {
+          label: i.honoraryName,
+          value: i.honorarysettingUid
+        }
+      })
     })
   },
 
   methods: {
-    handleChange (val) {
-      this.setting = this.settingList.find(i => i.value === val)
-    },
 
     query () {
       this.doQuery = true
@@ -159,9 +135,9 @@ export default {
     },
 
     submitForm (formName) {
-      if (!this.formData.scholarshipsettingUid) {
+      if (!this.formData.honorarysettingUid) {
         this.doQuery = false
-        this.$refs.formData.validateField('scholarshipsettingUid')
+        this.$refs.formData.validateField('honorarysettingUid')
         return
       }
 
@@ -169,7 +145,7 @@ export default {
 
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$emit('submit', this.formData.scholarshipsettingUid, {
+          this.$emit('submit', this.formData.honorarysettingUid, {
             studentId: this.student.studentId,
             applyReson: this.formData.applyReson
           })
@@ -194,7 +170,5 @@ export default {
 </script>
 
 <style scoped>
-  .el-input,.el-select {
-    width: 215px;
-  }
+
 </style>

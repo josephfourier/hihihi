@@ -101,6 +101,10 @@ export default {
     return ajax.get('/manage/common/datascope/class')
   },
 
+  queryMyClassListNotApplied (uid) {
+    return ajax.get('/manage/common/datascope/class/' + uid)
+  },
+
   initApproval (permissionId, honoraryType, dataId) {
     return ajax.get('/manage/swmsApproval/initSwmsApproval/' +  permissionId + '/' + honoraryType + '/' + dataId)
   },

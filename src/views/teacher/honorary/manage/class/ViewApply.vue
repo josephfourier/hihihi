@@ -60,7 +60,7 @@ export default {
   },
 
   created () {
-    commonAPI.queryMyClassList().then(response => {
+    commonAPI.queryMyClassListNotApplied(this.data.honorarysettingUid).then(response => {
       this.clzs = response.data
     }).catch(error => {
       console.log(error)
@@ -77,7 +77,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>

@@ -14,7 +14,7 @@
         <td>院系: {{ data.facultyName }}</td>
       </tr>
       <tr>
-        <td>政治面貌: {{ data.politics }}</td>
+        <td>政治面貌: {{ data.politics | politicsFormat }}</td>
         <td>专业: {{ data.specialtyName }}</td>
       </tr>
     </table>

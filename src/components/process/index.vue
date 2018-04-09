@@ -74,8 +74,8 @@
     <el-dialog class="inner" width="30%" title="请输入拒绝原因" :visible.sync="innerVisible" append-to-body>
       <zjy-input type="textarea" v-model="reason"></zjy-input>
       <div class="zjy-footer">
-        <zjy-button type="plain" @click="innerNo">拒 绝</zjy-button>
-        <zjy-button type="primary" @click="innerYes">同 意</zjy-button>
+        <zjy-button type="plain" @click="innerNo">取消</zjy-button>
+        <zjy-button type="primary" @click="innerYes">确定</zjy-button>
       </div>
     </el-dialog>
     <p v-if="reason && isFinished" class="refused">拒绝原因: {{ reason }}</p>

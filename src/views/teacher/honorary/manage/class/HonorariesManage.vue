@@ -50,11 +50,12 @@
       </el-dialog>
 
       <el-dialog title="新增班级荣誉称号" :visible.sync="visible2" width="800px">
-        <scholarship
+        <honorary
           v-if="visible2"
-          :visible.sync="visible"
+          :visible.sync="visible2"
+          @submit="handleCreate"
         >
-        </scholarship>
+        </honorary>
       </el-dialog>
     </div>
 
@@ -74,10 +75,11 @@ import OperatorItem from '@/components/table-operator/operator-item'
 
 import clzAPI from '@/api/teacher/honorary/clz'
 import commonAPI from '@/api/common'
+import api from './api'
 
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
-// import Scholarship from './Scholarship'
+import Honorary from './Honorary'
 
 import { _refresh } from '@/utils'
 import properties from './properties'
@@ -114,6 +116,19 @@ export default {
 
     create () {
       this.visible2 = true
+    },
+
+    handleCreate (uid, id, arg) {
+      api.create(uid, id, arg).then(response => {
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          this.$alert('新增成功')
+          this.refresh().visible2 = false
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
 
     batchRemove () {
@@ -205,7 +220,8 @@ export default {
     ZjyPagination,
 
     ZjyProcess,
-    ZjyForm
+    ZjyForm,
+    Honorary
     //
     // Scholarship
   },

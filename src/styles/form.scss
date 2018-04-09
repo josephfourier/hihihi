@@ -36,13 +36,7 @@
     color: #333333;
     margin-bottom: 20px;
   }
-  // #36c6d3
-  // .el-form-item.is-validating .el-input__inner,
-  // .el-form-item.is-validating .el-input__inner:focus,
-  // .el-form-item.is-validating .el-textarea__inner,
-  // .el-form-item.is-validating .el-textarea__inner:focus {
-  //   border-color: #67c23a;
-  //  }
+
   .search-input {
   .el-input-group__append, .el-input-group__prepend {
     border-radius: 0;
@@ -64,7 +58,6 @@
   }
   .el-input__inner {
     border-right:none;
-
   }
   &.is-error {
     .el-input__inner {
@@ -78,11 +71,23 @@
   }
 
 }
-  .el-select {
-    width: 185px;
-  }
+
   .el-select .el-input .el-input__inner {
     height: 40px;
     line-height: 40px;
+  }
+
+  .search-button {
+
+
+    background: #37c6d4 url(../assets/images/zjy-icon-search.png) 15px 10px no-repeat;
+    width: 46px;
+    height: 40px;
+    position: absolute;
+    right: 0;
+    top: 0
+  }
+  .el-input,.el-select {
+    width: 215px;
   }
 }

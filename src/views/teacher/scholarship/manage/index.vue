@@ -1,7 +1,7 @@
 <template>
 <div class="zjy-app">
   <zjy-table-search>
-    <search-select label="保单状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
+    <search-select label="审批状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
     <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
     <search-input label="学号" :value.sync="studentCode"></search-input>
     <search-button @query="searchFilter"></search-button>
@@ -54,7 +54,8 @@
     <el-dialog title="新增奖学金" :visible.sync="visible2" width="800px">
       <scholarship
         v-if="visible2"
-        :visible.sync="visible"
+        :visible.sync="visible2"
+        @submit="handleCreate"
       >
       </scholarship>
     </el-dialog>
@@ -76,6 +77,7 @@ import OperatorItem from '@/components/table-operator/operator-item'
 
 import scholarshipManageAPI from '@/api/teacher/scholarship/manage'
 import commonAPI from '@/api/common'
+import api from './api'
 
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
@@ -121,17 +123,28 @@ export default {
     create () {
       this.visible2 = true
     },
+    // 教师新增学生奖学金
+    handleCreate (id, arg) {
+      api.create(id, arg).then(response => {
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          this.$alert('新增成功')
+          this.refresh().visible2 = false
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
 
     batchRemove () {
-      let ids = ''
-      this.selectedRows.forEach(x => {
-        ids += x.scholarshipUid + '-'
-      })
+      let scholarshipUids = []
+      this.selectedRows.forEach(x => scholarshipUids.push(x.scholarshipUid))
+
       this.loading = true
-      // 修复只有一页无法刷新
       const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
 
-      scholarshipManageAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
+      api.batchRemove(scholarshipUids).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
@@ -141,6 +154,7 @@ export default {
         this.loading = false
       }).catch(error => {
         console.log(error)
+        this.loading = false
       })
     },
 

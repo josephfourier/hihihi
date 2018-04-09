@@ -3,7 +3,7 @@
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
       <el-form-item label="学号" prop="studentCode" class="inline">
         <el-input v-model="formData.studentCode"></el-input>
-        <a href="javascript:;" class="search-button" @click="query">搜索</a>
+        <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>
 
       <el-form-item label="学生姓名:" prop="studentName" class="inline pull-right">
@@ -137,11 +137,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.search-button {
-  position: absolute;
-  right: -30px;
-  top: 0;
-}
-</style>

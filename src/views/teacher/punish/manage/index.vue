@@ -11,7 +11,7 @@
 
   <zjy-table-operator>
     <operator-item @click="create" clz="create">新增</operator-item>
-    <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+    <!--<operator-item @click="batchRemove" clz="delete">批量删除</operator-item>-->
     <operator-item @click="_export" clz="export">导出</operator-item>
   </zjy-table-operator>
 
@@ -100,7 +100,7 @@ export default {
       optionsYears: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
       columns: properties.columns
-    // ---------------- 表格 ----------------
+      // ---------------- 表格 ----------------
     }
   },
   methods: {
@@ -123,17 +123,20 @@ export default {
 
     // 撤销处分
     rescind (data) {
-      api.update(data.punishUid, data).then(response => {
-        if (response.code !== 1) {
-          this.$alert(response.message)
-        } else {
-          this.$alert('撤销成功')
-          this.refresh().visible = false
-        }
-        this.loading = false
-      }).catch(error => {
-        console.log(error)
-      })
+      api
+        .update(data.punishUid, data)
+        .then(response => {
+          if (response.code !== 1) {
+            this.$alert(response.message)
+          } else {
+            this.$alert('撤销成功')
+            this.refresh().visible = false
+          }
+          this.loading = false
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
 
     batchRemove () {
@@ -142,7 +145,8 @@ export default {
         ids += x.punishUid + '-'
       })
       this.loading = true
-      const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
+      const auto =
+        this.selectedRows.length === this.list.length && this.list.length !== 1
 
       api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
@@ -170,16 +174,19 @@ export default {
 
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
-      api.delete(row.punishUid).then(response => {
-        if (response.code === 1) {
-          this.$alert('删除成功')
-          this.refresh(auto)
-        } else {
-          this.$alert(response.message)
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+      api
+        .delete(row.punishUid)
+        .then(response => {
+          if (response.code === 1) {
+            this.$alert('删除成功')
+            this.refresh(auto)
+          } else {
+            this.$alert(response.message)
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     //  ---------------- 表格行操作 ----------------
 
@@ -191,16 +198,19 @@ export default {
     //  ---------------- formatter ----------------
 
     handleSubmit (data, steps) {
-      api.submit(data.scholarshipUid, steps).then(response => {
-        if (response.code === 1) {
-          this.$alert('保存成功')
-          this.refresh().visible = false
-        } else {
-          this.$alert('保存失败')
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+      api
+        .submit(data.scholarshipUid, steps)
+        .then(response => {
+          if (response.code === 1) {
+            this.$alert('保存成功')
+            this.refresh().visible = false
+          } else {
+            this.$alert('保存失败')
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
     //   ---------------- 审批操作 ----------------
   },
@@ -229,18 +239,21 @@ export default {
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
-        api.queryForList(this.query).then(response => {
-          if (response.code !== 1) {
-            alert(response.message)
-          } else {
-            this.list = response.rows
-            this.total = response.total
-          }
-          this.loading = false
-        }).catch(error => {
-          console.log(error)
-          this.loading = false
-        })
+        api
+          .queryForList(this.query)
+          .then(response => {
+            if (response.code !== 1) {
+              alert(response.message)
+            } else {
+              this.list = response.rows
+              this.total = response.total
+            }
+            this.loading = false
+          })
+          .catch(error => {
+            console.log(error)
+            this.loading = false
+          })
       }
     },
 
@@ -252,5 +265,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

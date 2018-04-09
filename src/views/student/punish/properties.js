@@ -1,11 +1,4 @@
-
-const dateFormat = (cellValue) => {
-  return _dateFormat(cellValue)
-}
-
-const statusFormat = (cellValue) => {
-  return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
-}
+import { dateFormat } from '@/utils'
 
 export default {
   query: {
@@ -27,23 +20,19 @@ export default {
       label: '院系',
       prop: 'facultyName'
     }, {
-      label: '申请日期',
-      prop: 'applyDate',
-      formatter: this.dateFormat
+      label: '处分日期',
+      prop: 'punishDate',
+      formatter: dateFormat
+    },{
+      label: '年级',
+      prop: 'year'
     }, {
-      label: '申请年份',
-      prop: 'applyYear'
-    }, {
-      label: '假期名称',
-      prop: 'holidayName'
-    }, {
-      label: '电话',
-      prop: 'phone'
+      label: '处分类型',
+      prop: 'punishName'
 
     }, {
       label: '状态',
-      prop: 'dataStatus',
-      formatter: this.statusFormat
+      prop: 'punishStatusName'
     }, {
       label: '操作',
       width: '200',

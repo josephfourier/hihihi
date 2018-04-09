@@ -18,7 +18,6 @@
         :currentPage="currentPage"
         :total="total"
         @current-change="pageChanged"
-        :pageSize="2"
       >
       </zjy-pagination>
     </div>
@@ -42,15 +41,13 @@ import ZjyPagination from '@/components/pagination'
 import ZjyList from '@/components/list'
 import ZjyTable from '@/components/table'
 
+import properties from './properties'
+
 export default {
   data () {
     return {
       list: [],
-      query: {
-        offset: 0,
-        limit: 2,
-        teacherName: ''
-      },
+      query: properties.query,
       teacherName: '',
       loading: false,
       currentPage: 1,
@@ -61,40 +58,7 @@ export default {
       status: '',
       message: '',
 
-      columns: [
-        {
-          index: true,
-          select: false
-        },
-        {
-          label: '账号',
-          prop: 'username',
-          width: '300'
-        },
-        {
-          label: '用户姓名',
-          prop: 'teacherName',
-          width: '200'
-        },
-        {
-          label: '部门',
-          prop: 'departmentName'
-        },
-        {
-          label: '职务',
-          prop: 'postName'
-        },
-        {
-          label: '操作',
-          width: '200',
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            }
-          ]
-        }
-      ]
+      columns: properties.columns
     }
   },
 
@@ -117,17 +81,9 @@ export default {
         this.loading = false
       })
     },
-    //
-    // refresh () {
-    //   const old = this.currentPage
-    //   this.currentPage = -1
-    //   setTimeout(_ => {
-    //     this.currentPage = old
-    //   }, +this.$t('zjy.refresh.delay'))
-    // },
 
     handleView (row) {
-      this.queryScope(row.teacherLevel, row.departmentId).then(_ => {
+      this.queryScope(row.teacherLevel, row.departmentId).then(() => {
         this.visible = true
       })
     },

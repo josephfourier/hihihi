@@ -34,6 +34,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .detail {
+    padding: 20px;
+    background-color: #f5f5f5;
+    .title {
+      color: #333333;
+      font-weight: bold;
+    }
+    margin-bottom: 15px;
+  }
   .status {
     margin-bottom: 10px;
   }

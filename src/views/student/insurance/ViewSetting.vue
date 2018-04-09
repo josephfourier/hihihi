@@ -54,15 +54,4 @@ export default {
       margin-bottom: 15px;
     }
   }
-  .status {
-    margin-bottom: 10px;
-  }
-  .status-text {
-    color: #ef7727;
-    font-size: 16px;
-    vertical-align: top;
-    position: relative;
-    top: 6px;
-    left: 2px;
-  }
 </style>

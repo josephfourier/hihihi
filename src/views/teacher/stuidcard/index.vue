@@ -35,7 +35,6 @@
         <zjy-process
           v-if="visible"
           :data="data"
-          :space="120"
           v-model="value"
           :visible.sync="visible"
           @submit="handleSubmit"
@@ -213,8 +212,12 @@ export default {
     _delete (row) {
       this.loading = true
       cardAPI.batchRemove(row.studentId).then(response => {
-        this.loading = false
-        this.refresh()
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          MSG.success('删除成功')
+          this.refresh()
+        }
       }).catch(error => {
         console.log(error)
       })

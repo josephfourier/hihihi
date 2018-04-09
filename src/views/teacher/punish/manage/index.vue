@@ -52,7 +52,7 @@
       <punish
         v-if="visible2"
         :visible.sync="visible2"
-        @submit="rescind"
+        @submit="handleSubmit"
       >
       </punish>
     </el-dialog>
@@ -123,30 +123,24 @@ export default {
 
     // 撤销处分
     rescind (data) {
-      api
-        .update(data.punishUid, data)
-        .then(response => {
-          if (response.code !== 1) {
-            this.$alert(response.message)
-          } else {
-            MSG.success('撤销成功')
-            this.refresh().visible = false
-          }
-          this.loading = false
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      api.update(data.punishUid, data).then(response => {
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          MSG.success('撤销成功')
+          this.refresh().visible = false
+        }
+        this.loading = false
+      }).catch(error => {
+        console.log(error)
+      })
     },
 
     batchRemove () {
       let ids = ''
-      this.selectedRows.forEach(x => {
-        ids += x.punishUid + '-'
-      })
+      this.selectedRows.forEach(x => { ids += x.punishUid + '-' })
       this.loading = true
-      const auto =
-        this.selectedRows.length === this.list.length && this.list.length !== 1
+      const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
 
       api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
@@ -174,19 +168,16 @@ export default {
 
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
-      api
-        .delete(row.punishUid)
-        .then(response => {
-          if (response.code === 1) {
-            MSG.success('删除成功')
-            this.refresh(auto)
-          } else {
-            this.$alert(response.message)
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      api.delete(row.punishUid).then(response => {
+        if (response.code === 1) {
+          MSG.success('删除成功')
+          this.refresh(auto)
+        } else {
+          this.$alert(response.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     //  ---------------- 表格行操作 ----------------
 
@@ -197,20 +188,17 @@ export default {
 
     //  ---------------- formatter ----------------
 
-    handleSubmit (data, steps) {
-      api
-        .submit(data.scholarshipUid, steps)
-        .then(response => {
-          if (response.code === 1) {
-            MSG.success('保存成功')
-            this.refresh().visible = false
-          } else {
-            MSG.success('保存失败')
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    handleSubmit (data) {
+      api.create(data.punishSettingUid, data).then(response => {
+        if (response.code === 1) {
+          MSG.success('新增成功')
+          this.refresh().visible2 = false
+        } else {
+          MSG.success('新增失败')
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
     //   ---------------- 审批操作 ----------------
   },
@@ -239,21 +227,18 @@ export default {
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
-        api
-          .queryForList(this.query)
-          .then(response => {
-            if (response.code !== 1) {
-              alert(response.message)
-            } else {
-              this.list = response.rows
-              this.total = response.total
-            }
-            this.loading = false
-          })
-          .catch(error => {
-            console.log(error)
-            this.loading = false
-          })
+        api.queryForList(this.query).then(response => {
+          if (response.code !== 1) {
+            alert(response.message)
+          } else {
+            this.list = response.rows
+            this.total = response.total
+          }
+          this.loading = false
+        }).catch(error => {
+          console.log(error)
+          this.loading = false
+        })
       }
     },
 

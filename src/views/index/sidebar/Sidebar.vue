@@ -62,7 +62,7 @@ export default {
     },
     single () {
       return this.routes.filter(
-        item => !item.hidden && item.children.length == 1
+        item => !item.hidden && item.children.length === 1
       )
     }
   },
@@ -127,6 +127,9 @@ export default {
 .zjy-icon-basic {
   background: url("./zjy-icon-basic.png") no-repeat 0 0;
 }
+.zjy-icon-rewards {
+  background: url("./zjy-icon-rewards.png") no-repeat 0 0;
+}
 .zjy-icon-fund {
   background: url("./zjy-icon-fund.png") no-repeat 0 0;
 }
@@ -152,6 +155,9 @@ export default {
   }
   .zjy-icon-general {
     background: url("./zjy-icon-general1.png") no-repeat 0 0;
+  }
+  .zjy-icon-rewards {
+    background: url("./zjy-icon-rewards1.png") no-repeat 0 0;
   }
 }
 </style>

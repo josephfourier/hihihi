@@ -13,22 +13,15 @@
       </tr>
     </table>
     <p class="process-title">留校原因</p>
-    <div class="textarea-wrapper">
-      <zjy-input type="textarea" v-model="data.stayReason" disabled></zjy-input>
-    </div>
+    <span>{{ data.stayReason }}</span>
   </div>
 </template>
 
 <script>
-import ZjyInput from '@/components/input'
-
 export default {
   name: 'form-view',
   props: {
     data: Object
-  },
-  components: {
-    ZjyInput
   }
 }
 </script>

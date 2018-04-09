@@ -31,8 +31,8 @@ export default {
     return ajax.get('/manage/punish/' + id)
   },
 
-  create (arg) {
-
+  create (id, arg) {
+    return ajax.post('/manage/punish/teacher/' + id, arg)
   },
 
   update (id, arg) {

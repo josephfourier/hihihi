@@ -1,4 +1,4 @@
-<!-- 学生假期留校管理 -->
+<!-- 学生违纪处分 -->
 <template>
   <div class="zjy-app">
 
@@ -16,22 +16,8 @@
     </div>
 
     <el-dialog title="违纪处分" :visible.sync="visible" width="800px">
-      <process-view
-        v-if="visible"
-        :data="data"
-        v-model="value"
-        :visible.sync="visible"
-        @submit="handleSubmit"
-      >
-        <template slot-scope="props" slot="header">
-          <zjy-form
-            :data="props.formData"
-            :reason.sync="reason"
-            :type.sync="type"
-            :hasError="hasError"
-          ></zjy-form>
-        </template>
-      </process-view>
+      <zjy-form-view :data="data">
+      </zjy-form-view>
     </el-dialog>
 
   </div>
@@ -39,22 +25,16 @@
 
 <script>
 import api from './api'
-import {dateFormat as _dateFormat, _refresh} from '@/utils'
 
-import ZjyTableOperator from '@/components/table-operator'
-import OperatorItem from '@/components/table-operator/operator-item'
 import ZjyTable from '@/components/table'
 import ZjyPagination from '@/components/pagination'
-import ProcessView from '@/components/process/ProcessView'
 import ZjyFormView from './FormView'
 
-import commonAPI from '@/api/common'
 import properties from './properties'
 
 export default {
   data () {
     return {
-      value: {}, // 流程数据
       data: {},
       list: [],
       currentPage: 1,
@@ -71,28 +51,18 @@ export default {
   methods: {
 
     view (row) {
-      commonAPI.queryApprovalProcess(row.studentId, row.stayholidayUid).then(response => {
-        this.data = row
-        this.value = response.data
-        this.visible2 = true
-      })
+      this.data = row
+      this.visible = true
     },
 
     currentChange (pageNumber) {
       this.currentPage = pageNumber
-    },
-
-    refresh () {
-      _refresh.call(this)
     }
   },
 
   components: {
     ZjyPagination,
-    ZjyTableOperator,
-    OperatorItem,
     ZjyTable,
-    ProcessView,
     ZjyFormView
   },
 
@@ -113,7 +83,7 @@ export default {
           this.loading = false
         })
       }
-    },
+    }
   }
 }
 </script>

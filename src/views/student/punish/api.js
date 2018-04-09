@@ -25,7 +25,7 @@ export default {
     })
   },
 
-  create (arg) {
-    return ajax.post('/manage/punish/student', arg)
+  queryForObject (id) {
+    return ajax.get('/manage/punish/' + id)
   }
 }

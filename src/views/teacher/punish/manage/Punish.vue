@@ -6,14 +6,14 @@
         <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>
 
-      <el-form-item label="学生姓名:" prop="studentName" class="inline pull-right">
-        <el-input v-model="formData.studentName" disabled></el-input>
+      <el-form-item label="学生姓名:" class="inline pull-right">
+        <el-input v-model="student.studentName" disabled></el-input>
       </el-form-item>
-      <el-form-item label="班级:" prop="className" class="inline">
-        <el-input v-model="formData.className" disabled></el-input>
+      <el-form-item label="班级:"  class="inline">
+        <el-input v-model="student.className" disabled></el-input>
       </el-form-item>
-      <el-form-item label="院系:" prop="facultyName" class="inline pull-right">
-        <el-input v-model="formData.facultyName" disabled></el-input>
+      <el-form-item label="院系:" class="inline pull-right">
+        <el-input v-model="student.facultyName" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="违纪类型" prop="punishSettingUid" class="inline">
@@ -62,7 +62,7 @@ export default {
           if (response.code !== 1) {
             callback(new Error('输入学号有误'))
           } else {
-            this.formData = response.data
+            this.student = response.data
             callback()
           }
           this.doQuery = false
@@ -75,9 +75,10 @@ export default {
       doQuery: false,
       options: [],
       formData: {},
+      student: {},
       rules: {
         studentCode: [
-          // { required: true, message: '请输入学生学号', trigger: 'blur' },
+          { required: true, message: '请输入学生学号', trigger: 'blur' },
           { validator: checkStudent, trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
@@ -121,7 +122,12 @@ export default {
       // this.$refs.formData.validateField('studentCode')
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$emit('submit', this.formData)
+          this.$emit('submit', {
+            studentId: this.student.studentId,
+            punishSettingUid: this.formData.punishSettingUid,
+            punishDescription: this.formData.punishDescription,
+            punishDate: this.formData.punishDate
+          })
         } else {
           return false
         }

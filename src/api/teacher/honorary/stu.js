@@ -28,19 +28,22 @@ export default {
     })
   },
 
-  queryForObject (id) {
-    return ajax.get('/manage/insurance/teacher/' + id)
-  },
+  // queryForObject (id) {
+  //   return ajax.get('/manage/insurance/teacher/' + id)
+  // },
 
   // 提交一个审批
   submit (arg) {
     return ajax.put('/manage/studentHonorary/teacher', arg)
   },
 
-  batchRemove (ids) {
-    return ajax.delete('/manage/studentHonorary/batch/' + ids)
+  batchRemove (arg) {
+    return ajax({
+      method: 'delete',
+      url: '/manage/studentHonorary/batch',
+      data: arg
+    })
   },
-
   delete (id) {
     return ajax.delete('/manage/studentHonorary/' + id)
   }

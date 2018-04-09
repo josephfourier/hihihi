@@ -82,7 +82,7 @@ export default {
 
   columnsMY: [
     {
-      index: true
+      index: true,
     },
     {
       label: '荣誉称号名称',

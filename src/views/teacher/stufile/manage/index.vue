@@ -48,6 +48,16 @@
       ></zjy-file>
     </el-dialog>
 
+    <el-dialog :title="title" :visible.sync="visible2" width="800px">
+      <file-view
+        v-if="visible2"
+        :formData="file"
+        v-model="settings"
+        :visible.sync="visible2"
+        :list="fileList"
+      ></file-view>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -70,6 +80,7 @@ import stufileAPI from '@/api/teacher/stufile/setting'
 import commonAPI from '@/api/common'
 
 import ZjyFile from './File'
+import FileView from './FileView'
 
 export default {
   data () {
@@ -149,6 +160,7 @@ export default {
       ],
       // dialog
       visible: false,
+      visible2: false,
 
       //  其它
       type: 1,
@@ -259,7 +271,7 @@ export default {
             }
           }
         }
-        this.visible = true
+        this.visible2 = true
       }).catch(error => {
         console.log(error)
       })
@@ -321,7 +333,8 @@ export default {
     OperatorItem,
     ZjyPagination,
 
-    ZjyFile
+    ZjyFile,
+    FileView
   },
 
   watch: {

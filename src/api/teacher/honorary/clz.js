@@ -73,8 +73,12 @@ export default {
     return ajax.put('/manage/classHonorary/teacher', arg)
   },
 
-  batchRemove (ids) {
-    return ajax.delete('/manage/studentHonorary/batch/' + ids)
+  batchRemove (arg) {
+    return ajax({
+      method: 'delete',
+      url: '/manage/classHonorary/batch',
+      data: arg
+    })
   },
 
   delete (id) {

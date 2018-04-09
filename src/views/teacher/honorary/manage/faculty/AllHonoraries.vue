@@ -28,11 +28,11 @@
         v-loading="loading"
         @submit="handleSubmit"
       >
-        <p slot="warning" v-if="!clz" class="warning">请先选择班级</p>
+        <p slot="warning" v-if="!fac" class="warning">请先选择院系</p>
         <template slot-scope="props" slot="header">
           <view-apply
             :data="props.formData"
-            :clz.sync="clz"
+            :fac.sync="fac"
             :applyReason.sync="applyReason"
             :hasError="hasError"
           ></view-apply>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import clzAPI from '@/api/teacher/honorary/clz'
+import facAPI from '@/api/teacher/honorary/fac'
 import commonAPI from '@/api/common'
 import ZjyPagination from '@/components/pagination'
 import {getPermissionId, _refresh} from '@/utils'
@@ -74,7 +74,7 @@ export default {
       applyReason: '',
       hasError: false,
       // 申请的班级
-      clz: '',
+      fac: '',
       empty: '',
       innerActive: false
     }
@@ -92,7 +92,7 @@ export default {
       if (!this.applyReason) {
         this.hasError = true
       } else {
-        clzAPI.create(data.honorarysettingUid, this.clz, this.makeFormData(data, steps)).then(response => {
+        facAPI.create(data.honorarysettingUid, this.fac, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
             MSG.success('申请成功')
             this.refresh().visible = false
@@ -113,7 +113,7 @@ export default {
     create (row) {
       this.type = +this.$t('zjy.operator.CREATE')
 
-      axios.all([commonAPI.queryInitial(getPermissionId(this.$route)), clzAPI.queryForObject(row.honorarysettingUid)]).then(
+      axios.all([commonAPI.queryInitial(getPermissionId(this.$route)), facAPI.queryForObject(row.honorarysettingUid)]).then(
         axios.spread((r1, r2) => {
           // this.value = r1.data
           this.data = r2.data
@@ -162,7 +162,7 @@ export default {
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
 
-        commonAPI.queryHonoraryList(2, this.query).then(response => {
+        commonAPI.queryHonoraryList(1, this.query).then(response => {
           this.list = response.rows
           this.total = response.total
           this.loading = false
@@ -171,12 +171,12 @@ export default {
         })
       }
     },
-    // 当教师选择了班级后则需要初始化审批流程
-    clz (val) {
+    // 当教师选择了院系后则需要初始化审批流程
+    fac (val) {
       if (val) {
         this.loading = true
         this.empty = this.$t('zjy.process.loading')
-        commonAPI.initApproval(getPermissionId(this.$route), 2, val).then(response => {
+        commonAPI.initApproval(getPermissionId(this.$route), 1, val).then(response => {
           this.value = response.data
           if (this.$empty(this.value)) this.empty = this.$t('zjy.process.none')
           this.loading = false
@@ -190,7 +190,7 @@ export default {
         this.hasError = false
         this.type = ''
         this.value = {}
-        this.clz = ''
+        this.fac = ''
       }
     }
   }

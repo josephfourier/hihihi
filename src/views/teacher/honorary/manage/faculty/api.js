@@ -12,15 +12,14 @@ export default {
   queryStudent (code, uid) {
     return ajax.get('/manage/scholarship/student/' + code + '/' + uid)
   },
-  // 教师新增一个学生奖学金
-  create (id, arg) {
-    return ajax.post('/manage/studentHonorary/teacher/' + id, arg)
+  // 教师班级荣誉称号
+  create (uid, id, arg) {
+    return ajax.post('/manage/facultyHonorary/teacher/' + uid + '/' + id, arg)
   },
-
   batchRemove (arg) {
     return ajax({
       method: 'delete',
-      url: '/manage/studentHonorary/batch',
+      url: '/manage/studentHonorary',
       data: arg
     })
   }

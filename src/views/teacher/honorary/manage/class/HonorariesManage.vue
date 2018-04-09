@@ -43,6 +43,8 @@
           @close="visible = false"
           @submit="handleSubmit"
         >
+          <p slot="warning" class="warning">教师直接添加无审批流程</p>
+
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
@@ -132,14 +134,12 @@ export default {
     },
 
     batchRemove () {
-      let ids = ''
-      this.selectedRows.forEach(x => {
-        ids += x.scholarshipUid + '-'
-      })
+      let clahonoraryUids = []
+      this.selectedRows.forEach(x => clahonoraryUids.push(x.clahonoraryUid))
       this.loading = true
-      const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
+      const auto = this.selectedRows.length === this.list.length && this.currentPage !== 1
 
-      clzAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
+      clzAPI.batchRemove(clahonoraryUids).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
@@ -168,7 +168,7 @@ export default {
 
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
-      clzAPI.delete(row.scholarshipUid).then(response => {
+      clzAPI.delete(row.clahonoraryUid).then(response => {
         if (response.code === 1) {
           MSG.success('删除成功')
           this.refresh(auto)

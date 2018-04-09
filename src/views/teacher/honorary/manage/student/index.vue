@@ -44,6 +44,7 @@
           v-model="value"
           @submit="handleSubmit"
         >
+          <p slot="warning" class="warning">教师直接添加无审批流程</p>
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
@@ -127,12 +128,11 @@ export default {
     },
 
     batchRemove () {
-
       let stuhonoraryUids = []
-      this.selectedRows.forEach(x => stuhonoraryUid.push(x.stuhonoraryUid))
+      this.selectedRows.forEach(x => stuhonoraryUids.push(x.stuhonoraryUid))
 
       this.loading = true
-      const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
+      const auto = this.selectedRows.length === this.list.length && this.currentPage !== 1
 
       api.batchRemove(stuhonoraryUids).then(response => {
         if (response.code !== 1) {

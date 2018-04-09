@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import clzAPI from '@/api/teacher/honorary/clz'
+import facAPI from '@/api/teacher/honorary/fac'
 import commonAPI from '@/api/common'
 
 import ZjyPagination from '@/components/pagination'
@@ -53,7 +53,6 @@ import ZjyTable from '@/components/table'
 import { _refresh } from '@/utils'
 
 import properties from './properties'
-// import bus from './bus'
 export default {
   data () {
     return {
@@ -83,7 +82,7 @@ export default {
       if (!this.applyReason) {
         this.hasError = true
       } else {
-        clzAPI.update(data.clahonoraryUid, this.makeFormData(data, steps)).then(response => {
+        facAPI.update(data.fachonoraryUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
             MSG.success('修改成功')
             this.refresh().visible = false
@@ -96,7 +95,7 @@ export default {
       }
     },
     _delete (data) {
-      clzAPI.delete(data.clahonoraryUid).then(response => {
+      facAPI.delete(data.fachonoraryUid).then(response => {
         if (response.code === 1) {
           MSG.success('删除成功')
           this.refresh().visible = false
@@ -111,7 +110,7 @@ export default {
     view (row) {
       this.applyReason = row.applyReson
 
-      commonAPI.queryNextApproval(row.classId, row.clahonoraryUid, 2).then(response => {
+      commonAPI.queryNextApproval(row.facultyId, row.fachonoraryUid, 1).then(response => {
         this.data = row
         this.value = response.data
         this.visible = true
@@ -147,12 +146,12 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
-        clzAPI.queryMyApplyList(this.query).then(response => {
+        facAPI.queryMyApplyList(this.query).then(response => {
           this.list = response.rows
           this.total = response.total
           this.loading = false

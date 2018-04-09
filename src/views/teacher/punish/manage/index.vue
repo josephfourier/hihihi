@@ -140,7 +140,7 @@ export default {
       let ids = ''
       this.selectedRows.forEach(x => { ids += x.punishUid + '-' })
       this.loading = true
-      const auto = this.selectedRows.length === this.list.length && this.list.length !== 1
+      const auto = this.selectedRows.length === this.list.length && this.currentPage !== 1
 
       api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {

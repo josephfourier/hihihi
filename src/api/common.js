@@ -101,8 +101,15 @@ export default {
     return ajax.get('/manage/common/datascope/class')
   },
 
+  queryMyFacultyList () {
+    return ajax.get('/manage/common/datascope/faculty')
+  },
+
   queryMyClassListNotApplied (uid) {
     return ajax.get('/manage/common/datascope/class/' + uid)
+  },
+  queryMyFacultyListNotApplied (uid) {
+    return ajax.get('/manage/common/datascope/faculty/' + uid)
   },
 
   initApproval (permissionId, honoraryType, dataId) {

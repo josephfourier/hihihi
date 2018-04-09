@@ -84,11 +84,17 @@
   .zjy-icon {
     background: url('../assets/images/zjy-icon-view.png') no-repeat 0 2px;
   }
+  span:hover {
+    color: #0bacf8;
+  }
 }
 
 .zjy-btn-edit {
   .zjy-icon {
     background: url('../assets/images/zjy-icon-edit.png') no-repeat 3px 1px;
+  }
+  span:hover {
+    color: #8b6aff;
   }
 }
 
@@ -96,11 +102,17 @@
   .zjy-icon {
     background: url('../assets/images/zjy-icon-delete.png') no-repeat 3px 0;
   }
+  span:hover {
+    color: #f45151;
+  }
 }
 
 .zjy-btn-create {
   .zjy-icon {
     background: url('../assets/images/zjy-icon-apply.png') no-repeat 2px 1px;
+  }
+  span:hover {
+    color: #37c6d4;
   }
 }
 
@@ -242,11 +254,4 @@
 }
 .el-icon-success:before {
   color: #37c6d4;
-}
-
-// 临时
-.zjy-process {
-  .zjy-footer {
-    text-align: center;
-  }
 }

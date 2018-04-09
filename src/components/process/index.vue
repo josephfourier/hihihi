@@ -2,7 +2,7 @@
 <template>
   <div class="zjy-process">
     <slot :formData="data" name="header"></slot>
-    <slot name="warning" v-if="$slots.warning"></slot>
+    <slot name="warning" v-if="$slots.warning && !hasStep"></slot>
     <template>
       <p v-if="!hasStep && !$slots.warning" class="warning">{{ empty || $t('zjy.process.none') }}</p>
       <div class="zjy-steps" v-if="hasStep">

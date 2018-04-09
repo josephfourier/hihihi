@@ -135,7 +135,7 @@ export default {
       } else {
         allAPI.create(data.scholarshipsettingUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            this.$alert('申请成功')
+            MSG.success('申请成功')
             this.visible = false
             this.refresh()
           } else {

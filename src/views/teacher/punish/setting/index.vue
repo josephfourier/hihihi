@@ -91,7 +91,6 @@ export default {
     },
 
     edit (row) {
-      console.log(row)
       this.formData = row
       this.visible = true
     },
@@ -113,7 +112,7 @@ export default {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
-            this.$alert('修改成功')
+            MSG.success('修改成功')
             this.refresh().visible = false
           }
         })
@@ -122,7 +121,7 @@ export default {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
-            this.$alert('新建成功')
+            MSG.success('新建成功')
             this.refresh().visible = false
           }
         })

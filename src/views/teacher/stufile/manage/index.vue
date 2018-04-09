@@ -214,7 +214,7 @@ export default {
       this.type = +this.$t('zjy.operator.EDIT')
       this.title = '编辑学生档案'
       stufileManageAPI.queryForObject(row.stufileUid).then(response => {
-        if (response.code !== 1) this.$alert('获取学生档案失败')
+        if (response.code !== 1) MSG.success('获取学生档案失败')
         this.file = response.data
         const _ = response.data.stufileListList
         this.clearFileList()
@@ -241,7 +241,7 @@ export default {
       this.type = +this.$t('zjy.operator.VIEW')
       this.title = '查看学生档案'
       stufileManageAPI.queryForObject(row.stufileUid).then(response => {
-        if (response.code !== 1) this.$alert('获取学生档案失败')
+        if (response.code !== 1) MSG.success('获取学生档案失败')
         this.file = response.data
         const _ = response.data.stufileListList
         this.clearFileList()
@@ -279,7 +279,7 @@ export default {
   created () {
     stufileAPI.queryForList().then(resposne => {
       if (resposne.code !== 1) {
-        this.$alert('获取档案设置失败')
+        MSG.success('获取档案设置失败')
       } else {
         this.settings = resposne.data
         for (let i = 0; i < this.settings.length; ++i) {

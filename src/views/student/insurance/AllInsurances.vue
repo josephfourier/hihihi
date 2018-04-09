@@ -118,7 +118,7 @@ export default {
     handleSubmit (data, steps) {
       insuranceAPI.create(data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
-          this.$alert('申请成功')
+          MSG.success('申请成功')
           this.refresh().visible = false
         } else {
           this.$alert(response.message)

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="zjy-process">
     <slot :formData="data" name="header"></slot>
     <slot name="warning" v-if="$slots.warning"></slot>
     <p v-if="!hasStep && !$slots.warning" class="warning">{{ empty || $t('zjy.process.none') }}</p>
@@ -63,15 +63,15 @@
         </zjy-step>
       </zjy-steps>
     </div>
-    <div class="zjy-footer" v-if="!hasFooter && hasStep">
+    <div class="zjy-footer" v-if="!hasFooter && hasStep && !footerRender">
       <template v-if="hasStep">
         <zjy-button type="plain" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.cancel')}}</zjy-button>
         <zjy-button type="primary" @click="create">{{$t('zjy.messagebox.confirm')}}</zjy-button>
       </template>
-      <!--<zjy-button v-if="isView" type="primary" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.close')}}-->
-      <!--</zjy-button>-->
     </div>
     <slot name="footer" :data="data"></slot>
+
+    <my-render v-if="footerRender" :renderFunc="footerRender" @create="create"></my-render>
   </div>
 </template>
 
@@ -93,6 +93,7 @@ export default {
       nextApproverId: '',
 
       error: ''
+
     }
   },
   computed: {
@@ -103,12 +104,6 @@ export default {
     hasFooter () {
       return this.$slots.footer
     },
-    // isView () {
-    //   return this.type === 1
-    // },
-    // isApply () {
-    //   return this.type === 2
-    // },
     hasError () {
       return !!this.error
     }
@@ -145,12 +140,38 @@ export default {
     value: Object,
     // 流程为空时提示
     empty: String,
-    visible: Boolean
+    visible: Boolean,
+
+    footerRender: Function
   },
   components: {
     ZjyButton,
     ZjyStep,
-    ZjySteps
+    ZjySteps,
+
+    MyRender: {
+      props: {
+        renderFunc: Function
+      },
+      methods: {
+        create () {
+          this.$emit('create')
+        }
+      },
+      render (h) {
+        let data = {
+          on: {
+            click: this.create
+          }
+        }
+        return (
+          this.renderFunc(h, data)
+        )
+      },
+      components: {
+        ZjyButton
+      }
+    }
   },
   watch: {
     value: {

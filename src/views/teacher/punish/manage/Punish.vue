@@ -102,7 +102,6 @@ export default {
       offset: 0,
       limit: 1000
     }).then(response => {
-      console.log(response)
       this.options = response.rows.map(i => {
         return {
           label: i.punishName,

@@ -362,7 +362,7 @@ export default {
 
                 stufileManageAPI.create(arg).then(response => {
                   if (response.code === 1) {
-                    this.$alert('添加成功')
+                    MSG.success('添加成功')
                     this.clearValidate()
                     this.$emit('update:visible', false)
                   } else {
@@ -379,7 +379,7 @@ export default {
         } else if (valid) {
           stufileManageAPI.update(this.data.stufileUid, arg).then(response => {
             if (response.code === 1) {
-              this.$alert('修改成功')
+              MSG.success('修改成功')
               this.clearValidate()
               this.$emit('update:visible', false)
             } else {

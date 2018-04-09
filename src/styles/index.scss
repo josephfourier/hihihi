@@ -98,6 +98,13 @@
   }
 }
 
+.zjy-btn-create {
+  .zjy-icon {
+    background: url('../assets/images/zjy-icon-apply.png') no-repeat 2px 1px;
+  }
+}
+
+
 
 .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
   color: #36c6d3;
@@ -206,4 +213,40 @@
 // 日历颜色
 .el-icon-date:before {
   color: #8B6AFF;
+}
+
+
+// message
+.el-message {
+  min-width: 250px;
+  border-radius: 0;
+  &.el-message--success {
+    background-color: rgba(0,0,0,.5);
+    //border-color: #37c6d4;
+    border: none;
+    .el-message__content {
+      //color: #37c6d4;
+      color: #ffffff;
+    }
+  }
+
+  &.el-message--warning {
+    background-color: rgba(0,0,0,.5);
+    //border-color: #37c6d4;
+    border: none;
+    .el-message__content {
+      //color: #37c6d4;
+      color: #ffffff;
+    }
+  }
+}
+.el-icon-success:before {
+  color: #37c6d4;
+}
+
+// 临时
+.zjy-process {
+  .zjy-footer {
+    text-align: center;
+  }
 }

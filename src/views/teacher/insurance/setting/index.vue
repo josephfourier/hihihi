@@ -108,7 +108,6 @@ export default {
           operators: [
             {
               label: '删除',
-              render: true,
               cmd: 'delete'
             },
             {
@@ -144,11 +143,13 @@ export default {
     },
 
     _delete (row) {
+      const auto = this.list.length === 1 && this.currentPage !== 1
       insuranceAPI.delete(row.inssettingUid).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          this.refresh()
+          this.refresh(auto)
+          MSG.success('删除成功')
         }
       }).catch(error => {
         console.log(error)
@@ -163,7 +164,6 @@ export default {
     batchRemove () {
       let ids = ''
       this.selectedRows.forEach(x => {
-        console.log(x)
         ids += x.inssettingUid + '-'
       })
 
@@ -172,6 +172,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
+          MSG.success('删除成功')
           this.refresh()
         }
         this.loading = false

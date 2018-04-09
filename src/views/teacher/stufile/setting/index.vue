@@ -85,7 +85,7 @@ export default {
     _delete (row) {
       stufileAPI.delete(row.stufilesettingUid).then(response => {
         if (response.code === 1) {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh()
         }
       })

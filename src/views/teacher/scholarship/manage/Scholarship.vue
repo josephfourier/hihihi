@@ -131,9 +131,8 @@ export default {
   created () {
     api.querySettingList().then(response => {
       if (response.code !== 1) {
-        this.$alert('获取奖学金设置失败')
+        MSG.success('获取奖学金设置失败')
       } else {
-        console.log(response.data.rows)
         this.settingList = response.data.rows.map(i => {
           return {
             label: i.scholarshipName,
@@ -143,7 +142,6 @@ export default {
             scholarshipLevel: i.scholarshipLevel
           }
         })
-        console.log(this.settingList)
       }
     })
   },

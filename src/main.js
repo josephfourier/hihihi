@@ -11,6 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueI18n from 'vue-i18n'
 
 // import './mock'
+import '@/utils/message'
 
 import './router-interceptor'
 import '@/styles/index.scss'

@@ -2,7 +2,6 @@
   <div class="zjy-app">
     <zjy-table-operator>
       <operator-item clz="create" @click="visible=true">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">删除</operator-item>
     </zjy-table-operator>
 
     <zjy-table
@@ -10,8 +9,7 @@
       :data="list"
       :columns="columns"
       @edit="edit"
-      @delete="_delete"
-      @selection-change="handleSelectionChange"
+      @view="view"
     ></zjy-table>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
@@ -29,21 +27,38 @@
         :visible.sync="visible"
         width="800px"
       >
-        <scholarship-setting
+        <poor-setting
           v-if="visible"
           :formData="formData"
-          :type="type"
           :visible.sync="visible"
+          :type="type"
           @submit="handleSubmit"
         >
-        </scholarship-setting>
+        </poor-setting>
+      </el-dialog>
+    </div>
+
+    <div class="zjy-dialog">
+      <el-dialog
+        title="困难生设置查看"
+        :visible.sync="visible2"
+        width="800px"
+      >
+        <poor-setting-view
+          v-if="visible2"
+          :formData="formData"
+          :visible.sync="visible2"
+          @submit="handleSubmit"
+        >
+        </poor-setting-view>
       </el-dialog>
     </div>
   </div>
+
 </template>
 
 <script>
-import settingAPI from '@/api/teacher/scholarship/setting'
+import api from './api'
 
 import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
@@ -53,7 +68,9 @@ import ZjyPagination from '@/components/pagination'
 
 import {_refresh} from '@/utils'
 
-import ScholarshipSetting from './ScholarshipSetting'
+import properties from './properties'
+import PoorSetting from './PoorSetting'
+import PoorSettingView from './PoorSettingView'
 
 export default {
   name: 'index',
@@ -62,60 +79,15 @@ export default {
       list: [],
       currentPage: 1,
       total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
+      query: properties.query,
 
       loading: false,
       visible: false,
+      visible2: false,
 
       formData: {},
 
-      selectedRows: [],
-      columns: [
-        {
-          index: true,
-          select: true
-        },
-        {
-          label: '奖学金名称',
-          prop: 'scholarshipName',
-          width: '300'
-        },
-        {
-          label: '人员限数',
-          prop: 'numberLimit',
-          width: '200'
-        },
-        {
-          label: '奖学金级别',
-          prop: 'scholarshipLevel'
-        },
-        {
-          label: '金额',
-          prop: 'money'
-        },
-        {
-          label: '开放申请',
-          prop: 'isOpen',
-          formatter: this.statusFormat
-        },
-        {
-          label: '操作',
-          width: '200',
-          operators: [
-            {
-              label: '删除',
-              cmd: 'delete'
-            },
-            {
-              label: '编辑',
-              cmd: 'edit'
-            }
-          ]
-        }
-      ]
+      columns: properties.columns
     }
   },
 
@@ -123,43 +95,24 @@ export default {
     currentChange (pageNumber) {
       this.currentPage = pageNumber
     },
-    handleSelectionChange (rows) {
-      this.selectedRows = rows
-    },
 
     refresh (auto) {
       return _refresh.call(this, auto)
     },
-
-    statusFormat (cellValue) {
-      return ['否', '是'][+cellValue]
-    },
-
-    batchRemove () {
-
-    },
-    //  ------------ 表格头操作 END ------------
 
     edit (row) {
       this.formData = row
       this.visible = true
     },
 
-    _delete (row) {
-      const auto = this.list.length === 1 && this.currentPage !== 1
-      settingAPI.delete(row.scholarshipsettingUid).then(response => {
-        if (response.code === 1) {
-          this.refresh(auto)
-          MSG.success('删除成功')
-        }
-      })
+    view (row) {
+      this.formData = row
+      this.visible2 = true
     },
-    //  ------------ 表格操作 END ------------
 
-    //  验证成功提交表单数据
     handleSubmit (formData) {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
-        settingAPI.update(formData.scholarshipsettingUid, formData).then(response => {
+        api.update(formData).then(response => {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
@@ -168,7 +121,7 @@ export default {
           }
         })
       } else {
-        settingAPI.create(formData).then(response => {
+        api.create(formData).then(response => {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
@@ -182,10 +135,10 @@ export default {
 
   computed: {
     title () {
-      return !this.formData.scholarshipsettingUid ? '新增奖学金' : '修改奖学金'
+      return !this.formData.poorsettingUid ? '新增困难生设置' : '修改困难生设置'
     },
     type () {
-      return !this.formData.scholarshipsettingUid ? +this.$t('zjy.operator.CREATE') : +this.$t('zjy.operator.EDIT')
+      return !this.formData.poorsettingUid ? +this.$t('zjy.operator.CREATE') : +this.$t('zjy.operator.EDIT')
     }
   },
 
@@ -195,7 +148,8 @@ export default {
     ZjyTableOperator,
     OperatorItem,
 
-    ScholarshipSetting
+    PoorSetting,
+    PoorSettingView
   },
 
   watch: {
@@ -205,7 +159,7 @@ export default {
         if (val === -1 || val === 0) return
 
         this.query.offset = this.query.limit * (val - 1)
-        settingAPI.queryForList.call(this, this.query).then(response => {
+        api.queryForList.call(this, this.query).then(response => {
           this.list = response.rows
           this.total = response.total
         }).catch(error => {

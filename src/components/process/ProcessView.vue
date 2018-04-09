@@ -1,6 +1,6 @@
 <!-- 学生端流程进度查看，不包含任何操作 -->
 <template>
-  <div>
+  <div class="zjy-process">
     <slot :formData="data" name="header"></slot>
     <div class="zjy-steps" v-if="hasStep">
       <p class="step-title">{{$t('zjy.process.schedule')}}</p>
@@ -57,7 +57,7 @@ export default {
       step: 1,
       steps: [], // 审批流程步骤
       isFinished: false,
-      reason: '', // 拒绝原因
+      reason: '' // 拒绝原因
     }
   },
 

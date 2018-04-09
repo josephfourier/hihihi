@@ -90,7 +90,7 @@ export default {
       } else {
         allAPI.create(data.honorarysettingUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            this.$alert('申请成功')
+            MSG.success('申请成功')
             this.refresh().visible = false
           } else {
             this.$alert(response.message)
@@ -159,7 +159,6 @@ export default {
         this.query.offset = this.query.limit * (val - 1)
         // 需要获取当前类型现写3表个人
         allAPI.queryForList(3, this.query).then(response => {
-          console.log(response)
           this.list = response.rows
           this.total = response.total
           this.loading = false

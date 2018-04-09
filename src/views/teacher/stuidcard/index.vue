@@ -185,11 +185,11 @@ export default {
     handleSubmit (data, steps) {
       cardAPI.approved(this.data, steps).then(response => {
         if (response.code === 1) {
-          this.$alert('保存成功')
+          MSG.success('保存成功')
           this.refresh()
           this.visible = false
         } else {
-          this.$alert('保存失败')
+          MSG.success('保存失败')
         }
       }).catch(error => {})
     },

@@ -2,10 +2,10 @@
 <template>
   <div class="zjy-process">
     <slot :formData="data" name="header"></slot>
-    <!--<template v-if="!isFinished || reason">-->
+    <slot name="warning" v-if="$slots.warning"></slot>
     <template>
-      <p v-if="!hasStep"> {{ $t('zjy.process.none') }}</p>
-      <div class="zjy-steps" v-else>
+      <p v-if="!hasStep && !$slots.warning" class="warning">{{ empty || $t('zjy.process.none') }}</p>
+      <div class="zjy-steps" v-if="hasStep">
         <zjy-steps :active="step" align-center :space="space">
           <!-- 新添加teacherName 有可能是来自教师的申请 -->
           <zjy-step :title="$t('zjy.process.start')" :description="'(' + (data.studentName ? data.studentName : data.teacherName) + ')'">
@@ -120,6 +120,7 @@ export default {
     data: Object,
     value: Object,
     space: Number,
+    empty: String,
     visible: Boolean // 弹窗时
   },
 
@@ -165,7 +166,7 @@ export default {
 
     innerYes () {
       if (!this.reason) {
-        this.$alert('请输入拒绝原因')
+        MSG.success('请输入拒绝原因')
         return
       }
       this.steps[this.step - 1].approvalStatus = this.STATUS.no

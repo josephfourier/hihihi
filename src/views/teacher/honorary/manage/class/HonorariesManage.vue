@@ -123,7 +123,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          this.$alert('新增成功')
+          MSG.success('新增成功')
           this.refresh().visible2 = false
         }
       }).catch(error => {
@@ -143,7 +143,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh(auto)
         }
         this.loading = false
@@ -170,7 +170,7 @@ export default {
       const auto = this.list.length === 1 && this.currentPage !== 1
       clzAPI.delete(row.scholarshipUid).then(response => {
         if (response.code === 1) {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh(auto)
         } else {
           this.$alert(response.message)
@@ -193,12 +193,12 @@ export default {
     handleSubmit (data, steps) {
       clzAPI.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          this.$alert('保存成功')
+          MSG.success('保存成功')
           this.refresh().visible = false
           // 审批完成后可能需要刷新自己申请的班级荣誉称号列表
           // bus.$emit('applied')
         } else {
-          this.$alert('保存失败')
+          MSG.success('保存失败')
         }
       }).catch(error => {
         console.log(error)
@@ -235,7 +235,6 @@ export default {
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
         clzAPI.queryAppliedList(this.query).then(response => {
-          console.log(response.rows)
           if (response.code !== 1) {
             alert(response.message)
           } else {

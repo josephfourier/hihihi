@@ -126,11 +126,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           insuranceManageAPI.batch(this.formData).then(response => {
-            console.log(response)
             if (response.code !== 1) {
               this.$alert(response.message)
             } else {
-              this.$alert('投保成功')
+              MSG.success('投保成功')
               this.$emit('closed')
             }
           }).catch(error => {
@@ -158,7 +157,7 @@ export default {
         console.log(r1)
         console.log(r2)
         if (r1.code !== 1 || r2.code !== 1) {
-          this.$alert('获取数据失败')
+          MSG.success('获取数据失败')
         } else {
           this.facultyList = r1.data.map(x => {
             return {

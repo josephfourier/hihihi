@@ -91,12 +91,14 @@ export default {
           if (this.type === 1) {
             insuranceAPI.update(this.formData.inssettingUid, this.formData).then(response => {
               if (response.code === 1) {
+                MSG.success('修改成功')
                 this.$emit('closed', 1)
               }
             })
           } else {
             insuranceAPI.create(this.formData).then(response => {
               if (response.code === 1) {
+                MSG.success('新增成功')
                 this.$emit('closed', 1)
               }
             })

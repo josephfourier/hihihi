@@ -90,7 +90,7 @@ export default {
       } else {
         myAPI.update(data.stuhonoraryUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            this.$alert('修改成功')
+            MSG.success('修改成功')
             this.refresh().visible = false
           } else {
             this.$alert(response.message)
@@ -103,7 +103,7 @@ export default {
     _delete (data) {
       myAPI.delete(data.stuhonoraryUid).then(response => {
         if (response.code === 1) {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh().visible = false
         } else {
           this.$alert(response.message)

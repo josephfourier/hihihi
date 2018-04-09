@@ -129,7 +129,7 @@ export default {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
-            this.$alert('撤销成功')
+            MSG.success('撤销成功')
             this.refresh().visible = false
           }
           this.loading = false
@@ -152,7 +152,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh(auto)
         }
         this.loading = false
@@ -178,7 +178,7 @@ export default {
         .delete(row.punishUid)
         .then(response => {
           if (response.code === 1) {
-            this.$alert('删除成功')
+            MSG.success('删除成功')
             this.refresh(auto)
           } else {
             this.$alert(response.message)
@@ -202,10 +202,10 @@ export default {
         .submit(data.scholarshipUid, steps)
         .then(response => {
           if (response.code === 1) {
-            this.$alert('保存成功')
+            MSG.success('保存成功')
             this.refresh().visible = false
           } else {
-            this.$alert('保存失败')
+            MSG.success('保存失败')
           }
         })
         .catch(error => {

@@ -25,6 +25,7 @@
 
 <script>
 import ZjyInput from '@/components/input'
+import ZjyButton from '@/components/button'
 
 export default {
   name: 'view-apply',
@@ -33,6 +34,7 @@ export default {
       innerApplyReason: ''
     }
   },
+
   props: {
     data: Object,
     applyReason: String,
@@ -40,7 +42,8 @@ export default {
   },
 
   components: {
-    ZjyInput
+    ZjyInput,
+    ZjyButton
   },
 
   watch: {

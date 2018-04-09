@@ -45,6 +45,8 @@
         @close="visible = false"
         @submit="handleSubmit"
       >
+        <p slot="warning" class="warning">教师直接添加无审批流程</p>
+
         <template slot-scope="props" slot="header">
           <zjy-form :data="props.formData"></zjy-form>
         </template>
@@ -129,7 +131,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          this.$alert('新增成功')
+          MSG.success('新增成功')
           this.refresh().visible2 = false
         }
       }).catch(error => {
@@ -148,7 +150,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh(auto)
         }
         this.loading = false
@@ -175,7 +177,7 @@ export default {
       const auto = this.list.length === 1 && this.currentPage !== 1
       scholarshipManageAPI.delete(row.scholarshipUid).then(response => {
         if (response.code === 1) {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh(auto)
         } else {
           this.$alert(response.message)
@@ -196,10 +198,10 @@ export default {
     handleSubmit (data, steps) {
       scholarshipManageAPI.submit(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
-          this.$alert('保存成功')
+          MSG.success('新增成功')
           this.refresh().visible = false
         } else {
-          this.$alert('保存失败')
+          MSG.success('保存失败')
         }
       }).catch(error => {
         console.log(error)

@@ -207,8 +207,6 @@ export default {
         this.setting = row
         this.value = response.data
         this.visible = true
-        console.log(this.setting)
-        console.log(response)
       })
     },
 
@@ -219,11 +217,11 @@ export default {
     handleSubmit (data, steps) {
       insuranceManageAPI.submit(data.insuranceUid, data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
-          this.$alert('保存成功')
+          MSG.success('保存成功')
           this.visible = false
           this.refresh()
         } else {
-          this.$alert('保存失败')
+          MSG.success('保存失败')
         }
       }).catch(error => {
       })

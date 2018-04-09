@@ -1,0 +1,192 @@
+<!-- 学生假期留校管理 -->
+<template>
+  <div class="zjy-app">
+
+      <zjy-table
+        :data="list"
+        :loading="loading"
+        :columns="columns"
+        @view="view"
+      >
+      </zjy-table>
+
+    <div class="zjy-pagination" v-if="list.length !== 0">
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
+      </zjy-pagination>
+    </div>
+
+    <el-dialog :title="title" :visible.sync="visible" width="800px">
+      <student-process
+        v-if="visible"
+        :data="data"
+        v-model="value"
+        :visible.sync="visible"
+        @submit="handleSubmit"
+      >
+        <template slot-scope="props" slot="header">
+          <zjy-form
+            :data="props.formData"
+            :reason.sync="reason"
+            :type.sync="type"
+            :hasError="hasError"
+          ></zjy-form>
+        </template>
+      </student-process>
+    </el-dialog>
+
+    <el-dialog :title="title" :visible.sync="visible2" width="800px">
+      <view-setting
+        :data="data"
+        :visible.sync="visible2"
+      >
+      </view-setting>
+    </el-dialog>
+
+  </div>
+</template>
+
+<script>
+import api from './api'
+import { getPermissionId, _refresh } from '@/utils'
+
+import ZjyTable from '@/components/table'
+import ZjyPagination from '@/components/pagination'
+import StudentProcess from '@/components/process/StudentProcess'
+import ViewSetting from './ViewSetting'
+
+import commonAPI from '@/api/common'
+import axios from 'axios'
+import properties from './properties'
+
+export default {
+  data () {
+    return {
+      value: {}, // 流程数据
+      data: {},
+      list: [],
+      currentPage: 1,
+      total: 0,
+      query: properties.query,
+
+      title: '',
+      loading: false,
+      visible: false,
+      visible2: false,
+
+      columns: properties.columns,
+
+      // 业务数据
+      reason: '',
+      type: '',
+      hasError: false
+    }
+  },
+
+  methods: {
+    create () {
+      // 获取流程、假期类型、学生信息数据(并发)
+      axios.all([
+        commonAPI.queryInitial(getPermissionId(this.$route)),
+        commonAPI.queryHolidayTypeList(),
+        commonAPI.queryStudent()
+      ]).then(axios.spread((r1, r2, r3) => {
+        if (r1.code !== 1 || r2.code !== 1 || r3.code !== 1) {
+          this.$alert('获取数据失败')
+        } else {
+          this.value = r1.data   // 流程数据传入组件即可
+          // 添加业务数据
+          Object.assign(this.data, {
+            student: r3.data,
+            holidayType: r2.data
+          })
+          this.title = '留校申请'
+          this.visible = true
+        }
+      }))
+    },
+
+    statusFormat (cellValue) {
+      return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
+    },
+
+    handleSubmit (data, steps) {
+      if (!this.type || !this.reason) {
+        this.hasError = true
+      } else {
+        const arg = this.makeFormData(data, steps)
+        api.create(arg).then(response => {
+          if (response.code !== 1) {
+            this.$alert(response.message)
+          } else {
+            this.visible = false
+            this.refresh()
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+    },
+
+    view (row) {
+      this.title = '困难生申请说明'
+      this.data = row
+      this.visible2 = true
+    },
+
+    currentChange (pageNumber) {
+      this.currentPage = pageNumber
+    },
+
+    makeFormData (data, steps) {
+      return {
+        'studentId': data.student.studentId,
+        'holidayId': this.type,
+        'holidayName': this.data.holidayType.find(i => i.valueKey == this.type).valueName,
+        'stayReason': this.reason,
+        'schoolCode': data.student.schoolCode,
+        'swmsApprovalList': steps
+      }
+    },
+
+    refresh () {
+      _refresh.call(this)
+    }
+  },
+
+  components: {
+    ZjyPagination,
+    ZjyTable,
+    StudentProcess,
+    ViewSetting
+    // ZjyForm,
+    // ZjyFormView
+  },
+
+  watch: {
+    currentPage: {
+      immediate: true,
+      handler (val, oldval) {
+        if (val === -1 || val === 0) return
+        this.query.offset = this.query.limit * (val - 1)
+        api.queryForList(this.query).then(response => {
+          this.list = response.rows
+          console.log(this.list)
+          this.total = response.total
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+    },
+    visible (val) {
+      if (!val) {
+        this.type = ''
+        this.reason = ''
+        this.hasError = false
+      }
+    }
+  }
+}
+</script>
+<style lang='scss' scoped>
+
+</style>

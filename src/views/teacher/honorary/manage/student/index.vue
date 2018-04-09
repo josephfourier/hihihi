@@ -138,7 +138,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh(auto)
         }
         this.loading = false
@@ -154,7 +154,7 @@ export default {
     handleCreate (id, arg) {
       api.create(id, arg).then(response => {
         if (response.code === 1) {
-          this.$alert('新增成功')
+          MSG.success('新增成功')
           this.refresh().visible2 = false
         } else {
           this.$alert(response.message)
@@ -178,6 +178,7 @@ export default {
       const auto = this.list.length === 1 && this.currentPage !== 1
       stuAPI.delete(row.stuhonoraryUid).then(response => {
         if (response.code === 1) {
+          MSG.success('删除成功')
           this.refresh(auto)
         } else {
           this.$alert(response.message)

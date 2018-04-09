@@ -64,7 +64,7 @@ export default {
       loading: false,
       visible: false,
 
-      columns: properties.columns,
+      columns: properties.columns
     }
   },
 

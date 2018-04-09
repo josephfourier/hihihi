@@ -95,7 +95,7 @@ export default {
       } else {
         clzAPI.create(data.honorarysettingUid, this.clz, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            this.$alert('申请成功')
+            MSG.success('申请成功')
             this.refresh().visible = false
             bus.$emit('applied')
           } else {

@@ -187,7 +187,7 @@ export default {
           approvalStep: this.nextStepNo
         })
       } else {
-        this.$alert('请先配置第' + (this.nextStepNo - 1) + '步的职务')
+        MSG.warning('请先配置第' + (this.nextStepNo - 1) + '步的职务')
       }
     },
 
@@ -270,10 +270,10 @@ export default {
       approvalAPI.deleteProvalProcess(item.templateUid).then(response => {
         if (response.code === 1) {
           // this.value.splice(this.value.findIndex(v => v.templateUid === item.templateUid), 1)
-          this.$alert('删除成功')
+          MSG.success('删除成功')
           this.refresh()
         } else {
-          this.$alert('删除失败')
+          MSG.success('删除失败')
         }
       }).catch(error => {
         console.log(error)
@@ -398,9 +398,9 @@ export default {
 
     submit () {
       if (!this.checkedPost) {
-        this.$alert('未选择职务')
+        MSG.success('未选择职务')
       } else if (this.handler === '2' && !this.checkedTeacher) {
-        this.$alert('未选择教师')
+        MSG.success('未选择教师')
       } else {
         const d = this.makeFormData()
         if (d.templateUid) {
@@ -408,7 +408,7 @@ export default {
             if (response.code !== 1) {
               this.$alert(response.message)
             } else {
-              this.$alert('修改成功')
+              MSG.success('修改成功')
               this.refresh()
               this.visible = false
             }
@@ -418,7 +418,7 @@ export default {
         } else {
           approvalAPI.createProvalProcess(d).then(response => {
             if (response.code === 1) {
-              this.$alert('配置成功')
+              MSG.success('配置成功')
               this.refresh()
               this.visible = false
             } else {

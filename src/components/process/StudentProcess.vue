@@ -66,8 +66,8 @@
     </div>
     <div class="zjy-footer" v-if="!hasFooter && hasStep && !footerRender">
       <template v-if="hasStep">
-        <zjy-button type="plain" @click="$emit('update:visible', false)">{{$t('zjy.messagebox.cancel')}}</zjy-button>
-        <zjy-button type="primary" @click="create">{{$t('zjy.messagebox.confirm')}}</zjy-button>
+        <zjy-button type="plain" @click="$emit('update:visible', false)">{{noBtnText || $t('zjy.messagebox.cancel')}}</zjy-button>
+        <zjy-button type="primary" @click="create">{{yesBtnText || $t('zjy.messagebox.confirm')}}</zjy-button>
       </template>
     </div>
     <slot name="footer" :data="data"></slot>
@@ -94,7 +94,6 @@ export default {
       nextApproverId: '',
 
       error: ''
-
     }
   },
   computed: {
@@ -142,6 +141,8 @@ export default {
     // 流程为空时提示
     empty: String,
     visible: Boolean,
+    yesBtnText: String,
+    noBtnText: String,
 
     footerRender: Function
   },

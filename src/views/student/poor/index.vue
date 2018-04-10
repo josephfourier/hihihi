@@ -7,6 +7,7 @@
         :loading="loading"
         :columns="columns"
         @view="view"
+        @create="create"
       >
       </zjy-table>
 
@@ -16,22 +17,8 @@
     </div>
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
-      <student-process
-        v-if="visible"
-        :data="data"
-        v-model="value"
-        :visible.sync="visible"
-        @submit="handleSubmit"
-      >
-        <template slot-scope="props" slot="header">
-          <zjy-form
-            :data="props.formData"
-            :reason.sync="reason"
-            :type.sync="type"
-            :hasError="hasError"
-          ></zjy-form>
-        </template>
-      </student-process>
+      <zjy-form :value="value">
+      </zjy-form>
     </el-dialog>
 
     <el-dialog :title="title" :visible.sync="visible2" width="800px">
@@ -51,12 +38,10 @@ import { getPermissionId, _refresh } from '@/utils'
 
 import ZjyTable from '@/components/table'
 import ZjyPagination from '@/components/pagination'
-import StudentProcess from '@/components/process/StudentProcess'
 import ViewSetting from './ViewSetting'
-
-import commonAPI from '@/api/common'
-import axios from 'axios'
+import ZjyForm from './form'
 import properties from './properties'
+import commonAPI from '@/api/common'
 
 export default {
   data () {
@@ -75,56 +60,42 @@ export default {
 
       columns: properties.columns,
 
+      doValidate: false,
       // 业务数据
-      reason: '',
-      type: '',
-      hasError: false
+
     }
   },
 
   methods: {
+
+    // 学生申请
     create () {
-      // 获取流程、假期类型、学生信息数据(并发)
-      axios.all([
-        commonAPI.queryInitial(getPermissionId(this.$route)),
-        commonAPI.queryHolidayTypeList(),
-        commonAPI.queryStudent()
-      ]).then(axios.spread((r1, r2, r3) => {
-        if (r1.code !== 1 || r2.code !== 1 || r3.code !== 1) {
-          this.$alert('获取数据失败')
-        } else {
-          this.value = r1.data   // 流程数据传入组件即可
-          // 添加业务数据
-          Object.assign(this.data, {
-            student: r3.data,
-            holidayType: r2.data
-          })
-          this.title = '留校申请'
-          this.visible = true
-        }
-      }))
+      commonAPI.queryInitial(getPermissionId(this.$route)).then(response => {
+        this.value = response.data
+        this.title = '困难生申请'
+        this.visible = true
+      }).catch(error => {
+        console.log(error)
+      })
     },
-
-    statusFormat (cellValue) {
-      return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
-    },
-
     handleSubmit (data, steps) {
-      if (!this.type || !this.reason) {
-        this.hasError = true
-      } else {
-        const arg = this.makeFormData(data, steps)
-        api.create(arg).then(response => {
-          if (response.code !== 1) {
-            this.$alert(response.message)
-          } else {
-            this.visible = false
-            this.refresh()
-          }
-        }).catch(error => {
-          console.log(error)
-        })
-      }
+
+      // this.doValidate = false
+      // if (!this.type || !this.reason) {
+      //   this.hasError = true
+      // } else {
+      //   const arg = this.makeFormData(data, steps)
+      //   api.create(arg).then(response => {
+      //     if (response.code !== 1) {
+      //       this.$alert(response.message)
+      //     } else {
+      //       this.visible = false
+      //       this.refresh()
+      //     }
+      //   }).catch(error => {
+      //     console.log(error)
+      //   })
+      // }
     },
 
     view (row) {
@@ -156,9 +127,8 @@ export default {
   components: {
     ZjyPagination,
     ZjyTable,
-    StudentProcess,
-    ViewSetting
-    // ZjyForm,
+    ViewSetting,
+    ZjyForm
     // ZjyFormView
   },
 

@@ -13,6 +13,7 @@
     </div>
     <student-process
       v-model="value"
+      :visible.sync="innerVisible"
       :yesBtnText="'申请'"
       @submit="handleSubmit"
     >
@@ -28,6 +29,7 @@ export default {
   data () {
     return {
       formData: {},
+      innerVisible: true,
       rules: {
         punishName: [
           { required: true, message: '请输入类型名称', trigger: 'blur' }
@@ -41,7 +43,8 @@ export default {
   },
 
   props: {
-    value: Object
+    value: Object,
+    visible: Boolean
   },
 
   methods: {
@@ -55,6 +58,17 @@ export default {
   },
   components: {
     StudentProcess
+  },
+  watch: {
+    visible (val) {
+      if (!val) this.innerVisible = true
+    },
+
+    innerVisible (val) {
+      if (!val) {
+        this.$emit('update:visible', false)
+      }
+    }
   }
 }
 </script>

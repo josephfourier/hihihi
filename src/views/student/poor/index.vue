@@ -17,7 +17,11 @@
     </div>
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
-      <zjy-form :value="value">
+      <zjy-form
+        :value="value"
+        :visible.sync="visible"
+        @submit="handleSubmit"
+      >
       </zjy-form>
     </el-dialog>
 
@@ -58,11 +62,7 @@ export default {
       visible: false,
       visible2: false,
 
-      columns: properties.columns,
-
-      doValidate: false,
-      // 业务数据
-
+      columns: properties.columns
     }
   },
 
@@ -79,23 +79,7 @@ export default {
       })
     },
     handleSubmit (data, steps) {
-
-      // this.doValidate = false
-      // if (!this.type || !this.reason) {
-      //   this.hasError = true
-      // } else {
-      //   const arg = this.makeFormData(data, steps)
-      //   api.create(arg).then(response => {
-      //     if (response.code !== 1) {
-      //       this.$alert(response.message)
-      //     } else {
-      //       this.visible = false
-      //       this.refresh()
-      //     }
-      //   }).catch(error => {
-      //     console.log(error)
-      //   })
-      // }
+      alert('验证通过')
     },
 
     view (row) {

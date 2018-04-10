@@ -4,11 +4,13 @@
     <table class="process-table">
       <tr>
         <td>奖学金名称: {{ data.scholarshipName }}</td>
-        <td>发放方式: {{ data.grantWay }}</td>
-        <td>奖学金级别: {{ data.scholarshipLevel }}</td>
+        <td>发放方式: {{ data.grantWay | scholarshipGrantWayFormat}}</td>
+        <td>奖学金级别: {{ data.scholarshipLevel}}</td>
       </tr>
       <tr>
         <td>金额: {{ data.money }}</td>
+        <td>人数限制: {{ data.numberLimit }}</td>
+        <td>发放对象: {{ data.grantObject }}</td>
       </tr>
     </table>
     <div class="zjy-footer" slot="footer">

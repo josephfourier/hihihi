@@ -96,20 +96,20 @@ export default {
       insuranceSettingList: [],
       rules: {
         enterYear: [
-          {required: true, message: '请选择投保年级', trigger: 'blur'}
+          {required: true, message: '请选择投保年级', trigger: 'change'}
 
         ],
         factoryCode: [
-          {required: true, message: '请选择投保院系', trigger: 'blur'}
+          {required: true, message: '请选择投保院系', trigger: 'change'}
         ],
         specialtyCode: [
-          {required: true, message: '请选择投保专业', trigger: 'blur'}
+          {required: true, message: '请选择投保专业', trigger: 'change'}
         ],
         inssettingUid: [
-          {required: true, message: '请选择险种名称', trigger: 'blur'}
+          {required: true, message: '请选择险种名称', trigger: 'change'}
         ],
         forceInsure: [
-          {required: true, message: '请选择投保方式', trigger: 'blur'}
+          {required: true, message: '请选择投保方式', trigger: 'change'}
         ]
       },
 

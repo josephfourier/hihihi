@@ -2,7 +2,7 @@
   <div class="zjy-app">
     <zjy-table-operator>
       <operator-item clz="create" @click="visible=true">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">删除</operator-item>
+      <!--<operator-item @click="batchRemove" clz="delete">删除</operator-item>-->
     </zjy-table-operator>
 
     <zjy-table
@@ -101,6 +101,7 @@ export default {
       settingAPI.delete(row.honorarysettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
+          MSG.success('删除成功')
         } else {
           this.$alert(response.message)
         }

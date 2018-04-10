@@ -4,16 +4,19 @@
       <table class="process-table">
         <tr>
           <td>奖学金名称: {{ data.scholarshipName }}</td>
-          <td>发放方式: {{ data.grantWay }}</td>
+          <td>发放方式: {{ data.grantWay | scholarshipGrantWayFormat}}</td>
           <td>奖学金级别: {{ data.scholarshipLevel }}</td>
         </tr>
         <tr>
           <td>金额: {{ data.money }}</td>
+          <td>人数限制: {{ data.numberLimit }}</td>
+          <td>发放对象: {{ data.grantObject }}</td>
         </tr>
       </table>
       <p class="process-title">申请原因</p>
-      <div class="textarea-wrapper">
-        <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :disabled="data.dataStatus && data.dataStatus !== '0'"></zjy-input>
+      <span v-if="data.dataStatus && data.dataStatus !== '0'">{{ innerApplyReason }}</span>
+      <div class="textarea-wrapper" v-else>
+        <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)"></zjy-input>
         <div class="form-tip-box">
           <transition name="el-zoom-in-top">
             <span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>

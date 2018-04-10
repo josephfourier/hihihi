@@ -5,10 +5,13 @@
         <tr>
           <td>荣誉称号名称: {{ data.honoraryName }}</td>
           <td>人数限制: {{ data.numberLimit }}</td>
-          <td>奖学金级别: {{ data.scholarshipLevel }}</td>
         </tr>
         <tr>
-          <td>金额: {{ data.money }}</td>
+          <td>开始时间: {{ data.startDate | dateFormat }}</td>
+          <td>结束时间: {{ data.endDate | dateFormat }}</td>
+        </tr>
+        <tr v-if="data.dataStatusName">
+          <td>审批状态: {{ data.dataStatusName }}</td>
         </tr>
       </table>
       <p class="process-title">申请原因</p>

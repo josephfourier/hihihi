@@ -5,10 +5,10 @@
       <tr>
         <td>荣誉称号名称: {{ data.honoraryName }}</td>
         <td>人数限制: {{ data.numberLimit }}</td>
-        <td>奖学金级别: {{ data.honoraryCategory }}</td>
       </tr>
       <tr>
-        <td>金额: {{ data.money }}</td>
+        <td>开始时间: {{ data.startDate | dateFormat }}</td>
+        <td>结束时间: {{ data.endDate | dateFormat }}</td>
       </tr>
     </table>
     <div class="zjy-footer" slot="footer">
@@ -33,5 +33,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 </style>

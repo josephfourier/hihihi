@@ -29,7 +29,7 @@
                 { statusWait: item.approvalStatus == 0 },
                   'status'
                 ]">
-                  ({{ item.approvalStatus | statusFormat }})
+                  {{ item.approvalStatus | statusFormat }}
                 </p>
               </div>
             </div>
@@ -39,6 +39,7 @@
                  slot-scope="props">
                 <el-select
                   class="zjy-select"
+                  popper-class="zjy-process-select"
                   v-model="approver"
                   :placeholder="$t('zjy.process.selectPlaceholder')"
                   @change="handleChange"
@@ -63,7 +64,7 @@
       </div>
     </template>
 
-    <div class="zjy-footer" v-if="!isFinished && hasStep">
+    <div class="zjy-footer" v-if="!isFinished && hasStep && isMyStep">
       <template v-if="!isApprovered">
         <zjy-button type="plain" @click="no">拒绝</zjy-button>
         <zjy-button type="primary" @click="yes">同意</zjy-button>
@@ -179,17 +180,9 @@ export default {
       this.reason = ''
     },
 
-    // clear () {
-    //   this.reason = ''
-    //   this.isFinished = false
-    //   this.isApprovered = false
-    // },
-
     submit () {
       if (this.hasNextApprover && !this.approver && !this.reason) {
         this.error = this.$t('zjy.process.selectPlaceholder')
-
-        // this.$alert('请选择下一步审批人')
         return
       }
 
@@ -204,20 +197,6 @@ export default {
       }
 
       this.$emit('submit', this.data, this.steps)
-      // manageAPI
-      //   .submit(this.data.insuranceUid, this.data.inssettingUid, this.steps)
-      //   .then(response => {
-      //     if (response.code === 1) {
-      //       this.$alert('保存成功')
-      //     } else {
-      //       this.$alert('保存失败')
-      //     }
-      //     // this.clear()
-      //     this.$emit('submit', 1)
-      //   })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
     }
   },
 
@@ -267,5 +246,10 @@ export default {
   .tip-box {
     height: 20px;
     position: relative;
+  }
+  .zjy-process {
+    .zjy-steps {
+      width: 700px;
+    }
   }
 </style>

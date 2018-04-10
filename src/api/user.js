@@ -6,5 +6,9 @@ export default {
       url: '/manage/menus',
       method: 'get'
     })
+  },
+
+  logout () {
+    return ajax.get(process.env.LOGOUT_URL)
   }
 }

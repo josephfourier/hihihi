@@ -52,6 +52,15 @@ const actions = {
 
   setUser ({ commit }, user) {
     commit(types.SET_USER, user)
+  },
+
+  logout ({ commit }) {
+    return new Promise((resolve, reject) => {
+      userAPI.logout().then(_ => {
+        // commit(types.SET_TOKEN, '')
+        resolve()
+      })
+    })
   }
 }
 

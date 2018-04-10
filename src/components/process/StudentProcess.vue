@@ -29,7 +29,7 @@
                   'status'
                 ]"
               >
-                ({{ item.approvalStatus | statusFormat }})
+                {{ item.approvalStatus | statusFormat }}
               </p>
             </div>
           </div>
@@ -39,6 +39,7 @@
                slot-scope="props">
             <el-select
               class="zjy-select"
+              popper-class="zjy-process-select"
               v-model="approver"
               :placeholder="$t('zjy.process.selectPlaceholder')"
               @change="handleChange"

@@ -2,7 +2,6 @@
   <div class="zjy-app">
     <zjy-table-operator>
       <operator-item clz="create" @click="visible=true">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">删除</operator-item>
     </zjy-table-operator>
 
     <zjy-table
@@ -55,6 +54,7 @@ import {_refresh} from '@/utils'
 
 import ScholarshipSetting from './ScholarshipSetting'
 
+import properties from './properties'
 export default {
   name: 'index',
   data () {
@@ -62,10 +62,7 @@ export default {
       list: [],
       currentPage: 1,
       total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
+      query: properties.query,
 
       loading: false,
       visible: false,
@@ -73,49 +70,7 @@ export default {
       formData: {},
 
       selectedRows: [],
-      columns: [
-        {
-          index: true,
-          select: true
-        },
-        {
-          label: '奖学金名称',
-          prop: 'scholarshipName',
-          width: '300'
-        },
-        {
-          label: '人员限数',
-          prop: 'numberLimit',
-          width: '200'
-        },
-        {
-          label: '奖学金级别',
-          prop: 'scholarshipLevel'
-        },
-        {
-          label: '金额',
-          prop: 'money'
-        },
-        {
-          label: '开放申请',
-          prop: 'isOpen',
-          formatter: this.statusFormat
-        },
-        {
-          label: '操作',
-          width: '200',
-          operators: [
-            {
-              label: '删除',
-              cmd: 'delete'
-            },
-            {
-              label: '编辑',
-              cmd: 'edit'
-            }
-          ]
-        }
-      ]
+      columns: properties.columns
     }
   },
 
@@ -129,14 +84,6 @@ export default {
 
     refresh (auto) {
       return _refresh.call(this, auto)
-    },
-
-    statusFormat (cellValue) {
-      return ['否', '是'][+cellValue]
-    },
-
-    batchRemove () {
-
     },
     //  ------------ 表格头操作 END ------------
 

@@ -152,7 +152,7 @@ export default {
       renderFunc (h, item) {
         return (
           <span>
-            {item.label}-{item.key}
+            {item.label}
           </span>
         )
       },

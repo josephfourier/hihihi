@@ -22,20 +22,20 @@
       <el-form-item label="保险责任" prop="insuranceLiability">
         <el-input type="textarea" v-model="formData.insuranceLiability"></el-input>
       </el-form-item>
-      <el-form-item label="开放申请">
+      <el-form-item label="开放申请" prop="isOpen">
         <el-radio-group v-model="formData.isOpen">
           <el-radio label="1">开放</el-radio>
           <el-radio label="0">不开放</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="在线支付">
+      <el-form-item label="在线支付" prop="isPay">
         <el-radio-group v-model="formData.isPay">
           <el-radio label="1">开启</el-radio>
           <el-radio label="0">关闭</el-radio>
         </el-radio-group>
       </el-form-item>
       <div class="zjy-footer">
-        <zjy-button type="plain" @click="$emit('closed', 1)">取消</zjy-button>
+        <zjy-button type="plain" @click="$emit('update:visible', false)">取消</zjy-button>
         <zjy-button type="primary" @click="submitForm('formData')">提交</zjy-button>
       </div>
     </el-form>
@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import insuranceAPI from '@/api/teacher/insurance/setting'
 import ZjyButton from '@/components/button'
 
 export default {
@@ -56,6 +55,7 @@ export default {
     }
     return {
 
+      formDate: {},
       rules: {
         insuranceName: [
           { required: true, message: '请输入保险名称', trigger: 'blur' }
@@ -79,6 +79,12 @@ export default {
         ],
         insuranceLiability: [
           { required: true, message: '请输入保险责任', trigger: 'blur' }
+        ],
+        isOpen: [
+          { required: true, message: '请选择是否开放', trigger: 'blur' }
+        ],
+        isPay: [
+          { required: true, message: '请选择是否启放在线支付', trigger: 'blur' }
         ]
       }
     }
@@ -88,21 +94,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.type === 1) {
-            insuranceAPI.update(this.formData.inssettingUid, this.formData).then(response => {
-              if (response.code === 1) {
-                MSG.success('修改成功')
-                this.$emit('closed', 1)
-              }
-            })
-          } else {
-            insuranceAPI.create(this.formData).then(response => {
-              if (response.code === 1) {
-                MSG.success('新增成功')
-                this.$emit('closed', 1)
-              }
-            })
-          }
+          this.$emit('submit', this.formData)
         } else {
           return false
         }
@@ -111,12 +103,10 @@ export default {
   },
   props: {
     formData: Object,
-    type: Number
+    visible: Boolean
   },
   components: {
     ZjyButton
-  },
-  watch: {
   }
 }
 </script>

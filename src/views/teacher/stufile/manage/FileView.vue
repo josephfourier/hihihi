@@ -89,7 +89,7 @@
               <div v-if="fileList[scope.$index].stufilePath">
 
                 <div class="table-oper-group">
-                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-edit">
+                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download">
                     <i class="zjy-icon"></i>
                     <span>下载</span>
                   </a>
@@ -119,8 +119,10 @@
         </el-table-column>
       </el-table>
     </div>
-    <p class="zjy-form__title">档案说明</p>
-    <zjy-input type="textarea" v-model="data.stufileDescription" disabled></zjy-input>
+    <template v-if="data.stufileDescription">
+      <p class="zjy-form__title">档案说明</p>
+      <zjy-input type="textarea" v-model="data.stufileDescription" disabled></zjy-input>
+    </template>
 
     <div class="zjy-footer">
       <zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
@@ -228,9 +230,9 @@ export default {
     }
   }
 
-  .search-input {
-    width: 220px;
-  }
+  /*.search-input {*/
+    /*width: 220px;*/
+  /*}*/
 
   .tip {
     position: absolute;

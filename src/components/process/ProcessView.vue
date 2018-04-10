@@ -26,7 +26,7 @@
                   'status'
                 ]"
               >
-                ({{ item.approvalStatus | statusFormat }})
+                {{ item.approvalStatus | statusFormat }}
               </p>
             </div>
           </div>
@@ -35,10 +35,7 @@
     </div>
 
     <p v-if="reason && isFinished" class="refused">拒绝原因: {{ reason }}</p>
-    <!--<div class="zjy-footer" v-if="!hasFooter && isFinished && !reason">-->
-      <!--<zjy-button type="plain" @click="$emit('update:visible', false)">取 消</zjy-button>-->
-      <!--<zjy-button type="primary" @click="pay">立即支付</zjy-button>-->
-    <!--</div>-->
+
     <!-- 根据数据状态可以定制显示操作按钮 -->
       <slot :data="data" :steps="steps" name="footer"></slot>
   </div>

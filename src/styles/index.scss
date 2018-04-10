@@ -98,6 +98,16 @@
   }
 }
 
+.zjy-btn-download {
+  .zjy-icon {
+    background: url('../assets/images/zjy-icon-download.png') no-repeat 6px 1px;
+  }
+  span:hover {
+    color: #0aacf8;
+  }
+}
+
+
 .zjy-btn-delete {
   .zjy-icon {
     background: url('../assets/images/zjy-icon-delete.png') no-repeat 3px 0;
@@ -214,6 +224,7 @@
   }
   .process-title {
     font-weight: bold;
+    color: #333333;
     margin-bottom: 5px;
   }
   .content {

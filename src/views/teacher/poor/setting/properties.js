@@ -34,12 +34,12 @@ export default {
       width: 200,
       operators: [
         {
-          label: '编辑',
-          cmd: 'edit'
-        },
-        {
           label: '查看',
           cmd: 'view'
+        },
+        {
+          label: '编辑',
+          cmd: 'edit'
         }
       ]
     }

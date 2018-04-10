@@ -29,13 +29,13 @@
         :title="title"
         :visible.sync="visible"
         width="800px"
-        @close="visible=false"
       >
         <insurance-setting
           v-if="visible"
           :formData="setting"
           :type="type"
-          @closed="handleInnerClose"
+          :visible.sync="visible"
+          @submit="handleSubmit"
         >
         </insurance-setting>
       </el-dialog>
@@ -53,7 +53,7 @@ import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
 import { _refresh } from '@/utils'
-
+import properties from './properties'
 export default {
   data () {
     return {
@@ -69,63 +69,32 @@ export default {
       visible: false,
 
       type: 1, // 1编辑 2新增
-      setting: {
-        isOpen: '1',
-        isPay: '1'
-      }, // 新增投保设置
+      setting: {}, // 新增投保设置
       selectedRows: [],
 
-      columns: [
-        {
-          index: true,
-          select: true
-        },
-        {
-          label: '险种名称',
-          prop: 'insuranceName',
-          width: '300'
-        },
-        {
-          label: '保险公司',
-          prop: 'insuranceCompany',
-          width: '200'
-        },
-        {
-          label: '险种类别',
-          prop: 'insuranceCategory'
-        },
-        {
-          label: '保险费用',
-          prop: 'insuranceCost'
-        },
-        {
-          label: '保险期限',
-          prop: 'insuranceLimit'
-        },
-        {
-          label: '操作',
-          width: '200',
-          operators: [
-            {
-              label: '删除',
-              cmd: 'delete'
-            },
-            {
-              label: '编辑',
-              cmd: 'edit'
-            }
-          ]
-        }
-      ]
+      columns: properties.columns
     }
   },
 
   methods: {
-    create () {
-      this.setting = {
-        isOpen: '1',
-        isPay: '1'
+    handleSubmit (data) {
+      if (this.type === 1) {
+        insuranceAPI.update(data.inssettingUid, data).then(response => {
+          if (response.code === 1) {
+            MSG.success('修改成功')
+            this.refresh().visible = false
+          }
+        })
+      } else {
+        insuranceAPI.create(data).then(response => {
+          if (response.code === 1) {
+            MSG.success('新增成功')
+            this.refresh().visible = false
+          }
+        })
       }
+    },
+    create () {
       this.title = '新增保险'
       this.type = 2
       this.visible = true
@@ -154,11 +123,6 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    },
-
-    handleInnerClose () {
-      this.visible = false
-      this.refresh()
     },
 
     batchRemove () {
@@ -190,7 +154,7 @@ export default {
     },
 
     refresh () {
-      _refresh.call(this)
+      return _refresh.call(this)
     }
   },
 
@@ -216,6 +180,10 @@ export default {
           console.log(error)
         })
       }
+    },
+
+    visible (val) {
+      if (!val) this.setting = {}
     }
   }
 }

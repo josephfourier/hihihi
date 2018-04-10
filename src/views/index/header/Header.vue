@@ -16,8 +16,8 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>返回个人中心</el-dropdown-item>
-          <el-dropdown-item>退出系统</el-dropdown-item>
+          <el-dropdown-item><a @click="back">返回个人中心</a></el-dropdown-item>
+          <el-dropdown-item><a @click="logout">退出系统</a></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -30,6 +30,19 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {}
+  },
+
+  methods: {
+    back () {
+      window.location.href = process.env.SSO_URL
+    },
+
+    logout () {
+      MSG.success('开发中...')
+      // this.$store.dispatch('logout').then(() => {
+      //   window.location.href = process.env.LOGOUT_URL
+      // })
+    }
   },
 
   computed: {

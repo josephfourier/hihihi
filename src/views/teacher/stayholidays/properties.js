@@ -1,17 +1,16 @@
-import { dateFormat } from '@/utils'
+import { dateFormat } from "@/utils";
 
-const statusFormat = (cellValue) => {
-  return ['', '已生效', '已撤销'][+cellValue]
-}
+const statusFormat = (cellValue) =>  ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
 
 export default {
   query: {
     offset: 0,
-    limit: 10,
-    punishStatus: '',
-    punishYear: '',
+    limit: 2,
+    dataStatus: '',
+    applyYear: '',
     studentCode: ''
   },
+
   optionsYear: [
     {
       label: '2017年',
@@ -25,19 +24,28 @@ export default {
 
   optionsStatus: [
     {
-      label: '已生效',
+      label: '待审批',
+      value: 0
+    }, {
+      label: '已通过',
       value: 1
     }, {
-      label: '已撤销',
+      label: '已拒绝',
       value: 2
+
+    }, {
+      label: '审批中',
+      value: 3
     }
   ],
+  //  --------------- 初始化select END ---------------
+
+  //  表格数据
   columns: [
     {
       index: true,
-      select: true
-    },
-    {
+      indexWidth: 50
+    }, {
       label: '学号',
       prop: 'studentNo',
       width: 100
@@ -48,20 +56,24 @@ export default {
       label: '院系',
       prop: 'facultyName'
     }, {
-      label: '处分日期',
-      prop: 'punishDate',
+      label: '申请日期',
+      prop: 'applyDate',
       formatter: dateFormat
     }, {
-      label: '处分类型',
-      prop: 'punishName',
-      width: 200
-    },
-    {
+      label: '申请年份',
+      prop: 'applyYear'
+    }, {
+      label: '假期名称',
+      prop: 'holidayName'
+    }, {
+      label: '电话',
+      prop: 'phone'
+
+    }, {
       label: '状态',
-      prop: 'punishStatus',
+      prop: 'dataStatus',
       formatter: statusFormat
-    },
-    {
+    }, {
       label: '操作',
       width: '200',
       operators: [
@@ -71,7 +83,6 @@ export default {
         },
         {
           label: '删除',
-          render: (row) => row.punishStatus === '2',
           cmd: 'delete'
         }
       ]

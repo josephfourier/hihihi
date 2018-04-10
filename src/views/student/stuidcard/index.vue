@@ -31,7 +31,7 @@
         <zjy-input disabled :value="reissued.applyDate | dateFormat"></zjy-input>
       </div>
       <div class="form-item block">
-        <span>申请原因:</span>
+        <span>申请原因</span>
         <zjy-input type="textarea" v-model="reissued.applyReason" :disabled="!isFinished && step !== 1"></zjy-input>
       </div>
       <div class="tip-box">
@@ -63,7 +63,7 @@
                 { statusWait: item.approvalStatus == 0 },
                   'status'
                 ]">
-                  ({{ item.approvalStatus | statusFormat }})
+                  {{ item.approvalStatus | statusFormat }}
                 </p>
               </div>
             </div>
@@ -75,6 +75,7 @@
             >
               <el-select
                 class="zjy-select"
+                popper-class="zjy-process-select"
                 v-model="value"
                 placeholder="请选择审批人"
                 @change="handleChange"

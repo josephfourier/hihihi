@@ -2,7 +2,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="保单状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
+      <search-select label="审批状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
       <search-select label="申请年份" :options="optionsYear" :value.sync="applyYear"></search-select>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
@@ -11,8 +11,8 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
-      <operator-item @click="_import" clz="import">导入</operator-item>
+      <!--<operator-item @click="batchRemove" clz="delete">批量删除</operator-item>-->
+      <!--<operator-item @click="_import" clz="import">导入</operator-item>-->
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
@@ -66,118 +66,30 @@ import ZjyPagination from '@/components/pagination'
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 
-import {dateFormat as _dateFormat, _refresh} from '@/utils'
+import { _refresh } from '@/utils'
 
 import stayholidaysAPI from '@/api/teacher/stayholidays'
 import commonAPI from '@/api/common'
-
+import properties from './properties'
 export default {
   name: 'index',
   data () {
     return {
-      //  搜索
       dataStatus: '',
       applyYear: '',
       studentCode: '',
-      query: {
-        offset: 0,
-        limit: 2,
-        dataStatus: '',
-        applyYear: '',
-        studentCode: ''
-      },
-      //  --------------- 搜索 END ---------------
+      query: properties.query,
 
-      // dialog
       visible: false,
-      // --------------- dialog END ---------------
 
-      // 分页
       list: [],
       currentPage: 1,
       total: 0,
       loading: false,
-      // --------------- 分页 END ---------------
 
-      //  初始化select
-      optionsYear: [
-        {
-          label: '2017年',
-          value: 2017
-        },
-        {
-          label: '2018年',
-          value: 2018
-        }
-      ],
-
-      optionsStatus: [
-        {
-          label: '待审批',
-          value: 0
-        }, {
-          label: '已通过',
-          value: 1
-        }, {
-          label: '已拒绝',
-          value: 2
-
-        }, {
-          label: '审批中',
-          value: 3
-        }
-      ],
-      //  --------------- 初始化select END ---------------
-
-      //  表格数据
-      columns: [
-        {
-          index: true,
-          indexWidth: 50
-        }, {
-          label: '学号',
-          prop: 'studentNo',
-          width: 100
-        }, {
-          label: '学生姓名',
-          prop: 'studentName'
-        }, {
-          label: '院系',
-          prop: 'facultyName'
-        }, {
-          label: '申请日期',
-          prop: 'applyDate',
-          formatter: this.dateFormat
-        }, {
-          label: '申请年份',
-          prop: 'applyYear'
-        }, {
-          label: '假期名称',
-          prop: 'holidayName'
-        }, {
-          label: '电话',
-          prop: 'phone'
-
-        }, {
-          label: '状态',
-          prop: 'dataStatus',
-          formatter: this.statusFormat
-        }, {
-          label: '操作',
-          width: '200',
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            },
-            {
-              label: '删除',
-              cmd: 'delete'
-            }
-          ]
-        }
-      ]
-      //  --------------- 表格数据 END ---------------
+      optionsYear: properties.optionsYear,
+      optionsStatus: properties.optionsStatus,
+      columns: properties.columns
     }
   },
 
@@ -222,14 +134,12 @@ export default {
       stayholidaysAPI.delete(row.stayholidayUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
+          MSG.success('删除成功')
+        } else {
+          this.$alert(response.message)
         }
       })
     },
-
-    // --------------- table操作 END ---------------
-
-    dateFormat (cellValue) { return _dateFormat(cellValue) },
-    statusFormat (cellValue) { return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue] },
 
     makeFormData (data, steps) {
       return {

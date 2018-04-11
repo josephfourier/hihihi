@@ -266,3 +266,42 @@
 .el-icon-success:before {
   color: #37c6d4;
 }
+
+// 困难生申请表单特殊处理
+.poor-apply {
+  .zjy-form {
+    .el-form-item {
+      &:first-child {
+        margin-bottom: 0;
+      }
+      &.checkbox {
+        label {
+          height: 30px;
+          &.el-checkbox {
+            float: left;
+            margin-right: 5px;
+            margin-left: 0;
+          }
+        }
+        .el-form-item__error {
+
+        }
+      }
+    }
+    .el-input {
+      width: 100px;
+      .el-input__inner {
+        height: 34px;
+        line-height: 34px;
+      }
+    }
+    .el-checkbox-group {
+      .el-checkbox+.el-checkbox {
+        margin-left: 5px;
+      }
+      .el-checkbox__label {
+        padding-left: 5px;
+      }
+    }
+  }
+}

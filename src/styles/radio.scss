@@ -21,3 +21,27 @@
   width: 8px;
   height: 8px;
 }
+.el-checkbox__inner {
+  height: 18px;
+  width: 18px;
+  border-radius: 0;
+}
+.el-checkbox__inner::after {
+  height: 8px;
+  left: 6px;
+  top: 2px;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #36c6d3;
+  border-color: #36c6d3;
+}
+.el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #36c6d3;
+}
+.el-checkbox__inner:hover {
+  border-color: #36c6d3;
+}
+.el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: #36c6d3;
+}

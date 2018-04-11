@@ -128,5 +128,9 @@ export default {
 
   queryPolitics () {
     return ajax.get('/manage/common/dict/DICT_POLITICS')
+  },
+
+  queryPoorTypeList () {
+    return ajax.get('/manage/common/dict/DICT_POOR_TYPE')
   }
 }

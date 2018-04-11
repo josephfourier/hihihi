@@ -25,23 +25,7 @@ export default {
     })
   },
 
-  checkYear (year) {
-    return ajax.get('/manage/swmsPoorSetting?applyYear=' + year)
-  },
-
-  queryForObject (id) {
-    return ajax.get('/manage/swmsPoorSetting/' + id)
-  },
-
   create (d) {
-    return ajax.post('/manage/swmsPoorSetting', d)
-  },
-
-  update (d) {
-    return ajax.put('/manage/swmsPoorSetting', d)
-  },
-
-  delete (id) {
-    return ajax.delete('/manage/punish-setting/' + id)
+    return ajax.post('/manage/swmsPoor/student', d)
   }
 }

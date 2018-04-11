@@ -16,8 +16,10 @@
       </zjy-pagination>
     </div>
 
-    <el-dialog :title="title" :visible.sync="visible" width="800px">
+    <el-dialog title="困难生申请" :visible.sync="visible" width="800px">
       <zjy-form
+        v-if="visible"
+        :data="formData"
         :value="value"
         :visible.sync="visible"
         @submit="handleSubmit"
@@ -25,7 +27,7 @@
       </zjy-form>
     </el-dialog>
 
-    <el-dialog :title="title" :visible.sync="visible2" width="800px">
+    <el-dialog title="困难生申请说明" :visible.sync="visible2" width="800px">
       <view-setting
         :data="data"
         :visible.sync="visible2"
@@ -38,6 +40,7 @@
 
 <script>
 import api from './api'
+import axios from 'axios'
 import { getPermissionId, _refresh } from '@/utils'
 
 import ZjyTable from '@/components/table'
@@ -57,55 +60,75 @@ export default {
       total: 0,
       query: properties.query,
 
-      title: '',
       loading: false,
       visible: false,
       visible2: false,
+      currentRow: {},
 
-      columns: properties.columns
+      columns: properties.columns,
+      formData: {}
     }
   },
 
   methods: {
 
     // 学生申请
-    create () {
-      commonAPI.queryInitial(getPermissionId(this.$route)).then(response => {
-        this.value = response.data
-        this.title = '困难生申请'
-        this.visible = true
+    create (row) {
+      axios.all([commonAPI.queryInitial(getPermissionId(this.$route)), commonAPI.queryStudent()])
+        .then(axios.spread((r1, r2) => {
+          if (r1.code !== 1 || r2.code !== 1) {
+            MSG.warning('获取数据失败')
+            return
+          }
+          this.value = r1.data
+          this.formData = r2.data
+        })).catch(error => {
+          console.log(error)
+        })
+    },
+    makeFormData (data, steps) {
+      data.poorType = data.poorType.join(',')
+      return {
+        ...data,
+        swmsApprovalList: steps
+      }
+    },
+    handleSubmit (data, steps) {
+      api.create(this.makeFormData(data, steps)).then(response => {
+        console.log(response)
+        if (response.code !== 1) {
+          this.$alert('申请失败')
+        } else {
+          MSG.success('申请成功')
+          this.refresh().visible = false
+        }
       }).catch(error => {
         console.log(error)
       })
     },
-    handleSubmit (data, steps) {
-      alert('验证通过')
-    },
 
     view (row) {
-      this.title = '困难生申请说明'
+      this.currentRow = row
       this.data = row
-      this.visible2 = true
+      if (this.isView) { this.visible2 = true } else {
+        commonAPI.queryApprovalProcess(row.swmsPoor.studentId, row.swmsPoor.poorUid).then(response => {
+          this.formData = row
+          this.value = response.data
+          this.visible = true
+        })
+      }
     },
 
     currentChange (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    makeFormData (data, steps) {
-      return {
-        'studentId': data.student.studentId,
-        'holidayId': this.type,
-        'holidayName': this.data.holidayType.find(i => i.valueKey == this.type).valueName,
-        'stayReason': this.reason,
-        'schoolCode': data.student.schoolCode,
-        'swmsApprovalList': steps
-      }
-    },
-
     refresh () {
-      _refresh.call(this)
+      return _refresh.call(this)
     }
+  },
+  computed: {
+    isView () { return !this.currentRow.swmsPoor }
   },
 
   components: {
@@ -129,13 +152,6 @@ export default {
         }).catch(error => {
           console.log(error)
         })
-      }
-    },
-    visible (val) {
-      if (!val) {
-        this.type = ''
-        this.reason = ''
-        this.hasError = false
       }
     }
   }

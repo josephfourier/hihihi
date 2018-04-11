@@ -1,7 +1,7 @@
 import { dateFormat } from '@/utils'
 const statusFormat = (cellValue) => {
   if (!cellValue) return '未申请'
-  return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
+  return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue.dataStatus]
 }
 
 export default {
@@ -30,7 +30,7 @@ export default {
     },
     {
       label: '状态',
-      prop: 'dataStatus',
+      prop: 'swmsPoor',
       formatter: statusFormat
     },
     {
@@ -43,7 +43,8 @@ export default {
         },
         {
           label: '申请',
-          cmd: 'create'
+          cmd: 'create',
+          render: row => !row.swmsPoor
         }
       ]
     }

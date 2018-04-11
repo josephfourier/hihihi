@@ -21,6 +21,15 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
+    <!--<el-button @click="TEST">TEST</el-button>-->
+    <!--<el-dialog :visible.sync="visible" width="800px" title="13143134" append-to-body>-->
+      <!--<span>这是一段信息</span>-->
+      <!--<span slot="footer" class="dialog-footer">-->
+      <!--<el-button>取 消</el-button>-->
+      <!--<el-button type="primary">确 定</el-button>-->
+      <!--</span>-->
+    <!--</el-dialog>-->
   </div>
 </template>
 
@@ -29,10 +38,15 @@ import { mapGetters } from 'vuex'
 
 export default {
   data () {
-    return {}
+    return {
+      visible: false
+    }
   },
 
   methods: {
+    TEST () {
+      this.visible = true
+    },
     back () {
       window.location.href = process.env.SSO_URL
     },

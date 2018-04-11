@@ -19,12 +19,26 @@
     <el-dialog title="困难生申请" :visible.sync="visible" width="800px">
       <zjy-form
         v-if="visible"
+        :student="student"
         :data="formData"
         :value="value"
         :visible.sync="visible"
         @submit="handleSubmit"
       >
       </zjy-form>
+    </el-dialog>
+
+    <el-dialog title="困难生申请进度" :visible.sync="visible3" width="800px">
+      <form-view
+        v-if="visible3"
+        :student="student"
+        :data="formData"
+        :value="value"
+        :visible.sync="visible3"
+        @submit="handleUpdate"
+        @delete="handleDelete"
+      >
+      </form-view>
     </el-dialog>
 
     <el-dialog title="困难生申请说明" :visible.sync="visible2" width="800px">
@@ -47,6 +61,7 @@ import ZjyTable from '@/components/table'
 import ZjyPagination from '@/components/pagination'
 import ViewSetting from './ViewSetting'
 import ZjyForm from './form'
+import FormView from './FormView'
 import properties from './properties'
 import commonAPI from '@/api/common'
 
@@ -63,9 +78,11 @@ export default {
       loading: false,
       visible: false,
       visible2: false,
+      visible3: false,
       currentRow: {},
 
       columns: properties.columns,
+      student: {},
       formData: {}
     }
   },
@@ -81,17 +98,46 @@ export default {
             return
           }
           this.value = r1.data
-          this.formData = r2.data
+          this.student = r2.data
+          this.formData = row
+          this.visible = true
         })).catch(error => {
           console.log(error)
         })
     },
+
     makeFormData (data, steps) {
-      data.poorType = data.poorType.join(',')
+      let d = {...data}
+      d.poorType = d.poorType.join(',')
       return {
-        ...data,
+        ...d,
         swmsApprovalList: steps
       }
+    },
+    handleDelete (data) {
+      const auto = this.list.length === 1 && this.currentPage !== 1
+      api.delete(data.poorUid).then(response => {
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          MSG.success('删除成功')
+        }
+      }).finally(() => {
+        this.refresh(auto).visible3 = false
+      })
+    },
+    handleUpdate (data) {
+      // 修复关闭前checkbox提示问题
+      let d = {...data}
+      d.poorType = d.poorType.join(',')
+      api.update(d).then(response => {
+        this.visible3 = false
+        if (response.code !== 1) {
+          MSG.warning('修改失败')
+        } else {
+          MSG.success('修改成功')
+        }
+      }).catch().finally(this.refresh())
     },
     handleSubmit (data, steps) {
       api.create(this.makeFormData(data, steps)).then(response => {
@@ -111,11 +157,13 @@ export default {
       this.currentRow = row
       this.data = row
       if (this.isView) { this.visible2 = true } else {
-        commonAPI.queryApprovalProcess(row.swmsPoor.studentId, row.swmsPoor.poorUid).then(response => {
-          this.formData = row
-          this.value = response.data
-          this.visible = true
-        })
+        axios.all([commonAPI.queryApprovalProcess(row.swmsPoor.studentId, row.swmsPoor.poorUid), api.queryForObject(row.swmsPoor.poorUid)]).then(axios.spread((r1, r2) => {
+          this.value = r1.data
+          this.student = r2.data.ucenterStudent
+          this.formData = r2.data
+          this.formData.poorType = this.formData.poorType.split(',')
+          this.visible3 = true
+        }))
       }
     },
 
@@ -135,7 +183,8 @@ export default {
     ZjyPagination,
     ZjyTable,
     ViewSetting,
-    ZjyForm
+    ZjyForm,
+    FormView
     // ZjyFormView
   },
 
@@ -144,6 +193,7 @@ export default {
       immediate: true,
       handler (val, oldval) {
         if (val === -1 || val === 0) return
+        this.loading = true
         this.query.offset = this.query.limit * (val - 1)
         api.queryForList(this.query).then(response => {
           this.list = response.rows
@@ -151,6 +201,8 @@ export default {
           this.total = response.total
         }).catch(error => {
           console.log(error)
+        }).finally(() => {
+          this.loading = false
         })
       }
     }

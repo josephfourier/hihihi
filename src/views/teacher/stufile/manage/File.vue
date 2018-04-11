@@ -158,7 +158,7 @@ export default {
   data () {
     return {
       data: {},
-      action: process.env.BASE_URL + 'upload/stufileUpload',
+      action: process.env.BASE_URL + '/upload/stufileUpload',
       rules: {
         stufileNo: [
           {required: true, message: '请输入档案编号', trigger: 'blur'}
@@ -286,9 +286,10 @@ export default {
           stufileManageAPI.checkExists(this.studentNo).then(response => {
             if (response.code !== 1) {
               this.hasError = true
-              this.error = response.data
+              // this.error = response.data
+              this.error = response.message
               this.success = ''
-              reject(false)
+              // reject(false)
             } else {
               this.fillData(response.data)
               this.error = ''
@@ -352,30 +353,29 @@ export default {
         arg.stufileListList = stufileListList
 
         if (this.type === 2) {
-          this.check()
-            .then(response => {
-              if (response && valid) {
-                // 验证通过后提交表单数据
+          this.check().then(response => {
+            if (response && valid) {
+              // 验证通过后提交表单数据
 
-                arg.studentNo = this.data.studentNo
-                arg.studentId = this.data.studentId
+              arg.studentNo = this.data.studentNo
+              arg.studentId = this.data.studentId
 
-                stufileManageAPI.create(arg).then(response => {
-                  if (response.code === 1) {
-                    MSG.success('添加成功')
-                    this.clearValidate()
-                    this.$emit('update:visible', false)
-                  } else {
-                    this.$alert(response.message)
-                  }
-                }).catch(error => {
-                  console.log(error)
-                })
-              }
-            }).catch(error => {
-              console.log(error)
-              return false
-            })
+              stufileManageAPI.create(arg).then(response => {
+                if (response.code === 1) {
+                  MSG.success('添加成功')
+                  this.clearValidate()
+                  this.$emit('update:visible', false)
+                } else {
+                  this.$alert(response.message)
+                }
+              }).catch(error => {
+                console.log(error)
+              })
+            }
+          }).catch(error => {
+            console.log(error)
+            return false
+          })
         } else if (valid) {
           stufileManageAPI.update(this.data.stufileUid, arg).then(response => {
             if (response.code === 1) {

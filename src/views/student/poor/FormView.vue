@@ -1,9 +1,8 @@
+<!-- 学生申请但未审批时可以修改 -->
 <template>
   <div class="poor-apply">
-    <!--{{ data }}-->
-
     <div class="zjy-form">
-      <el-form :model="formData" :rules="rules" ref="formData" label-width="110px">
+      <el-form :model="data" :rules="rules" ref="formData" label-width="110px">
         <el-form-item >
           <ul class="list">
             <li>姓名:{{student.studentName}}</li>
@@ -13,17 +12,17 @@
           </ul>
         </el-form-item>
         <el-form-item label="家庭总人口数" prop="totalPopulation" class="inline">
-          <el-input v-model="formData.totalPopulation"></el-input> 人
+          <el-input v-model="data.totalPopulation"></el-input> 人
         </el-form-item>
 
         <el-form-item label="家庭年收入" prop="annualIncome" class="inline">
-          <el-input v-model="formData.annualIncome" type="input"></el-input> 元
+          <el-input v-model="data.annualIncome" type="input"></el-input> 元
         </el-form-item>
         <el-form-item label="人均月收入" prop="pcmIncome" class="inline">
-          <el-input v-model="formData.pcmIncome" type="input"></el-input> 元
+          <el-input v-model="data.pcmIncome" type="input"></el-input> 元
         </el-form-item>
         <el-form-item label="家庭困难类型" prop="poorType" class="checkbox">
-          <el-checkbox-group v-model="formData.poorType">
+          <el-checkbox-group v-model="data.poorType">
             <el-checkbox
               v-for="item in poorList"
               :key="item.value"
@@ -35,34 +34,38 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="家庭困难情况" prop="poorDescription">
-          <el-input v-model="formData.poorDescription" type="textarea"></el-input>
+          <el-input v-model="data.poorDescription" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="曾受资助情况" prop="receivedFunding">
-          <el-input v-model="formData.receivedFunding" type="textarea"></el-input>
+          <el-input v-model="data.receivedFunding" type="textarea"></el-input>
         </el-form-item>
       </el-form>
     </div>
-    <student-process
+    <process-view
       v-model="value"
       :visible.sync="innerVisible"
-      :yesBtnText="'申请'"
-      @submit="handleSubmit"
     >
-    </student-process>
+      <template slot-scope="props" slot="footer">
+        <zjy-footer
+          :data="data"
+          :steps="props.steps"
+          @update="update"
+          @delete="_delete"
+        ></zjy-footer>
+      </template>
+    </process-view>
   </div>
 </template>
 
 <script>
-import StudentProcess from '@/components/process/StudentProcess'
+import ProcessView from '@/components/process/ProcessView'
 import commonAPI from '@/api/common'
+import ZjyFooter from './Footer'
 
 export default {
 
   data () {
     return {
-      formData: {
-        poorType: []
-      },
       poorList: [],
       innerVisible: true,
       rules: {
@@ -91,8 +94,8 @@ export default {
 
   props: {
     student: Object,
-    data: Object,
-    value: Object,
+    data: Object, // 填写的数据回显
+    value: Object, // 流程数据
     visible: Boolean
   },
 
@@ -114,20 +117,21 @@ export default {
   },
 
   methods: {
-    handleSubmit (_, list) {
+
+    _delete () {
+      this.$emit('delete', this.data)
+    },
+    update (list) {
       this.$refs.formData.validate(valid => {
-        Object.assign(this.formData, {
-          studentId: this.student.studentId,
-          poorsettingUid: this.data.poorsettingUid
-        })
-        if (valid) { this.$emit('submit', this.formData, list) } else {
+        if (valid) { this.$emit('submit', this.data) } else {
           return false
         }
       })
     }
   },
   components: {
-    StudentProcess
+    ProcessView,
+    ZjyFooter
   },
   watch: {
     visible (val) {
@@ -144,12 +148,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.list {
-  overflow: hidden;
-  margin-left: -110px;
-  li {
-    float: left;
-    margin-right: 50px;
+  .list {
+    overflow: hidden;
+    margin-left: -110px;
+    li {
+      float: left;
+      margin-right: 50px;
+    }
   }
-}
 </style>

@@ -99,7 +99,7 @@ export default {
         ],
 
         honoraryIntroduction: [
-          { required: true, message: '请输入申请说明', trigger: 'blur' }
+          { required: true, message: '请输入荣誉称号简介', trigger: 'blur' }
         ],
         startDate: [
           { required: true, message: '请选择起始日期', trigger: 'blur' }

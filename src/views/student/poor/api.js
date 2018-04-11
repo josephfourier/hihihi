@@ -27,5 +27,17 @@ export default {
 
   create (d) {
     return ajax.post('/manage/swmsPoor/student', d)
+  },
+
+  update (arg) {
+    return ajax.put('/manage/swmsPoor/student/', arg)
+  },
+
+  delete (id) {
+    return ajax.delete('/manage/swmsPoor/student/' + id)
+  },
+
+  queryForObject (id) {
+    return ajax.get('/manage/swmsPoor/' + id)
   }
 }

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="zjy-process">
+  <div class="zjy-process" v-loading="loading">
     <table class="process-table">
       <tr>
         <td>奖学金名称: {{ data.scholarshipName }}</td>
@@ -23,6 +23,8 @@
     <p class="content">{{ data.applyReson }}</p>
     <p class="process-title">审批进度</p>
   </div>
+  <el-collapse-transition>
+
   <zjy-process
     v-if="innerVisible"
     :data="data"
@@ -31,6 +33,7 @@
     @submit="handleSubmit"
   >
   </zjy-process>
+  </el-collapse-transition>
 </div>
 </template>
 
@@ -46,7 +49,8 @@ export default {
     return {
       data: {},
       value: {},
-      innerVisible: false
+      innerVisible: false,
+      loading: true
     }
   },
   props: {
@@ -63,6 +67,7 @@ export default {
       })
       selfMerge(r2.data, this.data)
       this.innerVisible = true
+      this.loading = false
     }))
   },
 

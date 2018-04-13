@@ -1,44 +1,63 @@
 <!--  -->
 <template>
-   <div class="sidebar-wrap" :class="{hideSide: isCollapse}">
-    <div class="logo">
-      <img src="./logo.png" alt="职教云logo">
-    </div>
-    <el-menu
-      :default-active="$route.path"
-      class="zjy-el-menu"
-      @open="handleOpen"
-      @close="handleClose"
-      text-color="#bdbfc7"
-      active-text-color="#fff"
-      :unique-opened=true
-      :collapse="isCollapse">
-      <el-submenu v-for="item in multi" :index="item.name" :key="item.name">
-        <template slot="title">
-          <i :class="item.meta.icon" class="zjy-icon"></i>
-          <span>{{ item.name }}</span>
-        </template>
-        <router-link :to="children.path" v-for="children in item.children" :key="children.path">
-          <el-menu-item :index="children.path">
-            <i class="zjy-bar"></i>
-            {{ children.name }}
-          </el-menu-item>
-        </router-link>
-      </el-submenu>
 
-      <router-link v-for="item in single" :key="item.name" :to="item.children[0].path">
-        <el-menu-item :index="item.children[0].path">
-          <i :class="item.meta.icon" class="zjy-icon"></i>
-          <span slot="title">{{ item.children[0].name }}</span>
-        </el-menu-item>
-      </router-link>
+     <div class="sidebar-wrap" :class="{hideSide: isCollapse}">
+       <div class="logo">
+         <img src="./logo.png" alt="职教云logo">
+       </div>
+       <el-scrollbar class="scrollbar">
+       <el-menu
+         :default-active="$route.path"
+         class="zjy-el-menu"
+         @open="handleOpen"
+         @close="handleClose"
+         text-color="#bdbfc7"
+         active-text-color="#fff"
+         :unique-opened=true
+         :collapse="isCollapse">
+         <el-submenu
+           v-for="item in multi"
+           :index="item.name"
+           :key="item.name"
+         >
+           <template slot="title">
+             <i :class="item.meta.icon" class="zjy-icon"></i>
+             <span>{{ item.name }}</span>
+           </template>
+           <router-link
+             :to="children.path"
+             v-for="children in item.children"
+             :key="children.path + children.meta.permissionId"
+             @click.native="refresh"
+           >
+             <el-menu-item :index="children.path">
+               <i class="zjy-bar"></i>
+               {{ children.name }}
+             </el-menu-item>
+           </router-link>
+         </el-submenu>
 
-    </el-menu>
-  </div>
+         <router-link
+           v-for="item in single"
+           :key="item.name"
+           :to="item.children[0].path"
+           @click.native="refresh"
+         >
+           <el-menu-item :index="item.children[0].path">
+             <i :class="item.meta.icon" class="zjy-icon"></i>
+             <span slot="title">{{ item.children[0].name }}</span>
+           </el-menu-item>
+         </router-link>
+
+       </el-menu>
+       </el-scrollbar>
+     </div>
+
 </template>
 
 <script>
 export default {
+  inject: ['reload', 'force'],
   data () {
     return {}
   },
@@ -52,8 +71,12 @@ export default {
     }
   },
 
+  created () {
+  },
+
   computed: {
     isCollapse () {
+      return false
     },
     multi () {
       return this.routes.filter(
@@ -70,13 +93,24 @@ export default {
     handleOpen (key, keyPath) {
     },
     handleClose (key, keyPath) {
+    },
+    refresh () {
+      if (this.force) { this.reload() }
+    }
+  },
+
+  watch: {
+    $route (to, from) {
     }
   }
 }
 </script>
 <style lang='scss' scoped>
 @import "src/styles/mixin.scss";
-
+.scrollbar {
+  height: 100%;
+  background-color: #1e2a3c;
+}
 .sidebar-wrap {
   @include menu-width;
   z-index: 998;
@@ -84,6 +118,8 @@ export default {
   left: 0;
   bottom: 0;
   top: 0;
+  /*overflow-y: auto;*/
+  /*overflow-x: hidden;*/
   .zjy-el-menu {
     background-color: #1e2a3c;
     position: relative;

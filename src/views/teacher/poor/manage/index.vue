@@ -12,7 +12,7 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="visible2 = true" clz="create">批量通过</operator-item>
+      <!--<operator-item @click="visible2 = true" clz="create">批量通过</operator-item>-->
       <operator-item @click="visible2 = true" clz="import">导入</operator-item>
       <operator-item @click="visible2 = true" clz="export">导出</operator-item>
     </zjy-table-operator>

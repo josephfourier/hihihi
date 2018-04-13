@@ -45,6 +45,7 @@
         :type="type"
         :visible.sync="visible"
         :list="fileList"
+        @refresh="handleRefresh"
       ></zjy-file>
     </el-dialog>
 
@@ -284,7 +285,10 @@ export default {
     // --------------- 搜索 END ---------------
 
     refresh () {
-      _refresh.call(this)
+      return _refresh.call(this)
+    },
+    handleRefresh () {
+      this.refresh()
     }
   },
 

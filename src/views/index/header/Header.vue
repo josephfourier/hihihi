@@ -184,7 +184,7 @@ export default {
 
   .badge-wrap {
     float: right;
-    margin-right: 50px;
+    /*margin-right: 50px;*/
   }
 }
 .el-dropdown-menu.el-popper {

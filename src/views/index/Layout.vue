@@ -5,7 +5,7 @@
     <zjy-sidebar class="zjy-sidebar"></zjy-sidebar>
     <div class="main-container">
       <zjy-breadcrumb></zjy-breadcrumb>
-      <zjy-main class="zjy-main"></zjy-main>
+      <zjy-main class="zjy-main" v-if="active"></zjy-main>
     </div>
   </div>
 </template>
@@ -15,6 +15,20 @@ import { ZjySidebar, ZjyMain, ZjyHeader, ZjyBreadcrumb } from './'
 export default {
   data () {
     return {
+      active: true
+    }
+  },
+  methods: {
+    reload () {
+      this.active = false
+      this.$nextTick(() => (this.active = true))
+    }
+  },
+
+  provide () {
+    return {
+      reload: this.reload,
+      force: false
     }
   },
 

@@ -1,4 +1,7 @@
 .zjy-tabs {
+  .el-tabs--border-card>.el-tabs__content {
+    padding: 0;
+  }
   .el-tabs--border-card {
     border: 0;
     box-shadow: none;

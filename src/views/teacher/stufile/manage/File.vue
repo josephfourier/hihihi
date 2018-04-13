@@ -72,7 +72,7 @@
               :disabled="isUploading"
               v-if="!fileList[scope.$index].stufilePath"
               class="zjy-table-upload"
-              accept="image/gif, image/jpeg"
+              accept="image/gif, image/jpeg, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               :action="action + '?index=' + scope.$index" :headers="{'Zjy-Token': token}" multiple :limit="3"
               :showFileList="false"
               :before-upload="handleBeforeUpload"
@@ -286,8 +286,8 @@ export default {
           stufileManageAPI.checkExists(this.studentNo).then(response => {
             if (response.code !== 1) {
               this.hasError = true
-              // this.error = response.data
-              this.error = response.message
+              this.error = response.data
+              // this.error = response.message
               this.success = ''
               // reject(false)
             } else {
@@ -365,6 +365,7 @@ export default {
                   MSG.success('添加成功')
                   this.clearValidate()
                   this.$emit('update:visible', false)
+                  this.$emit('refresh')
                 } else {
                   this.$alert(response.message)
                 }
@@ -382,6 +383,7 @@ export default {
               MSG.success('修改成功')
               this.clearValidate()
               this.$emit('update:visible', false)
+              this.$emit('refresh')
             } else {
               this.$alert(response.message)
             }

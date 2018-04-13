@@ -11,8 +11,8 @@
         <zjy-input disabled :value="student.studentName"></zjy-input>
       </div>
       <div class="form-item">
-        <span>年级:</span>
-        <zjy-input disabled :value="student.className"></zjy-input>
+        <span>入学年份:</span>
+        <zjy-input disabled :value="student.enterYear"></zjy-input>
       </div>
       <div class="form-item">
         <span>院系:</span>

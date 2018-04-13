@@ -3,11 +3,14 @@ export default {
   accessed: state => state.user.accessed,
   routes: state => state.permission.permissionRoutes,
   permissions: state => state.permission.permissions,
+  approves: state => state.permission.approves,
+  todoList: state => state.schedule.todoList,
   user: state => {
     return {
       fullName: state.user.fullName,
       schoolName: state.user.schoolName,
-      userDetailId: state.user.userDetailId
+      userDetailId: state.user.userDetailId,
+      userType: state.user.userType
     }
   }
 }

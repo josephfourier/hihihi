@@ -64,7 +64,8 @@
       </div>
     </template>
 
-    <div class="zjy-footer" v-if="!isFinished && hasStep && isMyStep">
+    <!--<div class="zjy-footer" v-if="!isFinished && hasStep && isMyStep">-->
+    <div class="zjy-footer" v-if="!isFinished && hasStep">
       <template v-if="!isApprovered">
         <zjy-button type="plain" @click="no">拒绝</zjy-button>
         <zjy-button type="primary" @click="yes">同意</zjy-button>

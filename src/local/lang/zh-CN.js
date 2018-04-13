@@ -1,5 +1,9 @@
 export default {
   zjy: {
+    userType: {
+      student: '1',
+      teacher: '3'
+    },
     process: {
       none: '还未配置流程',
       loading: '流程加载中...',

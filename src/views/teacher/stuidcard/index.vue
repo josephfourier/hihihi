@@ -187,6 +187,8 @@ export default {
           MSG.success('保存成功')
           this.refresh()
           this.visible = false
+          //  待办状态刷新
+          this.$store.dispatch('refresh')
         } else {
           MSG.success('保存失败')
         }

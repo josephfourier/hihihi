@@ -49,7 +49,7 @@ import ZjyFooter from './Footer'
 import ZjyTable from '@/components/table'
 import { _refresh } from '@/utils'
 import ViewApply from './ViewApply'
-
+import properties from './properties'
 export default {
   data () {
     return {
@@ -58,48 +58,11 @@ export default {
       list: [],
       currentPage: 1,
       total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
+      query: properties.query,
 
       loading: false,
       visible: false,
-      columns: [
-        {
-          index: true
-        }, {
-          label: '险种名称',
-          prop: 'insuranceName',
-          width: 200
-        }, {
-          label: '保险公司',
-          prop: 'insuranceCompany'
-        }, {
-          label: '险种类别',
-          prop: 'insuranceCategory'
-        }, {
-          label: '保险费用',
-          prop: 'insuranceCost'
-        }, {
-          label: '保险期限',
-          prop: 'insuranceLimit'
-        }, {
-          label: '状态',
-          prop: 'dataStatus',
-          formatter: this.statusFormat
-        },
-        {
-          label: '操作',
-          width: '200',
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            }
-          ]
-        }
-      ]
+      columns: properties.columnsMY
     }
   },
 

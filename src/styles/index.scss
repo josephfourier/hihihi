@@ -305,3 +305,27 @@
     }
   }
 }
+
+// badge
+.el-badge__content.is-fixed {
+  border-radius: 11px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0;
+  border: 0;
+  right: 60px;
+  top: 7px;
+}
+.todo {
+.el-badge__content.is-fixed {
+  background-color: #37c6d4;
+
+}
+}
+
+.notice {
+  .el-badge__content.is-fixed {
+    background-color: #0aacf8;
+  }
+}

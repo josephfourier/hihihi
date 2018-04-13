@@ -7,14 +7,16 @@ const state = {
   token: getToken(),
   accessed: [], // 权限信息
   schoolName: '', // 学校名
-  userDetailId: ''
+  userDetailId: '',
+  userType: ''
 }
 
 const mutations = {
-  [types.SET_USER] (state, { fullName, schoolName, userDetailId }) {
+  [types.SET_USER] (state, { fullName, schoolName, userDetailId, userType }) {
     state.fullName = fullName
     state.schoolName = schoolName
     state.userDetailId = userDetailId
+    state.userType = userType
   },
 
   [types.SET_TOKEN] (state, token) {

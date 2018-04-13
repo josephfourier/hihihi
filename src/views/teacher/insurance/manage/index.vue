@@ -28,7 +28,6 @@
         :currentPage="currentPage"
         :total="total"
         @current-change="pageChanged"
-        :pageSize="2"
       >
       </zjy-pagination>
     </div>
@@ -85,7 +84,7 @@ export default {
       setting: '',
       query: {
         offset: 0,
-        limit: 2,
+        limit: 10,
         dataStatus: '',
         applyYear: '',
         studentCode: ''

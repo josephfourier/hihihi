@@ -24,7 +24,7 @@ export default {
   },
 
   props: {
-    value: '',
+    value: String,
     label: String,
     labelWidth: String,
     placeholder: String,
@@ -52,6 +52,12 @@ export default {
   watch: {
     inner (val) {
       this.$emit('update:value', val)
+    },
+    value: {
+      immediate: true,
+      handler (val) {
+        this.inner = val
+      }
     }
   }
 }

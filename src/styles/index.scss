@@ -279,7 +279,7 @@
           height: 30px;
           &.el-checkbox {
             float: left;
-            margin-right: 5px;
+            margin-right: 10px;
             margin-left: 0;
           }
         }
@@ -328,4 +328,22 @@
   .el-badge__content.is-fixed {
     background-color: #0aacf8;
   }
+}
+
+.el-date-picker{
+  width: 240px;
+}
+.el-date-picker__header {
+  margin: 12px 12px 0 12px;
+  text-align: center;
+}
+.el-date-picker .el-picker-panel__content {
+  width: 210px;
+  margin: 0 15px 0 15px;
+}
+.el-date-table td div {
+  height: 25px;
+  padding: 3px 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }

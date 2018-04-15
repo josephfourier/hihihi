@@ -1,21 +1,20 @@
-.zjy-form {
-  overflow: hidden;
-  .form-item {
-    display: inline-block;
-    margin-bottom: 20px;
-    &.block {
-      display: block;
-    }
-    &.pull-right {
-      float: right !important;
-    }
-    &.pull-left {
-      float: left !important;
-    }
-  }
-}
+//.zjy-form {
+//  overflow: hidden;
+//  .form-item {
+//    display: inline-block;
+//    margin-bottom: 20px;
+//    &.pull-right {
+//      float: right !important;
+//    }
+//    &.pull-left {
+//      float: left !important;
+//    }
+//  }
+//}
 
 .zjy-form {
+  overflow: hidden;
+
   .el-input__inner, .el-textarea__inner {
     border-radius: 0;
   }
@@ -25,6 +24,12 @@
   .el-form-item {
     &.inline {
       display: inline-block;
+    }
+    &.block {
+      display: block;
+      .el-input {
+        width: 100%;
+      }
     }
     &.pull-right {
       float: right;

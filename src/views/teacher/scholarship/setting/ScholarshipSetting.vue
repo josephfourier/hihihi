@@ -1,7 +1,7 @@
 <template>
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
-      <el-form-item label="奖学金名称" prop="scholarshipName">
+      <el-form-item label="奖学金名称" prop="scholarshipName" class="block">
         <el-input v-model="formData.scholarshipName"></el-input>
       </el-form-item>
       <el-form-item label="奖学金级别" prop="scholarshipLevel" class="inline">

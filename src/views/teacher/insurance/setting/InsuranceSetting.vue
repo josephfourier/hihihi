@@ -1,7 +1,7 @@
 <template>
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="80px">
-      <el-form-item label="保险名称" prop="insuranceName">
+      <el-form-item label="保险名称" prop="insuranceName" class="block">
         <el-input v-model="formData.insuranceName"></el-input>
       </el-form-item>
       <el-form-item label="保险公司" prop="insuranceCompany" class="inline">

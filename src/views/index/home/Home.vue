@@ -34,18 +34,19 @@ export default {
   .welcome {
     text-align: center;
     position: relative;
-    top: 140px;
+    top: 100px;
     left: -130px;
   }
   .star {
     text-align:center;
     position: relative;
-    top: 80px;
+    top: 40px;
     left: -100px;
   }
   .content {
     text-align: center;
     left: -110px;
     position: relative;
+    top: -120px;
   }
 </style>

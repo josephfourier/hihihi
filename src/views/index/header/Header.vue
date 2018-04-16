@@ -21,9 +21,9 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <div class="badge-wrap">
+      <div class="badge-wrap" v-if="user.usertypeId === +$t('zjy.userType.teacher')">
         <el-dropdown class="badge">
-          <el-badge :value="todoValue" class="item todo">
+          <el-badge :value="todoValue" class="item todo" :max="5">
             <span class="el-dropdown-link">待办</span>
           </el-badge>
           <el-dropdown-menu slot="dropdown">
@@ -37,7 +37,7 @@
         </el-dropdown>
 
         <el-dropdown class="badge">
-          <el-badge :value="todoValue" class="item notice">
+          <el-badge :value="todoValue" class="item notice" :max="5">
             <span class="el-dropdown-link">
               通知
             </span>
@@ -60,7 +60,6 @@
       <faculty-honorary :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'facultyHonorary'"></faculty-honorary>
       <honorary :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'honorary'"></honorary>
       <poor :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'poor'"></poor>
-      <punish :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'punish'"></punish>
       <scholarship :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'scholarship'"></scholarship>
       <stayholiday :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'stayholiday'"></stayholiday>
       <stuidcard :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'stuidcard'" @refresh="handleRefresh"></stuidcard>
@@ -77,7 +76,6 @@ import ClassHonorary from './components/ClassHonorary'
 import FacultyHonorary from './components/FacultyHonorary'
 import Honorary from './components/Honorary'
 import Poor from './components/Poor'
-import Punish from './components/Punish'
 import Scholarship from './components/Scholarship'
 import Stayholiday from './components/Stayholiday'
 import Stuidcard from './components/Stuidcard'
@@ -101,7 +99,6 @@ export default {
     FacultyHonorary,
     Honorary,
     Poor,
-    Punish,
     Scholarship,
     Stayholiday,
     Stuidcard

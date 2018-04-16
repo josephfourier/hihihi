@@ -115,7 +115,7 @@ export default {
     }
   },
 
-  created () {
+  mounted () {
     api.queryFacultyList().then(response => {
       if (response.code !== 1) {
         this.$alert('获取院系失败')

@@ -144,10 +144,14 @@
     font-size: 12px;
   }
   [class*=zjy-table-oper--] {
-    padding: 5px 10px;
+
     border-radius: 25px;
     color: #0aacf8;
     border: 1px solid #0aacf8;
+    &>a {
+      padding: 5px 10px;
+      display: block;
+    }
   }
   .zjy-table-oper--delete {
     color: #ef7727;

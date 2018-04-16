@@ -28,7 +28,7 @@ export default {
   provide () {
     return {
       reload: this.reload,
-      force: false
+      force: true
     }
   },
 

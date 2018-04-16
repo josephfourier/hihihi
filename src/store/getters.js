@@ -10,7 +10,7 @@ export default {
       fullName: state.user.fullName,
       schoolName: state.user.schoolName,
       userDetailId: state.user.userDetailId,
-      userType: state.user.userType
+      usertypeId: state.user.usertypeId
     }
   }
 }

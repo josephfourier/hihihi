@@ -408,7 +408,9 @@ export default {
             if (response.code !== 1) {
               this.$alert(response.message)
             } else {
-              MSG.success('修改成功')
+              setTimeout(_ => {
+                MSG.success('修改成功')
+              }, 500)
               this.refresh()
               this.visible = false
             }
@@ -418,7 +420,9 @@ export default {
         } else {
           approvalAPI.createProvalProcess(d).then(response => {
             if (response.code === 1) {
-              MSG.success('配置成功')
+              setTimeout(_ => {
+                MSG.success('配置成功')
+              }, 500)
               this.refresh()
               this.visible = false
             } else {

@@ -193,7 +193,7 @@ export default {
     handleSubmit (data, steps) {
       facAPI.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          MSG.success('保存成功')
+          setTimeout(_ => {MSG.success('保存成功')}, 500)
           this.refresh().visible = false
           // 审批完成后可能需要刷新自己申请的班级荣誉称号列表
           // bus.$emit('applied')

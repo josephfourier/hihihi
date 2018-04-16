@@ -8,15 +8,15 @@ const state = {
   accessed: [], // 权限信息
   schoolName: '', // 学校名
   userDetailId: '',
-  userType: ''
+  usertypeId: ''
 }
 
 const mutations = {
-  [types.SET_USER] (state, { fullName, schoolName, userDetailId, userType }) {
+  [types.SET_USER] (state, { fullName, schoolName, userDetailId, usertypeId }) {
     state.fullName = fullName
     state.schoolName = schoolName
     state.userDetailId = userDetailId
-    state.userType = userType
+    state.usertypeId = usertypeId
   },
 
   [types.SET_TOKEN] (state, token) {

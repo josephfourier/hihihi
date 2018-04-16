@@ -15,7 +15,7 @@ const actions = {
     commit(types.SET_TODO_LIST, todoList)
   },
 
-  refresh ({ commit }) {
+  setSchedules ({ commit }) {
     return new Promise((resolve, reject) => {
       scheduleAPI.refresh().then(response => {
         if (response.code !== 1) {

@@ -111,7 +111,7 @@ export default {
     }
   },
 
-  created () {
+  mounted () {
     api.querySpecialtyList().then(response => {
       if (response.code !== 1) {
         this.$alert('获取专业失败')

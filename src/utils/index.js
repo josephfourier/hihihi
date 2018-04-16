@@ -1,7 +1,8 @@
 import { MessageBox } from 'element-ui'
 
-let resolve = (resource, list, routes) => {
+let resolve = (resource, list, routes, permissions) => {
   if (resource.type === 0) return // 系统
+  if (resource.type === 3) permissions.push(resource.permissionValue)
   if (resource.type === 1) { // 目录
     const childrenList = list.filter(item => item.pid === resource.permissionId)
     const children = childrenList.map((item) => {
@@ -55,7 +56,7 @@ let reback = () => {
   MessageBox.alert('返回个人中心', '没有权限', {
     confirmButtonText: '确定',
     callback: action => {
-      location.href = process.env.SSO_URL
+      // location.href = process.env.SSO_URL
     }
   })
 }

@@ -22,13 +22,12 @@
 
       </el-select>
     </panel-item>
-    <p class="process-title">留校原因</p>
     <div class="tip-box">
       <transition name="el-zoom-in-top">
         <span class="tip type" v-if="hasError && !innerType">请选择假期类型</span>
       </transition>
     </div>
-
+    <p class="process-title">留校原因</p>
     <div class="textarea-wrapper">
       <zjy-input type="textarea" v-model="innerReason" @change="$emit('update:reason', innerReason)"></zjy-input>
       <div class="form-tip-box">

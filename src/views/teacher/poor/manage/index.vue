@@ -3,7 +3,7 @@
   <div class="zjy-app">
     <zjy-table-search>
       <search-select label="院系" :options="facultyList" :value.sync="facultyCode"></search-select>
-      <search-select label="院系" :options="specialtyList" :value.sync="specialtyCode"></search-select>
+      <search-select label="专业" :options="specialtyList" :value.sync="specialtyCode"></search-select>
       <search-select label="申请状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
       <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
       <search-button @query="searchFilter"></search-button>
@@ -97,7 +97,7 @@ export default {
     }
   },
 
-  created () {
+  mounted () {
     commonAPI.queryFacultyList().then(response => {
       if (response.code !== 1) {
         this.$alert('获取院系失败')
@@ -150,7 +150,7 @@ export default {
 
       api.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          MSG.success('保存成功')
+          setTimeout(_ => {MSG.success('保存成功')}, 500)
           this.visible = false
           this.refresh()
         } else {

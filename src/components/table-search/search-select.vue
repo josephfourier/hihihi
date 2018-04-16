@@ -24,7 +24,7 @@ export default {
   },
 
   props: {
-    value: String,
+    value: [String, Number],
     label: String,
     labelWidth: String,
     placeholder: String,

@@ -184,11 +184,11 @@ export default {
     handleSubmit (data, steps) {
       cardAPI.approved(this.data, steps).then(response => {
         if (response.code === 1) {
-          MSG.success('保存成功')
+          setTimeout(_ => {MSG.success('保存成功')}, 500)
           this.refresh()
           this.visible = false
           //  待办状态刷新
-          this.$store.dispatch('refresh')
+          this.$store.dispatch('setSchedules')
         } else {
           MSG.success('保存失败')
         }

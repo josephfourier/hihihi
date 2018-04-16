@@ -216,7 +216,7 @@ export default {
     handleSubmit (data, steps) {
       insuranceManageAPI.submit(data.insuranceUid, data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
-          MSG.success('保存成功')
+          setTimeout(_ => {MSG.success('保存成功')}, 500)
           this.visible = false
           this.refresh()
         } else {

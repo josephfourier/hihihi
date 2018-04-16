@@ -15,11 +15,18 @@ const statusFormat = val => ['待审批', '已通过', '已拒绝', '审批中']
 const honoraryTypeFormat = val => ['', '院系', '班级', '个人'][+val]
 const scholarshipGrantWayFormat = val => ['', '每学期', '每月', '每年'][+val]
 const politicsFormat = val => ['', '党员', '预备党员', '团员', '群众'][+val]
-
+const poorTypeFormat = val => {
+  if (!val) return
+  const arr = val.split(',')
+  return arr.map(i => {
+    return ['', '单亲', '孤儿', '军烈属', '自然灾害', '父母患重病', '父母双下岗', '残疾人家庭', '其它'][i]
+  }).join(',')
+}
 export default {
   dateFormat,
   statusFormat,
   honoraryTypeFormat,
   scholarshipGrantWayFormat,
-  politicsFormat
+  politicsFormat,
+  poorTypeFormat
 }

@@ -18,9 +18,20 @@ export default {
   queryObjectOfStayholiday (id) {
     return ajax.get('/manage/teacher/swmsStayholiday/' + id)
   },
-
   queryObjectOfScholarship (id) {
     return ajax.get('/manage/scholarship/' + id)
+  },
+  queryObjectOfPoor (id) {
+    return ajax.get('/manage/swmsPoor/' + id)
+  },
+  queryObjectOfStudentHonorary (id) {
+    return ajax.get('/manage/studentHonorary/' + id)
+  },
+  queryObjectOfClassHonorary (id) {
+    return ajax.get('/manage/classHonorary/' + id)
+  },
+  queryObjectOfFacultyHonorary (id) {
+    return ajax.get('/manage/facultyHonorary/' + id)
   },
 
   submitInsurance (arg1, arg2, arg3) {
@@ -51,10 +62,24 @@ export default {
     return ajax.put('/manage/teacher/swmsStayholiday', arg)
   },
 
-  submitSscholarship (arg1, arg2) {
+  submitScholarship (arg1, arg2) {
     return ajax.put('/manage/scholarship/teacher/', {
       scholarshipUid: arg1,
       swmsApprovalList: arg2
     })
+  },
+
+  submitPoor (arg) {
+    return ajax.put('/manage/swmsPoor/teacher', arg)
+  },
+
+  submitStudentHonorary (arg) {
+    return ajax.put('/manage/studentHonorary/teacher', arg)
+  },
+  submitClassHonorary (arg) {
+    return ajax.put('/manage/classHonorary/teacher', arg)
+  },
+  submitFacultyHonorary (arg) {
+    return ajax.put('/manage/facultyHonorary/teacher', arg)
   }
 }

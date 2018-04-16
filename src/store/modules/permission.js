@@ -21,7 +21,7 @@ const mutations = {
 
   [types.SET_ROUTES] (state, routes) {
     for (let i = 0; i < routes.length; ++i) {
-      resolve(routes[i], routes, state.permissionRoutes)
+      resolve(routes[i], routes, state.permissionRoutes, state.permissions)
     }
     state.permissionRoutes = state.permissionRoutes
       .concat([

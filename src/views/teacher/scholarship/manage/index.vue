@@ -198,8 +198,12 @@ export default {
     handleSubmit (data, steps) {
       scholarshipManageAPI.submit(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
-          MSG.success('新增成功')
+
           this.refresh().visible = false
+          setTimeout(() => {
+            MSG.success('保存成功')
+          }, 500)
+          this.$store.dispatch('setSchedules')
         } else {
           MSG.success('保存失败')
         }

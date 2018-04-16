@@ -17,7 +17,7 @@ export default {
           // {a} series - name
           // formatter: '{a} <br/>{b}: {c} ({d}%)'
           formatter: (params) => {
-            return params.name.replace(/[0-9%]/gi, '') + params.data.value + ' (' + params.percent + ')%'
+            return params.name.replace(/[0-9.%]/gi, '') + params.data.value + ' (' + params.percent + ')%'
           }
         },
         color: this.innerColor,
@@ -33,7 +33,7 @@ export default {
           }
         },
         legend: {
-          bottom: 20,
+          bottom: 0,
           left: 'center',
           data: this.legendData
         },

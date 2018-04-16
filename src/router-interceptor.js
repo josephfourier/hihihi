@@ -25,20 +25,18 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  const userType = to.query.userType
-
   if (store.getters.accessed.length === 0) {
     store.dispatch('getAccessed').then(response => {
       store.dispatch('setRoutes', response.appPerms).then(() => {
         router.addRoutes(store.getters.routes)
-        // 应返回用户类型,否则刷新无
-        Object.assign(response.baseInfo, {
-          userType: userType
-        })
+
         store.dispatch('setUser', response.baseInfo)
-        store.dispatch('setApproves')
-        store.dispatch('refresh')
-        // if (true || userType === '3') { store.dispatch('refresh') }
+
+        if (store.getters.user.usertypeId === 3) {
+          store.dispatch('setApproves')
+          store.dispatch('setSchedules')
+        }
+
         next({ ...to, replace: true })
         NProgress.done()
       }).catch(error => {

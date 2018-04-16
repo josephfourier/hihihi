@@ -162,6 +162,7 @@ export default {
         } else {
           this.refresh(false)
           this.visible = false
+          this.$store.dispatch('setSchedules')
         }
       }).catch(error => {
         console.log(error)

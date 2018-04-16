@@ -17,7 +17,7 @@
     <p class="content">{{ data.stayReason }}</p>
     <p class="process-title">审批进度</p>
   </div>
-  <el-collapse-transition>
+  <transition name="el-zoom-in-top">
     <zjy-process
       v-if="innerVisible"
       :data="data"
@@ -26,7 +26,7 @@
       @submit="handleSubmit"
     >
     </zjy-process>
-  </el-collapse-transition>
+  </transition>>
 </div>
 </template>
 
@@ -81,8 +81,10 @@ export default {
     handleSubmit (data, steps) {
       api.submitStayholiday(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          MSG.success('保存成功')
-          this.$store.dispatch('refresh')
+          setTimeout(_ => {
+            MSG.success('保存成功')
+          }, 500)
+          this.$store.dispatch('setSchedules')
         } else {
           MSG.success('保存失败')
         }

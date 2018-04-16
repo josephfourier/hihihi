@@ -22,7 +22,8 @@
       </el-dropdown>
 
       <div class="badge-wrap" v-if="user.usertypeId === +$t('zjy.userType.teacher')">
-        <el-dropdown class="badge">
+        <!-- 通过size可以为el-dropdown-menu添加不同的class -->
+        <el-dropdown class="badge" popper-class="your" size="mysize">
           <el-badge :value="todoValue" class="item todo" :max="5">
             <span class="el-dropdown-link">待办</span>
           </el-badge>
@@ -64,7 +65,6 @@
       <stayholiday :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'stayholiday'"></stayholiday>
       <stuidcard :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'stuidcard'" @refresh="handleRefresh"></stuidcard>
     </el-dialog>
-
   </div>
 </template>
 
@@ -102,6 +102,9 @@ export default {
     Scholarship,
     Stayholiday,
     Stuidcard
+    //
+    // ZjyDropdownMenu,
+    // ZjyDropdownItem
   },
 
   methods: {

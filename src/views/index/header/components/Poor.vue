@@ -37,7 +37,6 @@
 <script>
 import ZjyProcess from '@/components/process'
 import api from '../api'
-import axios from 'axios'
 import {selfMerge} from '@/utils'
 
 export default {
@@ -59,14 +58,19 @@ export default {
   },
 
   created () {
-    axios.all([api.queryApprovalProcess(this.uid), api.queryObjectOfPoor(this.uid)]).then(axios.spread((r1, r2) => {
-      Object.assign(this.value, {
-        swmsApprovals: r1.data
-      })
-      selfMerge(r2.data, this.data)
-      this.innerVisible = true
-      this.loading = false
-    }))
+    api.queryObjectOfPoor(this.uid).then(response => {
+      if (response.code !== 1) {
+        this.$alert('获取信息失败')
+      } else {
+        const sid = response.data.studentId
+        selfMerge(response.data, this.data)
+        api.queryApprovalProcess(sid, this.uid).then(response => {
+          this.value = response.data
+          this.innerVisible = true
+          this.loading = false
+        })
+      }
+    })
   },
 
   methods: {
@@ -82,7 +86,7 @@ export default {
         if (response.code === 1) {
           setTimeout(_ => {
             MSG.success('保存成功')
-          }, 500)
+          }, 200)
           this.$store.dispatch('setSchedules')
         } else {
           MSG.success('保存失败')

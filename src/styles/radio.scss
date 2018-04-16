@@ -6,6 +6,9 @@
   }
 }
 
+:not(.is-focus):not(:active).el-radio:focus .el-radio__inner {
+  box-shadow: none;
+}
 .el-radio__input.is-checked .el-radio__inner {
   border-color: #36c6d3;
   background: #36c6d3;

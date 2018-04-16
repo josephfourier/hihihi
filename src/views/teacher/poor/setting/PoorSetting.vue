@@ -15,7 +15,7 @@
 
       <el-form-item label="申请时间" required>
         <el-form-item prop="startDate" class="inline">
-          <el-date-picker type="date" :disabled="isView" placeholder="选择起始日期" value-format="timestamp" v-model="formData.startDate" style="width: 100%;"  :picker-options="startOption"></el-date-picker>
+          <el-date-picker type="date"  placeholder="选择起始日期" value-format="timestamp" v-model="formData.startDate" style="width: 100%;"  :picker-options="startOption"></el-date-picker>
         </el-form-item>
         <span>至</span>
         <el-form-item prop="endDate" class="inline">

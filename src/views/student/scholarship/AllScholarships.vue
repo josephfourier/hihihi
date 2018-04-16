@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="zjy-app">
     <zjy-table
       :data="list"
       :loading="loading"
@@ -135,7 +135,9 @@ export default {
       } else {
         allAPI.create(data.scholarshipsettingUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            MSG.success('申请成功')
+            setTimeout(_ => {
+              MSG.success('申请成功')
+            }, 200)
             this.visible = false
             this.refresh()
           } else {

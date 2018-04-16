@@ -410,7 +410,7 @@ export default {
             } else {
               setTimeout(_ => {
                 MSG.success('修改成功')
-              }, 500)
+              }, 200)
               this.refresh()
               this.visible = false
             }
@@ -422,7 +422,7 @@ export default {
             if (response.code === 1) {
               setTimeout(_ => {
                 MSG.success('配置成功')
-              }, 500)
+              }, 200)
               this.refresh()
               this.visible = false
             } else {

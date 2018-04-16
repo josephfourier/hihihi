@@ -184,7 +184,7 @@ export default {
     handleSubmit (data, steps) {
       cardAPI.approved(this.data, steps).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => {MSG.success('保存成功')}, 500)
+          setTimeout(_ => {MSG.success('保存成功')}, 200)
           this.refresh()
           this.visible = false
           //  待办状态刷新

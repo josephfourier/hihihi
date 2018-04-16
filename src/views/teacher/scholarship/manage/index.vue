@@ -202,7 +202,7 @@ export default {
           this.refresh().visible = false
           setTimeout(() => {
             MSG.success('保存成功')
-          }, 500)
+          }, 200)
           this.$store.dispatch('setSchedules')
         } else {
           MSG.success('保存失败')

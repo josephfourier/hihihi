@@ -193,7 +193,7 @@ export default {
     handleSubmit (data, steps) {
       clzAPI.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => { MSG.success('保存成功') }, 500)
+          setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.refresh().visible = false
           this.$store.dispatch('setSchedules')
           // 审批完成后可能需要刷新自己申请的班级荣誉称号列表

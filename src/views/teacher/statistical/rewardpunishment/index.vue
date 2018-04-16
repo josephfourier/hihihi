@@ -160,9 +160,9 @@ export default {
     justify-content: space-around;
 
     .mychart {
-      width: 500px;
+      width: 45%;
+      min-width: 500px;
       height: 380px;
-      /*float: left;*/
       background-color: #fff;
       margin: 20px;
       .chart {

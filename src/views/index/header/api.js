@@ -5,9 +5,18 @@ export default {
     return ajax.get('/manage/swmsApproval/backlogs')
   },
 
-  queryApprovalProcess (id) {
-    return ajax.get('/manage/swmsApproval/' + id)
+  queryApprovalProcess (sid, did) {
+    return ajax({
+      url: '/manage/swmsApproval/' + sid + '/' + did,
+      method: 'get'
+    })
   },
+  queryNextApproval (dataId, dataUid, honoraryType) {
+    return ajax.get('/manage/swmsApproval/' + dataId + '/' + dataUid + '/' + honoraryType)
+  },
+  // queryApprovalProcess (id) {
+  //   return ajax.get('/manage/swmsApproval/' + id)
+  // },
 
   queryObjectOfInsurance (id) {
     return ajax.get('/manage/insurance/teacher/' + id)

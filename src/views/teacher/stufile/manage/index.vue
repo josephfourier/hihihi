@@ -292,7 +292,7 @@ export default {
     }
   },
 
-  created () {
+  mounted () {
     stufileAPI.queryForList().then(resposne => {
       if (resposne.code !== 1) {
         MSG.success('获取档案设置失败')

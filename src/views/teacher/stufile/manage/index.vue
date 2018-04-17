@@ -47,7 +47,7 @@
           <div class="download-link">
             <p>点击下载
               <a href="javascript:;" @click="download($event)">导入模板
-                <span> (导入模板必须为excel格式)</span>
+                <span> (导入文件必须为excel格式)</span>
               </a>
             </p>
           </div>

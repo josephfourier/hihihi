@@ -48,7 +48,7 @@
             </el-upload>
             <transition name="el-zoom-in-center">
               <div class="upload-status" v-if="showPercent">
-                <el-progress :percentage="percent" color="#37c6d4"></el-progress>  
+                <zjy-progress :percentage="percent" color="#37c6d4">{{percent}}%</zjy-progress>  
               </div>
             </transition>
           
@@ -111,6 +111,7 @@ import commonAPI from '@/api/common'
 
 import ZjyFile from './File'
 import FileView from './FileView'
+import ZjyProgress from '@/components/progress'
 
 import api from './api'
 import properties from './properties'
@@ -168,13 +169,13 @@ export default {
       } else {
         this.showSuccess = true
       }
-      this.showPercent = false
+        this.showPercent = false
     },
     handleError (error, file, fileList) {
       console.log(error)
     },
     handleProgress (event, file, fileList) {
-      this.percent = +(event.percent).toFixed(2)
+      this.percent = +(event.percent).toFixed(2) <= 99 ? +(event.percent).toFixed(2) + '%' : '处理中...'
     },
     notClick () {
       this.$refs.uploadTrigger.click()
@@ -402,6 +403,7 @@ export default {
     ZjyTableOperator,
     OperatorItem,
     ZjyPagination,
+    ZjyProgress,
 
     ZjyFile,
     FileView
@@ -457,7 +459,7 @@ export default {
   }
 }
 .upload-status {
-  width: 200px;
+  width: 250px;
   height: 30px;
   margin-left: 20px;
   line-height: 30px;

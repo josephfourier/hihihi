@@ -174,11 +174,7 @@ export default {
       console.log(error)
     },
     handleProgress (event, file, fileList) {
-      console.log(event)
       this.percent = +(event.percent).toFixed(2)
-      if (this.percent >= 99) {
-        this.clearPercent()
-      }
     },
     notClick () {
       this.$refs.uploadTrigger.click()

@@ -12,51 +12,80 @@
 
     <zjy-table-operator>
       <operator-item @click="create" clz="create">新增</operator-item>
-      <!--<operator-item @click="_import" clz="import">导入</operator-item>-->
+      <operator-item @click="_import" clz="import">导入</operator-item>
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
+    <transition name="slide-fade">
+      <div class="svg" v-if="show">
+        <svg style="top:5px; left:70px;position:relative;z-index:999;overflow:hidden" width="20" height="10" viewBox="0 0 20 10" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <polygon points="10,0 20,11 0,11" style="fill:rgb(255,255,255);stroke:rgb(55,198,212);stroke-width:1" />
+        </svg>
+        <div class="upload">
+          <div class="download-body">
+            <p class="file-input" @click="notClick" :title="fileName">{{ fileName }}</p>
+            <el-upload
+              class="myupload"
+              ref="uploadExcel"
+              :action="action"
+              :headers="{'Zjy-Token': token}"
+              :data="{baseModel: baseModel}" 
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="myFileList"
+              :before-upload="handleBeforeUpload"
+              :on-change="handleChange"
+              :on-success="handleSuccess"
+              :on-error="handleError"
+              :on-progress="handleProgress"
+              :auto-upload="false"
+              :show-file-list="false"
+            >
+              <a slot="trigger" class="upload-view" ref="uploadTrigger" @click="clearError">浏览</a>
+              <a style="margin-left: 10px;" @click="submitUpload" class="upload-import">导入</a>
+              <a style="margin-left: 10px;" @click="abortUpload" class="upload-abort">取消</a>
+              <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            </el-upload>
+            <transition name="el-zoom-in-center">
+              <div class="upload-status" v-if="showPercent">
+                <el-progress :percentage="percent" color="#37c6d4"></el-progress>  
+              </div>
+            </transition>
+          
+            <transition name="el-zoom-in-top">
+              <div class="upload-error" v-if="showSuccess">
+                <p>导入成功</p>
+              </div>
+            </transition>
+            <transition name="el-zoom-in-center">
+              <div class="upload-error" v-if="showError">
+                <p>上传失败,下载<a :href="errorLink" target="_blank">错误信息</a></p>
+              </div>
+            </transition>
+          </div>
+          <div class="download-link">
+            <p>点击下载 <a href="javascript:;" @click="download($event)">导入模板<span> (导入模板必须为excel格式)</span></a></p>
+          </div>
+        </div>
+      </div>
+    </transition>
+
     <div class="zjy-table">
-      <zjy-table
-        :data="list"
-        :loading="loading"
-        :columns="columns"
-        @view="view"
-        @edit="edit"
-        @selection-change="handleSelectionChange"
-      >
+      <zjy-table :data="list" :loading="loading" :columns="columns" @view="view" @edit="edit" @selection-change="handleSelectionChange">
       </zjy-table>
     </div>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
-      <zjy-pagination
-        :currentPage="currentPage"
-        :total="total"
-        @current-change="pageChanged"
-      >
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="pageChanged">
       </zjy-pagination>
     </div>
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
-      <zjy-file
-        v-if="visible"
-        :formData="file"
-        v-model="settings"
-        :type="type"
-        :visible.sync="visible"
-        :list="fileList"
-        @refresh="handleRefresh"
-      ></zjy-file>
+      <zjy-file v-if="visible" :formData="file" v-model="settings" :type="type" :visible.sync="visible" :list="fileList" @refresh="handleRefresh"></zjy-file>
     </el-dialog>
 
     <el-dialog :title="title" :visible.sync="visible2" width="800px">
-      <file-view
-        v-if="visible2"
-        :formData="file"
-        v-model="settings"
-        :visible.sync="visible2"
-        :list="fileList"
-      ></file-view>
+      <file-view v-if="visible2" :formData="file" v-model="settings" :visible.sync="visible2" :list="fileList"></file-view>
     </el-dialog>
 
   </div>
@@ -74,7 +103,7 @@ import OperatorItem from '@/components/table-operator/operator-item'
 
 import ZjyPagination from '@/components/pagination'
 
-import {dateFormat as _dateFormat, _refresh, export2excel} from '@/utils'
+import { _refresh, export2excel } from '@/utils'
 
 import stufileManageAPI from '@/api/teacher/stufile/manage'
 import stufileAPI from '@/api/teacher/stufile/setting'
@@ -83,87 +112,43 @@ import commonAPI from '@/api/common'
 import ZjyFile from './File'
 import FileView from './FileView'
 
+import api from './api'
+import properties from './properties'
+import { mapGetters } from 'vuex'
+
 export default {
-  data () {
+  data() {
     return {
-      //  搜索
+      action: process.env.BASE_URL + '/manage/upload/uploadDatas',
+      percent: 0,
+      showPercent: false,
+      showError: false,
+      showSuccess: false,
+      errorLink: 'javascript:;',
+      fileName: '导入文件',
+      
+      myfile: '',
+      baseModel: 'swmsStufile',
+      myFileList: [
+        // {name: 'test.jpeg', url: ''}
+      ],
       enterYear: '',
       classId: '',
       studentNo: '',
-      query: {
-        offset: 0,
-        limit: 10,
-        enterYear: '',
-        classId: '',
-        studentNo: ''
-      },
-      //  --------------- 搜索 END ---------------
+      query: properties.query,
       list: [],
       currentPage: 1,
       total: 0,
       loading: false,
 
-      //  初始化select
-      years: [
-        {
-          label: '2017年',
-          value: 2017
-        },
-        {
-          label: '2018年',
-          value: 2018
-        }
-      ],
+      years: properties.years,
 
       classes: [],
-      //  --------------- 初始化select END ---------------
-      columns: [
-        {
-          index: true,
-          select: true
-        }, {
-          label: '学号',
-          prop: 'studentNo'
-        }, {
-          label: '姓名',
-          prop: 'studentName'
-        }, {
-          label: '院系',
-          prop: 'facultyName'
-        }, {
-          label: '专业',
-          prop: 'specialtyName'
-        }, {
-          label: '班级',
-          prop: 'className'
-        }, {
-          label: '建档日期',
-          prop: 'stufileDate',
-          formatter: _dateFormat
-        }, {
-          label: '入学年份',
-          prop: 'enterYear'
-        },
-        {
-          label: '操作',
-          width: '200',
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            },
-            {
-              label: '编辑',
-              cmd: 'edit'
-            }
-          ]
-        }
-      ],
-      // dialog
+      columns: properties.columns,
       visible: false,
       visible2: false,
+      show: false,
 
-      //  其它
       type: 1,
       title: '',
       file: {}, // 学生档案
@@ -175,7 +160,90 @@ export default {
   },
 
   methods: {
-    searchFilter () {
+    handleSuccess (response, file, fileList) {
+      if (response.code !== 90001) {
+        this.errorLink = response.data
+        this.showError = true
+        this.clearFile()
+      } else {
+        this.showSuccess = true
+      }
+      this.showPercent = false
+    },
+    handleError (error, file, fileList) {
+      console.log(error)
+    },
+    handleProgress (event, file, fileList) {
+      console.log(event)
+      this.percent = +(event.percent).toFixed(2)
+      if (this.percent >= 99) {
+        this.clearPercent()
+      }
+    },
+    notClick () {
+      this.$refs.uploadTrigger.click()
+      this.clearError()
+    },
+    handleChange(file, fileList) {
+      if (this.showError) return
+      this.fileName = file.name
+      this.myfile = file
+    },
+
+    handleBeforeUpload (file) {
+      this.clearError()
+    },
+    abortUpload () {
+       this.$refs.uploadExcel.abort()
+       this.clearFile()
+       this.clearError()
+       this.clearSuccess()
+    },
+    submitUpload() {
+      if (!this.myfile) MSG.warning('请选择文件')
+      else {
+        this.clearError()
+        this.clearSuccess()
+  
+        this.showPercent = true
+        this.$refs.uploadExcel.submit()
+        
+      }
+    },
+    _import() {
+      this.show = !this.show;
+      if (!this.show) {
+        this.clearFile()
+      } else {}
+    },
+    clearPercent () {
+      this.showPercent = false;
+    },
+    clearFile () {
+      this.fileName = '导入文件'
+      this.myfile = ''
+      this.showPercent = false
+    },
+    clearError () {
+       this.showError = false
+    },
+    clearSuccess () {
+      this.showSuccess = false
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+
+    download (event) {
+      event.preventDefault()
+      api.ajaxDownload('/export/template/swmsStufile', {}, 'excel.xlsx').catch(error => {
+        MSG.warning('下载错误')
+      })
+    },
+    searchFilter() {
       this.currentPage = 1
       this.query.classId = this.classId
       this.query.enterYear = this.enterYear
@@ -183,7 +251,8 @@ export default {
       this.refresh()
     },
 
-    create () {
+
+    create() {
       this.type = +this.$t('zjy.operator.CREATE')
       this.file = {}
       this.title = '新增学生档案'
@@ -191,9 +260,8 @@ export default {
       this.clearFileList()
     },
 
-    _import () {
-    },
-    _export () {
+    
+    _export() {
       const header = ['学号', '姓名', '院系', '专业', '班级', '建档日期', '入学年份']
       const filter = ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'stufileDate', 'enterYear']
       const data = this.selectedRows.length > 0 ? this.selectedRows : this.list
@@ -210,11 +278,11 @@ export default {
     },
 
     // 多选导出
-    handleSelectionChange (rows) {
+    handleSelectionChange(rows) {
       this.selectedRows = rows
     },
 
-    clearFileList () {
+    clearFileList() {
       for (let i = 0; i < this.fileList.length; ++i) {
         this.fileList[i].stufileName = ''
         this.fileList[i].stufilePath = ''
@@ -223,7 +291,7 @@ export default {
       }
     },
 
-    edit (row) {
+    edit(row) {
       this.type = +this.$t('zjy.operator.EDIT')
       this.title = '编辑学生档案'
       stufileManageAPI.queryForObject(row.stufileUid).then(response => {
@@ -250,7 +318,7 @@ export default {
         console.log(error)
       })
     },
-    view (row) {
+    view(row) {
       this.type = +this.$t('zjy.operator.VIEW')
       this.title = '查看学生档案'
       stufileManageAPI.queryForObject(row.stufileUid).then(response => {
@@ -278,21 +346,19 @@ export default {
       })
     },
 
-    pageChanged (pageNumber) {
+    pageChanged(pageNumber) {
       this.currentPage = pageNumber
     },
 
-    // --------------- 搜索 END ---------------
-
-    refresh () {
+    refresh() {
       return _refresh.call(this)
     },
-    handleRefresh () {
+    handleRefresh() {
       this.refresh()
     }
   },
 
-  mounted () {
+  mounted() {
     stufileAPI.queryForList().then(resposne => {
       if (resposne.code !== 1) {
         MSG.success('获取档案设置失败')
@@ -327,6 +393,10 @@ export default {
     })
   },
 
+   computed: {
+    ...mapGetters(['token'])
+  },
+
   components: {
     ZjyTableSearch,
     SearchInput,
@@ -344,7 +414,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
+      handler(val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -356,16 +426,115 @@ export default {
           } else {
             this.$alert(response.message)
           }
-          this.loading = false
         }).catch(error => {
-          this.loading = false
+        }).finally(() => {
+           this.loading = false
         })
       }
     }
-
   }
 }
 
 </script>
 <style lang='scss' scoped>
+.file-input {
+  width: 235px;
+  height: 30px;
+  border: 1px solid #e8edf2;
+  line-height: 32px;
+  padding-left: 5px;
+  color: #323232;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+.upload-error {
+  margin-left: 20px;
+  background-color: #FEF6D9;
+  line-height: 32px;
+  padding: 0 10px;
+  a {
+    padding-left: 0 !important;
+    color: #f56c6c;
+    padding-right: 15px;
+    background: url('./ic_download.png') right 1px no-repeat;
+  }
+}
+.upload-status {
+  width: 200px;
+  height: 30px;
+  margin-left: 20px;
+  line-height: 30px;
+  .el-progress {
+    line-height: 28px;
+  }
+}
+.myupload {
+  line-height: 32px;
+  padding-left: 10px;
+}
+.download-body {
+  display: flex;
+  margin-bottom: 10px;
+  a {
+    padding-left: 15px;
+  }
+  a.upload-view {
+    background:url('./ic_view.png') left center no-repeat;
+  }
+  a.upload-import {
+    background:url('./ic_import.png') left center no-repeat;
+  }
+  a.upload-abort {
+    background:url('./ic_abort.png') left center no-repeat;
+  }
+}
+.upload {
+  font-size: 12px;
+  color: #666666;
+  height: 60px;
+  border: 1px solid #37c6d4;
+  position: relative;
+  padding: 10px 20px;
+
+  .download-link {
+    a{
+      color: #0aacf8;
+      span {
+        color: #666666;
+      }
+    }
+  }
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+.arrow {
+  &:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 6px;
+    border-bottom-color: #37c6d4;
+    top: -12px;
+    left: 68px;
+  }
+}
+.svg {
+  position: relative;
+  top: -16px;
+  margin-bottom: -6px;
+}
 </style>

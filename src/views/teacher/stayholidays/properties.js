@@ -1,11 +1,11 @@
-import { dateFormat } from "@/utils";
+import { dateFormat } from '@/utils'
 
 const statusFormat = (cellValue) =>  ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
 
 export default {
   query: {
     offset: 0,
-    limit: 2,
+    limit: 10,
     dataStatus: '',
     applyYear: '',
     studentCode: ''

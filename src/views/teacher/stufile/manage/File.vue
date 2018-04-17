@@ -6,8 +6,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="学号:" prop="studentNo" class="inline">
-            <el-input @change="handleChange" v-model="studentNo"
-                      :class="[{'is-error': hasError}, {'is-success': success},'search-input']" :disabled="type === 1">
+            <el-input @change="handleChange" v-model="studentNo" :class="[{'is-error': hasError}, {'is-success': success},'search-input']" :disabled="type === 1">
               <div class="search" slot="append" @click="check">
                 <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
               </div>
@@ -47,8 +46,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="建档日期" prop="stufileDate" class=" pull-right">
-            <el-date-picker type="date" placeholder="选择日期" v-model="data.stufileDate"
-                            style="width: 100%;position:absolute;"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -57,8 +55,7 @@
     <p class="zjy-form__title" v-if="fileList.length > 0">档案材料清单</p>
 
     <div class="zjy-table" v-if="fileList.length > 0">
-      <el-table :data="value" style="width: 100%" :show-header="false" v-loading="loading" border
-                element-loading-background="rgba(0, 0, 0, 0.2)">
+      <el-table :data="value" style="width: 100%" :show-header="false" v-loading="loading" border element-loading-background="rgba(0, 0, 0, 0.2)">
 
         <el-table-column label="材料名称" width="250">
           <template slot-scope="scope">
@@ -67,27 +64,24 @@
         </el-table-column>
         <el-table-column label="文件上传" width="200">
           <template slot-scope="scope">
-            <zjy-upload
-              :ref="'upload' + scope.$index"
-              :disabled="isUploading"
-              v-if="!fileList[scope.$index].stufilePath"
-              class="zjy-table-upload"
-              accept="image/gif, image/jpeg, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              :action="action + '?index=' + scope.$index" :headers="{'Zjy-Token': token}" multiple :limit="3"
-              :showFileList="false"
-              :before-upload="handleBeforeUpload"
-              :on-progress="handleProgress"
-              :on-success="handleSuccess"
-              :on-error="handleError"
-              :auto-upload="true"
+            <zjy-upload 
+              :ref="'upload' + scope.$index" 
+              :disabled="isUploading" 
+              v-if="!fileList[scope.$index].stufilePath" 
+              class="zjy-table-upload" 
+              accept="image/gif, image/jpeg, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+              :action="action + '?index=' + scope.$index" 
+              :headers="{'Zjy-Token': token}" 
+              multiple :limit="3" 
+              :showFileList="false" 
+              :before-upload="handleBeforeUpload" 
+              :on-progress="handleProgress" 
+              :on-success="handleSuccess" 
+              :on-error="handleError" 
+              :auto-upload="true" 
               :file-list="fl"
             >
-              <el-button
-                :disabled="isUploading"
-                size="small"
-                type="primary"
-                @click="test(scope.row, scope.$index)"
-              >
+              <el-button :disabled="isUploading" size="small" type="primary" @click="test(scope.row, scope.$index)">
                 上传附件
               </el-button>
             </zjy-upload>
@@ -115,22 +109,22 @@
               </div>
             </transition>
 
-              <template v-if="!fileList[scope.$index].stufilePath">
-                <p :id="'tip' + scope.$index"></p>
+            <template v-if="!fileList[scope.$index].stufilePath">
+              <p :id="'tip' + scope.$index"></p>
 
-                <transition name="breadcrumb1">
-                  <div role="progressbar" class="el-progress el-progress--line" color="#36c6d3" :id="'per' + scope.$index">
-                    <div class="el-progress-bar">
-                      <div class="el-progress-bar__outer" style="height: 6px;">
-                        <div class="el-progress-bar__inner" style="width: 0%;" :ref="'ref' + scope.$index">
-                        </div>
+              <transition name="breadcrumb1">
+                <div role="progressbar" class="el-progress el-progress--line" color="#36c6d3" :id="'per' + scope.$index">
+                  <div class="el-progress-bar">
+                    <div class="el-progress-bar__outer" style="height: 6px;">
+                      <div class="el-progress-bar__inner" style="width: 0%;" :ref="'ref' + scope.$index">
                       </div>
                     </div>
-                    <div class="el-progress__text" style="font-size: 12px;" :ref="'ref2' + scope.$index">0%</div>
-                    <a href="javascript:;" @click="abort" class="cancel" v-if="isUploading && activeFileIndex === scope.$index">取消</a>
                   </div>
-                </transition>
-              </template>
+                  <div class="el-progress__text" style="font-size: 12px;" :ref="'ref2' + scope.$index">0%</div>
+                  <a href="javascript:;" @click="abort" class="cancel" v-if="isUploading && activeFileIndex === scope.$index">取消</a>
+                </div>
+              </transition>
+            </template>
 
             <!-- <div :ref="'ref' + scope.$index"></div> -->
           </template>
@@ -151,23 +145,23 @@
 import ZjyButton from '@/components/button'
 import ZjyInput from '@/components/input'
 import stufileManageAPI from '@/api/teacher/stufile/manage'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import ZjyUpload from '@/components/upload/index'
 
 export default {
-  data () {
+  data() {
     return {
       data: {},
       action: process.env.BASE_URL + '/upload/stufileUpload',
       rules: {
         stufileNo: [
-          {required: true, message: '请输入档案编号', trigger: 'blur'}
+          { required: true, message: '请输入档案编号', trigger: 'blur' }
         ],
         recipient: [
-          {required: true, message: '请输入接收人', trigger: 'blur'}
+          { required: true, message: '请输入接收人', trigger: 'blur' }
         ],
         stufileDate: [
-          {required: true, message: '请选择建档日期', trigger: 'blur'}
+          { required: true, message: '请选择建档日期', trigger: 'blur' }
         ]
       },
       studentNo: '',
@@ -190,27 +184,27 @@ export default {
   },
 
   methods: {
-    abort () {
+    abort() {
       this.$refs['upload' + this.activeFileIndex].abort()
       this.$refs['ref' + this.activeFileIndex].style.width = 0 + '%'
       this.$refs['ref2' + this.activeFileIndex].innerHTML = 0 + '%'
       this.isUploading = false
     },
-    test (row, index) {
+    test(row, index) {
       if (this.isUploading) return
       this.activeFileIndex = index
       this.activeSettingId = row.stufilesettingUid
     },
 
-    deleteFile (index) {
+    deleteFile(index) {
       this.fileList[index].stufilePath = ''
       this.fileList[index].stufileName = ''
     },
 
-    handleUpload (index, row) {
+    handleUpload(index, row) {
     },
 
-    handleProgress (event, file, fileList) {
+    handleProgress(event, file, fileList) {
       //  console.log(event)
       // this.loading = true
       try {
@@ -224,7 +218,7 @@ export default {
       }
     },
 
-    handleBeforeUpload (file) {
+    handleBeforeUpload(file) {
       this.fileList[this.activeFileIndex].index = this.activeFileIndex
       this.fileList[this.activeFileIndex].stufileName = file.name
       this.fileList[this.activeFileIndex].uid = file.uid
@@ -238,7 +232,7 @@ export default {
       return true
     },
 
-    handleSuccess (response, file, fileList) {
+    handleSuccess(response, file, fileList) {
       try {
         let which = -1
         which = this.fileList.findIndex(x => x.uid === file.uid)
@@ -267,19 +261,19 @@ export default {
       }
     },
 
-    handleError (err, file, fileList) {
+    handleError(err, file, fileList) {
       console.log(err)
     },
 
-    handleEdit (index, row) {
+    handleEdit(index, row) {
       console.log(index, row)
     },
 
-    handleDelete (index, row) {
+    handleDelete(index, row) {
       console.log(index, row)
     },
 
-    check () {
+    check() {
       if (this.type === 1) return
       return new Promise((resolve, reject) => {
         if (this.studentNo) {
@@ -306,17 +300,17 @@ export default {
       })
     },
 
-    handleChange () {
+    handleChange() {
       // this.clearData()
     },
 
-    clearValidate () {
+    clearValidate() {
       this.hasError = false
       this.error = ''
       this.success = ''
     },
 
-    fillData (data) {
+    fillData(data) {
       this.data.className = data.className ? data.className : ''
       this.data.facultyName = data.facultyName ? data.facultyName : ''
       this.data.studentName = data.studentName ? data.studentName : ''
@@ -324,7 +318,7 @@ export default {
       this.data.studentId = data.studentId ? data.studentId : ''
     },
 
-    submitForm (formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(valid => {
         let arg = {}
 
@@ -409,16 +403,16 @@ export default {
     ZjyInput
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     for (let i = 0; i < this.fileList.length; ++i) {
-      if (this.isUploading) try { this.$refs['upload' + i].abort() } catch (e) {}
+      if (this.isUploading) try { this.$refs['upload' + i].abort() } catch (e) { }
     }
   },
 
   watch: {
     formData: {
       immediate: true,
-      handler (val, oldVal) {
+      handler(val, oldVal) {
         this.data = val
         try {
           if (this.data.ucenterStudent.studentNo) {
@@ -436,7 +430,7 @@ export default {
 
     list: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         this.fileList = val
       }
     }
@@ -444,65 +438,65 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-  .el-form {
-    padding: 0 50px;
-    .el-form-item {
-      width: 300px;
-      margin-bottom: 20px;
-    }
+.el-form {
+  padding: 0 50px;
+  .el-form-item {
+    width: 300px;
+    margin-bottom: 20px;
   }
+}
 
-  .search-input {
-    width: 220px;
-  }
+.search-input {
+  width: 220px;
+}
 
-  .tip {
-    position: absolute;
-    left: 0;
-    line-height: 12px;
-    top: 45px;
-    font-size: 12px;
-    display: inline-block;
-    z-index: 999;
-    color: #f56c6c;
-  }
+.tip {
+  position: absolute;
+  left: 0;
+  line-height: 12px;
+  top: 45px;
+  font-size: 12px;
+  display: inline-block;
+  z-index: 999;
+  color: #f56c6c;
+}
 
-  .search {
-    display: block;
-  }
+.search {
+  display: block;
+}
 
-  .zjy-table-upload {
-    .el-button--primary {
-      color: #fff;
-      background-color: #36c6d3;
-      border-color: #36c6d3;
-      border-radius: 25px;
-    }
+.zjy-table-upload {
+  .el-button--primary {
+    color: #fff;
+    background-color: #36c6d3;
+    border-color: #36c6d3;
+    border-radius: 25px;
   }
+}
 
-  .el-button--small,
-  .el-button--small.is-round {
-    padding: 7px 15px;
-  }
+.el-button--small,
+.el-button--small.is-round {
+  padding: 7px 15px;
+}
 
-  .setting-name {
-    padding: 4px 0;
-  }
+.setting-name {
+  padding: 4px 0;
+}
 
-  .zjy-form__title {
-    font-weight: bold;
-    &:last-of-type {
-      padding-top: 15px;
-    }
+.zjy-form__title {
+  font-weight: bold;
+  &:last-of-type {
+    padding-top: 15px;
   }
-  .el-progress-bar {
-    width: 90%;
-  }
-  .cancel {
-    position: relative;
-    top: 2px;
-  }
-  [id*=tip] {
-    text-align: center;
-  }
+}
+.el-progress-bar {
+  width: 90%;
+}
+.cancel {
+  position: relative;
+  top: 2px;
+}
+[id*="tip"] {
+  text-align: center;
+}
 </style>

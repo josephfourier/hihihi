@@ -55,7 +55,7 @@ export default {
   components: {
     ZjyProcess
   },
-  mounted () {
+  created () {
     api.queryObjectOfStuidcard(this.uid).then(response => {
       if (response.code !== 1) {
         this.$alert('获取信息失败')

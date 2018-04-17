@@ -19,13 +19,7 @@
       <p class="process-title">审批进度</p>
     </div>
     <transition name="el-zoom-in-top">
-      <zjy-process
-        v-if="innerVisible"
-        :data="data"
-        v-model="value"
-        :visible.sync="innerVisible"
-        @submit="handleSubmit"
-      >
+      <zjy-process v-if="innerVisible" :data="data" v-model="value" :visible.sync="innerVisible" @submit="handleSubmit">
       </zjy-process>
     </transition>
   </div>
@@ -34,10 +28,10 @@
 <script>
 import ZjyProcess from '@/components/process'
 import api from '../api'
-import {selfMerge} from '@/utils'
+import { selfMerge } from '@/utils'
 
 export default {
-  data () {
+  data() {
     return {
       data: {},
       value: {},
@@ -52,7 +46,7 @@ export default {
   components: {
     ZjyProcess
   },
-  created () {
+  created() {
     api.queryObjectOfClassHonorary(this.uid).then(response => {
       if (response.code !== 1) {
         this.$alert('获取信息失败')
@@ -71,13 +65,13 @@ export default {
   },
 
   methods: {
-    makeFormData (data, steps) {
+    makeFormData(data, steps) {
       return {
         'clahonoraryUid': data.clahonoraryUid,
         'swmsApprovalList': steps
       }
     },
-    handleSubmit (data, steps) {
+    handleSubmit(data, steps) {
       api.submitClassHonorary(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {

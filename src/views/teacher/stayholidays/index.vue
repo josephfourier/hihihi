@@ -12,7 +12,7 @@
 
     <zjy-table-operator>
       <!--<operator-item @click="batchRemove" clz="delete">批量删除</operator-item>-->
-      <!--<operator-item @click="_import" clz="import">导入</operator-item>-->
+      <operator-item @click="_import" clz="import">导入</operator-item>
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
@@ -31,7 +31,6 @@
         :currentPage="currentPage"
         :total="total"
         @current-change="pageChanged"
-        :pageSize="2"
       >
       </zjy-pagination>
     </div>

@@ -85,7 +85,8 @@ export default {
           this.data = response.data.peopleProportionDto.map(i => {
             return {
               value: +i.value,
-              name: i.name + ' ' + ((+i.value) / sum * 100).toFixed(2) + '%'
+              // name: i.name + ' ' + ((+i.value) / sum * 100).toFixed(2) + '%'
+              name: i.name
             }
           }).filter(i => i.value !== 0)
         }

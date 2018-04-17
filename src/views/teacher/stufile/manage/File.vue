@@ -5,37 +5,42 @@
     <el-form :model="data" :rules="rules" ref="data" label-width="80px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="学号:" prop="studentNo" class="inline">
-            <el-input @change="handleChange" v-model="studentNo" :class="[{'is-error': hasError}, {'is-success': success},'search-input']" :disabled="type === 1">
+          <el-form-item label="学号:" prop="studentNo" class="inline" v-if="type === 2">
+            <el-input @change="handleChange" v-model="data.studentNo" :class="['search-input']">
               <div class="search" slot="append" @click="check">
                 <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
               </div>
             </el-input>
-
-            <transition name="el-zoom-in-top">
-              <span class="tip" v-if="hasError">{{ error }}</span>
-            </transition>
-
           </el-form-item>
+
+          <el-form-item label="学号:" class="inline" v-else>
+            <el-input :value="data.studentNo" :class="['search-input']" disabled>
+              <div class="search" slot="append" @click="check">
+                <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
+              </div>
+            </el-input>
+          </el-form-item>
+
         </el-col>
         <el-col :span="12">
           <el-form-item label="学生姓名:" prop="studentName" class="inline pull-right">
-            <el-input v-model="data.studentName" disabled></el-input>
+            <el-input :value="student.studentName || data.studentName" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="班级:" prop="className" class="inline">
-        <el-input v-model="data.className" disabled></el-input>
+      <el-form-item label="班级:" class="inline">
+        <el-input :value="student.className || data.className" disabled></el-input>
       </el-form-item>
-      <el-form-item label="院系:" prop="facultyName" class="inline pull-right">
-        <el-input v-model="data.facultyName" disabled></el-input>
+      <el-form-item label="院系:" class="inline pull-right">
+        <el-input :value="student.facultyName || data.facultyName" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="档案编号" prop="stufileNo" class="inline pull-left">
         <el-input type="text" v-model="data.stufileNo"></el-input>
       </el-form-item>
-      <el-form-item label=" + 学号 + " prop="studentNo" class="inline pull-right">
-        <el-input type="text" v-model="data.studentNo" disabled></el-input>
+      <span class="concat">+ 学号 +</span>
+      <el-form-item  class="inline pull-right append" prop="append">
+        <el-input type="text" v-model="data.append"></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="12">
@@ -64,23 +69,8 @@
         </el-table-column>
         <el-table-column label="文件上传" width="200">
           <template slot-scope="scope">
-            <zjy-upload 
-              :ref="'upload' + scope.$index" 
-              :disabled="isUploading" 
-              v-if="!fileList[scope.$index].stufilePath" 
-              class="zjy-table-upload" 
-              accept="image/gif, image/jpeg, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
-              :action="action + '?index=' + scope.$index" 
-              :headers="{'Zjy-Token': token}" 
-              multiple :limit="3" 
-              :showFileList="false" 
-              :before-upload="handleBeforeUpload" 
-              :on-progress="handleProgress" 
-              :on-success="handleSuccess" 
-              :on-error="handleError" 
-              :auto-upload="true" 
-              :file-list="fl"
-            >
+            <zjy-upload :ref="'upload' + scope.$index" :disabled="isUploading" v-if="!fileList[scope.$index].stufilePath" class="zjy-table-upload" 
+            accept="image/gif, image/jpeg, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" :action="action + '?index=' + scope.$index" :headers="{'Zjy-Token': token}" multiple :limit="3" :showFileList="false" :before-upload="handleBeforeUpload" :on-progress="handleProgress" :on-success="handleSuccess" :on-error="handleError" :auto-upload="true" :file-list="fl">
               <el-button :disabled="isUploading" size="small" type="primary" @click="test(scope.row, scope.$index)">
                 上传附件
               </el-button>
@@ -89,7 +79,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="268">
           <template slot-scope="scope">
             <transition name="breadcrumb1">
               <div v-if="fileList[scope.$index].stufilePath">
@@ -121,7 +111,7 @@
                     </div>
                   </div>
                   <div class="el-progress__text" style="font-size: 12px;" :ref="'ref2' + scope.$index">0%</div>
-                  <a href="javascript:;" @click="abort" class="cancel" v-if="isUploading && activeFileIndex === scope.$index">取消</a>
+                  <a href="javascript:;" @click="abort" class="upload-abort" v-if="isUploading && activeFileIndex === scope.$index">取消</a>
                 </div>
               </transition>
             </template>
@@ -150,11 +140,37 @@ import ZjyUpload from '@/components/upload/index'
 
 export default {
   data() {
+    var checkStudent = (rule, value, callback) => {
+      if (!value) {
+        this.doQuery = false
+        return callback(new Error('请输入学号'))
+      } else {
+        if (!this.doQuery) return
+        stufileManageAPI.checkExists(value).then(response => {
+          if (response.code !== 1) {
+            callback(new Error('输入学号有误'))
+          } else {
+            this.student = response.data
+            callback()
+          }
+          this.doQuery = false
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+    }
     return {
       data: {},
       action: process.env.BASE_URL + '/upload/stufileUpload',
       rules: {
+        studentNo: [
+          { required: true, message: '请输入学生学号', trigger: 'blur' },
+          { validator: checkStudent, trigger: 'change' }
+        ],
         stufileNo: [
+          { required: true, message: '请输入档案编号', trigger: 'blur' }
+        ],
+        append: [
           { required: true, message: '请输入档案编号', trigger: 'blur' }
         ],
         recipient: [
@@ -164,10 +180,11 @@ export default {
           { required: true, message: '请选择建档日期', trigger: 'blur' }
         ]
       },
-      studentNo: '',
-      hasError: false,
-      error: '',
-      success: '',
+
+      doQuery: false,
+      student: {},
+
+
       fileIndex: -1,
       activeFileIndex: -1,
       activeSettingId: '',
@@ -275,115 +292,82 @@ export default {
 
     check() {
       if (this.type === 1) return
-      return new Promise((resolve, reject) => {
-        if (this.studentNo) {
-          stufileManageAPI.checkExists(this.studentNo).then(response => {
-            if (response.code !== 1) {
-              this.hasError = true
-              this.error = response.data
-              // this.error = response.message
-              this.success = ''
-              // reject(false)
-            } else {
-              this.fillData(response.data)
-              this.error = ''
-              this.hasError = false
-              this.success = 'success'
-              resolve(true)
-            }
-          })
-        } else {
-          this.hasError = true
-          this.error = '请输入学号'
-          this.success = ''
-        }
-      })
+      this.doQuery = true
+      this.$refs.data.validateField('studentNo')
     },
 
     handleChange() {
       // this.clearData()
     },
 
-    clearValidate() {
-      this.hasError = false
-      this.error = ''
-      this.success = ''
-    },
-
-    fillData(data) {
-      this.data.className = data.className ? data.className : ''
-      this.data.facultyName = data.facultyName ? data.facultyName : ''
-      this.data.studentName = data.studentName ? data.studentName : ''
-      this.data.studentNo = data.studentNo ? data.studentNo : ''
-      this.data.studentId = data.studentId ? data.studentId : ''
-    },
 
     submitForm(formName) {
+
+
+      if (this.type === 2)
+        this.doQuery = true
+
       this.$refs[formName].validate(valid => {
-        let arg = {}
+        if (valid) {
+          let arg = {}
 
-        arg.stufileNo = this.type === 1
-          ? this.data.stufileNo
-          : this.data.stufileNo + this.studentNo
-        arg.recipient = this.data.recipient
-        arg.schoolCode = this.data.schoolCode
-        arg.stufileDate = new Date(this.data.stufileDate).getTime()
-        arg.stufileDescription = this.data.stufileDescription
-        arg.status = 1
+          arg.stufileNo = this.type === 1
+            ? this.data.stufileNo + this.data.studentNo + this.data.append
+            : this.data.stufileNo + this.student.studentNo + this.data.append
+          arg.recipient = this.data.recipient
+          arg.schoolCode = this.data.schoolCode
+          arg.stufileDate = new Date(this.data.stufileDate).getTime()
+          arg.stufileDescription = this.data.stufileDescription
+          arg.status = 1
 
-        let stufileListList = []
-        this.fileList.forEach((item, index) => {
-          if (item.stufilePath) {
-            stufileListList.push({
-              listUid: item.listUid,
-              stufileUid: item.stufileUid,
-              stufilePath: item.stufilePath,
-              swmsStufileSetting: item.swmsStufileSetting,
-              stufilesettingUid: item.stufilesettingUid
-            })
-          }
-        })
-
-        arg.stufileListList = stufileListList
-
-        if (this.type === 2) {
-          this.check().then(response => {
-            if (response && valid) {
-              // 验证通过后提交表单数据
-
-              arg.studentNo = this.data.studentNo
-              arg.studentId = this.data.studentId
-
-              stufileManageAPI.create(arg).then(response => {
-                if (response.code === 1) {
-                  MSG.success('添加成功')
-                  this.clearValidate()
-                  this.$emit('update:visible', false)
-                  this.$emit('refresh')
-                } else {
-                  this.$alert(response.message)
-                }
-              }).catch(error => {
-                console.log(error)
+          let stufileListList = []
+          this.fileList.forEach((item, index) => {
+            if (item.stufilePath) {
+              stufileListList.push({
+                listUid: item.listUid,
+                stufileUid: item.stufileUid,
+                stufilePath: item.stufilePath,
+                swmsStufileSetting: item.swmsStufileSetting,
+                stufilesettingUid: item.stufilesettingUid
               })
             }
-          }).catch(error => {
-            console.log(error)
-            return false
           })
-        } else if (valid) {
-          stufileManageAPI.update(this.data.stufileUid, arg).then(response => {
-            if (response.code === 1) {
-              MSG.success('修改成功')
-              this.clearValidate()
-              this.$emit('update:visible', false)
-              this.$emit('refresh')
-            } else {
-              this.$alert(response.message)
-            }
-          }).catch(error => {
-            console.log(error)
-          })
+
+          arg.stufileListList = stufileListList
+
+          if (this.type === 2) {
+            arg.studentNo = this.data.studentNo
+            arg.studentId = this.student.studentId
+
+            stufileManageAPI.create(arg).then(response => {
+              if (response.code === 1) {
+                setTimeout(_ => {
+                  MSG.success('添加成功')
+                }, 200)
+                this.$emit('update:visible', false)
+                this.$emit('refresh')
+              } else {
+                this.$alert(response.message)
+              }
+            }).catch(error => {
+              console.log(error)
+            })
+          } else {
+            stufileManageAPI.update(this.data.stufileUid, arg).then(response => {
+              if (response.code === 1) {
+                setTimeout(_ => {
+                  MSG.success('修改成功')
+                }, 200)
+
+                this.$emit('update:visible', false)
+                this.$emit('refresh')
+              } else {
+                this.$alert(response.message)
+              }
+            }).catch(error => {
+              console.log(error)
+            })
+          }
         }
       })
     }
@@ -421,7 +405,9 @@ export default {
             this.data.className = this.data.ucenterStudent.className
             this.data.facultyName = this.data.ucenterStudent.facultyName
             this.data.studentNo = this.data.ucenterStudent.studentNo
-            this.data.stufileNo = val.stufileNo.replace(this.studentNo, '')
+            const splite = val.stufileNo.split(this.studentNo)
+            this.data.stufileNo = splite[0]
+            this.data.append = splite[1]
           }
         } catch (e) {
         }
@@ -489,14 +475,31 @@ export default {
     padding-top: 15px;
   }
 }
-.el-progress-bar {
-  width: 90%;
-}
-.cancel {
+.el-progress {
+  width: 260px;
   position: relative;
-  top: 2px;
 }
-[id*="tip"] {
+.el-progress-bar {
+  width: 230px;
+}
+
+a.upload-abort {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  height: 15px;
+  line-height: 15px;
+  padding-left: 15px;
+  background: url('./ic_abort.png') left center no-repeat;
+}
+[id*='tip'] {
   text-align: center;
+}
+.append {
+  margin-left: -80px;
+}
+.concat {
+  position: relative;
+  right: -15px;
 }
 </style>

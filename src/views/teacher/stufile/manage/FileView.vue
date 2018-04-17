@@ -6,7 +6,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="学号:" prop="studentNo" class="inline">
-            <el-input v-model="studentNo" disabled :class="[{'is-error': hasError}, {'is-success': success},'search-input']">
+            <el-input v-model="studentNo" disabled :class="['search-input']">
               <div class="search" slot="append">
                 <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
               </div>
@@ -29,8 +29,9 @@
       <el-form-item label="档案编号" prop="stufileNo" class="inline pull-left">
         <el-input type="text" v-model="data.stufileNo" disabled></el-input>
       </el-form-item>
-      <el-form-item label=" + 学号 + " prop="studentNo" class="inline pull-right">
-        <el-input type="text" v-model="data.studentNo" disabled></el-input>
+      <span class="concat">+ 学号 +</span>
+      <el-form-item  class="inline pull-right append" prop="append">
+        <el-input type="text" v-model="data.append" disabled></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="12">
@@ -59,7 +60,18 @@
         </el-table-column>
         <el-table-column label="文件上传" width="200">
           <template slot-scope="scope">
-            <zjy-upload :ref="'upload' + scope.$index" v-if="!fileList[scope.$index].stufilePath" class="zjy-table-upload" accept="image/gif, image/jpeg" :action="action + '?index=' + scope.$index" :headers="{'Zjy-Token': token}" multiple :limit="3" :showFileList="false" :file-list="fl">
+            <zjy-upload 
+              :ref="'upload' + scope.$index" 
+              v-if="!fileList[scope.$index].stufilePath" 
+              class="zjy-table-upload" 
+              accept="image/gif, image/jpeg" 
+              :action="action + '?index=' + scope.$index" 
+              :headers="{'Zjy-Token': token}" 
+              multiple 
+              :limit="3" 
+              :showFileList="false" 
+              :file-list="fl"
+            >
               <el-button size="small" type="primary">
                 上传附件
               </el-button>
@@ -127,20 +139,16 @@ export default {
       data: {},
       action: process.env.BASE_URL + 'upload/stufileUpload',
       rules: {
-        stufileNo: [
-          { required: true, message: '请输入档案编号', trigger: 'blur' }
-        ],
-        recipient: [
-          { required: true, message: '请输入接收人', trigger: 'blur' }
-        ],
-        stufileDate: [
-          { required: true, message: '请选择建档日期', trigger: 'blur' }
-        ]
+        // stufileNo: [
+        //   { required: true, message: '请输入档案编号', trigger: 'blur' }
+        // ],
+        // recipient: [
+        //   { required: true, message: '请输入接收人', trigger: 'blur' }
+        // ],
+        // stufileDate: [
+        //   { required: true, message: '请选择建档日期', trigger: 'blur' }
+        // ]
       },
-      studentNo: '',
-      hasError: false,
-      error: '',
-      success: '',
       fileIndex: -1,
       activeFileIndex: -1,
       activeSettingId: '',
@@ -155,13 +163,6 @@ export default {
   },
 
   methods: {
-    fillData(data) {
-      this.data.className = data.className ? data.className : ''
-      this.data.facultyName = data.facultyName ? data.facultyName : ''
-      this.data.studentName = data.studentName ? data.studentName : ''
-      this.data.studentNo = data.studentNo ? data.studentNo : ''
-      this.data.studentId = data.studentId ? data.studentId : ''
-    }
   },
 
   props: {
@@ -190,7 +191,9 @@ export default {
             this.data.className = this.data.ucenterStudent.className
             this.data.facultyName = this.data.ucenterStudent.facultyName
             this.data.studentNo = this.data.ucenterStudent.studentNo
-            this.data.stufileNo = val.stufileNo.replace(this.studentNo, '')
+           const splite = val.stufileNo.split(this.studentNo)
+            this.data.stufileNo = splite[0]
+            this.data.append = splite[1]
           }
         } catch (e) {
         }
@@ -263,5 +266,12 @@ export default {
 }
 [id*="tip"] {
   text-align: center;
+}
+.append {
+  margin-left: -80px;
+}
+.concat {
+  position: relative;
+  right: -15px;
 }
 </style>

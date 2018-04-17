@@ -24,23 +24,7 @@
         <div class="upload">
           <div class="download-body">
             <p class="file-input" @click="notClick" :title="fileName">{{ fileName }}</p>
-            <el-upload
-              class="myupload"
-              ref="uploadExcel"
-              :action="action"
-              :headers="{'Zjy-Token': token}"
-              :data="{baseModel: baseModel}" 
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="myFileList"
-              :before-upload="handleBeforeUpload"
-              :on-change="handleChange"
-              :on-success="handleSuccess"
-              :on-error="handleError"
-              :on-progress="handleProgress"
-              :auto-upload="false"
-              :show-file-list="false"
-            >
+            <el-upload class="myupload" ref="uploadExcel" :action="action" :headers="{'Zjy-Token': token}" :data="{baseModel: baseModel}" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="myFileList" :before-upload="handleBeforeUpload" :on-change="handleChange" :on-success="handleSuccess" :on-error="handleError" :on-progress="handleProgress" :auto-upload="false" :show-file-list="false" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
               <a slot="trigger" class="upload-view" ref="uploadTrigger" @click="clearError">浏览</a>
               <a style="margin-left: 10px;" @click="submitUpload" class="upload-import">导入</a>
               <a style="margin-left: 10px;" @click="abortUpload" class="upload-abort">取消</a>
@@ -48,23 +32,24 @@
             </el-upload>
             <transition name="el-zoom-in-center">
               <div class="upload-status" v-if="showPercent">
-                <zjy-progress :percentage="percent" color="#37c6d4">{{percent}}%</zjy-progress>  
+                <zjy-progress :percentage="percent" color="#37c6d4" :percentageText="percentText"></zjy-progress>
               </div>
             </transition>
-          
-            <transition name="el-zoom-in-top">
-              <div class="upload-error" v-if="showSuccess">
-                <p>导入成功</p>
-              </div>
-            </transition>
+
             <transition name="el-zoom-in-center">
               <div class="upload-error" v-if="showError">
-                <p>上传失败,下载<a :href="errorLink" target="_blank">错误信息</a></p>
+                <p>上传失败,下载
+                  <a :href="errorLink" target="_blank">错误信息</a>
+                </p>
               </div>
             </transition>
           </div>
           <div class="download-link">
-            <p>点击下载 <a href="javascript:;" @click="download($event)">导入模板<span> (导入模板必须为excel格式)</span></a></p>
+            <p>点击下载
+              <a href="javascript:;" @click="download($event)">导入模板
+                <span> (导入模板必须为excel格式)</span>
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -103,7 +88,7 @@ import OperatorItem from '@/components/table-operator/operator-item'
 
 import ZjyPagination from '@/components/pagination'
 
-import { _refresh, export2excel } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat } from '@/utils'
 
 import stufileManageAPI from '@/api/teacher/stufile/manage'
 import stufileAPI from '@/api/teacher/stufile/setting'
@@ -122,12 +107,13 @@ export default {
     return {
       action: process.env.BASE_URL + '/manage/upload/uploadDatas',
       percent: 0,
+      percentText: '',
       showPercent: false,
       showError: false,
-      showSuccess: false,
+      hasError: false,
       errorLink: 'javascript:;',
       fileName: '导入文件',
-      
+
       myfile: '',
       baseModel: 'swmsStufile',
       myFileList: [
@@ -161,72 +147,78 @@ export default {
   },
 
   methods: {
-    handleSuccess (response, file, fileList) {
-      if (response.code !== 90001) {
+    handleSuccess(response, file, fileList) {
+      if (response.code == 90002) {
         this.errorLink = response.data
         this.showError = true
-        this.clearFile()
-      } else {
-        this.showSuccess = true
+        this.hasError = true
+      } else if (response.code === 90003) {
+        this.hasError = true
+        MSG.warning('导入数据异常')
+      } else if (response.code === 90001) {
+        MSG.success('导入数据成功')
       }
-        this.showPercent = false
+      this.clearFile()
+      this.showPercent = false
     },
-    handleError (error, file, fileList) {
+    handleError(error, file, fileList) {
       console.log(error)
     },
-    handleProgress (event, file, fileList) {
-      this.percent = +(event.percent).toFixed(2) <= 99 ? +(event.percent).toFixed(2) + '%' : '处理中...'
+    handleProgress(event, file, fileList) {
+      this.percent = +(event.percent).toFixed(2)
+      this.percentText = this.percent < 99 ? this.percent + '%' : '处理中...'
     },
-    notClick () {
+    notClick() {
       this.$refs.uploadTrigger.click()
       this.clearError()
     },
     handleChange(file, fileList) {
-      if (this.showError) return
+      if (this.hasError) return
+      if (!/\.(xls|xlsx)$/gi.test(file.name)) {
+        MSG.warning('请上传excel格式文件')
+        this.clearFile()
+        return false
+      }
       this.fileName = file.name
       this.myfile = file
     },
 
-    handleBeforeUpload (file) {
+    handleBeforeUpload(file) {
       this.clearError()
     },
-    abortUpload () {
-       this.$refs.uploadExcel.abort()
-       this.clearFile()
-       this.clearError()
-       this.clearSuccess()
+    abortUpload() {
+      this.$refs.uploadExcel.abort()
+      this.clearFile()
+      this.clearError()
     },
     submitUpload() {
       if (!this.myfile) MSG.warning('请选择文件')
       else {
         this.clearError()
-        this.clearSuccess()
-  
         this.showPercent = true
         this.$refs.uploadExcel.submit()
-        
+
       }
     },
     _import() {
       this.show = !this.show;
       if (!this.show) {
         this.clearFile()
-      } else {}
+      } else { }
     },
-    clearPercent () {
+    clearPercent() {
       this.showPercent = false;
     },
-    clearFile () {
+    clearFile() {
       this.fileName = '导入文件'
       this.myfile = ''
       this.showPercent = false
     },
-    clearError () {
-       this.showError = false
+    clearError() {
+      this.showError = false
+      this.hasError = false
     },
-    clearSuccess () {
-      this.showSuccess = false
-    },
+
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -234,7 +226,7 @@ export default {
       console.log(file);
     },
 
-    download (event) {
+    download(event) {
       event.preventDefault()
       api.ajaxDownload('/export/template/swmsStufile', {}, 'excel.xlsx').catch(error => {
         MSG.warning('下载错误')
@@ -257,13 +249,14 @@ export default {
       this.clearFileList()
     },
 
-    
+
     _export() {
-      const header = ['学号', '姓名', '院系', '专业', '班级', '建档日期', '入学年份']
-      const filter = ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'stufileDate', 'enterYear']
+      const header = properties.header
+      const filter = properties.filter
+      const excelName = properties.excelName
       const data = this.selectedRows.length > 0 ? this.selectedRows : this.list
       this.loading = true
-      export2excel(header, filter, data, '学生档案', (filterVal, data) => {
+      export2excel(header, filter, data, excelName, (filter, data) => {
         return data.map(v => filter.map(j => {
           if (j === 'stufileDate') {
             return _dateFormat(v[j])
@@ -319,6 +312,7 @@ export default {
       this.type = +this.$t('zjy.operator.VIEW')
       this.title = '查看学生档案'
       stufileManageAPI.queryForObject(row.stufileUid).then(response => {
+        console.log(response)
         if (response.code !== 1) MSG.success('获取学生档案失败')
         this.file = response.data
         const _ = response.data.stufileListList
@@ -390,7 +384,7 @@ export default {
     })
   },
 
-   computed: {
+  computed: {
     ...mapGetters(['token'])
   },
 
@@ -426,7 +420,7 @@ export default {
           }
         }).catch(error => {
         }).finally(() => {
-           this.loading = false
+          this.loading = false
         })
       }
     }
@@ -441,14 +435,14 @@ export default {
   border: 1px solid #e8edf2;
   line-height: 32px;
   padding-left: 5px;
-  color: #323232;
+  color: #666666;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis
+  text-overflow: ellipsis;
 }
 .upload-error {
   margin-left: 20px;
-  background-color: #FEF6D9;
+  background-color: #fef6d9;
   line-height: 32px;
   padding: 0 10px;
   a {
@@ -478,13 +472,13 @@ export default {
     padding-left: 15px;
   }
   a.upload-view {
-    background:url('./ic_view.png') left center no-repeat;
+    background: url('./ic_view.png') left center no-repeat;
   }
   a.upload-import {
-    background:url('./ic_import.png') left center no-repeat;
+    background: url('./ic_import.png') left center no-repeat;
   }
   a.upload-abort {
-    background:url('./ic_abort.png') left center no-repeat;
+    background: url('./ic_abort.png') left center no-repeat;
   }
 }
 .upload {
@@ -496,7 +490,7 @@ export default {
   padding: 10px 20px;
 
   .download-link {
-    a{
+    a {
       color: #0aacf8;
       span {
         color: #666666;
@@ -517,7 +511,7 @@ export default {
 }
 .arrow {
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     display: block;
     width: 0;

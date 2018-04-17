@@ -75,6 +75,15 @@
 
     <el-dialog class="inner" width="30%" title="请输入拒绝原因" :visible.sync="innerVisible" append-to-body>
       <zjy-input type="textarea" v-model="reason"></zjy-input>
+    
+      <transition name="el-zoom-in-top">
+        <div class="tip-box">
+          <transition name="el-zoom-in-top">
+            <span class="tip" v-if="hasNoReason ">请输入拒绝原因</span>
+          </transition>
+        </div>
+      </transition>
+    
       <div class="zjy-footer">
         <zjy-button type="plain" @click="innerNo">取消</zjy-button>
         <zjy-button type="primary" @click="innerYes">确定</zjy-button>
@@ -108,6 +117,7 @@ export default {
       nextApproverName: '',
       nextApproverId: '',
       reason: '', // 拒绝原因
+      hasNoReason: false,
       STATUS: {
         yes: '1',
         no: '2'
@@ -168,7 +178,7 @@ export default {
 
     innerYes () {
       if (!this.reason) {
-        MSG.success('请输入拒绝原因')
+        this.hasNoReason = true
         return
       }
       this.steps[this.step - 1].approvalStatus = this.STATUS.no
@@ -233,6 +243,9 @@ export default {
     isApprovered (val) {
       if (val) this.step++
       else this.step--
+    },
+    reason (val) {
+      if (val) this.hasNoReason = false
     }
 
   }
@@ -252,5 +265,10 @@ export default {
     .zjy-steps {
       width: 700px;
     }
+  }
+  .tip {
+    font-size: 12px;
+    position: relative;
+    top: -5px;
   }
 </style>

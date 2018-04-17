@@ -36,7 +36,6 @@ router.beforeEach((to, from, next) => {
           store.dispatch('setApproves')
           store.dispatch('setSchedules')
         }
-
         next({ ...to, replace: true })
         NProgress.done()
       }).catch(error => {

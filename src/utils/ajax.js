@@ -13,13 +13,15 @@ ajax.interceptors.request.use(config => {
     config.headers['Zjy-Token'] = store.getters.token || getToken()
 
     // 相当恶心的IE缓存
-    if (config.params) {
-      Object.assign(config.params, {
-        _t: new Date().getTime()
-      })
-    } else {
-      config.params = {
-        _t: new Date().getTime()
+    if (document.documentMode) {
+      if (config.params) {
+        Object.assign(config.params, {
+          _t: new Date().getTime()
+        })
+      } else {
+        config.params = {
+          _t: new Date().getTime()
+        }
       }
     }
   }

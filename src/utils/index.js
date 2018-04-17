@@ -109,6 +109,8 @@ let export2excel = (header, filter, data, filename, formatter) => {
   })
 }
 
+let ieVersion = () => document.documentMode
+
 function refresh (auto)  {
   if (auto) {
     this.currentPage--
@@ -133,5 +135,6 @@ export {
   getPermissionId,
   refresh as _refresh,
   statusFormat as _statusFormat,
-  export2excel
+  export2excel,
+  ieVersion
 }

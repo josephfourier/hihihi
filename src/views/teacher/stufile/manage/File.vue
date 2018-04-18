@@ -184,7 +184,6 @@ export default {
       doQuery: false,
       student: {},
 
-
       fileIndex: -1,
       activeFileIndex: -1,
       activeSettingId: '',
@@ -222,8 +221,6 @@ export default {
     },
 
     handleProgress(event, file, fileList) {
-      //  console.log(event)
-      // this.loading = true
       try {
         this.isUploading = true
         const index = this.activeFileIndex

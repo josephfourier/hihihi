@@ -7,7 +7,7 @@
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
-    <div class="echart">
+    <div class="echart" v-loading="loading">
       <div class="charts">
         <div class="mychart">
           <pie-chart
@@ -48,6 +48,7 @@ export default {
       applyYear: '',
       query: properties.query,
 
+      loading: false,
       data: [],
       value: []
     }
@@ -65,12 +66,11 @@ export default {
         MSG.warning('请选择类别')
         return
       }
+      this.loading = true
       api.queryStatistical(this.query).then(response => {
         if (response.code !== 1) {
-          this.$alert('获取数据失败')
+          MSG.warning('获取数据失败')
         } else {
-          console.log(response)
-
           this.value = response.data.classifyProportionDtos.map(i => {
             return {
               value: +i.value,
@@ -90,6 +90,8 @@ export default {
             }
           }).filter(i => i.value !== 0)
         }
+      }).finally (_ => {
+        this.loading = false
       })
     }
   },

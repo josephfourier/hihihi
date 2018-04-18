@@ -3,7 +3,7 @@
   <div class="zjy-app">
     <zjy-table-search>
       <search-select label="入学年份" :options="years" :value.sync="enterYear"></search-select>
-      <search-select label="班级" :options="classes" :value.sync="classId"></search-select>
+      <search-select label="班级" :options="classes" :value.sync="classId" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-input label="学号" :value.sync="studentNo"></search-input>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
@@ -147,6 +147,23 @@ export default {
   },
 
   methods: {
+    handleFocus() {
+      if (this.classes.length > 0) return
+      commonAPI.queryClassList().then(response => {
+        if (response.code !== 1) {
+          console.warn('query classes error')
+        } else {
+          this.classes = response.data.map(i => {
+            return {
+              label: i.className,
+              value: i.classId
+            }
+          })
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     handleSuccess(response, file, fileList) {
       if (response.code == 90002) {
         this.errorLink = response.data
@@ -197,7 +214,6 @@ export default {
         this.clearError()
         this.showPercent = true
         this.$refs.uploadExcel.submit()
-
       }
     },
     _import() {
@@ -245,10 +261,14 @@ export default {
       this.type = +this.$t('zjy.operator.CREATE')
       this.file = {}
       this.title = '新增学生档案'
-      this.visible = true
-      this.clearFileList()
-    },
+      this.querySetting().then(_ => {
+        this.visible = true
+        this.clearFileList()
+      }).catch(error => {
+        MSG.warning(error)
+      })
 
+    },
 
     _export() {
       const header = properties.header
@@ -284,57 +304,90 @@ export default {
     edit(row) {
       this.type = +this.$t('zjy.operator.EDIT')
       this.title = '编辑学生档案'
-      stufileManageAPI.queryForObject(row.stufileUid).then(response => {
-        if (response.code !== 1) MSG.success('获取学生档案失败')
-        this.file = response.data
-        const _ = response.data.stufileListList
-        this.clearFileList()
+      this.querySetting().then(_ => {
+        stufileManageAPI.queryForObject(row.stufileUid).then(response => {
+          if (response.code !== 1) MSG.success('获取学生档案失败')
+          this.file = response.data
+          const _ = response.data.stufileListList
+          this.clearFileList()
 
-        for (let i = 0; i < this.fileList.length; ++i) {
-          this.fileList[i].stufileUid = row.stufileUid
-        }
+          for (let i = 0; i < this.fileList.length; ++i) {
+            this.fileList[i].stufileUid = row.stufileUid
+          }
 
-        for (let i = 0; i < this.fileList.length; ++i) {
-          for (let j = 0; j < _.length; ++j) {
-            if (_[j].swmsStufileSetting && this.fileList[i].stufilesettingUid == _[j].swmsStufileSetting.stufilesettingUid) {
-              this.fileList[i].stufileName = _[j].swmsStufileSetting.stufileName
-              this.fileList[i].stufilePath = _[j].stufilePath
-              this.fileList[i].listUid = _[j].listUid
+          for (let i = 0; i < this.fileList.length; ++i) {
+            for (let j = 0; j < _.length; ++j) {
+              if (_[j].swmsStufileSetting && this.fileList[i].stufilesettingUid == _[j].swmsStufileSetting.stufilesettingUid) {
+                this.fileList[i].stufileName = _[j].swmsStufileSetting.stufileName
+                this.fileList[i].stufilePath = _[j].stufilePath
+                this.fileList[i].listUid = _[j].listUid
+              }
             }
           }
-        }
-        this.visible = true
-      }).catch(error => {
-        console.log(error)
+          this.visible = true
+        }).catch(error => {
+          console.log(error)
+        })
+      })
+
+    },
+
+    querySetting() {
+      return new Promise((resolve, reject) => {
+        if (this.settings.length > 0) resolve()
+
+        stufileAPI.queryForList().then(resposne => {
+          if (resposne.code !== 1) {
+            // MSG.success('获取档案设置失败')
+            reject('获取档案设置失败')
+          } else {
+            this.settings = resposne.data
+            for (let i = 0; i < this.settings.length; ++i) {
+              this.fileList.push({
+                index: i,
+                stufileName: '',
+                stufilesettingUid: this.settings[i].stufilesettingUid,
+                stufilePath: ''
+              })
+            }
+            resolve()
+          }
+        }).catch(error => {
+          console.log(error)
+        })
       })
     },
+
     view(row) {
       this.type = +this.$t('zjy.operator.VIEW')
       this.title = '查看学生档案'
-      stufileManageAPI.queryForObject(row.stufileUid).then(response => {
-        console.log(response)
-        if (response.code !== 1) MSG.success('获取学生档案失败')
-        this.file = response.data
-        const _ = response.data.stufileListList
-        this.clearFileList()
+      this.querySetting().then(_ => {
+        stufileManageAPI.queryForObject(row.stufileUid).then(response => {
+          console.log(response)
+          if (response.code !== 1) MSG.success('获取学生档案失败')
+          this.file = response.data
+          const _ = response.data.stufileListList
+          this.clearFileList()
 
-        for (let i = 0; i < this.fileList.length; ++i) {
-          this.fileList[i].stufileUid = row.stufileUid
-        }
+          for (let i = 0; i < this.fileList.length; ++i) {
+            this.fileList[i].stufileUid = row.stufileUid
+          }
 
-        for (let i = 0; i < this.fileList.length; ++i) {
-          for (let j = 0; j < _.length; ++j) {
-            if (_[j].swmsStufileSetting && this.fileList[i].stufilesettingUid == _[j].swmsStufileSetting.stufilesettingUid) {
-              this.fileList[i].stufileName = _[j].swmsStufileSetting.stufileName
-              this.fileList[i].stufilePath = _[j].stufilePath
-              this.fileList[i].listUid = _[j].listUid
+          for (let i = 0; i < this.fileList.length; ++i) {
+            for (let j = 0; j < _.length; ++j) {
+              if (_[j].swmsStufileSetting && this.fileList[i].stufilesettingUid == _[j].swmsStufileSetting.stufilesettingUid) {
+                this.fileList[i].stufileName = _[j].swmsStufileSetting.stufileName
+                this.fileList[i].stufilePath = _[j].stufilePath
+                this.fileList[i].listUid = _[j].listUid
+              }
             }
           }
-        }
-        this.visible2 = true
-      }).catch(error => {
-        console.log(error)
+          this.visible2 = true
+        }).catch(error => {
+          console.log(error)
+        })
       })
+
     },
 
     pageChanged(pageNumber) {
@@ -350,42 +403,14 @@ export default {
   },
 
   mounted() {
-    stufileAPI.queryForList().then(resposne => {
-      if (resposne.code !== 1) {
-        MSG.success('获取档案设置失败')
-      } else {
-        this.settings = resposne.data
-        for (let i = 0; i < this.settings.length; ++i) {
-          this.fileList.push({
-            index: i,
-            stufileName: '',
-            stufilesettingUid: this.settings[i].stufilesettingUid,
-            stufilePath: ''
-          })
-        }
-      }
-    }).catch(error => {
-      console.log(error)
-    })
 
-    commonAPI.queryClassList().then(response => {
-      if (response.code !== 1) {
-        console.warn('query classes error')
-      } else {
-        this.classes = response.data.map(i => {
-          return {
-            label: i.className,
-            value: i.classId
-          }
-        })
-      }
-    }).catch(error => {
-      console.log(error)
-    })
   },
 
   computed: {
-    ...mapGetters(['token'])
+    ...mapGetters(['token']),
+    isLoading() {
+      return this.classes.length === 0
+    }
   },
 
   components: {
@@ -449,7 +474,7 @@ export default {
     padding-left: 0 !important;
     color: #f56c6c;
     padding-right: 15px;
-    background: url('./ic_download.png') right 1px no-repeat;
+    background: url("./ic_download.png") right 1px no-repeat;
   }
 }
 .upload-status {
@@ -472,13 +497,13 @@ export default {
     padding-left: 15px;
   }
   a.upload-view {
-    background: url('./ic_view.png') left center no-repeat;
+    background: url("./ic_view.png") left center no-repeat;
   }
   a.upload-import {
-    background: url('./ic_import.png') left center no-repeat;
+    background: url("./ic_import.png") left center no-repeat;
   }
   a.upload-abort {
-    background: url('./ic_abort.png') left center no-repeat;
+    background: url("./ic_abort.png") left center no-repeat;
   }
 }
 .upload {
@@ -511,7 +536,7 @@ export default {
 }
 .arrow {
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     display: block;
     width: 0;

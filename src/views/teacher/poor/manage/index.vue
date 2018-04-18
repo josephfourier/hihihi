@@ -2,7 +2,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="院系" :options="facultyList" :value.sync="facultyCode"></search-select>
+      <search-select label="院系" :options="facultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-select label="专业" :options="specialtyList" :value.sync="specialtyCode"></search-select>
       <search-select label="申请状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
       <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
@@ -18,32 +18,18 @@
     </zjy-table-operator>
 
     <div class="zjy-table">
-      <zjy-table
-        :data="list"
-        :loading="loading"
-        :columns="columns"
-        @view="handleView">
+      <zjy-table :data="list" :loading="loading" :columns="columns" @view="handleView">
       </zjy-table>
     </div>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
-      <zjy-pagination
-        :currentPage="currentPage"
-        :total="total"
-        @current-change="pageChanged"
-      >
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="pageChanged">
       </zjy-pagination>
     </div>
 
     <div class="zjy-dialog">
       <el-dialog title="困难生申请审批" :visible.sync="visible" width="800px">
-        <zjy-process
-          v-if="visible"
-          :data="setting"
-          v-model="value"
-          @close="visible = false"
-          @submit="handleSubmit"
-        >
+        <zjy-process v-if="visible" :data="setting" v-model="value" @close="visible = false" @submit="handleSubmit">
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
@@ -72,7 +58,7 @@ import ZjyForm from './form'
 import { _refresh } from '@/utils'
 import properties from './properties'
 export default {
-  data () {
+  data() {
     return {
       list: [],
       setting: '',
@@ -97,28 +83,34 @@ export default {
     }
   },
 
-  mounted () {
-    commonAPI.queryFacultyList().then(response => {
-      if (response.code !== 1) {
-        this.$alert('获取院系失败')
-      } else {
-        this.facultyList = response.data.map(i => {
-          return {
-            label: i.facultyName,
-            value: i.facultyCode
-          }
-        })
-      }
-    })
+  computed: {
+    isLoading() {
+      return this.facultyList.length === 0
+    }
   },
 
   methods: {
-
-    pageChanged (pageNumber) {
+    handleFocus() {
+      if (this.facultyList.length === 0) {
+        commonAPI.queryFacultyList().then(response => {
+          if (response.code !== 1) {
+            MSG.warning('获取院系失败')
+          } else {
+            this.facultyList = response.data.map(i => {
+              return {
+                label: i.facultyName,
+                value: i.facultyCode
+              }
+            })
+          }
+        })
+      }
+    },
+    pageChanged(pageNumber) {
       this.currentPage = pageNumber
     },
 
-    searchFilter () {
+    searchFilter() {
       this.query.facultyCode = this.facultyCode
       this.query.applyYear = this.applyYear
       this.query.dataStatus = this.dataStatus
@@ -126,7 +118,7 @@ export default {
       this.refresh()
     },
 
-    handleView (row) {
+    handleView(row) {
       commonAPI.queryApprovalProcess(row.studentId, row.poorUid).then(response => {
         this.setting = row
         this.value = response.data
@@ -134,11 +126,11 @@ export default {
       })
     },
 
-    refresh () {
+    refresh() {
       return _refresh.call(this)
     },
 
-    makeFormData (data, steps) {
+    makeFormData(data, steps) {
       return {
         poorUid: data.poorUid,
         studentId: data.studentId,
@@ -146,11 +138,11 @@ export default {
       }
     },
 
-    handleSubmit (data, steps) {
+    handleSubmit(data, steps) {
 
       api.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => {MSG.success('保存成功')}, 200)
+          setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.visible = false
           this.refresh()
         } else {
@@ -177,7 +169,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -197,7 +189,7 @@ export default {
       }
     },
 
-    facultyCode (val) {
+    facultyCode(val) {
       commonAPI.querySpecialtyByFaculty(val).then(response => {
         if (response.code !== 1) {
           this.$alert('获取专业失败')
@@ -216,4 +208,5 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+
 </style>

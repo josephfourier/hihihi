@@ -3,12 +3,19 @@
     <label class="search-label" v-if="label || $slots.label" v-bind:style="labelStyle">
       <slot name="label"> {{ label }}</slot>
     </label>
-    <el-select v-model="inner" :placeholder="placeholder">
+    <el-select 
+      v-model="inner" 
+      :placeholder="placeholder"
+      @focus="handleFocus"
+      :loading="loading"
+      :loading-text="loadingText"
+    >
       <el-option
         v-for="item in options"
         :key="item.value"
         :label="item.label"
-        :value="item.value">
+        :value="item.value"
+      >
       </el-option>
     </el-select>
   </div>
@@ -28,7 +35,20 @@ export default {
     label: String,
     labelWidth: String,
     placeholder: String,
-    options: Array
+    options: Array,
+    loading: Boolean,
+    loadingText: {
+      type: String,
+      default () {
+        return  this.$t('zjy.select.loading')
+      }
+    }
+  },
+
+  methods: {
+    handleFocus () {
+      this.$emit('focus')
+    }
   },
 
   computed: {
@@ -62,18 +82,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
-<!--
- <el-select v-model="value" placeholder="请选择">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-
--->

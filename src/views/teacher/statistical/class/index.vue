@@ -3,7 +3,13 @@
   <div class="zjy-app">
     <zjy-table-search>
       <search-select label="年级" :options="years" :value.sync="year"></search-select>
-      <search-select label="院系" :options="facultyList" :value.sync="facultyCode"></search-select>
+      <search-select 
+        label="院系" 
+        :options="facultyList" 
+        :value.sync="facultyCode"
+        :loading="isLoading"
+        @focus="handleFocus"
+      ></search-select>
       <search-select label="专业" :options="specialtyList" :value.sync="specialtyCode"></search-select>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
@@ -78,7 +84,29 @@ export default {
     }
   },
 
+  computed: {
+    isLoading() {
+      return this.facultyList.length === 0
+    }
+  },
+
   methods: {
+    handleFocus() {
+      if (this.facultyList.length === 0) {
+        api.queryFacultyList().then(response => {
+      if (response.code !== 1) {
+        this.$alert('获取院系失败')
+      } else {
+        this.facultyList  = response.data.map(i => {
+          return {
+            label: i.facultyName,
+            value: i.facultyCode
+          }
+        })
+      }
+    })
+      }
+    },
     searchFilter () {
       this.currentPage = 1
       this.query.specialtyCode = this.specialtyCode
@@ -116,18 +144,7 @@ export default {
   },
 
   mounted () {
-    api.queryFacultyList().then(response => {
-      if (response.code !== 1) {
-        this.$alert('获取院系失败')
-      } else {
-        this.facultyList  = response.data.map(i => {
-          return {
-            label: i.facultyName,
-            value: i.facultyCode
-          }
-        })
-      }
-    })
+   
   },
 
   components: {

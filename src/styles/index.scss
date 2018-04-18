@@ -369,3 +369,12 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   font-size: 12px !important;
   margin-left: 5px;
 }
+.zjy-preview--iframe {
+  margin-top: -96px;
+}
+.zjy-dialog.zjy-preview {
+  // margin-top: -40px;
+  .el-dialog__body {
+    overflow: hidden;
+  }
+}

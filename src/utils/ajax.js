@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 import { getToken } from '@/utils/cookie'
 import { relogin, reback } from '@/utils'
 
 const ajax = axios.create({
-  // timeout: 6000,
+  timeout: 10000,
   baseURL: process.env.BASE_URL
 })
 
@@ -43,6 +44,11 @@ ajax.interceptors.response.use(response => {
 },
 error => {
   console.log(error)
+  // 线上环境如果请求超时则跳转到500
+  // process.env.NODE_ENV === 'production'
+  //   ?  router.push({path: '/500'})
+  //   : ''
+  router.push({path: '/500'})
   return Promise.reject(error)
 })
 

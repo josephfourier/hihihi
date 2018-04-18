@@ -4,7 +4,23 @@ export default {
   // 1 助学金 2 学费减免
   queryFileList (funcationClass) {
     return ajax.get('/manage/swmsNotice/setting/' + funcationClass)
+  },
+
+  queryFacultyList () {
+    return ajax.get('/manage/insurance/faculty')
+  },
+
+  queryPostList () {
+    return ajax.get('/manage/common/ucenterPost')
+  },
+
+  uploadFile () {
+
+  },
+  saveFile () {
+    return ajax.post('/manage/swmsNotice/setting')
   }
+
   // queryTypeList () {
   //   return ajax.get('/manage/honorary-setting')
   // },

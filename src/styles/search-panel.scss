@@ -9,6 +9,18 @@
     text-indent: 20px;
     border-bottom: 1px solid #c6c6c6
   }
+  //  select
+  .zjy-select-panel__item {
+    height: 30px;
+    line-height: 30px;
+    padding-left: 15px;
+    display: block;
+  }
+
+  .zjy-select-panel__item+.zjy-select-panel__item, 
+  .el-transfer__button [class*=el-icon-]+span {
+    margin-left: 0;
+  }
 
   .zjy-search-panel__body {
     .zjy-search-panel__filter {
@@ -22,6 +34,9 @@
     }
     .el-input__prefix {
       margin-left: 16px;
+    }
+    .zjy-search-panel__filter.el-input {
+      width: 100% !important;
     }
     ul {
       .zjy-search-panel__item {

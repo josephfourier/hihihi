@@ -1,58 +1,31 @@
 <template>
-<div class="zjy-search-panel">
-  <p class="zjy-search-panel__header">
-    <span>{{ title }}</span>
-  </p>
-  <div class="zjy-search-panel__body">
-    <el-input
-      class="zjy-search-panel__filter"
-      v-model="query"
-      size="small"
-      :placeholder="placeholder"
-      @mouseenter.native="inputHover=true"
-      @mouseleave.native="inputHover=false"
-      v-if="filterable"
-      :style="{borderBottom: filteredData.length > 0 && type === 'ul' ? 'none' : ''}"
-    >
-    <i
-      slot="prefix"
-      :class="['zjy-icon', 'zjy-search-input__icon']"
-    >
-    </i>
-    </el-input>
-    <ul v-if="type === 'ul'">
-      <li
-        :class="[{checked: !!checked.find(x => x[keyProp] === item[keyProp])}, 'zjy-search-panel__item']"
-        v-for="(item) in filteredData"
-        :key="item.keyProp"
-        @click="handleChecked(item)"
-      >
-        <option-content :option="item"></option-content>
-      </li>
-    </ul>
-    <el-radio-group
-      v-if="type === 'radio'"
-      v-model="radio"
-    >
-      <el-radio
-        class="zjy-search-panel__item"
-        v-for="item in filteredData"
-        :key="item[keyProp]"
-        :label="item[keyProp]"
-        @change="handleChange"
-      >
-        <option-content :option="item"></option-content>
-      </el-radio>
-    </el-radio-group>
-    <p
-        class="zjy-search-panel__empty"
-        v-show="hasNoMatch">{{ empty }}
+  <div class="zjy-search-panel">
+    <p class="zjy-search-panel__header">
+      <span>{{ title }}</span>
     </p>
-    <p class="zjy-search-panel__footer" v-if="hasFooter">
-      <slot></slot>
-    </p>
+    <div class="zjy-search-panel__body">
+      <el-input class="zjy-search-panel__filter" v-model="query" size="small" :placeholder="placeholder" @mouseenter.native="inputHover=true" @mouseleave.native="inputHover=false" v-if="filterable" :style="{borderBottom: filteredData.length > 0 && type === 'ul' ? 'none' : ''}">
+        <i slot="prefix" :class="['zjy-icon', 'zjy-search-input__icon']">
+        </i>
+      </el-input>
+      <ul v-if="type === 'ul'">
+        <li :class="[{checked: !!checked.find(x => x[keyProp] === item[keyProp])}, 'zjy-search-panel__item']" v-for="(item) in filteredData" :key="item.keyProp" @click="handleChecked(item)">
+          <option-content :option="item"></option-content>
+        </li>
+      </ul>
+      <el-radio-group v-if="type === 'radio'" v-model="radio">
+        <el-radio class="zjy-search-panel__item" v-for="item in filteredData" :key="item[keyProp]" :label="item[keyProp]" @change="handleChange">
+          <option-content :option="item"></option-content>
+        </el-radio>
+      </el-radio-group>
+      
+      <p class="zjy-search-panel__empty" v-show="hasNoMatch">{{ empty }}
+      </p>
+      <p class="zjy-search-panel__footer" v-if="hasFooter">
+        <slot></slot>
+      </p>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -60,7 +33,7 @@ export default {
   name: 'search-panel',
   componentName: 'search-panel',
 
-  data () {
+  data() {
     return {
       inputHover: false,
       query: '',
@@ -83,7 +56,7 @@ export default {
     },
     defaultChecked: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -93,18 +66,18 @@ export default {
     },
     data: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
 
   computed: {
-    labelProp () { return this.props['label'] || 'label' },
+    labelProp() { return this.props['label'] || 'label' },
 
-    keyProp () { return this.props['key'] || 'key' },
+    keyProp() { return this.props['key'] || 'key' },
 
-    filteredData () {
+    filteredData() {
       return this.data.filter(x => {
         if (typeof this.filterMethod === 'function') {
           return this.filterMethod(this.query, x)
@@ -115,17 +88,17 @@ export default {
       })
     },
 
-    hasNoMatch () {
+    hasNoMatch() {
       return this.query.length > 0 && this.filteredData.length === 0
     },
 
-    hasFooter () {
+    hasFooter() {
       return !!this.$slots.default
     }
   },
 
   methods: {
-    handleChecked (item) {
+    handleChecked(item) {
       if (this.checked.find(x => x[this.keyProp] === item[this.keyProp])) return false
       else {
         this.checked.splice(0, this.checked.length)
@@ -134,7 +107,7 @@ export default {
       }
     },
 
-    handleChange (key) {
+    handleChange(key) {
       const item = this.filteredData.find(x => x[this.keyProp] === key)
       this.$emit('option-checked', item)
     }
@@ -146,7 +119,7 @@ export default {
         option: Object
       },
 
-      render (h) {
+      render(h) {
         const getParent = vm => {
           if (vm.$options.componentName === 'search-panel') {
             return vm
@@ -158,7 +131,7 @@ export default {
         const parent = getParent(this)
         return parent.renderContent
           ? parent.renderContent(h, this.option)
-          : (<span>{ this.option[parent.labelProp] || this.option[parent.keyprop] }</span>)
+          : (<span>{this.option[parent.labelProp] || this.option[parent.keyprop]}</span>)
       }
     }
   },
@@ -166,7 +139,7 @@ export default {
   watch: {
     defaultChecked: {
       immediate: true,
-      handler (val, oldVal) {
+      handler(val, oldVal) {
         // if (oldVal && val.length === oldVal.length && val.every(x => oldVal.indexOf(x) > -1)) return
         if (this.type === 'radio') {
           val.forEach(x => { if (x < this.filteredData.length) this.radio = this.filteredData[x][this.keyProp] })
@@ -180,7 +153,7 @@ export default {
       }
     },
 
-    clearChecked (val) {
+    clearChecked(val) {
       if (val) {
         this.checked = []
         this.radio = ''

@@ -24,7 +24,24 @@
         <div class="upload">
           <div class="download-body">
             <p class="file-input" @click="notClick" :title="fileName">{{ fileName }}</p>
-            <el-upload class="myupload" ref="uploadExcel" :action="action" :headers="{'Zjy-Token': token}" :data="{baseModel: baseModel}" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="myFileList" :before-upload="handleBeforeUpload" :on-change="handleChange" :on-success="handleSuccess" :on-error="handleError" :on-progress="handleProgress" :auto-upload="false" :show-file-list="false" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <el-upload 
+              class="myupload" 
+              ref="uploadExcel" 
+              :action="action" 
+              :headers="{'Zjy-Token': token}" 
+              :data="{baseModel: baseModel}" 
+              :on-preview="handlePreview" 
+              :on-remove="handleRemove" 
+              :file-list="myFileList" 
+              :before-upload="handleBeforeUpload" 
+              :on-change="handleChange" 
+              :on-success="handleSuccess" 
+              :on-error="handleError" 
+              :on-progress="handleProgress" 
+              :auto-upload="false" 
+              :show-file-list="false" 
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            >
               <a slot="trigger" class="upload-view" ref="uploadTrigger" @click="clearError">浏览</a>
               <a style="margin-left: 10px;" @click="submitUpload" class="upload-import">导入</a>
               <a style="margin-left: 10px;" @click="abortUpload" class="upload-abort">取消</a>

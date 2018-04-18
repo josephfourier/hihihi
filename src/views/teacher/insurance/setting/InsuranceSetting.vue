@@ -54,8 +54,6 @@ export default {
       callback()
     }
     return {
-
-      formDate: {},
       rules: {
         insuranceName: [
           { required: true, message: '请输入保险名称', trigger: 'blur' }

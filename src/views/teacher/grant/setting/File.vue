@@ -19,7 +19,7 @@
     <div class="zjy-dialog zjy-preview">
       <el-dialog title="助学金文件查看" :visible.sync="visible" width="800px">
         <zjy-preview 
-          src="http://enroll-zz.zhijiaoyun.net/export/template/enrollStudent"
+          src="https://wkbos.bdimg.com/v1/wenku52//aac7d325b2fdae6ff10c983564c80241?responseContentDisposition=attachment%3B%20filename%3D%22%25E4%25B9%25A6%25E6%25B3%2595%25E4%25B8%258E%25E6%25B3%2595%25E4%25B9%25A6.doc%22%3B%20filename%2A%3Dutf-8%27%27%25E4%25B9%25A6%25E6%25B3%2595%25E4%25B8%258E%25E6%25B3%2595%25E4%25B9%25A6.doc&responseContentType=application%2Foctet-stream&responseCacheControl=no-cache&authorization=bce-auth-v1%2Ffa1126e91489401fa7cc85045ce7179e%2F2018-04-18T10%3A04%3A55Z%2F3600%2Fhost%2F7b5bd6536f7ae8c1a2095d0d19daad4ee4d9a5dfac61efac5f1d13b21ca1c5d3&token=1e1174b9e2c6ecb38c8051e6914749ac91e5d243610e472c42e4a8294913570f&expire=2018-04-18T11:04:55Z"
         >
           <div class="zjy-footer" >
             <zjy-button type="primary" @click="handleClick">关闭</zjy-button>
@@ -79,7 +79,7 @@ export default {
     handleClick () {
       this.visible = false
     },
-    
+
     handleEdit (row) {
 
     },

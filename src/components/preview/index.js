@@ -1,4 +1,9 @@
 export default {
+  data () {
+    return {
+      loading: true
+    }
+  },
   props: {
     width: {
       type: String,
@@ -6,12 +11,13 @@ export default {
     },
     height: {
       type: String,
-      default: '400px'
+      default: '450px'
     },
     src: String
   },
   methods: {
     handleOnLoad () {
+      this.loading = false
       // console.log(document.querySelector('.zjy-preview--iframe').contentWindow)
       // const cw = document.querySelector('.zjy-preview--iframe').contentWindow
     }
@@ -22,7 +28,7 @@ export default {
       attrs: {
         width: this.width,
         height: this.height,
-        src: BASE + this.src,
+        src: BASE + encodeURIComponent(this.src),
         frameborder: '0',
         ref: 'iframe'
       },
@@ -36,7 +42,7 @@ export default {
       }
     }
     return (
-      <div class="preview">
+      <div class="preview" v-loading={this.loading}>
         <iframe {...data}></iframe>
         {this.$slots.default}
       </div>

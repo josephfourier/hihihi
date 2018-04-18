@@ -197,9 +197,6 @@
   background-color: #e8edf2;
 }
 
-.el-picker-panel.el-date-picker.el-popper {
-  // position: absolute !important;
-}
 // 学生档案上传
 #zjy-upload-form {
   .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
@@ -286,9 +283,6 @@
             margin-right: 10px;
             margin-left: 0;
           }
-        }
-        .el-form-item__error {
-
         }
       }
     }

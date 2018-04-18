@@ -17,10 +17,13 @@
     </div>
 
     <div class="zjy-dialog zjy-preview">
-      <el-dialog title="新增院系荣誉称号" :visible.sync="visible" width="800px">
+      <el-dialog title="助学金文件查看" :visible.sync="visible" width="800px">
         <zjy-preview 
           src="http://enroll-zz.zhijiaoyun.net/export/template/enrollStudent"
         >
+          <div class="zjy-footer" >
+            <zjy-button type="primary" @click="handleClick">关闭</zjy-button>
+          </div>
         </zjy-preview>
       </el-dialog>
     </div>
@@ -34,8 +37,7 @@ import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
 import ZjyPreview from '@/components/preview'
-import facAPI from '@/api/teacher/honorary/fac'
-import commonAPI from '@/api/common'
+import ZjyButton from '@/components/button'
 import api from './api'
 
 import { _refresh } from '@/utils'
@@ -74,6 +76,10 @@ export default {
       })
     },
 
+    handleClick () {
+      this.visible = false
+    },
+    
     handleEdit (row) {
 
     },
@@ -83,17 +89,17 @@ export default {
     },
 
     handleDelete(row) {
-      const auto = this.list.length === 1 && this.currentPage !== 1
-      facAPI.delete(row.fachonoraryUid).then(response => {
-        if (response.code === 1) {
-          MSG.success('删除成功')
-          this.refresh(auto)
-        } else {
-          this.$alert(response.message)
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+      // const auto = this.list.length === 1 && this.currentPage !== 1
+      // facAPI.delete(row.fachonoraryUid).then(response => {
+      //   if (response.code === 1) {
+      //     MSG.success('删除成功')
+      //     this.refresh(auto)
+      //   } else {
+      //     this.$alert(response.message)
+      //   }
+      // }).catch(error => {
+      //   console.log(error)
+      // })
     },
 
   },
@@ -102,7 +108,8 @@ export default {
     ZjyTableOperator,
     OperatorItem,
     ZjyTable,
-    ZjyPreview
+    ZjyPreview,
+    ZjyButton
   },
 
   created() {

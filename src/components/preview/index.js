@@ -38,6 +38,7 @@ export default {
     return (
       <div class="preview">
         <iframe {...data}></iframe>
+        {this.$slots.default}
       </div>
     )
   }

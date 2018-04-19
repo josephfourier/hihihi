@@ -63,6 +63,10 @@ export default {
     return ajax.get('/manage/insurance/specialty/' + code)
   },
 
+  queryClassByFaculty (code) {
+    return ajax.get('/manage/common/facultyClass/' + code)
+  },
+
   queryClassList () {
     return ajax.get('/manage/stufile/student/class')
   },

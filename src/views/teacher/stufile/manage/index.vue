@@ -45,7 +45,6 @@
               <a slot="trigger" class="upload-view" ref="uploadTrigger" @click="clearError">浏览</a>
               <a style="margin-left: 10px;" @click="submitUpload" class="upload-import">导入</a>
               <a style="margin-left: 10px;" @click="abortUpload" class="upload-abort">取消</a>
-              <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
             </el-upload>
             <transition name="el-zoom-in-center">
               <div class="upload-status" v-if="showPercent">
@@ -191,6 +190,8 @@ export default {
         MSG.warning('导入数据异常')
       } else if (response.code === 90001) {
         MSG.success('导入数据成功')
+        this.show = false
+        this.refresh()
       }
       this.clearFile()
       this.showPercent = false
@@ -207,14 +208,15 @@ export default {
       this.clearError()
     },
     handleChange(file, fileList) {
-      if (this.hasError) return
+      // 成功时也会调用，添加show修复此问题
+      if (this.hasError || !this.show) return
       if (!/\.(xls|xlsx)$/gi.test(file.name)) {
         MSG.warning('请上传excel格式文件')
         this.clearFile()
         return false
       }
-      this.fileName = file.name
       this.myfile = file
+      this.fileName = this.myfile.name
     },
 
     handleBeforeUpload(file) {

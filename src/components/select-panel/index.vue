@@ -20,7 +20,7 @@
         @change="$emit('checked', checked)"
         v-show="!hasNoMatch && data.length > 0" 
         :class="{ 'is-filterable': filterable }" 
-        class="el-transfer-panel__list"
+        class="zjy-select-panel__list"
       >
         <el-checkbox class="zjy-select-panel__item" :label="item[keyProp]" :disabled="item[disabledProp]" :key="item[keyProp]" v-for="item in filteredData">
           <option-content :option="item"></option-content>
@@ -67,7 +67,7 @@ export default {
     data: {
       type: Array,
       default() {
-        return [];
+        return []
       }
     },
     renderContent: Function,

@@ -1,0 +1,100 @@
+// .file-input {
+//   width: 235px;
+//   height: 30px;
+//   border: 1px solid #e8edf2;
+//   line-height: 32px;
+//   padding-left: 5px;
+//   color: #666666;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
+// .upload-error {
+//   margin-left: 20px;
+//   background-color: #fef6d9;
+//   line-height: 32px;
+//   padding: 0 10px;
+//   a {
+//     padding-left: 0 !important;
+//     color: #f56c6c;
+//     padding-right: 15px;
+//     background: url("./ic_download.png") right 1px no-repeat;
+//   }
+// }
+// .upload-status {
+//   width: 250px;
+//   height: 30px;
+//   margin-left: 20px;
+//   line-height: 30px;
+//   .el-progress {
+//     line-height: 28px;
+//   }
+// }
+// .myupload {
+//   line-height: 32px;
+//   padding-left: 10px;
+// }
+// .download-body {
+//   display: flex;
+//   margin-bottom: 10px;
+//   a {
+//     padding-left: 15px;
+//   }
+//   a.upload-view {
+//     background: url("./ic_view.png") left center no-repeat;
+//   }
+//   a.upload-import {
+//     background: url("./ic_import.png") left center no-repeat;
+//   }
+//   a.upload-abort {
+//     background: url("./ic_abort.png") left center no-repeat;
+//   }
+// }
+// .upload {
+//   font-size: 12px;
+//   color: #666666;
+//   height: 60px;
+//   border: 1px solid #37c6d4;
+//   position: relative;
+//   padding: 10px 20px;
+
+//   .download-link {
+//     a {
+//       color: #0aacf8;
+//       span {
+//         color: #666666;
+//       }
+//     }
+//   }
+// }
+// .slide-fade-enter-active {
+//   transition: all 0.3s ease;
+// }
+// .slide-fade-leave-active {
+//   transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+// }
+// .slide-fade-enter,
+// .slide-fade-leave-to {
+//   transform: translateY(-10px);
+//   opacity: 0;
+// }
+// .arrow {
+//   &:after {
+//     content: "";
+//     position: absolute;
+//     display: block;
+//     width: 0;
+//     height: 0;
+//     border-color: transparent;
+//     border-style: solid;
+//     border-width: 6px;
+//     border-bottom-color: #37c6d4;
+//     top: -12px;
+//     left: 68px;
+//   }
+// }
+// .svg {
+//   position: relative;
+//   top: -16px;
+//   margin-bottom: -6px;
+// }

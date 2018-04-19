@@ -3,7 +3,7 @@ import store from '@/store'
 import { getToken, setToken } from '@/utils/cookie'
 import NProgress from '@/utils/nprogress'
 
-const whiteList = ['/401', '/500']
+const whiteList = ['/404', '/500']
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
@@ -44,7 +44,6 @@ router.beforeEach((to, from, next) => {
     }).catch(error => {
       console.log(error)
       // next({path: '/500'})
-      // next({ path: '/401' })
     })
   } else {
     next()

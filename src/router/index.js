@@ -20,12 +20,6 @@ const routes = [
     ]
   },
   {
-    path: '/test',
-    name: 'test',
-    hidden: true,
-    component: _('test/index')
-  },
-  {
     path: '/401',
     name: '401',
     hidden: true,

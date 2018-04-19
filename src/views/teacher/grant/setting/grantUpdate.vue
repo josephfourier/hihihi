@@ -160,7 +160,10 @@ export default {
       })
     },
     submitForm(formName) {
-      if (this.show && this.formData.swmsNoticeReadscopeList.length === 0) {
+      if (this.show 
+        && this.formData.swmsNoticeReadscopeList.length === 0 
+        || !this.formData.swmsNoticeReadscopeList
+      ) {
         MSG.warning('请选择可见范围')
         return
       }
@@ -183,6 +186,7 @@ export default {
     SelectPanel,
     ZjyProgress
   },
+
   watch: {
     formData: {
       immediate: true,

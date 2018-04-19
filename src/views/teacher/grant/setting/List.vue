@@ -211,6 +211,13 @@ export default {
         MSG.warning('下载错误')
       })
     },
+
+    clearSearch () {
+      this.query.classId = ''
+      this.query.applyYear = ''
+      this.query.facultyCode = ''
+      this.query.studentCode = ''
+    },
     searchFilter() {
       this.currentPage = 1
       this.query.classId = this.classId
@@ -273,6 +280,11 @@ export default {
     ZjyPagination,
     ZjyProgress
   },
+  created () {
+    // 重新渲染时先清除搜索条件
+    this.clearSearch()
+  },
+
   watch: {
      currentPage: {
       immediate: true,

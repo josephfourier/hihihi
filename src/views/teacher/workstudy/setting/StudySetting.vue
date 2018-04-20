@@ -1,24 +1,28 @@
 <template>
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
-      <el-form-item label="荣誉称号名称" prop="honoraryName" class="block">
-        <el-input v-model="formData.honoraryName"></el-input>
+      <el-form-item label="岗位名称" prop="postName" class="block">
+        <el-input v-model="formData.postName"></el-input>
       </el-form-item>
 
-      <el-form-item label="荣誉称号类别" prop="honoraryCategory" class="inline">
-        <el-select v-model="formData.honoraryCategory">
+       <el-form-item label="要求专业" prop="specialtyId" class="inline">
+        <el-select v-model="formData.specialtyId">
           <el-option
-            v-for="item in optionsHonoraryCategory"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >{{ item.label }}
+            v-for="item in specialtyList"
+            :key="item.specialtyId"
+            :label="item.specialtyName"
+            :value="item.specialtyId"
+          >{{ item.specialtyName }}
           </el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="名额限制" prop="numberLimit" class="inline pull-right">
+       <el-form-item label="名额限制" prop="numberLimit" class="inline pull-right">
         <el-input v-model="formData.numberLimit"></el-input>
+      </el-form-item>
+
+       <el-form-item label="薪资待遇" prop="salary" class="inline block">
+        <el-input v-model="formData.salary"></el-input>
       </el-form-item>
 
       <el-form-item label="申请时间" required>
@@ -30,11 +34,6 @@
             <el-date-picker type="date" placeholder="选择结束日期" value-format="timestamp"  v-model="formData.endDate" style="width: 100%;" :picker-options="endOption"></el-date-picker>
           </el-form-item>
       </el-form-item>
-
-      <el-form-item label="荣誉称号简介" prop="honoraryIntroduction">
-        <el-input type="textarea" v-model="formData.honoraryIntroduction"></el-input>
-      </el-form-item>
-
       <el-form-item label="开放申请" prop="isOpen">
         <el-radio-group v-model="formData.isOpen">
           <el-radio label="1">开放</el-radio>
@@ -52,9 +51,10 @@
 
 <script>
 import ZjyButton from '@/components/button'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: 'honorary-setting',
+  name: 'study-setting',
   data () {
     return {
       startOption: {
@@ -71,35 +71,21 @@ export default {
           return false
         }
       },
-      optionsHonoraryCategory: [
-        {
-          label: '院级',
-          value: '1'
-        },
-        {
-          label: '班级',
-          value: '2'
-        },
-        {
-          label: '个人',
-          value: '3'
-        }
-      ],
       rules: {
-        honoraryName: [
-          { required: true, message: '请输入荣誉称号名称', trigger: 'blur' }
+        postName: [
+          { required: true, message: '请输入岗位名称', trigger: 'blur' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
-        honoraryCategory: [
-          { required: true, message: '请选择荣誉称号类别', trigger: 'change' }
+        specialtyId: [
+          { required: true, message: '请选择专业要求', trigger: 'change' }
         ],
-
+     
         numberLimit: [
           { required: true, message: '请输入名额限制', trigger: 'blur' }
         ],
 
-        honoraryIntroduction: [
-          { required: true, message: '请输入荣誉称号简介', trigger: 'blur' }
+        salary: [
+          { required: true, message: '请输入薪资待遇', trigger: 'blur' }
         ],
         startDate: [
           { required: true, message: '请选择起始日期', trigger: 'blur' }
@@ -109,7 +95,6 @@ export default {
         ],
         isOpen: [
           { required: true, message: '请选择是否开放', trigger: 'change' }
-
         ]
       }
     }
@@ -125,6 +110,14 @@ export default {
         }
       })
     }
+  },
+
+  computed: {
+    ...mapGetters(['specialtyList'])
+  },
+
+  created() {
+    this.$store.dispatch('setSpecialtyList')
   },
 
   props: {

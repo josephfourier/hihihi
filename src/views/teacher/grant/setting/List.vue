@@ -72,6 +72,11 @@
       <zjy-table :data="list" :loading="loading" :columns="columns" @delete="handleDelete">
       </zjy-table>
     </div>
+
+     <div class="zjy-pagination" v-if="list.length !== 0">
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="pageChanged">
+      </zjy-pagination>
+    </div>
   </div>
 </template>
 
@@ -101,6 +106,7 @@ export default {
       studentCode: '',
       query: properties.query,
       currentPage: 1,
+      total: 0,
       loading: false,
       yearList: properties.yearList,
       classList: [],
@@ -225,6 +231,9 @@ export default {
       this.query.facultyCode = this.facultyCode
       this.query.studentCode = this.studentCode
       this.refresh()
+    },
+    pageChanged(pageNumber) {
+      this.currentPage = pageNumber
     },
     handleFocus() {
       if (this.facultyList.length === 0) {

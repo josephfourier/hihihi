@@ -19,7 +19,6 @@
           添加步骤</a>
       </div>
       <div class="workflow-body">
-        <!--<transition-group name="list" tag="table">-->
         <table v-loading="loading">
           <tr :key="'-1'" class="workflow-body__item">
             <th>步骤序号</th>
@@ -46,7 +45,6 @@
           <tr :key="'-2'" class="workflow-body__item" v-if="!hasWorkflow">
             <td colspan="3" :key="0" class="warning"><i></i><span>请添加步骤</span></td>
           </tr>
-          <!--</transition-group>-->
         </table>
       </div>
     </div>
@@ -123,6 +121,8 @@ import approvalAPI from '@/api/approval'
 import SearchPanel from '@/components/search-panel/search-panel'
 import ZjyButton from '@/components/button'
 
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'HelloWorld',
 
@@ -162,22 +162,32 @@ export default {
   },
 
   created () {
-    commonAPI.queryApprovalList().then(response => {
-      if (response.code !== 1) {
-        this.$alert(response.message)
-      } else {
-        this.menus = response.data.map(x => {
-          return {
-            label: x.name,
-            key: x.permissionId
-          }
-        })
-        if (this.menus.length > 0) {
-          this.queryWorkflow(this.menus[0].key)
-          this.checkedMenu = this.menus[0]
-        }
+    // commonAPI.queryApprovalList().then(response => {
+    //   if (response.code !== 1) {
+    //     this.$alert(response.message)
+    //   } else {
+    //     this.menus = response.data.map(x => {
+    //       return {
+    //         label: x.name,
+    //         key: x.permissionId
+    //       }
+    //     })
+    //     if (this.menus.length > 0) {
+    //       this.queryWorkflow(this.menus[0].key)
+    //       this.checkedMenu = this.menus[0]
+    //     }
+    //   }
+    // })
+    this.menus = this.approves.map(x => {
+      return {
+        label: x.name,
+        key: x.permissionId
       }
     })
+    if (this.menus.length > 0) {
+      this.queryWorkflow(this.menus[0].key)
+      this.checkedMenu = this.menus[0]
+    }
   },
 
   methods: {
@@ -442,6 +452,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['approves']),
     hasWorkflow () {
       return this.workflow.length > 0
     },

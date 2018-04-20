@@ -31,7 +31,6 @@
       :currentPage="currentPage"
       :total="total"
       @current-change="pageChanged"
-      :pageSize="2"
     >
     </zjy-pagination>
   </div>

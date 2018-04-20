@@ -12,5 +12,7 @@ export default {
       userDetailId: state.user.userDetailId,
       usertypeId: state.user.usertypeId
     }
-  }
+  },
+  grantWay: state => state.dict.grantWay,
+  specialtyList: state => state.common.specialtyList
 }

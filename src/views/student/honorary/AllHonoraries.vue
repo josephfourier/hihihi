@@ -1,37 +1,17 @@
 <template>
   <div class="zjy-app">
-    <zjy-table
-      :data="list"
-      :loading="loading"
-      :columns="columns"
-      @view="view"
-      @create="create"
-    >
+    <zjy-table :data="list" :loading="loading" :columns="columns" @view="view" @create="create">
     </zjy-table>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
-      <zjy-pagination
-        :currentPage="currentPage"
-        :total="total"
-        @current-change="currentChange"
-      >
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
       </zjy-pagination>
     </div>
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
-      <student-process
-        v-if="visible && type === +$t('zjy.operator.CREATE')"
-        :data="data"
-        v-model="value"
-        :visible.sync="visible"
-        @submit="handleSubmit"
-      >
+      <student-process v-if="visible && type === +$t('zjy.operator.CREATE')" :data="data" v-model="value" :visible.sync="visible" @submit="handleSubmit">
         <template slot-scope="props" slot="header">
-          <view-apply
-            :data="props.formData"
-            :applyReason.sync="applyReason"
-            :hasError="hasError"
-          ></view-apply>
+          <view-apply :data="props.formData" :applyReason.sync="applyReason" :hasError="hasError"></view-apply>
         </template>
       </student-process>
       <view-setting v-if="type === +$t('zjy.operator.VIEW')" :visible.sync="visible" :data="data"></view-setting>
@@ -43,7 +23,7 @@
 import allAPI from '@/api/student/honorary/all-honoraries'
 import commonAPI from '@/api/common'
 import ZjyPagination from '@/components/pagination'
-import {getPermissionId, _refresh} from '@/utils'
+import { getPermissionId, _refresh } from '@/utils'
 import ZjyButton from '@/components/button'
 
 import StudentProcess from '@/components/process/StudentProcess'
@@ -53,7 +33,7 @@ import axios from 'axios'
 import common from './common'
 import ZjyTable from '@/components/table'
 export default {
-  data () {
+  data() {
     return {
       data: {},    // 设置详情
       value: {},   // 对应审批
@@ -73,18 +53,18 @@ export default {
   },
 
   methods: {
-    statusFormat (cellValue) {
+    statusFormat(cellValue) {
       return ['可申请', '申请中'][+cellValue]
     },
 
-    makeFormData (data, steps) {
+    makeFormData(data, steps) {
       return {
         'applyReson': this.applyReason,
         'swmsApprovalList': steps
       }
     },
 
-    handleSubmit (data, steps) {
+    handleSubmit(data, steps) {
       if (!this.applyReason) {
         this.hasError = true
       } else {
@@ -101,13 +81,13 @@ export default {
       }
     },
 
-    view (row) {
+    view(row) {
       this.type = +this.$t('zjy.operator.VIEW')
       this.data = row
       this.visible = true
     },
 
-    create (row) {
+    create(row) {
       this.type = +this.$t('zjy.operator.CREATE')
 
       axios.all([commonAPI.queryInitial(getPermissionId(this.$route)), allAPI.queryForObject(row.honorarysettingUid)]).then(
@@ -119,11 +99,11 @@ export default {
       )
     },
 
-    currentChange (pageNumber) {
+    currentChange(pageNumber) {
       this.currentPage = pageNumber
     },
 
-    refresh () {
+    refresh() {
       return _refresh.call(this)
     }
   },
@@ -144,7 +124,7 @@ export default {
   },
 
   computed: {
-    title () {
+    title() {
       return this.type === +this.$t('zjy.operator.CREATE') ? '荣誉称号申请' : '荣誉称号详情'
     }
   },
@@ -152,7 +132,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
+      handler(val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -161,18 +141,19 @@ export default {
         allAPI.queryForList(3, this.query).then(response => {
           this.list = response.rows
           this.total = response.total
-          this.loading = false
         }).catch(error => {
+
+        }).finally(_ => {
           this.loading = false
         })
       }
     },
 
-    active (val) {
+    active(val) {
       if (val) this.refresh()
     },
 
-    visible (val) {
+    visible(val) {
       if (!val) {
         this.applyReason = ''
         this.hasError = false

@@ -59,6 +59,10 @@ export default {
     return ajax.get('/manage/insurance/faculty')
   },
 
+  querySpecialtyList () {
+    return ajax.get('/manage/common/schoolSpecialty')
+  },
+
   querySpecialtyByFaculty (code) {
     return ajax.get('/manage/insurance/specialty/' + code)
   },
@@ -117,7 +121,7 @@ export default {
   },
 
   initApproval (permissionId, honoraryType, dataId) {
-    return ajax.get('/manage/swmsApproval/initSwmsApproval/' +  permissionId + '/' + honoraryType + '/' + dataId)
+    return ajax.get('/manage/swmsApproval/initSwmsApproval/' + permissionId + '/' + honoraryType + '/' + dataId)
   },
 
   queryNextApproval (dataId, dataUid, honoraryType) {

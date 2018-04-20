@@ -106,6 +106,7 @@ export default {
         })
       }
     },
+    
     pageChanged(pageNumber) {
       this.currentPage = pageNumber
     },

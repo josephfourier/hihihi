@@ -7,7 +7,7 @@ const statusFormat = (cellValue) => {
 export default {
   query: {
     offset: 0,
-    limit: 2,
+    limit: 10,
     dataStatus: '',
     applyYear: '',
     studentCode: ''

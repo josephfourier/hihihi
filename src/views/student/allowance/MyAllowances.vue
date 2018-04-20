@@ -9,11 +9,6 @@
     >
     </zjy-table>
 
-    <div class="zjy-pagination" v-if="list.length !== 0">
-      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
-      </zjy-pagination>
-    </div>
-
     <el-dialog title="审批进度" :visible.sync="visible" width="800px">
       <process-view
         :data="data"
@@ -43,15 +38,13 @@
 </template>
 
 <script>
-import myAPI from '@/api/student/honorary/my-honoraries'
+import api from './api'
 import commonAPI from '@/api/common'
 
-import ZjyPagination from '@/components/pagination'
 import ProcessView from '@/components/process/ProcessView'
 import ViewApply from './ViewApply'
 import ZjyFooter from './Footer'
 import ZjyTable from '@/components/table'
-import { _refresh } from '@/utils'
 
 import properties from './properties'
 
@@ -61,12 +54,6 @@ export default {
       data: {},
       value: {},
       list: [],
-      currentPage: 1,
-      total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
 
       loading: false,
       visible: false,
@@ -76,21 +63,24 @@ export default {
     }
   },
 
-  methods: {
+  created() {
+    this.refresh()
+  },
 
-    makeFormData (data, steps) {
-      return {
-        'applyReson': this.applyReason,
-        'swmsApprovalList': steps
-      }
-    },
-    update (data, steps) {
+  methods: {
+  
+    update (data) {
       if (!this.applyReason) {
         this.hasError = true
       } else {
-        myAPI.update(data.stuhonoraryUid, this.makeFormData(data, steps)).then(response => {
+        Object.assign(data, {
+          applyReason: this.applyReason
+        })
+        api.update(data).then(response => {
           if (response.code === 1) {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+               MSG.success('修改成功')
+            }, 200)
             this.refresh().visible = false
           } else {
             this.$alert(response.message)
@@ -101,9 +91,11 @@ export default {
       }
     },
     _delete (data) {
-      myAPI.delete(data.stuhonoraryUid).then(response => {
+      api.delete(data.allowanceUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+               MSG.success('修改成功')
+            }, 200)
           this.refresh().visible = false
         } else {
           this.$alert(response.message)
@@ -114,24 +106,28 @@ export default {
     },
 
     view (row) {
-      this.applyReason = row.applyReson
-      commonAPI.queryApprovalProcess(row.studentId, row.stuhonoraryUid).then(response => {
+      this.applyReason = row.applyReason
+      commonAPI.queryApprovalProcess(row.studentId, row.allowanceUid).then(response => {
         this.data = row
         this.value = response.data
         this.visible = true
       })
     },
 
-    currentChange (pageNumber) {
-      this.currentPage = pageNumber
-    },
 
-    refresh (auto) {
-      return _refresh.call(this, auto)
+    refresh() {
+      api.queryMyApplyList().then(response => {
+        if (response.code !== 1) {
+          MSG.warning('获取数据失败')
+        } else {
+          this.list = response.data
+        }
+      })
+      return this
     }
+  
   },
   components: {
-    ZjyPagination,
     ProcessView,
     ViewApply,
     ZjyFooter,
@@ -143,21 +139,6 @@ export default {
     active: Boolean
   },
   watch: {
-    currentPage: {
-      immediate: true,
-      handler (val, oldval) {
-        if (val === -1 || val === 0) return
-
-        this.loading = true
-        this.query.offset = this.query.limit * (val - 1)
-        myAPI.queryForList(this.query).then(response => {
-          this.list = response.rows
-          this.total = response.total
-          this.loading = false
-        }).catch(error => { this.loading = false })
-      }
-    },
-
     active (val) {
       if (val) this.refresh()
     },

@@ -53,7 +53,6 @@
           <select-panel
             :data="post" 
             :title="'选择范围'" 
-            :defaultChecked="defaultChecked"
             @checked="handleChecked" 
             :filterable="false"
           >
@@ -80,13 +79,13 @@ export default {
   data() {
     return {
       action: process.env.BASE_URL + '/upload/stufileUpload',
+      formData: {},
       done: false,
       loading: false,
       showPercent: false,
       percent: 0,
       percentText: '',
-      defaultChecked: [],
-      functionClass: 1,
+      scopeList: [],
       rules: {
         fileName: [
           { required: true, message: '请上传文件', trigger: 'change' }
@@ -109,8 +108,12 @@ export default {
   },
   methods: {
     handleClick () {
+      // if (this.done) {
+      //   this.showPercent = false
+      // }
     },
     handleBeforeUpload(file) {
+      // this.loading = true
       this.done = false
       this.showPercent = true
     },
@@ -140,6 +143,19 @@ export default {
       } else {
         this.percentText = '失败'
       }
+      
+      // if (response.code == 90002) {
+      //   this.errorLink = response.data
+      //   this.showError = true
+      //   this.hasError = true
+      // } else if (response.code === 90003) {
+      //   this.hasError = true
+      //   MSG.warning('导入数据异常')
+      // } else if (response.code === 90001) {
+      //   MSG.success('导入数据成功')
+      // }
+      // this.clearFile()
+      // this.showPercent = false
     },
 
 
@@ -153,20 +169,25 @@ export default {
 
     },
     handleChecked(val) {
-      this.formData.swmsNoticeReadscopeList = val.map(element => {
+      console.log(val)
+      this.scopeList = val.map(element => {
         return {
           postId: element
         }
       })
+      // this.scopeList.push()
     },
     submitForm(formName) {
-      if (this.show && this.formData.swmsNoticeReadscopeList.length === 0 
-        || (this.show && !this.formData.swmsNoticeReadscopeList)) {
+      if (this.show && this.scopeList.length === 0) {
         MSG.warning('请选择可见范围')
         return
       }
       this.$refs[formName].validate(valid => {
         if (valid) {
+          Object.assign(this.formData, {
+            functionClass: "2",
+            swmsNoticeReadscopeList: this.scopeList
+          })
           this.$emit('submit', this.formData)
         } else {
           return false
@@ -176,26 +197,12 @@ export default {
   },
   props: {
     post: Array,
-    formData: Object,
     visible: Boolean
   },
   components: {
     ZjyButton,
     SelectPanel,
     ZjyProgress
-  },
-
-  watch: {
-    formData: {
-      immediate: true,
-      handler(val) {
-        if (val && val.swmsNoticeReadscopeList) {
-          this.defaultChecked = val.swmsNoticeReadscopeList.map(i => {
-            return i.postId
-          })
-        }
-      }
-    }
   }
 }
 </script>

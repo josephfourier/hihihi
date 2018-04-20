@@ -3,11 +3,6 @@
     <zjy-table :data="list" :loading="loading" :columns="columns" @view="view" @create="create">
     </zjy-table>
 
-    <div class="zjy-pagination" v-if="list.length !== 0">
-      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
-      </zjy-pagination>
-    </div>
-
     <el-dialog :title="title" :visible.sync="visible" width="800px">
       <student-process v-if="visible && type === +$t('zjy.operator.CREATE')" :data="data" v-model="value" :visible.sync="visible" @submit="handleSubmit">
         <template slot-scope="props" slot="header">
@@ -20,10 +15,9 @@
 </template>
 
 <script>
-import allAPI from '@/api/student/honorary/all-honoraries'
 import commonAPI from '@/api/common'
-import ZjyPagination from '@/components/pagination'
-import { getPermissionId, _refresh } from '@/utils'
+import api from './api'
+import { getPermissionId } from '@/utils'
 import ZjyButton from '@/components/button'
 
 import StudentProcess from '@/components/process/StudentProcess'
@@ -32,15 +26,15 @@ import ViewSetting from './ViewSetting'
 import axios from 'axios'
 import properties from './properties'
 import ZjyTable from '@/components/table'
+
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       data: {},    // 设置详情
       value: {},   // 对应审批
       list: [],
-      currentPage: 1,
-      total: 0,
-      query: properties.query,
       loading: false,
       visible: false,
       type: '', // 查看或申请操作
@@ -54,17 +48,24 @@ export default {
 
   methods: {
     makeFormData(data, steps) {
-      return {
-        'applyReson': this.applyReason,
-        'swmsApprovalList': steps
-      }
+      // 优化
+      // studentId不应该前台传入，最好后台解析出
+      Object.assign(data, {
+        applyDate: new Date().getTime(),
+        studentId: this.user.userDetailId,
+        applyReason: this.applyReason,
+        swmsApprovalList: steps
+      })
+      return data
     },
 
     handleSubmit(data, steps) {
+      // console.log(data)
+      // return
       if (!this.applyReason) {
         this.hasError = true
       } else {
-        allAPI.create(data.honorarysettingUid, this.makeFormData(data, steps)).then(response => {
+        api.create(this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
                MSG.success('申请成功')
@@ -87,27 +88,31 @@ export default {
 
     create(row) {
       this.type = +this.$t('zjy.operator.CREATE')
-      // 优化
-      axios.all([commonAPI.queryInitial(getPermissionId(this.$route)), allAPI.queryForObject(row.honorarysettingUid)]).then(
-        axios.spread((r1, r2) => {
-          this.value = r1.data
-          this.data = r2.data
-          this.visible = true
-        })
-      )
-    },
 
-    currentChange(pageNumber) {
-      this.currentPage = pageNumber
+      commonAPI.queryInitial(getPermissionId(this.$route)).then(response => {
+        if (response.code !== 1) {
+          MSG.warning('获取审批流程数据失败')
+        } else {
+          this.value = response.data
+          this.data = row
+          this.visible = true
+        }
+      })
     },
 
     refresh() {
-      return _refresh.call(this)
+      api.queryForList().then(response => {
+        if (response.code !== 1) {
+          MSG.warning('获取数据失败')
+        } else {
+          this.list = response.data
+        }
+      })
+      return this
     }
   },
 
   components: {
-    ZjyPagination,
     ZjyButton,
 
     StudentProcess,
@@ -122,30 +127,17 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['user']),
     title() {
-      return this.type === +this.$t('zjy.operator.CREATE') ? '荣誉称号申请' : '荣誉称号详情'
+      return this.type === +this.$t('zjy.operator.CREATE') ? '困难补助申请' : '困难补助详情'
     }
   },
 
+  created () {
+    this.refresh()
+  },
+
   watch: {
-    currentPage: {
-      immediate: true,
-      handler(val, oldval) {
-        if (val === -1 || val === 0) return
-
-        this.loading = true
-        this.query.offset = this.query.limit * (val - 1)
-        // 需要获取当前类型现写3表个人
-        allAPI.queryForList(3, this.query).then(response => {
-          this.list = response.rows
-          this.total = response.total
-        }).catch(error => {
-        }).finally(_ => {
-          this.loading = false
-        })
-      }
-    },
-
     active(val) {
       if (val) this.refresh()
     },

@@ -86,7 +86,6 @@ export default {
       percent: 0,
       percentText: '',
       defaultChecked: [],
-      functionClass: 1,
       rules: {
         fileName: [
           { required: true, message: '请上传文件', trigger: 'change' }
@@ -161,7 +160,9 @@ export default {
     },
     submitForm(formName) {
       if (this.show && this.formData.swmsNoticeReadscopeList.length === 0 
-        || (this.show && !this.formData.swmsNoticeReadscopeList)) {
+        || (this.show && !this.formData.swmsNoticeReadscopeList)
+      ) {
+        alert(1)
         MSG.warning('请选择可见范围')
         return
       }

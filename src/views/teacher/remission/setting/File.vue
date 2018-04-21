@@ -17,7 +17,7 @@
     </div>
 
     <div class="zjy-dialog zjy-preview">
-      <el-dialog title="助学金文件查看" :visible.sync="visible" width="800px">
+      <el-dialog title="学费减免文件查看" :visible.sync="visible" width="800px">
         <image-view :src="src" v-if="isImageView">
           <div class="zjy-footer">
             <zjy-button type="primary" @click="handleClick">关闭</zjy-button>
@@ -209,15 +209,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.AppHeaderPanel {
-  display: none;
-}
-.WACFrameWord.cui-exth {
-  margin-top: -88px;
-}
-.cui-toolbar-buttondock.alignright {
-  display: none;
-}
-</style>

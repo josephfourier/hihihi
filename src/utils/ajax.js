@@ -5,7 +5,8 @@ import { getToken } from '@/utils/cookie'
 import { relogin, reback } from '@/utils'
 
 const ajax = axios.create({
-  timeout: 20000,
+  // 开发调试不限定超时时间
+  timeout: process.env.NODE_ENV === 'production' ? 20000 : 0,
   baseURL: process.env.BASE_URL
 })
 

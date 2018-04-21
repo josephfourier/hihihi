@@ -1,4 +1,7 @@
 import { MessageBox } from 'element-ui'
+import store from '@/store'
+
+let hasPermission = permission => store.getters.permissions.indexOf(permission) !== -1
 
 let resolve = (resource, list, routes, permissions) => {
   if (resource.type === 0) return // 系统
@@ -126,6 +129,7 @@ function refresh (auto)  {
 }
 
 export {
+  hasPermission,
   resolve,
   relogin,
   reback,

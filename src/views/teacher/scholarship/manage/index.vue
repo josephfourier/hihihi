@@ -94,6 +94,7 @@ export default {
       setting: '',
       query: properties.query,
       currentPage: 1,
+      total: 0,
       dataStatus: '',
       applyYear: '',
       studentCode: '',
@@ -152,9 +153,9 @@ export default {
           MSG.success('删除成功')
           this.refresh(auto)
         }
-        this.loading = false
       }).catch(error => {
         console.log(error)
+      }).finally(_ => {
         this.loading = false
       })
     },
@@ -185,15 +186,9 @@ export default {
         console.log(error)
       })
     },
-    //  ---------------- 表格行操作 ----------------
-
     pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
-    //  ---------------- 分页 ----------------
-
-    //  ---------------- formatter ----------------
-
     handleSubmit (data, steps) {
       scholarshipManageAPI.submit(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
@@ -210,7 +205,6 @@ export default {
         console.log(error)
       })
     }
-    //   ---------------- 审批操作 ----------------
   },
 
   components: {
@@ -246,9 +240,9 @@ export default {
             this.list = response.rows
             this.total = response.total
           }
-          this.loading = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
           this.loading = false
         })
       }

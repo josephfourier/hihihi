@@ -74,7 +74,7 @@ export default {
         this.hasError = true
       } else {
         Object.assign(data, {
-          applyReason: this.applyReason
+          applyReson: this.applyReason
         })
         api.update(data).then(response => {
           if (response.code === 1) {
@@ -91,7 +91,7 @@ export default {
       }
     },
     _delete (data) {
-      api.delete(data.allowanceUid).then(response => {
+      api.delete(data.workstudyUid).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
                MSG.success('删除成功')
@@ -106,8 +106,9 @@ export default {
     },
 
     view (row) {
-      this.applyReason = row.applyReason
-      commonAPI.queryApprovalProcess(row.studentId, row.allowanceUid).then(response => {
+      console.log(row)
+      this.applyReason = row.applyReson
+      commonAPI.queryApprovalProcess(row.studentId, row.workstudyUid).then(response => {
         this.data = row
         this.value = response.data
         this.visible = true

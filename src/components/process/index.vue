@@ -79,7 +79,7 @@
       <transition name="el-zoom-in-top">
         <div class="tip-box">
           <transition name="el-zoom-in-top">
-            <span class="tip" v-if="hasNoReason ">请输入拒绝原因</span>
+            <span class="inner tip" v-if="hasNoReason">请输入拒绝原因</span>
           </transition>
         </div>
       </transition>
@@ -269,6 +269,9 @@ export default {
   .tip {
     font-size: 12px;
     position: relative;
-    top: -5px;
+    // 拒绝原因非空提示
+    &.inner {
+       top: -5px;
+    }
   }
 </style>

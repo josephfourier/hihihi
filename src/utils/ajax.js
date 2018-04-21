@@ -5,7 +5,7 @@ import { getToken } from '@/utils/cookie'
 import { relogin, reback } from '@/utils'
 
 const ajax = axios.create({
-  timeout: 10000,
+  timeout: 20000,
   baseURL: process.env.BASE_URL
 })
 

@@ -15,8 +15,7 @@ export default {
     },
     {
       label: '保险公司',
-      prop: 'insuranceCompany',
-      width: '200'
+      prop: 'insuranceCompany'
     },
     {
       label: '险种类别',
@@ -32,7 +31,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '编辑',

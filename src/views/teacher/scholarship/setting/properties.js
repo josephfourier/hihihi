@@ -7,18 +7,15 @@ export default {
   },
   columns: [
     {
-      index: true,
-      select: false
+      index: true
     },
     {
       label: '奖学金名称',
-      prop: 'scholarshipName',
-      width: '300'
+      prop: 'scholarshipName'
     },
     {
       label: '人员限数',
-      prop: 'numberLimit',
-      width: '200'
+      prop: 'numberLimit'
     },
     {
       label: '奖学金级别',
@@ -35,7 +32,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '编辑',

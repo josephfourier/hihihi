@@ -9,13 +9,17 @@
       <el-table-column
         v-if="select"
         type="selection"
-        :width="columns[0].selectWidth ? columns[0].selectWidth : 35">
+        :width="columns[0].selectWidth ? columns[0].selectWidth : 35"
+        :header-align="columns[0].shalign ? columns[0].shalign : 'center'"
+      >
       </el-table-column>
       <el-table-column
         type="index"
         :label="columns[0].indexLabel ? columns[0].indexLabel : '序号'"
         :index="columns[0].indexStart ? columns[0].indexStart : 1"
-        :width="columns[0].indexWidth ? columns[0].indexWidth : 55"
+        :width="columns[0].indexWidth ? columns[0].indexWidth : 45"
+        :header-align="columns[0].ihalign ? columns[0].ihalign : 'center'"
+        :align="columns[0].ihalign ? columns[0].ihalign : 'center'"
         v-if="index"
       >
       </el-table-column>
@@ -26,6 +30,7 @@
         :prop="item.prop"
         :label="item.label"
         :width="item.width ? item.width : ''"
+        :align="item.align ? item.align: 'center'"
       >
         <template slot-scope="scope">
           <template v-if="item.operators">

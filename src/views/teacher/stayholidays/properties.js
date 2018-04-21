@@ -75,7 +75,6 @@ export default {
       formatter: statusFormat
     }, {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

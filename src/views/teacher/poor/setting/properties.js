@@ -11,13 +11,11 @@ export default {
     },
     {
       label: '学年',
-      prop: 'applyYear',
-      width: 100
+      prop: 'applyYear'
     },
     {
       label: '设置信息',
-      prop: 'applyDescription',
-      width: 400
+      prop: 'applyDescription'
     },
     {
       label: '申请时间',
@@ -31,7 +29,6 @@ export default {
     },
     {
       label: '操作',
-      width: 200,
       operators: [
         {
           label: '查看',

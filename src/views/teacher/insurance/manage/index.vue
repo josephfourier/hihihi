@@ -135,34 +135,36 @@ export default {
       columns: [
         {
           index: true,
-          indexWidth: 50
         }, {
           label: '学号',
           prop: 'studentNo',
           width: 100
         }, {
           label: '学生姓名',
-          prop: 'studentName'
+          prop: 'studentName',
+          width: 100
         }, {
           label: '院系',
           prop: 'facultyName'
         }, {
           label: '申请日期',
           prop: 'applyDate',
+          width: 80,
           formatter: this.dateFormat
         }, {
           label: '险种名称',
           prop: 'insuranceName'
         }, {
           label: '保险费用',
-          prop: 'insuranceCost'
+          prop: 'insuranceCost',
+          width: 70
         }, {
           label: '状态',
           prop: 'dataStatus',
+          width: 50,
           formatter: this.statusFormat
         }, {
           label: '操作',
-          width: '200',
           operators: [
             {
               label: '查看',

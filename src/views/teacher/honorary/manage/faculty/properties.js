@@ -65,7 +65,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',
@@ -82,7 +81,7 @@ export default {
 
   columnsMY: [
     {
-      index: true,
+      index: true
     },
     {
       label: '荣誉称号名称',
@@ -106,7 +105,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',
@@ -145,7 +143,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

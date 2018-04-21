@@ -165,8 +165,8 @@ export default {
         commonAPI.queryHonoraryList(2, this.query).then(response => {
           this.list = response.rows
           this.total = response.total
-          this.loading = false
         }).catch(error => {
+        }).finally (_ => {
           this.loading = false
         })
       }

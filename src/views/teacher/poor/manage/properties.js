@@ -54,7 +54,7 @@ export default {
     },
     {
       label: '班级',
-      prop: 'className',
+      prop: 'className'
     }, {
       label: '班主任',
       prop: 'gradHeadteacher'
@@ -75,7 +75,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

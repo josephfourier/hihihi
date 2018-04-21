@@ -1,5 +1,3 @@
-import { dateFormat } from '@/utils'
-
 const statusFormatALL = (cellValue) => {
   return ['可申请', '申请中'][+cellValue]
 }
@@ -30,7 +28,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',
@@ -67,7 +64,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

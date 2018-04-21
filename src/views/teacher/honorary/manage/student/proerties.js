@@ -44,8 +44,7 @@ export default {
       select: true
     }, {
       label: '学号',
-      prop: 'studentNo',
-      width: 100
+      prop: 'studentNo'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -72,7 +71,6 @@ export default {
       formatter: statusFormat
     }, {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

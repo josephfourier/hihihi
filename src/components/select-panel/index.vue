@@ -27,7 +27,7 @@
         </el-checkbox>
       </el-checkbox-group>
       <p class="zjy-search-panel__empty" v-show="hasNoMatch">{{ $t('zjy.transfer.noMatch') }}</p>
-      <p class="zjy-search-panel__empty" v-show="data.length === 0 && !hasNoMatch">{{ $t('zjy.transfer.noData') }}</p>
+      <p class="zjy-search-panel__empty" v-show="data.length === 0 && !hasNoMatch">{{ empty || $t('zjy.transfer.noData') }}</p>
     </div>
     <p class="zjy-search-panel__footer" v-if="hasFooter">
       <slot></slot>
@@ -91,7 +91,8 @@ export default {
           disabled: false
         }
       }
-    }
+    },
+    empty: String
   },
 
   data() {

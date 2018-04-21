@@ -19,11 +19,13 @@ export default {
     }, {
       label: '院系',
       prop: 'facultyName'
-    }, {
+    },
+    {
       label: '处分日期',
       prop: 'punishDate',
       formatter: dateFormat
-    },{
+    },
+    {
       label: '年级',
       prop: 'year'
     }, {
@@ -35,7 +37,6 @@ export default {
       prop: 'punishStatusName'
     }, {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

@@ -8,6 +8,8 @@ props: [
           select: false,
           indexStart: 1
           indexLabel: '序号',
+          ihalign: 'center'
+          shaling: 'center'
           indexWidth: 200,
           selectWidth: 105
         },
@@ -19,7 +21,7 @@ props: [
         },
         {
           label: '操作',
-          width: '200',
+          
           operators: [
             {
               label: '查看',

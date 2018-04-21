@@ -10,15 +10,13 @@ export default {
     },
     {
       label: '违纪类型',
-      prop: 'punishName',
-      width: 100
+      prop: 'punishName'
     }, {
       label: '违纪说明',
       prop: 'punishtDescription'
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '编辑',

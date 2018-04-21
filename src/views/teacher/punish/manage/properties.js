@@ -39,8 +39,7 @@ export default {
     },
     {
       label: '学号',
-      prop: 'studentNo',
-      width: 100
+      prop: 'studentNo'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -53,8 +52,7 @@ export default {
       formatter: dateFormat
     }, {
       label: '处分类型',
-      prop: 'punishName',
-      width: 200
+      prop: 'punishName'
     },
     {
       label: '状态',
@@ -63,7 +61,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

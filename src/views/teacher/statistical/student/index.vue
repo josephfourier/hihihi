@@ -49,16 +49,12 @@ export default {
       studentCode: '',
       specialtyCode: '',
       enterYear: '',
-      //  --------------- 搜索 END ---------------
       list: [],
       currentPage: 1,
       total: 0,
       loading: false,
-      //  初始化select
       years: properties.optionsYears,
-      //  --------------- 初始化select END ---------------
       columns: properties.columns,
-      // dialog
       visible: false,
 
       selectedRows: [], // 多选行
@@ -115,8 +111,6 @@ export default {
       this.currentPage = pageNumber
     },
 
-    // --------------- 搜索 END ---------------
-
     refresh() {
       return _refresh.call(this)
     },
@@ -156,7 +150,6 @@ export default {
         })
       }
     }
-
   }
 }
 

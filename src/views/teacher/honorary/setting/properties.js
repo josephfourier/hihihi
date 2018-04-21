@@ -10,15 +10,13 @@ export default {
     },
     {
       label: '荣誉称号名称',
-      prop: 'honoraryName',
-      width: 100
+      prop: 'honoraryName'
     }, {
       label: '人数限制',
       prop: 'numberLimit'
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '编辑',

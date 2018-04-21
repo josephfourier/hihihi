@@ -60,7 +60,6 @@ export default {
           prop: 'description'
         }, {
           label: '操作',
-          width: '200',
           operators: [
             {
               label: '编辑',

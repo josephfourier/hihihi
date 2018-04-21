@@ -61,8 +61,7 @@ export default {
       formatter: dateFormat
     }, {
       label: '奖学金名称',
-      prop: 'scholarshipName',
-      width: 200
+      prop: 'scholarshipName'
     }, {
       label: '金额',
       prop: 'money'
@@ -76,7 +75,6 @@ export default {
     },
     {
       label: '操作',
-      width: '200',
       operators: [
         {
           label: '查看',

@@ -2,9 +2,9 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
 
-      <el-form-item label="困难补助名称" prop="allsettingUid" class="inline">
+      <el-form-item label="岗位名称" prop="worksettingUid" class="inline">
 
-        <el-select v-model="formData.allsettingUid" @change="handleChange">
+        <el-select v-model="formData.worksettingUid" @change="handleChange">
           <el-option
             v-for="item in settingList"
             :key="item.value"
@@ -15,8 +15,8 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="发放方式" class="inline pull-right">
-        <el-input :value="setting.grantWay | scholarshipGrantWayFormat" disabled></el-input>
+      <el-form-item label="薪资:" class="inline pull-right">
+        <el-input v-model="setting.salary" disabled></el-input>
       </el-form-item>
 
      <el-form-item label="学号:" prop="studentCode" class="inline is-required">
@@ -24,21 +24,14 @@
         <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>
 
-      <el-form-item label="金额:" class="inline pull-right">
-        <el-input v-model="setting.money" disabled></el-input>
-      </el-form-item>
-
-    <el-form-item label="入学年份" prop="facultyName" class="inline">
+      <el-form-item label="院系" prop="facultyName" class="inline pull-right">
         <el-input v-model="student.facultyName" disabled></el-input>
       </el-form-item>
 
-      <el-form-item label="申请时间" prop="applyDate" class="inline pull-right">
+      <el-form-item label="申请时间" prop="applyDate" class="inline">
         <el-date-picker type="date" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
       </el-form-item>
 
-      <el-form-item label="院系" prop="factoryCode" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
-      </el-form-item>
       <el-form-item label="专业" prop="specialtyCode" class="inline pull-right">
         <el-input v-model="student.facultyName" disabled></el-input>
       </el-form-item>
@@ -67,16 +60,16 @@ import api from './api'
 export default {
   data () {
     const checkStudent = (rule, value, callback) => {
-      if (!this.formData.allsettingUid) {
+      if (!this.formData.worksettingUid) {
         this.doQuery = false
-        return callback(new Error('请先选择困难补助名称'))
+        return callback(new Error('请先选择岗位名称'))
       }
       if (!value) {
         this.doQuery = false
         return callback(new Error('请输入学号'))
       } else {
         if (!this.doQuery) return
-        api.queryStudent(this.formData.allsettingUid, value).then(response => {
+        api.queryStudent(this.formData.worksettingUid, value).then(response => {
           if (response.code !== 1) {
             callback(new Error(response.message))
           } else {
@@ -104,8 +97,8 @@ export default {
           // { required: true, message: '请输入学生学号', trigger: 'blur' },
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
-        allsettingUid: [
-          { required: true, message: '请选择困难补助', trigger: 'change' }
+        worksettingUid: [
+          { required: true, message: '请选择岗位名称', trigger: 'change' }
         ],
 
         applyDate: [
@@ -132,14 +125,13 @@ export default {
   created () {
     api.querySettingList().then(response => {
       if (response.code !== 1) {
-        MSG.success('获取困难补助失败')
+        MSG.success('获取岗位失败')
       } else {
         this.settingList = response.data.map(i => {
           return {
-            label: i.allowanceName,
-            value: i.allsettingUid,
-            grantWay: i.grantWay,
-            money: i.money
+            label: i.postName,
+            value: i.worksettingUid,
+            salary: i.salary
           }
         })
       }
@@ -157,9 +149,9 @@ export default {
     },
 
     submitForm (formName) {
-      if (!this.formData.allsettingUid) {
+      if (!this.formData.worksettingUid) {
         this.doQuery = false
-        this.$refs.formData.validateField('allsettingUid')
+        this.$refs.formData.validateField('worksettingUid')
         return
       }
 
@@ -168,7 +160,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$emit('submit', {
-            allsettingUid: this.formData.allsettingUid,
+            worksettingUid: this.formData.worksettingUid,
             applyDate: this.formData.applyDate,
             studentId: this.student.studentId,
             applyReason: this.formData.applyReason

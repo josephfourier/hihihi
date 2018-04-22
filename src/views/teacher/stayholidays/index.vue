@@ -26,7 +26,7 @@
       </zjy-table>
     </div>
 
-    <div class="zjy-pagination">
+    <div class="zjy-pagination" v-if="list.length !== 0">
       <zjy-pagination
         :currentPage="currentPage"
         :total="total"

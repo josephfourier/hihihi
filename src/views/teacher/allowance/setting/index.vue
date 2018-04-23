@@ -9,7 +9,7 @@
 
     <div class="zjy-dialog">
       <el-dialog :title="title" :visible.sync="visible" width="800px">
-        <allowance-setting v-if="visible" :formData="formData" :visible.sync="visible" @submit="handleSubmit">
+        <allowance-setting v-if="visible" :data="formData" :visible.sync="visible" @submit="handleSubmit">
         </allowance-setting>
       </el-dialog>
     </div>

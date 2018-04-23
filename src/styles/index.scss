@@ -367,6 +367,9 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 .zjy-preview--iframe {
   margin-top: -96px;
 }
+.notice .zjy-preview--iframe {
+  margin-top: 0;
+}
 .zjy-dialog.zjy-preview {
   // margin-top: -40px;
   .el-dialog__body {

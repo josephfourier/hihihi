@@ -12,6 +12,7 @@ export const SET_PERMISSIONS  =   'SET_PERMISSIONS'
 export const SET_APPROVES     =   'SET_APPROVES'
 
 export const SET_TODO_LIST    = 'SET_TODO_LIST'
+export const SET_NOTICE_LIST    = 'SET_NOTICE_LIST'
 
 export const SET_GRANT_WAY    = 'SET_GRANT_WAY'
 

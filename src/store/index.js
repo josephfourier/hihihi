@@ -6,6 +6,7 @@ import permission from './modules/permission'
 import schedule from './modules/schedule'
 import dict from './modules/dict'
 import common from './modules/common'
+import notice from './modules/notice'
 
 import getters from './getters'
 
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     permission,
     schedule,
     dict,
-    common
+    common,
+    notice
   },
   getters
 })

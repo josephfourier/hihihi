@@ -28,8 +28,8 @@
         <el-input v-model="setting.money" disabled></el-input>
       </el-form-item>
 
-    <el-form-item label="入学年份" prop="facultyName" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+    <el-form-item label="入学年份" class="inline">
+        <el-input v-model="student.enterYear" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="申请时间" prop="applyDate" class="inline pull-right">
@@ -37,14 +37,14 @@
       </el-form-item>
 
       <el-form-item label="院系" prop="factoryCode" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input :value="student.facultyName" disabled></el-input>
       </el-form-item>
-      <el-form-item label="专业" prop="specialtyCode" class="inline pull-right">
-        <el-input v-model="student.facultyName" disabled></el-input>
+      <el-form-item label="专业" class="inline pull-right">
+        <el-input :value="student.specialtyName" disabled></el-input>
       </el-form-item>
 
-      <el-form-item label="政治面貌" prop="specialtyCode" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+      <el-form-item label="政治面貌" class="inline">
+        <el-input :value="student.politics | politicsFormat" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="申请原因" prop="applyReason">
@@ -78,11 +78,8 @@ export default {
         if (!this.doQuery) return
         api.queryStudent(this.formData.allsettingUid, value).then(response => {
           if (response.code !== 1) {
-            callback(new Error(response.message))
+            callback(new Error(response.data))
           } else {
-            // 修改
-            // 返回无学生实体无法填充其它信息
-            // 获取不到studentId无法进行下一步
             this.student = response.data
             callback()
           }

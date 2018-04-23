@@ -71,11 +71,9 @@ export default {
         if (!this.doQuery) return
         api.queryStudent(this.formData.worksettingUid, value).then(response => {
           if (response.code !== 1) {
-            callback(new Error(response.message))
+            callback(new Error(response.data))
           } else {
-            // 修改
-            // 返回无学生实体无法填充其它信息
-            // 获取不到studentId无法进行下一步
+   
             this.student = response.data
             callback()
           }

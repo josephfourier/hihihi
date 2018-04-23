@@ -39,7 +39,7 @@
 
     <div class="zjy-dialog">
       <el-dialog title="编辑文件" :visible.sync="visible3" width="800px">
-        <grant-update v-if="visible3" :formData="data" :post="postList" :visible.sync="visible3" @submit="handleUpdate"></grant-update>
+        <grant-update v-if="visible3" :data="data" :post="postList" :visible.sync="visible3" @submit="handleUpdate"></grant-update>
       </el-dialog>
     </div>
 

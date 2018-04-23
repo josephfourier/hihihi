@@ -14,5 +14,6 @@ export default {
     }
   },
   grantWay: state => state.dict.grantWay,
-  specialtyList: state => state.common.specialtyList
+  specialtyList: state => state.common.specialtyList,
+  noticeList: state => state.notice.noticeList
 }

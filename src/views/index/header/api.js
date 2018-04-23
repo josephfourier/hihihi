@@ -42,6 +42,12 @@ export default {
   queryObjectOfFacultyHonorary (id) {
     return ajax.get('/manage/facultyHonorary/' + id)
   },
+  queryObjectOfAllowance (id) {
+    return ajax.get('/manage/swmsAllowance/' + id)
+  },
+  queryObjectOfWorkstudy (id) {
+    return ajax.get('/manage/swmsWorkstud/' + id)
+  },
 
   submitInsurance (arg1, arg2, arg3) {
     return ajax.put('/manage/insurance/teacher/', {
@@ -81,6 +87,12 @@ export default {
   submitPoor (arg) {
     return ajax.put('/manage/swmsPoor/teacher', arg)
   },
+  submitAllowance (arg) {
+    return ajax.put('/manage/swmsAllowance/teacher', arg)
+  },
+  submitWorkstudy (arg) {
+    return ajax.put('/manage/swmsWorkstud/teacher', arg)
+  },
 
   submitStudentHonorary (arg) {
     return ajax.put('/manage/studentHonorary/teacher', arg)
@@ -90,5 +102,8 @@ export default {
   },
   submitFacultyHonorary (arg) {
     return ajax.put('/manage/facultyHonorary/teacher', arg)
+  },
+  queryNoticeNotRead () {
+    return ajax.get('/manage/swmsNotice/swmsNoticeRead')
   }
 }

@@ -24,7 +24,6 @@
         </zjy-preview>
       </el-dialog>
     </div>
-
   </div>
 </template>
 

@@ -1,7 +1,6 @@
 <!--  -->
 <template>
   <div class="zjy-header">
-
     <div class="wrapper">
       <div class="school">
         <span>{{ user.schoolName }}</span>
@@ -38,17 +37,22 @@
         </el-dropdown>
 
         <el-dropdown class="badge">
-          <el-badge :value="todoValue" class="item notice" :max="5">
+          <el-badge :value="noticeValue" class="item notice" :max="5">
             <span class="el-dropdown-link">
               通知
             </span>
           </el-badge>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-if="todoValue == 0">
+            <el-dropdown-item v-if="noticeValue == 0">
               暂无
             </el-dropdown-item>
-            <el-dropdown-item class="clearfix" v-for="item in todoList" :key="item.dataUid"  v-else>
-              <my-list :data="item" @click="handleClick" ></my-list>
+            <el-dropdown-item 
+              class="clearfix" 
+              v-for="item in noticeList" 
+              :key="item.noticeUid"  
+              v-else
+            >
+              <notice-list :data="item" @click="handleNotice" ></notice-list>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -63,14 +67,33 @@
       <poor :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'poor'"></poor>
       <scholarship :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'scholarship'"></scholarship>
       <stayholiday :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'stayholiday'"></stayholiday>
-      <stuidcard :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'stuidcard'" @refresh="handleRefresh"></stuidcard>
+      <stuidcard :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'stuidcard'"></stuidcard>
+      <allowance :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'allowance'"></allowance>
+      <workstudy :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'workstudy'"></workstudy>
     </el-dialog>
+
+     <div class="zjy-dialog">
+      <el-dialog class="notice" :title="noticeTitle" :visible.sync="visible2" width="800px" append-to-body>
+        <image-view :src="src" v-if="isImage(src)">
+          <div class="zjy-footer">
+            <zjy-button type="primary" @click="visible2=false">关闭</zjy-button>
+          </div>
+        </image-view>
+        <zjy-preview v-else :src="src">
+          <div class="zjy-footer">
+            <zjy-button type="primary" @click="visible2=false">关闭</zjy-button>
+          </div>
+        </zjy-preview>
+      </el-dialog>
+    </div>
+
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import MyList from './MyList'
+import NoticeList from './NoticeList'
 import Insurance from './components/Insurance'
 import ClassHonorary from './components/ClassHonorary'
 import FacultyHonorary from './components/FacultyHonorary'
@@ -79,18 +102,23 @@ import Poor from './components/Poor'
 import Scholarship from './components/Scholarship'
 import Stayholiday from './components/Stayholiday'
 import Stuidcard from './components/Stuidcard'
+import Allowance from './components/Allowance'
+import Workstudy from './components/Workstudy'
+
+import ZjyPreview from '@/components/preview'
+import ImageView from './ImageView'
+import ZjyButton from '@/components/button'
 
 export default {
   data () {
     return {
       visible: false,
+      visible2: false,
       uid: '',
-      active: ''
+      active: '',
+      src: '',
+      noticeTitle: ''
     }
-  },
-
-  created () {
-    // this.handleRefresh()
   },
   components: {
     MyList,
@@ -101,13 +129,24 @@ export default {
     Poor,
     Scholarship,
     Stayholiday,
-    Stuidcard
-    //
-    // ZjyDropdownMenu,
-    // ZjyDropdownItem
+    Stuidcard,
+    Workstudy,
+    Allowance,
+
+    ZjyPreview,
+    ImageView,
+    ZjyButton,
+
+// 直接render则会在mounted后渲染，故分离出
+    NoticeList
   },
 
   methods: {
+    handleNotice (data) {
+      this.visible2 = true
+      this.src = data.filePath
+      this.noticeTitle = data.fileName
+    },
     handleClick (uid, pid) {
       this.uid = uid
       this.active = this.approves.find(i => i.permissionId === pid)
@@ -124,15 +163,19 @@ export default {
 
     logout () {
       MSG.success('开发中...')
-      // this.$store.dispatch('logout').then(() => {
-      //   window.location.href = process.env.LOGOUT_URL
+    },
+     isImage (filePath) {
+      return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
   },
 
   computed: {
-    ...mapGetters(['user', 'approves', 'todoList']),
+    ...mapGetters(['user', 'approves', 'todoList', 'noticeList']),
     todoValue () {
       return this.todoList.length
+    },
+    noticeValue () {
+      return this.noticeList.length
     },
     componentName () {
       return this.active.approvalUri
@@ -141,14 +184,6 @@ export default {
       return this.active.name
     }
   }
-  // watch: {
-  //   todoList: {
-  //     immediate: true,
-  //     handler (val) {
-  //       if (val && val.length > 0) { this.hasSchedule = true }
-  //     }
-  //   }
-  // }
 }
 </script>
 <style lang='scss' scoped>

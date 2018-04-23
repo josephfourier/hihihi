@@ -92,9 +92,6 @@ export default {
 
   created() {
     this.refresh()
-  },
-
-  watch: {
   }
 }
 </script>

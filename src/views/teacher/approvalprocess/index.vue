@@ -1,6 +1,17 @@
 <template>
   <div class="zjy-app">
-    <search-panel class="menu" :title="title" :filterable="true" :props="props" :renderContent="renderFunc" :data="menus" :defaultChecked="[0]" empty="无匹配项" @option-checked="menuChecked">
+    <search-panel
+      v-loading="loading"
+      class="menu" 
+      :title="title" 
+      :filterable="true" 
+      :props="props" 
+      :renderContent="renderFunc" 
+      :data="menus" 
+      :defaultChecked="[0]" 
+      empty="无匹配项" 
+      @option-checked="menuChecked"
+    >
     </search-panel>
     <div class="workflow">
       <div class="workflow-header">
@@ -122,7 +133,6 @@ export default {
   },
 
   created() {
-
     if (this.approves.length > 0) {
       this.menus = this.approves.map(x => {
         return {
@@ -135,6 +145,7 @@ export default {
         this.checkedMenu = this.menus[0]
       }
     } else {
+      this.loading = true
       commonAPI.queryApprovalList().then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
@@ -150,6 +161,8 @@ export default {
             this.checkedMenu = this.menus[0]
           }
         }
+      }).finally(_ => {
+        this.loading = false
       })
     }
   },
@@ -238,7 +251,7 @@ export default {
     },
 
     queryWorkflow(id) {
-      this.loading = true
+      // this.loading = true
       approvalAPI.queryApprovalProcess(id).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
@@ -246,7 +259,7 @@ export default {
           this.workflow = response.data
             .filter(x => x.templateUid)
             .sort((x, y) => x.approvalStep - y.approvalStep)
-          this.loading = false
+          // this.loading = false
         }
       })
     },

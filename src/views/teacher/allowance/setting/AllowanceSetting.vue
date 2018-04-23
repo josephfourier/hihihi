@@ -130,11 +130,19 @@ export default {
   },
 
   props: {
-    formData: Object,
+    data: Object,
     visible: Boolean
   },
   components: {
     ZjyButton
+  },
+  watch: {
+    data: {
+      immediate: true,
+      handler(val) {
+        this.formData = {...val}
+      }
+    }
   }
 }
 </script>

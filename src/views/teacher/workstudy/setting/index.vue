@@ -14,7 +14,7 @@
 
     <div class="zjy-dialog">
       <el-dialog :title="title" :visible.sync="visible" width="800px">
-        <study-setting v-if="visible" :formData="formData" :visible.sync="visible" @submit="handleSubmit">
+        <study-setting v-if="visible" :data="formData" :visible.sync="visible" @submit="handleSubmit">
         </study-setting>
       </el-dialog>
     </div>

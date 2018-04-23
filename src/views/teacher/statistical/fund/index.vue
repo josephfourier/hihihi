@@ -79,14 +79,13 @@ export default {
             }
           })
 
-          let sum = response.data.peopleProportionDto.map(i => {
-            return +i.value
-          }).reduce((total, currentValue) => total + currentValue, 0)
+          // let sum = response.data.peopleProportionDto.map(i => {
+          //   return +i.value
+          // }).reduce((total, currentValue) => total + currentValue, 0)
 
           this.data = response.data.peopleProportionDto.map(i => {
             return {
               value: +i.value,
-              // name: i.name + ' ' + ((+i.value) / sum * 100).toFixed(2) + '%'
               name: i.name
             }
           }).filter(i => i.value !== 0)
@@ -109,22 +108,16 @@ export default {
     },
     title () {
       switch (this.query.category) {
-        case 1: return '获得奖学金人数占比'
-        case 2: return '获得个人荣誉称号人数占比'
-        case 3: return '获得班级荣誉称号人数占比'
-        case 4: return '获得院系荣誉称号人数占比'
-        case 5: return '违纪处分人数占比'
+        case 1: return '获得困难补助人数占比'
+        case 2: return '获得勤工助学人数占比'
         default: return ''
       }
     },
 
     title2 () {
       switch (this.query.category) {
-        case 1: return '各类奖学金人数占比'
-        case 2: return '各类个人荣誉称号人数占比'
-        case 3: return '各类班级荣誉称号人数占比'
-        case 4: return '各类院系荣誉称号人数占比'
-        case 5: return '各类违纪处分人数占比'
+        case 1: return '各类困难补助人数占比'
+        case 2: return '各类勤工助学人数占比'
         default: return ''
       }
     }
@@ -132,7 +125,6 @@ export default {
 
   mounted () {
     this.$store.dispatch('setFacultyList')
-
     // api.queryFacultyList().then(response => {
     //   if (response.code !== 1) {
     //     this.$alert('获取院系失败')

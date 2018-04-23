@@ -1,49 +1,48 @@
-[class*=zjy-icon] {
-
-}
 .zjy-link-icon {
-  width: 12px;
-  height: 12px;
-  vertical-align: baseline;
-  display: inline-block;
-  position: relative;
-  top: 1px;
-  &.zjy-icon-config{
-    background: url(../assets/imgs/zjy-icon-config.png) 0 0 no-repeat;
-  }
-  &.zjy-icon-delete{
-    background: url(../assets/imgs/zjy-icon-delete.png) 0 0 no-repeat;
-  }
-  &.zjy-icon-add {
-    width: 18px;
-    height: 18px;
-    top:4px;
-    background: url(../assets/imgs/zjy-icon-add.png) 0 0 no-repeat;
-  }
+    width: 12px;
+    height: 12px;
+    vertical-align: baseline;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    &.zjy-icon-config {
+        background: url(../assets/imgs/zjy-icon-config.png) 0 0 no-repeat;
+    }
+    &.zjy-icon-delete {
+        background: url(../assets/imgs/zjy-icon-delete.png) 0 0 no-repeat;
+    }
+    &.zjy-icon-add {
+        width: 18px;
+        height: 18px;
+        top: 4px;
+        background: url(../assets/imgs/zjy-icon-add.png) 0 0 no-repeat;
+    }
 }
+
 .zjy-link-group {
-  margin: 0 auto;
-  text-align: left;
-  .zjy-link-config {
-    &:hover {
-      color: #0aacf8;
+    margin: 0 auto;
+    text-align: left;
+    .zjy-link-config {
+        &:hover {
+            color: #0aacf8;
+        }
     }
-  }
-  .zjy-link-delete {
-    &:hover {
-      color: #ff5657;
+    .zjy-link-delete {
+        &:hover {
+            color: #ff5657;
+        }
     }
-  }
-  a:not(:last-of-type) {
-    margin-right: 15px;
-  }
+    a:not(:last-of-type) {
+        margin-right: 15px;
+    }
 }
+
 .zjy-link-add {
-  font-size: 12px;
-  position: absolute;
-  right: 22px;
-  top: 0;
-  &:hover {
-    color: #36c6d3;
-  }
+    font-size: 12px;
+    position: absolute;
+    right: 22px;
+    top: 0;
+    &:hover {
+        color: #36c6d3;
+    }
 }

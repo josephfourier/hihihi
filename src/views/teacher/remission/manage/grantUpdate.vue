@@ -162,7 +162,6 @@ export default {
       if ( (this.show && !this.formData.swmsNoticeReadscopeList) 
         || this.show && this.formData.swmsNoticeReadscopeList.length === 0 
       ) {
-        alert(1)
         MSG.warning('请选择可见范围')
         return
       }

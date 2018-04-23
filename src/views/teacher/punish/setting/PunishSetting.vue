@@ -24,6 +24,7 @@ export default {
 
   data () {
     return {
+      formData: {},
       rules: {
         punishName: [
           { required: true, message: '请输入类型名称', trigger: 'blur' }
@@ -49,12 +50,20 @@ export default {
   },
 
   props: {
-    formData: Object,
+    data: Object,
     type: Number,
     visible: Boolean
   },
   components: {
     ZjyButton
+  },
+  watch: {
+    data: {
+      immediate: true,
+      handler(val) {
+        this.formData = {...val}
+      }
+    }
   }
 }
 </script>

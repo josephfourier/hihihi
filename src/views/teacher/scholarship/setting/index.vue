@@ -30,7 +30,7 @@
       >
         <scholarship-setting
           v-if="visible"
-          :formData="formData"
+          :data="formData"
           :type="type"
           :visible.sync="visible"
           @submit="handleSubmit"

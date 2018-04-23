@@ -169,7 +169,6 @@ export default {
 
     },
     handleChecked(val) {
-      console.log(val)
       this.scopeList = val.map(element => {
         return {
           postId: element

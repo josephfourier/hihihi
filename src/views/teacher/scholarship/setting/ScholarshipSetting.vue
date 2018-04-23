@@ -91,6 +91,7 @@ export default {
       callback()
     }
     return {
+      formData: {},
       startOption: {
         disabledDate: (time) => {
           const endDate = this.formData.endDate
@@ -174,12 +175,20 @@ export default {
   },
 
   props: {
-    formData: Object,
+    data: Object,
     type: Number,
     visible: Boolean
   },
   components: {
     ZjyButton
+  },
+  watch: {
+    data: {
+      immediate: true,
+      handler(val) {
+        this.formData = {...val}
+      }
+    }
   }
 }
 </script>

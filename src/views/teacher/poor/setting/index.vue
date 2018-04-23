@@ -29,7 +29,7 @@
       >
         <poor-setting
           v-if="visible"
-          :formData="formData"
+          :data="formData"
           :visible.sync="visible"
           :type="type"
           @submit="handleSubmit"

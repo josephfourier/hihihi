@@ -79,6 +79,7 @@ export default {
 
   data() {
     return {
+      formData: {},
       action: process.env.BASE_URL + '/upload/stufileUpload',
       done: false,
       loading: false,
@@ -162,7 +163,6 @@ export default {
       if (this.show && !this.formData.swmsNoticeReadscopeList ||
       this.show && this.formData.swmsNoticeReadscopeList.length === 0
       ) {
-        alert(1)
         MSG.warning('请选择可见范围')
         return
       }
@@ -177,7 +177,7 @@ export default {
   },
   props: {
     post: Array,
-    formData: Object,
+    data: Object,
     visible: Boolean
   },
   components: {
@@ -187,7 +187,7 @@ export default {
   },
 
   watch: {
-    formData: {
+    data: {
       immediate: true,
       handler(val) {
         if (val && val.swmsNoticeReadscopeList) {
@@ -195,6 +195,7 @@ export default {
             return i.postId
           })
         }
+        this.formData = {...val}
       }
     }
   }

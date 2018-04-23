@@ -61,6 +61,7 @@ export default {
   name: 'allowance-setting',
   data () {
     return {
+      formData: {},
       startOption: {
         disabledDate: (time) => {
           const endDate = this.formData.endDate
@@ -141,6 +142,11 @@ export default {
       immediate: true,
       handler(val) {
         this.formData = {...val}
+        // if (!this.formData.isOpen) {
+      
+        // }
+        
+        // console.log(this.formData)
       }
     }
   }

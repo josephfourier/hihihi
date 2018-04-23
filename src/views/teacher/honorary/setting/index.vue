@@ -31,7 +31,7 @@
       >
         <honorary-setting
           v-if="visible"
-          :formData="formData"
+          :data="formData"
           :visible.sync="visible"
           @submit="handleSubmit"
         >

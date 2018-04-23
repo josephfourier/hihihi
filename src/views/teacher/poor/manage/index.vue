@@ -2,7 +2,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="院系" :options="facultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
+      <search-select label="院系" :options="myFacultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-select label="专业" :options="specialtyList" :value.sync="specialtyCode"></search-select>
       <search-select label="申请状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
       <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
@@ -57,6 +57,7 @@ import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import { _refresh } from '@/utils'
 import properties from './properties'
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -75,7 +76,7 @@ export default {
 
       visible: false,
 
-      facultyList: [],
+      // facultyList: [],
       specialtyList: [],
       optionsYears: properties.optionsYears,
       optionsStatus: properties.optionsStatus,
@@ -84,26 +85,36 @@ export default {
   },
 
   computed: {
-    isLoading() {
-      return this.facultyList.length === 0
-    }
-  },
-
-  methods: {
-    handleFocus() {
-      if (this.facultyList.length === 0) {
-        commonAPI.queryFacultyList().then(response => {
-          if (response.code !== 1) {
-            MSG.warning('获取院系失败')
-          } else {
-            this.facultyList = response.data.map(i => {
+    ...mapGetters(['facultyList']),
+    myFacultyList () {
+      return this.facultyList.map(i => {
               return {
                 label: i.facultyName,
                 value: i.facultyCode
               }
             })
-          }
-        })
+    },
+    isLoading() {
+      return this.myFacultyList.length === 0
+    }
+  },
+
+  methods: {
+    handleFocus() {
+      if (this.myFacultyList.length === 0) {
+        this.$store.dispatch('setFacultyList')
+        // commonAPI.queryFacultyList().then(response => {
+        //   if (response.code !== 1) {
+        //     MSG.warning('获取院系失败')
+        //   } else {
+        //     this.facultyList = response.data.map(i => {
+        //       return {
+        //         label: i.facultyName,
+        //         value: i.facultyCode
+        //       }
+        //     })
+        //   }
+        // })
       }
     },
     

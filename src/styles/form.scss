@@ -1,102 +1,98 @@
 .zjy-form {
-  overflow: hidden;
-  .form-item {
-    display: inline-block;
-    margin-bottom: 20px;
-    &.pull-right {
-      float: right !important;
+    overflow: hidden;
+    .form-item {
+        display: inline-block;
+        margin-bottom: 20px;
+        &.pull-right {
+            float: right !important;
+        }
+        &.pull-left {
+            float: left !important;
+        }
     }
-    &.pull-left {
-      float: left !important;
-    }
-  }
 }
-
 
 .el-textarea__inner {
- resize: none;
+    resize: none;
 }
+
 .zjy-form {
-  overflow: hidden;
-
-  .el-input__inner, .el-textarea__inner {
-    border-radius: 0;
-  }
-  .el-textarea__inner {
-    height: 100px;
-  }
-  .el-form-item {
-    &.inline {
-      display: inline-block;
+    overflow: hidden;
+    .el-input__inner,
+    .el-textarea__inner {
+        border-radius: 0;
     }
-    &.block {
-      display: block;
-      .el-input {
-        width: 100%;
-      }
+    .el-textarea__inner {
+        height: 100px;
     }
-    &.pull-right {
-      float: right;
+    .el-form-item {
+        &.inline {
+            display: inline-block;
+        }
+        &.block {
+            display: block;
+            .el-input {
+                width: 100%;
+            }
+        }
+        &.pull-right {
+            float: right;
+        }
     }
-  }
-
-  .zjy-form__title {
-    font-size: 14px;
-    color: #333333;
-    margin-bottom: 20px;
-  }
-
-  .search-input {
-  .el-input-group__append, .el-input-group__prepend {
-    border-radius: 0;
-    background-color: #37c6d4;
-    border-color: #37c6d4;
-    cursor: pointer;
-    padding: 0;
-    width: 0;
-    .search {
-      width: 56px;
-      height: 38px;
-      img {
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 20px
-      }
+    .zjy-form__title {
+        font-size: 14px;
+        color: #333333;
+        margin-bottom: 20px;
     }
-  }
-  .el-input__inner {
-    border-right:none;
-  }
-  &.is-error {
-    .el-input__inner {
-      border-color: #f56c6c;
+    .search-input {
+        .el-input-group__append,
+        .el-input-group__prepend {
+            border-radius: 0;
+            background-color: #37c6d4;
+            border-color: #37c6d4;
+            cursor: pointer;
+            padding: 0;
+            width: 0;
+            .search {
+                width: 56px;
+                height: 38px;
+                img {
+                    position: relative;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    left: 20px
+                }
+            }
+        }
+        .el-input__inner {
+            border-right: none;
+        }
+        &.is-error {
+            .el-input__inner {
+                border-color: #f56c6c;
+            }
+        }
+        &.is-success {
+            .el-input__inner {
+                border-color: #67c23a;
+            }
+        }
     }
-  }
-  &.is-success {
-    .el-input__inner {
-      border-color: #67c23a;
+    .el-select .el-input .el-input__inner {
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
     }
-  }
-
-}
-
-  .el-select .el-input .el-input__inner {
-    height: 40px;
-    line-height: 40px;
-  }
-
-  .search-button {
-
-
-    background: #37c6d4 url(../assets/images/zjy-icon-search.png) 15px 12px no-repeat;
-    width: 46px;
-    height: 40px;
-    position: absolute;
-    right: 0;
-    top: 0
-  }
-  .el-input,.el-select {
-    width: 215px;
-  }
+    .search-button {
+        background: #37c6d4 url(../assets/images/zjy-icon-search.png) 15px 12px no-repeat;
+        width: 46px;
+        height: 40px;
+        position: absolute;
+        right: 0;
+        top: 0
+    }
+    .el-input,
+    .el-select {
+        width: 215px;
+    }
 }

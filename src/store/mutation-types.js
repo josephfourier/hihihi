@@ -17,3 +17,4 @@ export const SET_NOTICE_LIST    = 'SET_NOTICE_LIST'
 export const SET_GRANT_WAY    = 'SET_GRANT_WAY'
 
 export const SET_SPECIALTY_LIST = 'SET_SPECIALTY_LIST'
+export const SET_FACULTY_LIST = 'SET_FACULTY_LIST'

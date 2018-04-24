@@ -1,5 +1,5 @@
 export { default as ZjySidebar } from '@/views/index/sidebar'
-export { default as ZjyHeader } from '@/views/index/header'
+export { default as ZjyHeader } from '@/views/index/header/Header'
 export { default as ZjyMain } from '@/views/index/Main'
 export { default as ZjyBreadcrumb } from '@/components/breadcrumb/Breadcrumb'
 export { default as NotFound } from '@/views/error/404'

@@ -105,5 +105,9 @@ export default {
   },
   queryNoticeNotRead () {
     return ajax.get('/manage/swmsNotice/swmsNoticeRead')
+  },
+
+  readNotice (noticeUid) {
+    return ajax.get('/manage/swmsNotice/swmsNoticeRead/' + noticeUid)
   }
 }

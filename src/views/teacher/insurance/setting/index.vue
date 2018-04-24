@@ -1,42 +1,21 @@
 <!-- 投保管理教师端 -->
 <template>
   <div class="zjy-app">
-      <zjy-table-operator>
-        <operator-item clz="create" @click="create" class="create">新增</operator-item>
-        <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
-      </zjy-table-operator>
+    <zjy-table-operator>
+      <operator-item clz="create" @click="create" class="create">新增</operator-item>
+      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+    </zjy-table-operator>
 
-      <zjy-table
-        v-loading="loading"
-        :data="list"
-        :columns="columns"
-        @edit="edit"
-        @delete="_delete"
-        @selection-change="handleSelectionChange"
-      ></zjy-table>
+    <zjy-table v-loading="loading" :data="list" :columns="columns" @edit="edit" @delete="_delete" @selection-change="handleSelectionChange"></zjy-table>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
-      <zjy-pagination
-        :currentPage="currentPage"
-        :total="total"
-        @current-change="currentChange"
-      >
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
       </zjy-pagination>
     </div>
 
     <div class="zjy-dialog">
-      <el-dialog
-        :title="title"
-        :visible.sync="visible"
-        width="800px"
-      >
-        <insurance-setting
-          v-if="visible"
-          :formData="setting"
-          :type="type"
-          :visible.sync="visible"
-          @submit="handleSubmit"
-        >
+      <el-dialog :title="title" :visible.sync="visible" width="800px">
+        <insurance-setting v-if="visible" :formData="setting" :type="type" :visible.sync="visible" @submit="handleSubmit">
         </insurance-setting>
       </el-dialog>
     </div>
@@ -55,7 +34,7 @@ import OperatorItem from '@/components/table-operator/operator-item'
 import { _refresh } from '@/utils'
 import properties from './properties'
 export default {
-  data () {
+  data() {
     return {
       list: [],
       currentPage: 1,
@@ -77,30 +56,35 @@ export default {
   },
 
   methods: {
-    handleSubmit (data) {
+    handleSubmit(data) {
       if (this.type === 1) {
         insuranceAPI.update(data.inssettingUid, data).then(response => {
           if (response.code === 1) {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
+
             this.refresh().visible = false
           }
         })
       } else {
         insuranceAPI.create(data).then(response => {
           if (response.code === 1) {
-            MSG.success('新增成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.create.success'))
+            }, 200)
             this.refresh().visible = false
           }
         })
       }
     },
-    create () {
+    create() {
       this.title = '新增保险'
       this.type = 2
       this.visible = true
     },
 
-    edit (row) {
+    edit(row) {
       insuranceAPI.queryForObject.call(this, row.inssettingUid).then(response => {
         this.title = '编辑保险'
         this.type = 1
@@ -111,21 +95,21 @@ export default {
       })
     },
 
-    _delete (row) {
+    _delete(row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
       insuranceAPI.delete(row.inssettingUid).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         } else {
           this.refresh(auto)
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
         }
       }).catch(error => {
         console.log(error)
       })
     },
 
-    batchRemove () {
+    batchRemove() {
       let ids = ''
       this.selectedRows.forEach(x => {
         ids += x.inssettingUid + '-'
@@ -136,7 +120,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh()
         }
         this.loading = false
@@ -145,15 +129,15 @@ export default {
       })
     },
 
-    handleSelectionChange (rows) {
+    handleSelectionChange(rows) {
       this.selectedRows = rows
     },
 
-    currentChange (pageNumber) {
+    currentChange(pageNumber) {
       this.currentPage = pageNumber
     },
 
-    refresh () {
+    refresh() {
       return _refresh.call(this)
     }
   },
@@ -169,7 +153,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
+      handler(val, oldval) {
         if (val === -1 || val === 0) return
 
         this.query.offset = this.query.limit * (val - 1)
@@ -182,7 +166,7 @@ export default {
       }
     },
 
-    visible (val) {
+    visible(val) {
       if (!val) this.setting = {}
     }
   }

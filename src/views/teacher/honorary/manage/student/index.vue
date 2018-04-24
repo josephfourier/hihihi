@@ -44,7 +44,7 @@
           v-model="value"
           @submit="handleSubmit"
         >
-          <p slot="warning" class="warning">教师直接添加无审批流程</p>
+          <p slot="warning" class="warning">教师添加无审批流程</p>
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>

@@ -379,3 +379,9 @@ input[type="file"]>input[type="button"]::-moz-focus-inner {
 .zjy-dialog.zjy-preview .el-dialog__header {
     margin-bottom: 10px;
 }
+
+.notice.el-dialog__wrapper {
+    .el-dialog__body {
+        height: 100%;
+    }
+}

@@ -146,6 +146,10 @@ export default {
       this.visible2 = true
       this.src = data.filePath
       this.noticeTitle = data.fileName
+      this.$store.dispatch('removeFromNoticeList', data.noticeUid).then(response => {
+      }).catch(error => {
+        MSG.warning('阅读失败')
+      })
     },
     handleClick (uid, pid) {
       this.uid = uid

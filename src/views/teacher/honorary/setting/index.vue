@@ -5,36 +5,16 @@
       <!--<operator-item @click="batchRemove" clz="delete">删除</operator-item>-->
     </zjy-table-operator>
 
-    <zjy-table
-      v-loading="loading"
-      :data="list"
-      :columns="columns"
-      @edit="edit"
-      @delete="_delete"
-      @selection-change="handleSelectionChange"
-    ></zjy-table>
+    <zjy-table v-loading="loading" :data="list" :columns="columns" @edit="edit" @delete="_delete" @selection-change="handleSelectionChange"></zjy-table>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
-      <zjy-pagination
-        :currentPage="currentPage"
-        :total="total"
-        @current-change="currentChange"
-      >
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
       </zjy-pagination>
     </div>
 
     <div class="zjy-dialog">
-      <el-dialog
-        :title="title"
-        :visible.sync="visible"
-        width="800px"
-      >
-        <honorary-setting
-          v-if="visible"
-          :data="formData"
-          :visible.sync="visible"
-          @submit="handleSubmit"
-        >
+      <el-dialog :title="title" :visible.sync="visible" width="800px">
+        <honorary-setting v-if="visible" :data="formData" :visible.sync="visible" @submit="handleSubmit">
         </honorary-setting>
       </el-dialog>
     </div>
@@ -50,14 +30,14 @@ import OperatorItem from '@/components/table-operator/operator-item'
 
 import ZjyPagination from '@/components/pagination'
 
-import {_refresh} from '@/utils'
+import { _refresh } from '@/utils'
 
 import properties from './properties'
 import HonorarySetting from './HonorarySetting'
 
 export default {
   name: 'index',
-  data () {
+  data() {
     return {
       list: [],
       currentPage: 1,
@@ -75,28 +55,28 @@ export default {
   },
 
   methods: {
-    currentChange (pageNumber) {
+    currentChange(pageNumber) {
       this.currentPage = pageNumber
     },
-    handleSelectionChange (rows) {
+    handleSelectionChange(rows) {
       this.selectedRows = rows
     },
 
-    refresh (auto) {
+    refresh(auto) {
       return _refresh.call(this, auto)
     },
 
-    batchRemove () {
+    batchRemove() {
 
     },
     //  ------------ 表格头操作 END ------------
 
-    edit (row) {
+    edit(row) {
       this.formData = row
       this.visible = true
     },
 
-    _delete (row) {
+    _delete(row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
       settingAPI.delete(row.honorarysettingUid).then(response => {
         if (response.code === 1) {
@@ -110,13 +90,15 @@ export default {
     //  ------------ 表格操作 END ------------
 
     //  验证成功提交表单数据
-    handleSubmit (formData) {
+    handleSubmit(formData) {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
         settingAPI.update(formData.honorarysettingUid, formData).then(response => {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success('修改成功')
+            }, 200)
             this.refresh().visible = false
           }
         })
@@ -125,7 +107,9 @@ export default {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
-            MSG.success('新建成功')
+            setTimeout(_ => {
+              MSG.success('新建成功')
+            }, 200)
             this.refresh().visible = false
           }
         })
@@ -134,10 +118,10 @@ export default {
   },
 
   computed: {
-    title () {
+    title() {
       return !this.formData.honorarysettingUid ? '新增荣誉称号' : '修改荣誉称号'
     },
-    type () {
+    type() {
       return !this.formData.honorarysettingUid ? +this.$t('zjy.operator.CREATE') : +this.$t('zjy.operator.EDIT')
     }
   },
@@ -154,7 +138,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (val === -1 || val === 0) return
 
         this.query.offset = this.query.limit * (val - 1)
@@ -166,7 +150,7 @@ export default {
         })
       }
     },
-    visible (val) {
+    visible(val) {
       if (!val) this.formData = {}
     }
   }

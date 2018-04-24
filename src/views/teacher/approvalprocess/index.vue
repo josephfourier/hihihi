@@ -228,8 +228,7 @@ export default {
         approvalStep: this.toSave.approvalStep || this.nextStepNo - 1,
         approvalType: this.handler,
         teacherLevel: this.level,
-        approvalUri:
-          this.workflow.length > 0 ? this.workflow[0].approvalUri : "",
+        approvalUri: this.workflow.length > 0 ? this.workflow[0].approvalUri : "",
         postName: this.checkedPost.label || null,
         postId: this.checkedPost.key || null,
         teacherId: this.checkedTeacher.key || null,
@@ -270,10 +269,10 @@ export default {
         .then(response => {
           if (response.code === 1) {
             // this.value.splice(this.value.findIndex(v => v.templateUid === item.templateUid), 1)
-            MSG.success("删除成功")
+            MSG.success(this.$t('zjy.message.delete.success'))
             this.refresh()
           } else {
-            MSG.success("删除失败")
+            MSG.success(this.$t('zjy.message.delete.error'))
           }
         })
         .catch(error => {
@@ -421,7 +420,7 @@ export default {
                 this.$alert(response.message)
               } else {
                 setTimeout(_ => {
-                  MSG.success("修改成功")
+                  MSG.success(this.$t('zjy.message.update.success'))
                 }, 200)
                 this.refresh()
                 this.visible = false
@@ -436,7 +435,7 @@ export default {
             .then(response => {
               if (response.code === 1) {
                 setTimeout(_ => {
-                  MSG.success("配置成功")
+                  MSG.success(this.$t('zjy.message.create.success'))
                 }, 200)
                 this.refresh()
                 this.visible = false

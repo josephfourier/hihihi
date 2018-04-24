@@ -1,5 +1,19 @@
 export default {
   zjy: {
+    message: {
+      create: {
+        error: '新增失败',
+        success: '新增成功'
+      },
+      update: {
+        error: '修改失败',
+        success: '修改成功'
+      },
+      delete: {
+        error: '删除失败',
+        success: '删除成功'
+      }
+    },
     userType: {
       student: '1',
       teacher: '3'

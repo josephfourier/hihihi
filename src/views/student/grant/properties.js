@@ -1,5 +1,5 @@
 const openFormat = cellValue => {
-  return ['是', '否'][+cellValue]
+  return ['否', '是'][+cellValue]
 }
 
 export default {

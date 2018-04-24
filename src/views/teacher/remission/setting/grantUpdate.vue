@@ -37,8 +37,8 @@
 
       <el-form-item label="开放阅读" prop="isOpen" style="margin-bottom:10px">
         <el-radio-group v-model="formData.isOpen">
-          <el-radio label="0">开放</el-radio>
-          <el-radio label="1">不开放</el-radio>
+          <el-radio label="1">开放</el-radio>
+          <el-radio label="0">不开放</el-radio>
         </el-radio-group>
       </el-form-item>
 

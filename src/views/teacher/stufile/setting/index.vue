@@ -55,10 +55,12 @@ export default {
         {
           label: '档案材料名称',
           prop: 'stufileName'
-        }, {
-          label: '档案描述',
-          prop: 'description'
-        }, {
+        },
+        // }, {
+        //   label: '档案描述',
+        //   prop: 'description'
+        // }, 
+        {
           label: '操作',
           operators: [
             {

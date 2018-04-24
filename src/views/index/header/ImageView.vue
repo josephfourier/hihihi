@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div class="wrapper">
+  <div class="notice-wrapper">
     <div class="img-container">
     <img :src="src" alt="无法查看">
     </div>

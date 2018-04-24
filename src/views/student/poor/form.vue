@@ -1,7 +1,5 @@
 <template>
   <div class="poor-apply">
-    <!--{{ data }}-->
-
     <div class="zjy-form">
       <el-form :model="formData" :rules="rules" ref="formData" label-width="110px">
         <el-form-item >

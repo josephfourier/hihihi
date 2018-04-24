@@ -75,20 +75,15 @@ import commonAPI from '@/api/common'
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import BatchInsurance from './BatchInsurance'
-import {dateFormat as _dateFormat, _refresh} from '@/utils'
+import { _refresh } from '@/utils'
+import properties from './properties'
 
 export default {
   data () {
     return {
       list: [],
       setting: '',
-      query: {
-        offset: 0,
-        limit: 10,
-        dataStatus: '',
-        applyYear: '',
-        studentCode: ''
-      },
+      query: properties.query,
       dataStatus: '',
       applyYear: '',
       studentCode: '',
@@ -99,97 +94,14 @@ export default {
       visible: false,
       visible2: false,
 
-      optionsYear: [
-        {
-          label: '2017年',
-          value: 2017
-        },
-        {
-          label: '2018年',
-          value: 2018
-        }
-      ],
+      optionsYear: properties.optionsYear,
 
-      optionsStatus: [
-        {
-          label: '待审批',
-          value: 0
-        }, {
-          label: '已通过',
-          value: 1
-        }, {
-          label: '已拒绝',
-          value: 2
-
-        }, {
-          label: '审批中',
-          value: 3
-        }, {
-          label: '待确认',
-          value: 4
-        }, {
-          label: '待付款',
-          value: 5
-        }
-      ],
-      columns: [
-        {
-          index: true,
-        }, {
-          label: '学号',
-          prop: 'studentNo',
-          width: 100
-        }, {
-          label: '学生姓名',
-          prop: 'studentName',
-          width: 100
-        }, {
-          label: '院系',
-          prop: 'facultyName'
-        }, {
-          label: '申请日期',
-          prop: 'applyDate',
-          width: 80,
-          formatter: this.dateFormat
-        }, {
-          label: '险种名称',
-          prop: 'insuranceName'
-        }, {
-          label: '保险费用',
-          prop: 'insuranceCost',
-          width: 70
-        }, {
-          label: '状态',
-          prop: 'dataStatus',
-          width: 50,
-          formatter: this.statusFormat
-        }, {
-          label: '操作',
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view',
-              formatter: this.operFormat
-            }
-          ]
-        }
-      ]
+      optionsStatus: properties.optionsStatus,
+      columns: properties.columns
     }
   },
 
   methods: {
-    // 对操作也进行格式化处理（审批与查看）
-    operFormat (row, cellValue) {
-      return '查看'
-    },
-
-    dateFormat (cellValue) {
-      return _dateFormat(cellValue)
-    },
-
-    statusFormat (cellValue) {
-      return ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款'][+cellValue]
-    },
 
     pageChanged (pageNumber) {
       this.currentPage = pageNumber
@@ -218,7 +130,7 @@ export default {
     handleSubmit (data, steps) {
       insuranceManageAPI.submit(data.insuranceUid, data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => {MSG.success('保存成功')}, 200)
+          setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.visible = false
           this.refresh()
         } else {
@@ -246,7 +158,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -258,9 +170,9 @@ export default {
             this.list = response.rows
             this.total = response.total
           }
-          this.loading = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
           this.loading = false
         })
       }
@@ -268,8 +180,4 @@ export default {
   }
 
 }
-
 </script>
-
-<style lang='scss' scoped>
-</style>

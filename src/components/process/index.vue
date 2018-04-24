@@ -8,7 +8,10 @@
       <div class="zjy-steps" v-if="hasStep">
         <zjy-steps :active="step" align-center :space="space">
           <!-- 新添加teacherName 有可能是来自教师的申请 -->
-          <zjy-step :title="$t('zjy.process.start')" :description="'(' + (data.studentName ? data.studentName : data.teacherName) + ')'">
+          <zjy-step
+            :title="$t('zjy.process.start')"
+            :description="'(' + (data.studentName ? data.studentName : data.teacherName) + ')'"
+          >
           </zjy-step>
           <zjy-step v-for="(item,index) in steps" :key="item.approvalStep" :title="item.postName" :custom="item">
             <div slot="description">
@@ -36,7 +39,8 @@
 
             <div class="validate"
                  slot="custom"
-                 slot-scope="props">
+                 slot-scope="props"
+            >
                 <el-select
                   class="zjy-select"
                   popper-class="zjy-process-select"
@@ -49,8 +53,12 @@
                   && isApprovered
                   && !reason"
                 >
-                  <el-option v-for="item in approverList" :key="item.teacherId" :label="item.teacherName"
-                             :value="item.teacherId">
+                  <el-option
+                    v-for="item in approverList"
+                    :key="item.teacherId"
+                    :label="item.teacherName"
+                    :value="item.teacherId"
+                  >
                   </el-option>
                 </el-select>
                 <div class="tip-box">
@@ -75,7 +83,7 @@
 
     <el-dialog class="inner" width="30%" title="请输入拒绝原因" :visible.sync="innerVisible" append-to-body>
       <zjy-input type="textarea" v-model="reason"></zjy-input>
-    
+
       <transition name="el-zoom-in-top">
         <div class="tip-box">
           <transition name="el-zoom-in-top">
@@ -83,7 +91,7 @@
           </transition>
         </div>
       </transition>
-    
+
       <div class="zjy-footer">
         <zjy-button type="plain" @click="innerNo">取消</zjy-button>
         <zjy-button type="primary" @click="innerYes">确定</zjy-button>
@@ -107,16 +115,16 @@ export default {
   data () {
     return {
       step: 1,
-      steps: [], // 审批流程步骤
-      approver: '', // select 审批人
+      steps: [],              // 审批流程步骤
+      approver: '',           // select 审批人
       isMyStep: false,
       isFinished: false,
-      isApprovered: false, // 是否已经作出审批
-      approverList: [], // 下一步需要初始化的审批教师列表
+      isApprovered: false,    // 是否已经作出审批
+      approverList: [],       // 下一步需要初始化的审批教师列表
       hasNextApprover: false, // 是否需要初始化第一步的教师列表
       nextApproverName: '',
       nextApproverId: '',
-      reason: '', // 拒绝原因
+      reason: '',             // 拒绝原因
       hasNoReason: false,
       STATUS: {
         yes: '1',

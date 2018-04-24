@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import accountAPI from '@/api/teacher/account'
+import accountAPI from './account'
 
 import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
@@ -75,9 +75,8 @@ export default {
         this.total = resp.total
         this.loading = false
         this.currentPage = 1
-        this.loading = false
       }).catch(error => {
-        console.log(error)
+      }).finally(_ => {
         this.loading = false
       })
     },

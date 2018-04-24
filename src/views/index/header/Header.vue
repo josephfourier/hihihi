@@ -15,8 +15,12 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><a @click="back">返回个人中心</a></el-dropdown-item>
-          <el-dropdown-item><a @click="logout">退出系统</a></el-dropdown-item>
+          <el-dropdown-item>
+            <a @click="back">返回个人中心</a>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <a @click="logout">退出系统</a>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
@@ -31,7 +35,7 @@
               暂无
             </el-dropdown-item>
             <el-dropdown-item class="clearfix" v-for="item in todoList" :key="item.dataUid" v-else>
-              <my-list :data="item" @click="handleClick" ></my-list>
+              <my-list :data="item" @click="handleClick"></my-list>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -46,13 +50,8 @@
             <el-dropdown-item v-if="noticeValue == 0">
               暂无
             </el-dropdown-item>
-            <el-dropdown-item 
-              class="clearfix" 
-              v-for="item in noticeList" 
-              :key="item.noticeUid"  
-              v-else
-            >
-              <notice-list :data="item" @click="handleNotice" ></notice-list>
+            <el-dropdown-item class="clearfix" v-for="item in noticeList" :key="item.noticeUid" v-else>
+              <notice-list :data="item" @click="handleNotice"></notice-list>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -72,7 +71,7 @@
       <workstudy :uid="uid" :visible.sync="visible" v-if="visible && componentName === 'workstudy'"></workstudy>
     </el-dialog>
 
-     <div class="zjy-dialog">
+    <div class="zjy-dialog">
       <el-dialog class="notice" :title="noticeTitle" :visible.sync="visible2" width="800px" append-to-body>
         <image-view :src="src" v-if="isImage(src)">
           <div class="zjy-footer">
@@ -136,7 +135,7 @@ export default {
     ImageView,
     ZjyButton,
 
-// 直接render则会在mounted后渲染，故分离出
+    // 直接render则会在mounted后渲染，故分离出
     NoticeList
   },
 
@@ -171,7 +170,7 @@ export default {
         MSG.warning('退出失败')
       })
     },
-     isImage (filePath) {
+    isImage (filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
   },
@@ -234,30 +233,30 @@ export default {
   min-width: 125px;
 }
 
-  .badge-wrap {
-    display: block;
-    color: #606266;
-    font-size: 14px;
-    position: absolute;
-    right: 200px;
-    top: 14px;
-    line-height: 34px;
+.badge-wrap {
+  display: block;
+  color: #606266;
+  font-size: 14px;
+  position: absolute;
+  right: 200px;
+  top: 14px;
+  line-height: 34px;
+}
+.badge + .badge {
+  margin-left: 35px;
+}
+.badge {
+  .item {
+    cursor: pointer;
+    outline: none;
   }
-  .badge+.badge {
-    margin-left: 35px;
+  .todo {
+    background: url('./ic_deal.png') 0px 9px no-repeat;
+    padding-left: 20px;
   }
-  .badge {
-    .item {
-      cursor: pointer;
-      outline: none;
-    }
-    .todo {
-      background: url('./ic_deal.png') 0px 9px no-repeat;
-      padding-left: 20px;
-    }
-    .notice {
-      background: url('./ic_notice.png') 0 9px no-repeat;
-      padding-left: 20px;
-    }
+  .notice {
+    background: url('./ic_notice.png') 0 9px no-repeat;
+    padding-left: 20px;
   }
+}
 </style>

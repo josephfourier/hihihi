@@ -2,14 +2,14 @@
   <div class="zjy-app">
     <search-panel
       v-loading="loading"
-      class="menu" 
-      :title="title" 
-      :filterable="true" 
-      :props="props" 
-      :renderContent="renderFunc" 
-      :data="menus" 
-      :defaultChecked="[0]" 
-      empty="无匹配项" 
+      class="menu"
+      :title="title"
+      :filterable="true"
+      :props="props"
+      :renderContent="renderFunc"
+      :data="menus"
+      :defaultChecked="[0]"
+      empty="无匹配项"
       @option-checked="menuChecked"
     >
     </search-panel>
@@ -20,7 +20,7 @@
           <i class="zjy-link-icon zjy-icon-add"></i>
           添加步骤</a>
       </div>
-      <div class="workflow-body">
+      <div class="workflow-body" v-loading="loading2">
 
         <!-- <table v-loading="loading"> -->
         <transition-group name="list" tag="table">
@@ -76,8 +76,30 @@
           </el-radio-group>
         </div>
         <div class="panel-wrapper">
-          <search-panel class="post" title="选择职务" :data="postList" :props="props" :filterable="true" type="radio" :defaultChecked="defaultPost" :clearChecked="isClearPost" @option-checked="postChecked" />
-          <search-panel class="teacher" title="选择个人" type="radio" :data="teacherList" :filterable="true" :props="props" :defaultChecked="defaultTeacher" :clearChecked="isClearTeacher" @option-checked="teacherChecked" />
+          <search-panel
+            class="post"
+            title="选择职务"
+            :data="postList"
+            :props="props"
+            :filterable="true"
+            type="radio"
+            :defaultChecked="defaultPost"
+            :clearChecked="isClearPost"
+            @option-checked="postChecked"
+            empty="无匹配项"
+          />
+          <search-panel
+            class="teacher"
+            title="选择个人"
+            type="radio"
+            :data="teacherList"
+            :filterable="true"
+            :props="props"
+            :defaultChecked="defaultTeacher"
+            :clearChecked="isClearTeacher"
+            @option-checked="teacherChecked"
+            empty="无匹配项"
+          />
           <div class="zjy-footer clearfix">
             <zjy-button type="plain" @click="visible = false">取消</zjy-button>
             <zjy-button type="primary" @click="submit">提交</zjy-button>
@@ -89,42 +111,43 @@
 </template>
 
 <script>
-import axios from "axios"
-import commonAPI from "@/api/common"
-import approvalAPI from "@/api/approval"
+import axios from 'axios'
+import commonAPI from '@/api/common'
+import approvalAPI from '@/api/approval'
 
-import SearchPanel from "@/components/search-panel/search-panel"
-import ZjyButton from "@/components/button"
+import SearchPanel from '@/components/search-panel/search-panel'
+import ZjyButton from '@/components/button'
 
-import { mapGetters } from "vuex"
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "HelloWorld",
+  name: 'approval-process',
 
-  data() {
+  data () {
     return {
       menus: [], // 审批流程菜单
       workflow: [], // 流程步骤
-      title: "1.选择功能",
+      title: '1.选择功能',
       visible: false,
-      level: "",
-      handler: "",
+      level: '',
+      handler: '',
       optionsLevel: [],
       optionsHandler: [],
       defaultPost: [], // 初始化选中的职位
       defaultTeacher: [], // 初始化选中的教师
-      checkedPost: "", // 当前选中的职位
-      checkedTeacher: "", // 当前选中的教师
-      checkedMenu: "", // 当前选中的菜单
+      checkedPost: '', // 当前选中的职位
+      checkedTeacher: '', // 当前选中的教师
+      checkedMenu: '', // 当前选中的菜单
       isClearPost: false,
       isClearTeacher: false, // 清空Panel中选中
       loading: false,
-      toSave: "",
+      loading2: false,
+      toSave: '',
       props: {
-        label: "label",
-        key: "key"
+        label: 'label',
+        key: 'key'
       },
-      renderFunc(h, item) {
+      renderFunc (h, item) {
         return <span>{item.label}</span>
       },
       postList: [],
@@ -132,7 +155,7 @@ export default {
     }
   },
 
-  created() {
+  created () {
     if (this.approves.length > 0) {
       this.menus = this.approves.map(x => {
         return {
@@ -168,20 +191,20 @@ export default {
   },
 
   methods: {
-    addWorkflow() {
+    addWorkflow () {
       if (!this.hasWorkflow || this.workflow[this.nextStepNo - 2].templateUid) {
-        // 
+        //
         this.workflow.push({
           approvalStep: this.nextStepNo,
           ctime: '',
           permissionId: ''
         })
       } else {
-        MSG.warning("请先配置第" + (this.nextStepNo - 1) + "步的职务")
+        MSG.warning('请先配置第' + (this.nextStepNo - 1) + '步的职务')
       }
     },
 
-    configWorkflow(item, index) {
+    configWorkflow (item, index) {
       this.initOptions().then(_ => {
         if (this.workflow[index].templateUid) {
           this.toSave = item
@@ -189,38 +212,32 @@ export default {
           this.level = item.teacherLevel
           this.handler = item.approvalType
 
-          this.queryPostList(this.level)
-            .then(response => {
-              this.postList = response
-              const i = this.postList.findIndex(i => i.key === item.postId)
-              this.checkedPost = this.postList[i]
-              this.defaultPost = new Array(1).fill(i)
+          this.queryPostList(this.level).then(response => {
+            this.postList = response
+            const i = this.postList.findIndex(i => i.key === item.postId)
+            this.checkedPost = this.postList[i]
+            this.defaultPost = new Array(1).fill(i)
 
-              if (item.approvalType === "2") {
-                this.queryTeacherList(this.checkedPost.key)
-                  .then(response => {
-                    this.teacherList = response
-                    const i = this.teacherList.findIndex(
-                      i => i.key === item.teacherId
-                    )
-                    this.checkedTeacher = this.teacherList[i]
-                    this.defaultTeacher = new Array(1).fill(i)
-                  })
-                  .catch(error => {
-                    this.$alert(error)
-                  })
-              }
-            })
-            .catch(error => {
-              this.$alert(error)
-            })
+            if (item.approvalType === '2') {
+              this.queryTeacherList(this.checkedPost.key).then(response => {
+                this.teacherList = response
+                const i = this.teacherList.findIndex(i => i.key === item.teacherId)
+                this.checkedTeacher = this.teacherList[i]
+                this.defaultTeacher = new Array(1).fill(i)
+              }).catch(error => {
+                this.$alert(error)
+              })
+            }
+          }).catch(error => {
+            this.$alert(error)
+          })
         } else {
         }
         this.visible = true
       })
     },
 
-    makeFormData() {
+    makeFormData () {
       return {
         templateUid: this.toSave.templateUid || null,
         permissionId: this.checkedMenu.key,
@@ -228,7 +245,7 @@ export default {
         approvalStep: this.toSave.approvalStep || this.nextStepNo - 1,
         approvalType: this.handler,
         teacherLevel: this.level,
-        approvalUri: this.workflow.length > 0 ? this.workflow[0].approvalUri : "",
+        approvalUri: this.workflow.length > 0 ? this.workflow[0].approvalUri : '',
         postName: this.checkedPost.label || null,
         postId: this.checkedPost.key || null,
         teacherId: this.checkedTeacher.key || null,
@@ -236,7 +253,7 @@ export default {
       }
     },
 
-    deleteWorkflow(item, index) {
+    deleteWorkflow (item, index) {
       if (item.templateUid) {
         this._delete(item)
       } else {
@@ -244,13 +261,13 @@ export default {
       }
     },
 
-    menuChecked(item) {
+    menuChecked (item) {
       this.checkedMenu = item
       this.queryWorkflow(item.key)
     },
 
-    queryWorkflow(id) {
-      // this.loading = true
+    queryWorkflow (id) {
+      this.loading2 = true
       approvalAPI.queryApprovalProcess(id).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
@@ -260,10 +277,12 @@ export default {
             .sort((x, y) => x.approvalStep - y.approvalStep)
           // this.loading = false
         }
+      }).finally(_ => {
+        this.loading2 = false
       })
     },
 
-    _delete(item) {
+    _delete (item) {
       approvalAPI
         .deleteProvalProcess(item.templateUid)
         .then(response => {
@@ -280,7 +299,7 @@ export default {
         })
     },
 
-    queryPostList(level) {
+    queryPostList (level) {
       return new Promise((resolve, reject) => {
         commonAPI.queryPostList(level).then(response => {
           if (response.code !== 1) {
@@ -298,7 +317,7 @@ export default {
       })
     },
 
-    queryTeacherList(id) {
+    queryTeacherList (id) {
       return new Promise((resolve, reject) => {
         commonAPI.queryTeacherList(id).then(response => {
           if (response.code !== 1) {
@@ -316,39 +335,35 @@ export default {
       })
     },
 
-    postChecked(item) {
+    postChecked (item) {
       this.checkedPost = this.postList.find(i => i.key === item.key)
     },
 
-    teacherChecked(item) {
+    teacherChecked (item) {
       this.checkedTeacher = this.teacherList.find(i => i.key === item.key)
     },
 
-    levelChecked(level) {
+    levelChecked (level) {
       if (!this.handler) return false
 
       this.clearPost()
-      this.queryPostList(level)
-        .then(response => {
-          this.postList = response
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      this.queryPostList(level).then(response => {
+        this.postList = response
+      }).catch(error => {
+        console.log(error)
+      })
     },
 
-    handlerChecked(handler) {
+    handlerChecked (handler) {
       if (!this.level) return false
     },
 
-    initOptions() {
+    initOptions () {
       return new Promise((resolve, reject) => {
-        axios
-          .all([
-            commonAPI.queryApprovalLevel(),
-            commonAPI.queryApprovalHandler()
-          ])
-          .then(
+        axios.all([
+          commonAPI.queryApprovalLevel(),
+          commonAPI.queryApprovalHandler()
+        ]).then(
           axios.spread((r1, r2) => {
             if (r1.code !== 1 || r2.code !== 1) {
               reject(r1.message || r2.message)
@@ -358,46 +373,46 @@ export default {
               resolve()
             }
           })
-          )
+        )
       })
     },
 
-    clearPost(flag) {
+    clearPost (flag) {
       if (flag) {
         this.postList = []
       }
       this.defaultPost = []
-      this.checkedPost = ""
+      this.checkedPost = ''
       this.isClearPost = true
       setTimeout(_ => {
         this.isClearPost = false
       }, 300)
     },
 
-    clearTeacher(flag) {
+    clearTeacher (flag) {
       if (flag) {
         this.teacherList = []
       }
       this.defaultTeacher = []
-      this.checkedTeacher = ""
+      this.checkedTeacher = ''
       this.isClearTeacher = true
       setTimeout(_ => {
         this.isClearTeacher = false
       }, 300)
     },
 
-    clearAll() {
-      this.level = ""
-      this.handler = ""
+    clearAll () {
+      this.level = ''
+      this.handler = ''
       this.defaultPost = []
       this.defaultTeacher = []
-      this.checkedTeacher = ""
-      this.checkedPost = ""
+      this.checkedTeacher = ''
+      this.checkedPost = ''
       this.teacherList = []
       this.postList = []
       this.isClearPost = true
       this.isClearTeacher = true
-      this.toSave = ""
+      this.toSave = ''
 
       setTimeout(_ => {
         this.isClearTeacher = false
@@ -405,61 +420,54 @@ export default {
       }, 300)
     },
 
-    submit() {
+    submit () {
       if (!this.checkedPost) {
-        MSG.success("未选择职务")
-      } else if (this.handler === "2" && !this.checkedTeacher) {
-        MSG.success("未选择教师")
+        MSG.success('未选择职务')
+      } else if (this.handler === '2' && !this.checkedTeacher) {
+        MSG.success('未选择教师')
       } else {
         const d = this.makeFormData()
         if (d.templateUid) {
-          approvalAPI
-            .updateProvalProcess(d)
-            .then(response => {
-              if (response.code !== 1) {
-                this.$alert(response.message)
-              } else {
-                setTimeout(_ => {
-                  MSG.success(this.$t('zjy.message.update.success'))
-                }, 200)
-                this.refresh()
-                this.visible = false
-              }
-            })
-            .catch(error => {
-              console.log(error)
-            })
+          approvalAPI.updateProvalProcess(d).then(response => {
+            if (response.code !== 1) {
+              this.$alert(response.message)
+            } else {
+              setTimeout(_ => {
+                MSG.success(this.$t('zjy.message.update.success'))
+              }, 200)
+              this.refresh()
+              this.visible = false
+            }
+          }).catch(error => {
+            console.log(error)
+          })
         } else {
-          approvalAPI
-            .createProvalProcess(d)
-            .then(response => {
-              if (response.code === 1) {
-                setTimeout(_ => {
-                  MSG.success(this.$t('zjy.message.create.success'))
-                }, 200)
-                this.refresh()
-                this.visible = false
-              } else {
-                this.$alert(response.message)
-              }
-            }).catch(error => {
-              console.log(error)
-            })
+          approvalAPI.createProvalProcess(d).then(response => {
+            if (response.code === 1) {
+              setTimeout(_ => {
+                MSG.success(this.$t('zjy.message.create.success'))
+              }, 200)
+              this.refresh()
+              this.visible = false
+            } else {
+              this.$alert(response.message)
+            }
+          }).catch(error => {
+            console.log(error)
+          })
         }
       }
     },
 
-    refresh() {
+    refresh () {
       this.queryWorkflow(this.checkedMenu.key)
     }
   },
 
   computed: {
-    ...mapGetters(["approves"]),
-    hasWorkflow() {
-      return this.workflow.length > 0
-    },
-    nextStepNo() {
+    ...mapGetters(['approves']),
+    hasWorkflow () { return this.workflow.length > 0 },
+    nextStepNo () {
       return this.workflow.length === 0
         ? 1
         : this.workflow[this.workflow.length - 1].approvalStep + 1
@@ -473,42 +481,42 @@ export default {
 
   watch: {
     // 关闭弹窗后清除单选信息
-    visible(val) {
+    visible (val) {
       if (!val) this.clearAll()
     },
 
-    checkedPost(val) {
+    checkedPost (val) {
       if (!val) this.clearTeacher(true)
       else {
-        if (this.handler === "2") {
+        if (this.handler === '2') {
           this.queryTeacherList(val.key).then(response => {
-              this.teacherList = response
-            }).catch(error => {
-              console.log(error)
-            })
+            this.teacherList = response
+          }).catch(error => {
+            console.log(error)
+          })
         }
       }
     },
 
-    handler(val) {
-      if (val === "2") {
+    handler (val) {
+      if (val === '2') {
         if (this.checkedPost) {
           this.queryTeacherList(this.checkedPost.key).then(response => {
-              this.teacherList = response
-            }).catch(error => {
-              console.log(error)
-            })
-        }
-      }
-
-      if (val === "1") {
-        this.clearTeacher(true)
-        if (!this.level) return
-        this.queryPostList(this.level).then(response => {
-            this.postList = response
+            this.teacherList = response
           }).catch(error => {
             console.log(error)
           })
+        }
+      }
+
+      if (val === '1') {
+        this.clearTeacher(true)
+        if (!this.level) return
+        this.queryPostList(this.level).then(response => {
+          this.postList = response
+        }).catch(error => {
+          console.log(error)
+        })
       }
     }
   }

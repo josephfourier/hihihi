@@ -5,12 +5,12 @@
     </zjy-table-operator>
 
     <div class="zjy-table">
-      <zjy-table 
-        :data="list" 
-        :loading="loading" 
-        :columns="columns" 
+      <zjy-table
+        :data="list"
+        :loading="loading"
+        :columns="columns"
         @view="handleView"
-        @edit="handleEdit" 
+        @edit="handleEdit"
         @delete="handleDelete"
       >
       </zjy-table>
@@ -62,7 +62,7 @@ import { _refresh } from '@/utils'
 import properties from './properties'
 
 export default {
-  data() {
+  data () {
     return {
       list: [],
 
@@ -80,7 +80,7 @@ export default {
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.loading = true
       api.queryFileList(2).then(response => {
         if (response.code !== 1) {
@@ -95,7 +95,7 @@ export default {
       })
     },
 
-    queryPostList() {
+    queryPostList () {
       return new Promise((resolve, reject) => {
         if (this.postList.length === 0) {
           api.queryPostList().then(response => {
@@ -108,6 +108,10 @@ export default {
                   key: i.postId
                 }
               })
+              this.postList.push({
+                label: '学生',
+                key: 0
+              })
               resolve()
             }
           }).catch(error => { })
@@ -115,7 +119,7 @@ export default {
       })
     },
 
-    create() {
+    create () {
       this.queryPostList().then(_ => {
         this.visible2 = true
       }).catch(error => {
@@ -123,7 +127,7 @@ export default {
       })
     },
 
-    handleCreate(formData) {
+    handleCreate (formData) {
       api.saveFile(formData).then(response => {
         if (response.code !== 1) {
           MSG.warning('保存失败')
@@ -151,11 +155,11 @@ export default {
       }).catch(error => {})
     },
 
-    handleClick() {
+    handleClick () {
       this.visible = false
     },
 
-    handleEdit(row) {
+    handleEdit (row) {
       console.log(row)
       this.queryPostList().then(_ => {
         this.data = row
@@ -165,13 +169,13 @@ export default {
       })
     },
 
-    handleView(row) {
+    handleView (row) {
       this.isImageView = this.isImage(row.filePath)
       this.src = row.filePath
       this.visible = true
     },
 
-    handleDelete(row) {
+    handleDelete (row) {
       api.deleteFile(row.noticeUid).then(response => {
         if (response.code === 1) {
           MSG.success('删除成功')
@@ -201,7 +205,7 @@ export default {
     ImageView
   },
 
-  created() {
+  created () {
     this.refresh()
   },
 

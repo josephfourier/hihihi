@@ -96,13 +96,17 @@ export default {
     },
 
     _delete (row) {
+      this.loading = true
       const auto = this.list.length === 1 && this.currentPage !== 1
       settingAPI.delete(row.punishsettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
+          MSG.success(this.$t('zjy.message.delete.success'))
         } else {
-          this.$alert(response.message)
+          // this.$alert(response.message)
+          MSG.warning(response.message)
         }
+      }).finally(_ => {
       })
     },
 

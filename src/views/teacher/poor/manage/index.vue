@@ -57,9 +57,10 @@ import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import { _refresh } from '@/utils'
 import properties from './properties'
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
+
 export default {
-  data() {
+  data () {
     return {
       list: [],
       setting: '',
@@ -88,41 +89,29 @@ export default {
     ...mapGetters(['facultyList']),
     myFacultyList () {
       return this.facultyList.map(i => {
-              return {
-                label: i.facultyName,
-                value: i.facultyCode
-              }
-            })
+        return {
+          label: i.facultyName,
+          value: i.facultyCode
+        }
+      })
     },
-    isLoading() {
+    isLoading () {
       return this.myFacultyList.length === 0
     }
   },
 
   methods: {
-    handleFocus() {
+    handleFocus () {
       if (this.myFacultyList.length === 0) {
         this.$store.dispatch('setFacultyList')
-        // commonAPI.queryFacultyList().then(response => {
-        //   if (response.code !== 1) {
-        //     MSG.warning('获取院系失败')
-        //   } else {
-        //     this.facultyList = response.data.map(i => {
-        //       return {
-        //         label: i.facultyName,
-        //         value: i.facultyCode
-        //       }
-        //     })
-        //   }
-        // })
       }
     },
-    
-    pageChanged(pageNumber) {
+
+    pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    searchFilter() {
+    searchFilter () {
       this.query.facultyCode = this.facultyCode
       this.query.applyYear = this.applyYear
       this.query.dataStatus = this.dataStatus
@@ -130,7 +119,7 @@ export default {
       this.refresh()
     },
 
-    handleView(row) {
+    handleView (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.poorUid).then(response => {
         this.setting = row
         this.value = response.data
@@ -138,11 +127,11 @@ export default {
       })
     },
 
-    refresh() {
+    refresh () {
       return _refresh.call(this)
     },
 
-    makeFormData(data, steps) {
+    makeFormData (data, steps) {
       return {
         poorUid: data.poorUid,
         studentId: data.studentId,
@@ -150,8 +139,7 @@ export default {
       }
     },
 
-    handleSubmit(data, steps) {
-
+    handleSubmit (data, steps) {
       api.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
           setTimeout(_ => { MSG.success('保存成功') }, 200)
@@ -181,7 +169,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -201,7 +189,7 @@ export default {
       }
     },
 
-    facultyCode(val) {
+    facultyCode (val) {
       commonAPI.querySpecialtyByFaculty(val).then(response => {
         if (response.code !== 1) {
           this.$alert('获取专业失败')

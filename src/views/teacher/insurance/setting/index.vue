@@ -34,15 +34,12 @@ import OperatorItem from '@/components/table-operator/operator-item'
 import { _refresh } from '@/utils'
 import properties from './properties'
 export default {
-  data() {
+  data () {
     return {
       list: [],
       currentPage: 1,
       total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
+      query: properties.query,
       title: '',
       loading: false,
       visible: false,
@@ -56,7 +53,7 @@ export default {
   },
 
   methods: {
-    handleSubmit(data) {
+    handleSubmit (data) {
       if (this.type === 1) {
         insuranceAPI.update(data.inssettingUid, data).then(response => {
           if (response.code === 1) {
@@ -78,13 +75,13 @@ export default {
         })
       }
     },
-    create() {
+    create () {
       this.title = '新增保险'
       this.type = 2
       this.visible = true
     },
 
-    edit(row) {
+    edit (row) {
       insuranceAPI.queryForObject.call(this, row.inssettingUid).then(response => {
         this.title = '编辑保险'
         this.type = 1
@@ -95,8 +92,9 @@ export default {
       })
     },
 
-    _delete(row) {
+    _delete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
+      this.loading = true
       insuranceAPI.delete(row.inssettingUid).then(response => {
         if (response.code !== 1) {
           MSG.warning(response.message)
@@ -109,7 +107,7 @@ export default {
       })
     },
 
-    batchRemove() {
+    batchRemove () {
       let ids = ''
       this.selectedRows.forEach(x => {
         ids += x.inssettingUid + '-'
@@ -128,15 +126,15 @@ export default {
       })
     },
 
-    handleSelectionChange(rows) {
+    handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
-    currentChange(pageNumber) {
+    currentChange (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    refresh() {
+    refresh () {
       return _refresh.call(this)
     }
   },
@@ -152,7 +150,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val, oldval) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.query.offset = this.query.limit * (val - 1)
@@ -165,12 +163,9 @@ export default {
       }
     },
 
-    visible(val) {
+    visible (val) {
       if (!val) this.setting = {}
     }
   }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

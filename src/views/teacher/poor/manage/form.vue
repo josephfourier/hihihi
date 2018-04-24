@@ -2,7 +2,8 @@
   <div class="zjy-process">
     <table class="process-table">
       <tr>
-        <td><span>学号:</span> {{ data.studentNo }}</td>
+        <td>
+          <span>学号:</span> {{ data.studentNo }}</td>
         <td>学生姓名: {{ data.studentName }}</td>
         <td>班级: {{ data.className }}</td>
         <td>院系: {{ data.facultyName }}</td>
@@ -33,10 +34,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-    .content {
-      word-break: break-all;
-      margin-bottom: 15px;
-    }
-
+.content {
+  word-break: break-all;
+  margin-bottom: 15px;
+}
 </style>

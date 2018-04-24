@@ -35,8 +35,8 @@ router.beforeEach((to, from, next) => {
         if (store.getters.user.usertypeId === 3) {
           store.dispatch('setApproves')
           store.dispatch('setSchedules')
-          store.dispatch('setNoticeList')
         }
+        store.dispatch('setNoticeList')
         next({ ...to, replace: true })
         NProgress.done()
       }).catch(error => {

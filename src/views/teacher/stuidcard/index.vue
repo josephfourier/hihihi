@@ -204,7 +204,6 @@ export default {
       })
       this.loading = true
       cardAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
-        this.loading = false
         this.refresh()
       }).catch(error => {
         console.log(error)

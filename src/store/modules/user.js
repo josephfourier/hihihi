@@ -1,4 +1,4 @@
-import { getToken } from '@/utils/cookie'
+import { getToken, setToken as _setToken } from '@/utils/cookie'
 import userAPI from '@/api/user'
 import * as types from '../mutation-types'
 
@@ -61,6 +61,7 @@ const actions = {
       userAPI.logout().then(response => {
         if (response.code === 1) {
           commit(types.SET_TOKEN, '')
+          _setToken('')
           resolve()
         } else {
           reject(new Error('logout error'))

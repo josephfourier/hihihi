@@ -20,9 +20,9 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <div class="badge-wrap" v-if="user.usertypeId === +$t('zjy.userType.teacher')">
+      <div class="badge-wrap">
         <!-- 通过size可以为el-dropdown-menu添加不同的class -->
-        <el-dropdown class="badge" popper-class="your" size="mysize">
+        <el-dropdown class="badge" popper-class="your" size="mysize" v-if="user.usertypeId === +$t('zjy.userType.teacher')">
           <el-badge :value="todoValue" class="item todo" :max="5">
             <span class="el-dropdown-link">待办</span>
           </el-badge>
@@ -165,7 +165,9 @@ export default {
     },
 
     logout () {
-      this.$store.dispatch('logout').then().catch(error => {
+      this.$store.dispatch('logout').then(_ =>
+        window.location.href = process.env.SSO_URL
+      ).catch(error => {
         MSG.warning('退出失败')
       })
     },

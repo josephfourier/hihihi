@@ -7,7 +7,6 @@
     </zjy-table-search>
 
     <div class="zjy-line"></div>
-<el-button @click="refresh(false)">ttt</el-button>
 
     <zjy-table-operator>
       <operator-item @click="create" clz="create">新增</operator-item>

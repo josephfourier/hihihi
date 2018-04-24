@@ -117,10 +117,8 @@ let ieVersion = () => document.documentMode
 function refresh (auto)  {
   if (auto) {
     this.currentPage--
-    console.log(1)
   } else {
     const old = this.currentPage
-    console.log(2)
     this.currentPage = -1
     setTimeout(_ => {
       this.currentPage = old

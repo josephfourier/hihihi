@@ -5,14 +5,7 @@
     </zjy-table-operator>
 
     <div class="zjy-table">
-      <zjy-table 
-        :data="list" 
-        :loading="loading" 
-        :columns="columns" 
-        @view="handleView"
-        @edit="handleEdit" 
-        @delete="handleDelete"
-      >
+      <zjy-table :data="list" :loading="loading" :columns="columns" @view="handleView" @edit="handleEdit" @delete="handleDelete">
       </zjy-table>
     </div>
 
@@ -108,6 +101,10 @@ export default {
                   key: i.postId
                 }
               })
+              this.postList.push({
+                label: '学生',
+                key: 0
+              })
               resolve()
             }
           }).catch(error => { })
@@ -134,10 +131,10 @@ export default {
             MSG.success('保存成功')
           }, 200)
         }
-      }).catch(error => {})
+      }).catch(error => { })
     },
 
-    handleUpdate (formData) {
+    handleUpdate(formData) {
       api.updateFile(formData).then(response => {
         if (response.code !== 1) {
           MSG.warning('修改失败')
@@ -148,7 +145,7 @@ export default {
             MSG.success('修改成功')
           }, 200)
         }
-      }).catch(error => {})
+      }).catch(error => { })
     },
 
     handleClick() {
@@ -156,7 +153,6 @@ export default {
     },
 
     handleEdit(row) {
-      console.log(row)
       this.queryPostList().then(_ => {
         this.data = row
         this.visible3 = true
@@ -184,7 +180,7 @@ export default {
       })
     },
 
-    isImage (filePath) {
+    isImage(filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
 

@@ -133,7 +133,6 @@ export default {
       }).catch(error => {
         console.log(error)
       }).finally(_ => {
-        this.loading = false
       })
     },
 

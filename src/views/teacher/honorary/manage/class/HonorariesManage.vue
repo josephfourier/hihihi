@@ -148,7 +148,6 @@ export default {
           MSG.success('删除成功')
           this.refresh(auto)
         }
-        this.loading = false
       }).catch(error => {
         console.log(error)
       })

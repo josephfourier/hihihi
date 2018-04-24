@@ -123,7 +123,6 @@ export default {
           MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh()
         }
-        this.loading = false
       }).catch(error => {
         console.log(error)
       })

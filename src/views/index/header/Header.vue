@@ -86,7 +86,6 @@
         </zjy-preview>
       </el-dialog>
     </div>
-
   </div>
 </template>
 
@@ -166,7 +165,9 @@ export default {
     },
 
     logout () {
-      MSG.success('开发中...')
+      this.$store.dispatch('logout').then().catch(error => {
+        MSG.warning('退出失败')
+      })
     },
      isImage (filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)

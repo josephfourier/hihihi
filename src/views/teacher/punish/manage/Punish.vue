@@ -91,7 +91,7 @@ export default {
           { required: true, message: '请选择处分日期', trigger: 'blur' }
         ],
         punishDescription: [
-          { required: true, message: '请选择处分说明', trigger: 'blur' }
+          { required: true, message: '请填写处分说明', trigger: 'blur' }
         ]
       }
     }

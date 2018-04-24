@@ -58,9 +58,13 @@ const actions = {
 
   logout ({ commit }) {
     return new Promise((resolve, reject) => {
-      userAPI.logout().then(_ => {
-        // commit(types.SET_TOKEN, '')
-        resolve()
+      userAPI.logout().then(response => {
+        if (response.code === 1) {
+          commit(types.SET_TOKEN, '')
+          resolve()
+        } else {
+          reject(new Error('logout error'))
+        }
       })
     })
   }

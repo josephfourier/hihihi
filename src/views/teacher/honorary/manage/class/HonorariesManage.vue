@@ -125,7 +125,9 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          MSG.success('新增成功')
+          setTimeout(_ =>{
+            MSG.success('新增成功')
+          }, 200)
           this.refresh().visible2 = false
         }
       }).catch(error => {
@@ -141,7 +143,7 @@ export default {
 
       clzAPI.batchRemove(clahonoraryUids).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         } else {
           MSG.success('删除成功')
           this.refresh(auto)
@@ -158,7 +160,6 @@ export default {
     },
 
     handleView (row) {
-      console.log(row)
       commonAPI.queryNextApproval(row.classId, row.clahonoraryUid, 2).then(response => {
         this.data = row
         this.value = response.data
@@ -205,7 +206,6 @@ export default {
         console.log(error)
       })
     }
-    //   ---------------- 审批操作 ----------------
   },
 
   components: {
@@ -242,10 +242,11 @@ export default {
             this.list = response.rows
             this.total = response.total
           }
-          this.loading = false
         }).catch(error => {
           console.log(error)
-          this.loading = false
+          
+        }).finally(_ => {
+this.loading = false
         })
       }
     }

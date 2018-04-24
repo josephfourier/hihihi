@@ -52,9 +52,9 @@
                 ({{ item.teacherName }})
               </div>
               <!--<div v-else>-->
-                <!--<p v-if="index === step - 1 && value">-->
-                  <!--({{ nextTeacherName }})-->
-                <!--</p>-->
+              <!--<p v-if="index === step - 1 && value">-->
+              <!--({{ nextTeacherName }})-->
+              <!--</p>-->
               <!--</div>-->
               <div v-if="index <= step - 1 && item.approvalStatus">
                 <p :class="[
@@ -68,23 +68,11 @@
               </div>
             </div>
 
-            <div
-              class="validate"
-              slot="custom"
-              slot-scope="props"
-            >
-              <el-select
-                class="zjy-select"
-                popper-class="zjy-process-select"
-                v-model="value"
-                placeholder="请选择审批人"
-                @change="handleChange"
-                v-if="props.data.approvalType == 1
+            <div class="validate" slot="custom" slot-scope="props">
+              <el-select class="zjy-select" popper-class="zjy-process-select" v-model="value" placeholder="请选择审批人" @change="handleChange" v-if="props.data.approvalType == 1
                 && index === 0
-                && !props.data.approvalStatus"
-              >
-                <el-option v-for="item in approverList" :key="item.teacherId" :label="item.teacherName"
-                           :value="item.teacherId">
+                && !props.data.approvalStatus">
+                <el-option v-for="item in approverList" :key="item.teacherId" :label="item.teacherName" :value="item.teacherId">
                 </el-option>
               </el-select>
               <div class="tip-box">
@@ -98,8 +86,7 @@
       </div>
 
       <div class="zjy-btn-group">
-        <zjy-button v-if="!isFinished" :type="reissued.stuidcardUid ? 'plain' : 'primary'"
-                    :disabled="!!reissued.stuidcardUid" @click="submit">
+        <zjy-button v-if="!isFinished" :type="reissued.stuidcardUid ? 'plain' : 'primary'" :disabled="!!reissued.stuidcardUid" @click="submit">
           <template v-if="reissued.stuidcardUid">申请审核中</template>
           <template v-else>申请</template>
         </zjy-button>
@@ -117,12 +104,12 @@
 import cardAPI from '@/api/student/stuidcard'
 import ZjyInput from '@/components/input'
 import ZjyButton from '@/components/button'
-import {ZjyStep, ZjySteps} from '@/components/steps'
+import { ZjyStep, ZjySteps } from '@/components/steps'
 
-import {getPermissionId} from '@/utils'
+import { getPermissionId } from '@/utils'
 
 export default {
-  data () {
+  data() {
     return {
       reissued: {}, // 补办信息
       student: {}, // 学生信息
@@ -142,7 +129,7 @@ export default {
   },
 
   methods: {
-    submit () {
+    submit() {
       if (!this.reissued.applyReason) {
         this.error = '请填写申请原因'
         return
@@ -162,16 +149,16 @@ export default {
 
       cardAPI.create(this.reissued, this.steps).then(response => {
         const msg = response.code === 1 ? '保存成功' : response.message
-        this.loading = false
         MSG.success(msg)
         this.refresh()
       }).catch(error => {
         console.log(error)
+      }).finally(_ => {
         this.loading = true
       })
     },
 
-    reSubmit () {
+    reSubmit() {
       this.isReapplyed = true
       this.clear()
       this.reissued = {
@@ -188,14 +175,14 @@ export default {
       })
     },
 
-    clear () {
+    clear() {
       this.reissued = {}
       this.step = 1
       this.value = ''
       this.isFinished = false
     },
 
-    refresh () {
+    refresh() {
       cardAPI.queryReissued().then(response => {
         this.reissued = response.data.swmsStuidcard
         cardAPI.queryApprovalProcess(this.student.studentId, this.reissued.stuidcardUid).then(response => {
@@ -219,7 +206,7 @@ export default {
       })
     },
 
-    handleChange (val) {
+    handleChange(val) {
       this.nextTeacherId = val
       if (!this.$empty(this.approverList)) {
         this.nextTeacherName = this.approverList.find(x => x.teacherId === val).teacherName
@@ -229,10 +216,10 @@ export default {
   },
 
   computed: {
-    hasError () {
+    hasError() {
       return !!this.error
     },
-    hasError2 () {
+    hasError2() {
       return !!this.error2
     }
   },
@@ -244,7 +231,7 @@ export default {
     ZjySteps
   },
 
-  created () {
+  created() {
     this.loading = true
     cardAPI.queryReissued().then(response => {
       this.loading = false
@@ -292,52 +279,50 @@ export default {
         })
       }
     }).catch(error => {
-      console.log(error)
       this.loading = false
     })
   }
 }
 </script>
 <style lang='scss' scoped>
-  .stuidcard {
+.stuidcard {
+  font-size: 12px;
+  color: #333333;
+  padding: 20px;
+}
+
+.zjy-form {
+  .form-item {
+    margin-right: 30px;
+    margin-bottom: 10px;
+    > span {
+      width: 60px;
+      display: inline-block;
+      text-align: right;
+    }
+    &.block {
+      display: block;
+      margin-bottom: 0;
+      span {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        text-align: left;
+        color: #333333;
+        font-weight: bold;
+      }
+      .zjy-textarea {
+        height: 100px;
+      }
+    }
+  }
+  .zjy-input {
+    width: 180px;
     font-size: 12px;
-    color: #333333;
-    padding: 20px;
   }
+}
 
-  .zjy-form {
-    .form-item {
-      margin-right: 30px;
-      margin-bottom: 10px;
-      > span {
-        width: 60px;
-        display: inline-block;
-        text-align: right;
-      }
-      &.block {
-        display: block;
-        margin-bottom: 0;
-        span {
-          margin-bottom: 10px;
-          margin-top: 10px;
-          text-align: left;
-          color: #333333;
-          font-weight: bold;
-        }
-        .zjy-textarea {
-          height: 100px;
-        }
-      }
-    }
-    .zjy-input {
-      width: 180px;
-      font-size: 12px;
-    }
-  }
-
-  .zjy-btn-group {
-    padding: 50px 0;
-    text-align: center;
-  }
-
+.zjy-btn-group {
+  padding: 50px 0;
+  text-align: center;
+}
 </style>

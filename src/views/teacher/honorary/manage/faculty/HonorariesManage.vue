@@ -7,6 +7,7 @@
     </zjy-table-search>
 
     <div class="zjy-line"></div>
+<el-button @click="refresh(false)">ttt</el-button>
 
     <zjy-table-operator>
       <operator-item @click="create" clz="create">新增</operator-item>
@@ -59,7 +60,6 @@
         </honorary>
       </el-dialog>
     </div>
-
   </div>
 </template>
 
@@ -146,9 +146,8 @@ export default {
           MSG.success('删除成功')
           this.refresh(auto)
         }
-        this.loading = false
       }).catch(error => {
-        console.log(error)
+      }).finally(_ => {
       })
     },
 
@@ -241,9 +240,9 @@ export default {
             this.list = response.rows
             this.total = response.total
           }
-          this.loading = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
           this.loading = false
         })
       }

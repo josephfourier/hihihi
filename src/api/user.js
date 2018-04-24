@@ -9,6 +9,6 @@ export default {
   },
 
   logout () {
-    return ajax.get(process.env.LOGOUT_URL)
+    return ajax.get('/manage/logout')
   }
 }

@@ -17,33 +17,18 @@
     </zjy-table-operator>
 
     <div class="zjy-table">
-      <zjy-table
-        :data="list"
-        :loading="loading"
-        :columns="columns"
-        @view="view"
-        @delete="_delete"
-        @selection-change="handleSelectionChange">
+      <zjy-table :data="list" :loading="loading" :columns="columns" @view="view" @delete="_delete" @selection-change="handleSelectionChange">
       </zjy-table>
     </div>
 
     <div class="zjy-pagination">
-      <zjy-pagination
-        :currentPage="currentPage"
-        :total="total"
-        @current-change="pageChanged"
-      >
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="pageChanged">
       </zjy-pagination>
     </div>
 
     <div class="zjy-dialog">
       <el-dialog title="个人荣誉称号审批" :visible.sync="visible" width="800px">
-        <zjy-process
-          v-if="visible"
-          :data="data"
-          v-model="value"
-          @submit="handleSubmit"
-        >
+        <zjy-process v-if="visible" :data="data" v-model="value" @submit="handleSubmit">
           <p slot="warning" class="warning">教师添加无审批流程</p>
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
@@ -52,11 +37,7 @@
       </el-dialog>
 
       <el-dialog title="个人荣誉称号" :visible.sync="visible2" width="800px">
-        <honorary
-          v-if="visible2"
-          :visible.sync="visible2"
-          @submit="handleCreate"
-        >
+        <honorary v-if="visible2" :visible.sync="visible2" @submit="handleCreate">
         </honorary>
       </el-dialog>
     </div>
@@ -77,7 +58,7 @@ import ZjyPagination from '@/components/pagination'
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import properties from './proerties'
-import {_refresh} from '@/utils'
+import { _refresh } from '@/utils'
 
 import stuAPI from '@/api/teacher/honorary/stu'
 import api from './api'
@@ -86,7 +67,7 @@ import Honorary from './Honorary'
 
 export default {
   name: 'index',
-  data () {
+  data() {
     return {
       dataStatus: '',
       applyYear: '',
@@ -111,7 +92,7 @@ export default {
   },
 
   methods: {
-    searchFilter () {
+    searchFilter() {
       this.query.dataStatus = this.dataStatus
       this.query.applyYear = this.applyYear
       this.query.studentCode = this.studentCode
@@ -119,15 +100,15 @@ export default {
       this.refresh()
     },
 
-    pageChanged (pageNumber) { this.currentPage = pageNumber },
+    pageChanged(pageNumber) { this.currentPage = pageNumber },
 
-    refresh (auto) { return _refresh.call(this, auto) },
+    refresh(auto) { return _refresh.call(this, auto) },
 
-    handleSelectionChange (rows) {
+    handleSelectionChange(rows) {
       this.selectedRows = rows
     },
 
-    batchRemove () {
+    batchRemove() {
       let stuhonoraryUids = []
       this.selectedRows.forEach(x => stuhonoraryUids.push(x.stuhonoraryUid))
 
@@ -141,17 +122,15 @@ export default {
           MSG.success('删除成功')
           this.refresh(auto)
         }
-        this.loading = false
       }).catch(error => {
         console.log(error)
-        this.loading = false
       })
     },
 
-    create () {
+    create() {
       this.visible2 = true
     },
-    handleCreate (id, arg) {
+    handleCreate(id, arg) {
       api.create(id, arg).then(response => {
         if (response.code === 1) {
           MSG.success('新增成功')
@@ -162,7 +141,7 @@ export default {
       })
     },
 
-    view (row) {
+    view(row) {
       commonAPI.queryApprovalProcess(row.studentId, row.stuhonoraryUid).then(response => {
         this.data = row
         this.value = response.data
@@ -170,11 +149,11 @@ export default {
       })
     },
 
-    _export (row) {
+    _export(row) {
 
     },
 
-    _delete (row) {
+    _delete(row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
       stuAPI.delete(row.stuhonoraryUid).then(response => {
         if (response.code === 1) {
@@ -186,14 +165,14 @@ export default {
       })
     },
 
-    makeFormData (data, steps) {
+    makeFormData(data, steps) {
       return {
         'stuhonoraryUid': data.stuhonoraryUid,
         'swmsApprovalList': steps
       }
     },
 
-    handleSubmit (data, steps) {
+    handleSubmit(data, steps) {
       stuAPI.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
@@ -226,7 +205,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -238,9 +217,9 @@ export default {
             this.list = response.rows
             this.total = response.total
           }
-          this.loading = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
           this.loading = false
         })
       }

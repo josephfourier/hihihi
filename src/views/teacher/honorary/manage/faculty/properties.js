@@ -122,8 +122,8 @@ export default {
       label: '申请人',
       prop: 'teacherName'
     }, {
-      label: '班级名称',
-      prop: 'className'
+      label: '院系名称',
+      prop: 'facultyName'
     }, {
       label: '申请日期',
       prop: 'applyDate',

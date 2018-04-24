@@ -1,68 +1,48 @@
 <template>
-<div class="zjy-app">
-  <zjy-table-search>
-    <search-select label="审批状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
-    <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
-    <search-input label="学号" :value.sync="studentCode"></search-input>
-    <search-button @query="searchFilter"></search-button>
-  </zjy-table-search>
+  <div class="zjy-app">
+    <zjy-table-search>
+      <search-select label="审批状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
+      <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
+      <search-input label="学号" :value.sync="studentCode"></search-input>
+      <search-button @query="searchFilter"></search-button>
+    </zjy-table-search>
 
-  <div class="zjy-line"></div>
+    <div class="zjy-line"></div>
 
-  <zjy-table-operator>
-    <operator-item @click="create" clz="create">新增</operator-item>
-    <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
-    <operator-item @click="_export" clz="export">导出</operator-item>
-  </zjy-table-operator>
+    <zjy-table-operator>
+      <operator-item @click="create" clz="create">新增</operator-item>
+      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item @click="_export" clz="export">导出</operator-item>
+    </zjy-table-operator>
 
-  <div class="zjy-table">
-    <zjy-table
-      :data="list"
-      :loading="loading"
-      :columns="columns"
-      @view="handleView"
-      @delete="handleDelete"
-      @selection-change="handleSelectionChange">
-    </zjy-table>
+    <div class="zjy-table">
+      <zjy-table :data="list" :loading="loading" :columns="columns" @view="handleView" @delete="handleDelete" @selection-change="handleSelectionChange">
+      </zjy-table>
+    </div>
+
+    <div class="zjy-pagination" v-if="list.length !== 0">
+      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="pageChanged">
+      </zjy-pagination>
+    </div>
+
+    <div class="zjy-dialog">
+      <el-dialog title="奖学金审批" :visible.sync="visible" width="800px">
+        <zjy-process v-if="visible" :data="setting" v-model="value" @close="visible = false" @submit="handleSubmit">
+          <p slot="warning" class="warning">教师添加无审批流程</p>
+
+          <template slot-scope="props" slot="header">
+            <zjy-form :data="props.formData"></zjy-form>
+          </template>
+        </zjy-process>
+      </el-dialog>
+
+      <el-dialog title="新增奖学金" :visible.sync="visible2" width="800px">
+        <scholarship v-if="visible2" :visible.sync="visible2" @submit="handleCreate">
+        </scholarship>
+      </el-dialog>
+    </div>
+    
   </div>
-
-  <div class="zjy-pagination" v-if="list.length !== 0">
-    <zjy-pagination
-      :currentPage="currentPage"
-      :total="total"
-      @current-change="pageChanged"
-    >
-    </zjy-pagination>
-  </div>
-
-  <div class="zjy-dialog">
-    <el-dialog title="奖学金审批" :visible.sync="visible" width="800px">
-      <zjy-process
-        v-if="visible"
-        :data="setting"
-        v-model="value"
-        @close="visible = false"
-        @submit="handleSubmit"
-      >
-        <p slot="warning" class="warning">教师添加无审批流程</p>
-
-        <template slot-scope="props" slot="header">
-          <zjy-form :data="props.formData"></zjy-form>
-        </template>
-      </zjy-process>
-    </el-dialog>
-
-    <el-dialog title="新增奖学金" :visible.sync="visible2" width="800px">
-      <scholarship
-        v-if="visible2"
-        :visible.sync="visible2"
-        @submit="handleCreate"
-      >
-      </scholarship>
-    </el-dialog>
-  </div>
-
-</div>
 </template>
 
 <script>
@@ -88,7 +68,7 @@ import { _refresh } from '@/utils'
 import properties from './properties'
 export default {
   name: 'index',
-  data () {
+  data() {
     return {
       list: [],
       setting: '',
@@ -99,34 +79,30 @@ export default {
       applyYear: '',
       studentCode: '',
       selectedRows: [],
-      // ---------------- 搜索 ----------------
       loading: false,
       visible: false,
       visible2: false,
       optionsYears: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
       columns: properties.columns
-    // ---------------- 表格 ----------------
     }
   },
   methods: {
-    refresh (auto) {
+    refresh(auto) {
       return _refresh.call(this, auto)
     },
-    searchFilter () {
+    searchFilter() {
       this.query.dataStatus = this.dataStatus
       this.query.applyYear = this.applyYear
       this.query.studentCode = this.studentCode
       this.currentPage = 1
       this.refresh()
     },
-    // ---------------- 搜索 ----------------
 
-    create () {
+    create() {
       this.visible2 = true
     },
-    // 教师新增学生奖学金
-    handleCreate (id, arg) {
+    handleCreate(id, arg) {
       api.create(id, arg).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
@@ -139,18 +115,19 @@ export default {
       })
     },
 
-    batchRemove () {
+    batchRemove() {
       let scholarshipUids = []
       this.selectedRows.forEach(x => scholarshipUids.push(x.scholarshipUid))
 
-      this.loading = true
       const auto = this.selectedRows.length === this.list.length && this.currentPage !== 1
-
+      this.loading = true
       api.batchRemove(scholarshipUids).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
           this.refresh(auto)
         }
       }).catch(error => {
@@ -160,20 +137,20 @@ export default {
       })
     },
 
-    _export () {},
-    handleSelectionChange (rows) {
+    _export() { },
+    handleSelectionChange(rows) {
       this.selectedRows = rows
     },
     //  ---------------- 表格头操作 ----------------
 
-    handleView (row) {
+    handleView(row) {
       commonAPI.queryApprovalProcess(row.studentId, row.scholarshipUid).then(response => {
         this.setting = row
         this.value = response.data
         this.visible = true
       })
     },
-    handleDelete (row) {
+    handleDelete(row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
       scholarshipManageAPI.delete(row.scholarshipUid).then(response => {
         if (response.code === 1) {
@@ -186,10 +163,10 @@ export default {
         console.log(error)
       })
     },
-    pageChanged (pageNumber) {
+    pageChanged(pageNumber) {
       this.currentPage = pageNumber
     },
-    handleSubmit (data, steps) {
+    handleSubmit(data, steps) {
       scholarshipManageAPI.submit(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
 
@@ -228,7 +205,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler (val, oldval) {
+      handler(val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true

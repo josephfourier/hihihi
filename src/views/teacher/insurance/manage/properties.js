@@ -1,5 +1,6 @@
 import { dateFormat } from '@/utils'
 const operFormat = (row, cellValue) => '查看'
+const statusFormat = (cellValue) => ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款'][+cellValue]
 
 export default {
   query: {
@@ -72,7 +73,7 @@ export default {
       label: '状态',
       prop: 'dataStatus',
       width: 50,
-      formatter: this.statusFormat
+      formatter: statusFormat
     }, {
       label: '操作',
       operators: [

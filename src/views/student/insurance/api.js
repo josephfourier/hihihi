@@ -25,5 +25,8 @@ export default {
         }
       }
     })
+  },
+  pay (id) {
+    return ajax.get('/manage/swmsXFTPay/insurancePay/' + id)
   }
 }

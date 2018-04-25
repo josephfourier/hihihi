@@ -16,6 +16,7 @@
 
     <el-dialog title="审批进度" :visible.sync="visible" width="800px">
       <process-view
+        v-loading="loading2"
         :data="data"
         v-model="value"
         v-if="visible"
@@ -36,11 +37,15 @@
         </template>
       </process-view>
     </el-dialog>
+
+    <el-dialog title="扫码付款" :visible.sync="visible2" width="800px">
+      <qrcode :url="url"></qrcode>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import myInsuranceAPI from '@/api/student/insurance/my'
+import api from './api'
 import commonAPI from '@/api/common'
 
 import ZjyPagination from '@/components/pagination'
@@ -49,6 +54,7 @@ import ZjyFooter from './Footer'
 import ZjyTable from '@/components/table'
 import { _refresh } from '@/utils'
 import ViewApply from './ViewApply'
+import qrcode from './qrcode'
 import properties from './properties'
 export default {
   data () {
@@ -58,21 +64,26 @@ export default {
       list: [],
       currentPage: 1,
       total: 0,
+      url: '',
       query: properties.query,
 
       loading: false,
+      loading2: false,
       visible: false,
+      visible2: false,
       columns: properties.columnsMY
     }
   },
 
   methods: {
-    statusFormat (cellValue) {
-      return ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款'][+cellValue]
-    },
-
-    pay () {
-      alert('付款')
+    pay (data) {
+      this.loading2 = true
+      api.pay(data.insuranceUid).then(response => {
+        this.visible = false
+        this.visible2 = true
+        this.url = response.data
+        this.loading2 = false
+      })
     },
 
     handleSubmit () {
@@ -100,7 +111,8 @@ export default {
     ProcessView,
     ZjyFooter,
 
-    ZjyTable
+    ZjyTable,
+    qrcode
   },
 
   props: {
@@ -114,7 +126,7 @@ export default {
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
-        myInsuranceAPI
+        api
           .queryForList(this.query)
           .then(response => {
             this.list = response.rows

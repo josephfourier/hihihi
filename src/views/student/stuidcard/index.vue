@@ -109,7 +109,7 @@ import { ZjyStep, ZjySteps } from '@/components/steps'
 import { getPermissionId } from '@/utils'
 
 export default {
-  data() {
+  data () {
     return {
       reissued: {}, // 补办信息
       student: {}, // 学生信息
@@ -129,7 +129,7 @@ export default {
   },
 
   methods: {
-    submit() {
+    submit () {
       if (!this.reissued.applyReason) {
         this.error = '请填写申请原因'
         return
@@ -154,11 +154,11 @@ export default {
       }).catch(error => {
         console.log(error)
       }).finally(_ => {
-        this.loading = true
+        this.loading = false
       })
     },
 
-    reSubmit() {
+    reSubmit () {
       this.isReapplyed = true
       this.clear()
       this.reissued = {
@@ -175,14 +175,14 @@ export default {
       })
     },
 
-    clear() {
+    clear () {
       this.reissued = {}
       this.step = 1
       this.value = ''
       this.isFinished = false
     },
 
-    refresh() {
+    refresh () {
       cardAPI.queryReissued().then(response => {
         this.reissued = response.data.swmsStuidcard
         cardAPI.queryApprovalProcess(this.student.studentId, this.reissued.stuidcardUid).then(response => {
@@ -206,7 +206,7 @@ export default {
       })
     },
 
-    handleChange(val) {
+    handleChange (val) {
       this.nextTeacherId = val
       if (!this.$empty(this.approverList)) {
         this.nextTeacherName = this.approverList.find(x => x.teacherId === val).teacherName
@@ -216,10 +216,10 @@ export default {
   },
 
   computed: {
-    hasError() {
+    hasError () {
       return !!this.error
     },
-    hasError2() {
+    hasError2 () {
       return !!this.error2
     }
   },
@@ -231,7 +231,7 @@ export default {
     ZjySteps
   },
 
-  created() {
+  created () {
     this.loading = true
     cardAPI.queryReissued().then(response => {
       this.loading = false

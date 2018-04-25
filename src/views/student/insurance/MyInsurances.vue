@@ -1,6 +1,5 @@
 <template>
   <div class="zjy-app">
-
     <zjy-table
       :data="list"
       :loading="loading"
@@ -38,8 +37,11 @@
       </process-view>
     </el-dialog>
 
-    <el-dialog title="扫码付款" :visible.sync="visible2" width="800px">
-      <qrcode :url="url"></qrcode>
+    <el-dialog title="扫码付款" :visible.sync="visible2" width="680px" @close="refresh">
+      <qrcode
+        :url="url"
+        v-if="visible2"
+      ></qrcode>
     </el-dialog>
   </div>
 </template>
@@ -79,10 +81,13 @@ export default {
     pay (data) {
       this.loading2 = true
       api.pay(data.insuranceUid).then(response => {
-        this.visible = false
-        this.visible2 = true
-        this.url = response.data
-        this.loading2 = false
+        setTimeout(_ => {
+          this.visible = false
+          this.visible2 = true
+          // this.url = response.data
+          this.url = './qr-code.png'
+          this.loading2 = false
+        }, 1000)
       })
     },
 
@@ -126,16 +131,13 @@ export default {
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
-        api
-          .queryForList(this.query)
-          .then(response => {
-            this.list = response.rows
-            this.total = response.total
-            this.loading = false
-          })
-          .catch(error => {
-            this.loading = false
-          })
+        api.queryForList(this.query).then(response => {
+          this.list = response.rows
+          this.total = response.total
+          this.loading = false
+        }).catch(error => {
+          this.loading = false
+        })
       }
     },
 

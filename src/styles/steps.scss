@@ -1,11 +1,12 @@
-.tip-box,.form-tip-box {
-    height: 20px;
-    position: relative;
-    .tip {
-        font-size: 12px;
-        display: inline-block;
-        color: #f56c6c;
-    }
+.tip-box,
+.form-tip-box {
+  height: 20px;
+  position: relative;
+  .tip {
+    font-size: 12px;
+    display: inline-block;
+    color: #f56c6c;
+  }
 }
 
 .textarea-wrapper {
@@ -20,125 +21,131 @@
 }
 
 .zjy-steps {
-    .tip {
-        font-size: 12px;
-        display: inline-block;
-        color: #f56c6c;
-    }
-    margin-bottom: 20px;
-
-    .step-title {
-        color: #333333;
-        padding: 0 0 10px 0;
-        font-weight: bold;
-    } // 已完成流程
-    .el-step__head.is-finish {
-        .el-step__icon {
-            border: none;
-            background-color: #37c6d3;
-        }
-    } //select2
-    .el-select .el-input__inner:focus,
-    .el-select .el-input.is-focus .el-input__inner,
-    .el-input.is-active .el-input__inner,
-    .el-input__inner:focus {
-        border-color: #ED7734;
-    }
-    .el-select-dropdown__item span {
-        line-height: 24px !important;
-    } // 进行中流程
-    .el-step__head.is-process {
-        .el-step__icon {
-            border: none;
-            background-color: #ed7734;
-        }
-    } // 等待
-    .el-step__head.is-wait {
-        .el-step__icon {
-            border: none;
-            background-color: #c5dde0;
-        }
-    }
-    .el-step__title.is-wait {
-        color: #c0c4cc;
-    }
-    .el-step__title {
-        font-size: 12px;
-        line-height: 22px;
-        color: #333333;
-        font-weight: normal;
-    }
+  .el-steps {
+    //flex-wrap: wrap;
+  }
+  .tip {
+    font-size: 12px;
+    display: inline-block;
+    color: #f56c6c;
+  }
+  margin-bottom: 20px;
+  .step-title {
+    color: #333333;
+    padding: 0 0 10px 0;
+    font-weight: bold;
+  }
+  // 已完成流程
+  .el-step__head.is-finish {
     .el-step__icon {
-        height: 30px;
-        width: 30px;
-        .el-step__icon-inner {
-            color: #ffffff;
-        }
+      border: none;
+      background-color: #37c6d3;
     }
-    .el-step__line {
-        background-color: #f5f5f5;
+  }
+  //select2
+  .el-select .el-input__inner:focus,
+  .el-select .el-input.is-focus .el-input__inner,
+  .el-input.is-active .el-input__inner,
+  .el-input__inner:focus {
+    border-color: #ED7734;
+  }
+  .el-select-dropdown__item span {
+    line-height: 24px !important;
+  }
+  // 进行中流程
+  .el-step__head.is-process {
+    .el-step__icon {
+      border: none;
+      background-color: #ed7734;
     }
-    .el-step.is-horizontal .el-step__line {
-        height: 12px;
-        top: 10px;
+  }
+  // 等待
+  .el-step__head.is-wait {
+    .el-step__icon {
+      border: none;
+      background-color: #c5dde0;
     }
-    .el-step__line-inner {
-        display: block;
-        border-width: 1px;
-        border-style: solid;
-        border: none;
-        background: #bce9ed;
-        -webkit-transition: .15s ease-out;
-        transition: .15s ease-out;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 0;
-        height: 10px;
-        position: relative;
-        top: 1px;
+  }
+  .el-step__title.is-wait {
+    color: #c0c4cc;
+  }
+  .el-step__title {
+    font-size: 12px;
+    line-height: 22px;
+    color: #333333;
+    font-weight: normal;
+  }
+  .el-step__icon {
+    height: 30px;
+    width: 30px;
+    .el-step__icon-inner {
+      color: #ffffff;
     }
-    .el-step__description.is-finish {
-        color: #333333;
+  }
+  .el-step__line {
+    background-color: #f5f5f5;
+  }
+  .el-step.is-horizontal .el-step__line {
+    height: 12px;
+    top: 10px;
+  }
+  .el-step__line-inner {
+    display: block;
+    border-width: 1px;
+    border-style: solid;
+    border: none;
+    background: #bce9ed;
+    -webkit-transition: .15s ease-out;
+    transition: .15s ease-out;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 0;
+    height: 10px;
+    position: relative;
+    top: 1px;
+  }
+  .el-step__description.is-finish {
+    color: #333333;
+  }
+  .el-step .el-step__description {
+    padding: 0;
+    margin: 0 auto;
+  }
+  .el-select.zjy-select {
+    width: 120px;
+    z-index: 999;
+  }
+  .status {
+    font-size: 12px;
+    color: #ed7734;
+  }
+  .status {
+    &.statusNo {
+      color: #ed7734;
     }
-    .el-step .el-step__description {
-        padding: 0;
-        margin: 0 auto;
+    &.statusYes {
+      color: #37c6d3;
     }
-    .el-select.zjy-select {
-      width: 120px;
+    &.statusWait {
+      color: #ed7734;
     }
-
-    .status {
-        font-size: 12px;
-        color: #ed7734;
-    }
-    .status {
-        &.statusNo {
-            color: #ed7734;
-        }
-        &.statusYes {
-            color: #37c6d3;
-        }
-        &.statusWait {
-            color: #ed7734;
-        }
-    }
+  }
 }
 
 .refused {
-    background-color: #f5f5f5;
-    font-size: 14px;
-    color: #333333;
-    padding: 15px 0;
-    text-indent: 15px;
-    margin: -20px 0 5px 0;
-    font-weight: bold;
+  background-color: #f5f5f5;
+  font-size: 14px;
+  color: #333333;
+  padding: 15px 0;
+  text-indent: 15px;
+  margin: -20px 0 5px 0;
+  font-weight: bold;
 }
-
 
 .zjy-textarea {
-    height: 100px;
+  height: 100px;
 }
+
 // 审批流程中select
 .zjy-process-select {
   .el-select-dropdown__item {
@@ -148,4 +155,8 @@
   .el-select-dropdown__item span {
     line-height: 28px !important;
   }
+}
+// 审批步骤过多时，发起人不换行
+.el-step.is-center .el-step__head, .el-step.is-center .el-step__main {
+  white-space: nowrap;
 }

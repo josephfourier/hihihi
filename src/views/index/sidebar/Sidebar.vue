@@ -1,119 +1,113 @@
-<!--  -->
 <template>
+  <div class="sidebar-wrap" :class="{hideSide: isCollapse}">
+    <div class="logo">
+      <img src="./logo.png" alt="职教云logo">
+    </div>
+    <el-scrollbar class="scrollbar">
+      <el-menu :default-active="$route.path" class="zjy-el-menu" @open="handleOpen" @close="handleClose" text-color="#bdbfc7" active-text-color="#fff" :unique-opened=true :collapse="isCollapse">
+        <el-submenu v-for="item in multi" :index="item.name" :key="item.name">
+          <template slot="title">
+            <i :class="item.meta.icon" class="zjy-icon"></i>
+            <span>{{ item.name }}</span>
+          </template>
+          <router-link :to="children.path" v-for="children in item.children" :key="children.path + children.meta.permissionId" @click.native="refresh">
+            <el-menu-item :index="children.path">
+              <i class="zjy-bar"></i>
+              {{ children.name }}
+            </el-menu-item>
+          </router-link>
+        </el-submenu>
 
-     <div class="sidebar-wrap" :class="{hideSide: isCollapse}">
-       <div class="logo">
-         <img src="./logo.png" alt="职教云logo">
-       </div>
-       <el-scrollbar class="scrollbar">
-       <el-menu
-         :default-active="$route.path"
-         class="zjy-el-menu"
-         @open="handleOpen"
-         @close="handleClose"
-         text-color="#bdbfc7"
-         active-text-color="#fff"
-         :unique-opened=true
-         :collapse="isCollapse">
-         <el-submenu
-           v-for="item in multi"
-           :index="item.name"
-           :key="item.name"
-         >
-           <template slot="title">
-             <i :class="item.meta.icon" class="zjy-icon"></i>
-             <span>{{ item.name }}</span>
-           </template>
-           <router-link
-             :to="children.path"
-             v-for="children in item.children"
-             :key="children.path + children.meta.permissionId"
-             @click.native="refresh"
-           >
-             <el-menu-item :index="children.path">
-               <i class="zjy-bar"></i>
-               {{ children.name }}
-             </el-menu-item>
-           </router-link>
-         </el-submenu>
-
-         <router-link
-           v-for="item in single"
-           :key="item.name"
-           :to="item.children[0].path"
-           @click.native="refresh"
-         >
-           <el-menu-item :index="item.children[0].path">
-             <i :class="item.meta.icon" class="zjy-icon"></i>
-             <span slot="title">{{ item.children[0].name }}</span>
-           </el-menu-item>
-         </router-link>
-
-       </el-menu>
-       </el-scrollbar>
-     </div>
+        <router-link v-for="item in single" :key="item.name" :to="item.children[0].path" @click.native="refresh">
+          <el-menu-item :index="item.children[0].path">
+            <i :class="item.meta.icon" class="zjy-icon"></i>
+            <span slot="title">{{ item.children[0].name }}</span>
+          </el-menu-item>
+        </router-link>
+      </el-menu>
+    </el-scrollbar>
+  </div>
 
 </template>
 
 <script>
 export default {
-  inject: ['reload', 'force'],
-  data () {
-    return {}
+  inject: ['reload', 'force', 'collapse'],
+  data() {
+    return {
+      isCollapse: false,
+      clientWidth: document.body.clientWidth
+    }
   },
 
   props: {
     routes: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
 
-  created () {
+  created() {
+  },
+
+  mounted() {
+    const that = this
+    window.onresize = _.debounce(() => {
+      that.clientWidth = document.body.clientWidth
+      if (that.clientWidth < 950) {
+
+        if (!that.isCollapse) {
+          that.collapse()
+          that.isCollapse = true
+        }
+      } else if (that.clientWidth > 950) {
+        if (that.isCollapse) {
+          that.collapse()
+          that.isCollapse = false
+        }
+      }
+
+    }, 100)
   },
 
   computed: {
-    isCollapse () {
-      return false
+    // isCollapse () {
+    //   return false
+    // },
+    multi() {
+      return this.routes.filter(item => !item.hidden && item.children.length > 1)
     },
-    multi () {
-      return this.routes.filter(
-        item => !item.hidden && item.children.length > 1
-      )
-    },
-    single () {
-      return this.routes.filter(
-        item => !item.hidden && item.children.length === 1
-      )
+    single() {
+      return this.routes.filter(item => !item.hidden && item.children.length === 1)
     }
   },
   methods: {
-    handleOpen (key, keyPath) {
+    handleOpen(key, keyPath) {
     },
-    handleClose (key, keyPath) {
+    handleClose(key, keyPath) {
     },
-    refresh () {
+    refresh() {
       if (this.force) { this.reload() }
     }
   },
 
   watch: {
-    $route (to, from) {
+    $route(to, from) {
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-@import "src/styles/mixin.scss";
+@import 'src/styles/mixin.scss';
 .scrollbar {
   height: 100%;
   background-color: #1e2a3c;
 }
 .sidebar-wrap {
   @include menu-width;
-  z-index: 998;
+  z-index: 1005;
   position: fixed;
   left: 0;
   bottom: 0;
@@ -135,9 +129,18 @@ export default {
     width: 160px;
     height: 59px;
     box-shadow: 0 1px 0px 0px #26334b;
+    transition: all 0.2s;
+    overflow: hidden;
+    & > img {
+      position: relative;
+      left: 10px;
+    }
   }
   &.hideSide {
     @include menu-width-collapse;
+    .logo {
+      width: 54px;
+    }
   }
 }
 // 左侧条
@@ -157,43 +160,44 @@ export default {
   margin-right: 5px;
   position: relative;
   top: 1px;
-  background: url("./zjy-icon-basic.png") no-repeat 0 0;
+  background: url('./zjy-icon-basic.png') no-repeat 0 0;
 }
 
 .zjy-icon-basic {
-  background: url("./zjy-icon-basic.png") no-repeat 0 0;
+  background: url('./zjy-icon-basic.png') no-repeat 0 0;
 }
 .zjy-icon-rewards {
-  background: url("./zjy-icon-rewards.png") no-repeat 0 0;
+  background: url('./zjy-icon-rewards.png') no-repeat 0 0;
 }
 .zjy-icon-fund {
-  background: url("./zjy-icon-fund.png") no-repeat 0 0;
+  background: url('./zjy-icon-fund.png') no-repeat 0 0;
 }
 .zjy-icon-statistical {
-  background: url("./zjy-icon-statistical.png") no-repeat 0 0;
+  background: url('./zjy-icon-statistical.png') no-repeat 0 0;
 }
 
 .zjy-icon-general {
-  background: url("./zjy-icon-general.png") no-repeat 0 0;
+  background: url('./zjy-icon-general.png') no-repeat 0 0;
 }
 
 // 激活时变色，打开时不变色
 .el-submenu.is-active,
 .el-menu-item.is-active {
-  .zjy-icon-basic ,.zjy-icon {
-    background: url("./zjy-icon-basic1.png") no-repeat 0 0;
+  .zjy-icon-basic,
+  .zjy-icon {
+    background: url('./zjy-icon-basic1.png') no-repeat 0 0;
   }
   .zjy-icon-fund {
-    background: url("./zjy-icon-fund1.png") no-repeat 0 0;
+    background: url('./zjy-icon-fund1.png') no-repeat 0 0;
   }
   .zjy-icon-statistical {
-    background: url("./zjy-icon-statistical1.png") no-repeat 0 0;
+    background: url('./zjy-icon-statistical1.png') no-repeat 0 0;
   }
   .zjy-icon-general {
-    background: url("./zjy-icon-general1.png") no-repeat 0 0;
+    background: url('./zjy-icon-general1.png') no-repeat 0 0;
   }
   .zjy-icon-rewards {
-    background: url("./zjy-icon-rewards1.png") no-repeat 0 0;
+    background: url('./zjy-icon-rewards1.png') no-repeat 0 0;
   }
 }
 </style>

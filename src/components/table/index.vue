@@ -34,17 +34,19 @@
       >
         <template slot-scope="scope">
           <template v-if="item.operators">
-            <operator-content
-              v-for="child in item.operators"
-              :key="child.label"
-              :data="scope.row"
-              :label="child.label"
-              :render="child.render"
-              :cmd="child.cmd"
-              :formatter="child.formatter"
-              @operator="$emit(child.cmd, scope.row)"
-            >
-            </operator-content>
+            <div class="table-operator-group">
+              <operator-content
+                v-for="child in item.operators"
+                :key="child.label"
+                :data="scope.row"
+                :label="child.label"
+                :render="child.render"
+                :cmd="child.cmd"
+                :formatter="child.formatter"
+                @operator="$emit(child.cmd, scope.row)"
+              >
+              </operator-content>
+            </div>
           </template>
           <template v-else>
           <span v-if="item.formatter">

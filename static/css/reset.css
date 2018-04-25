@@ -3,8 +3,8 @@ html {
   background: #fff;
 }
 body {
-  overflow-x: hidden;
-  min-width: 1000px;
+  /* overflow-x: hidden; */
+  min-width: 920px;
 }
 body,
 div,

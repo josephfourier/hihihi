@@ -244,7 +244,10 @@ export default {
 
         this.approverList = val[+Object.keys(val).find(x => Number(x) == x)] || {}
 
-        this.hasNextApprover = !this.$empty(this.approverList)
+        // this.hasNextApprover = !this.$empty(this.approverList)
+        // 新添加若当前步骤是职务则必然是需要选择教师
+        console.log(val.swmsApprovals)
+        this.hasNextApprover = !this.$empty(this.approverList) || val.swmsApprovals.find(x => x.approvalStep === this.step).approvalType == 1
       }
     },
 
@@ -260,6 +263,9 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+  .validate {
+    width: 120px;
+  }
   .warning {
     color: #ED7734;
     text-align: center;

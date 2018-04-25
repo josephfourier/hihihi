@@ -7,12 +7,12 @@ import { Message } from 'element-ui'
   Object.assign(window.MSG, {
     success: (message, duration) => msg.success({
       message,
-      duration: duration || 3000
+      duration: duration || 1000
     }),
 
     warning: (message, duration) => msg.warning({
       message,
-      duration: duration || 3000
+      duration: duration || 1000
     })
   })
 })(Message)

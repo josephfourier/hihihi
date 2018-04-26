@@ -25,6 +25,7 @@ export default {
       this.$nextTick(() => (this.active = true))
     },
     collapse () {
+      this.$store.dispatch('setCollapsed', !this.isCollapse)
       this.$nextTick(() => this.isCollapse = !this.isCollapse)
     }
   },
@@ -32,7 +33,8 @@ export default {
   provide () {
     return {
       reload: this.reload,
-      force: true,
+      // 开发环境下点击可刷新
+      force: process.env.NODE_ENV === 'development',
       collapse: this.collapse,
       isCollapse: this.isCollapse
     }

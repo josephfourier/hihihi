@@ -3,7 +3,8 @@ import * as types from '../mutation-types'
 
 const state = {
   specialtyList: [],
-  facultyList: []
+  facultyList: [],
+  classList: []
 }
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
   },
   [types.SET_FACULTY_LIST] (state, facultyList) {
     state.facultyList = facultyList
+  },
+  [types.SET_CLASS_LIST] (state, classList) {
+    state.classList = classList
   }
 }
 
@@ -34,6 +38,17 @@ const actions = {
           console.warn('query facultyList error')
         } else {
           commit(types.SET_FACULTY_LIST, response.data)
+        }
+      })
+    }
+  },
+  setClassList ({commit, state}) {
+    if (state.classList.length === 0) {
+      commonAPI.queryClassList().then(response => {
+        if (response.code !== 1) {
+          console.warn('query classList error')
+        } else {
+          commit(types.SET_CLASS_LIST, response.data)
         }
       })
     }

@@ -1,7 +1,5 @@
-<!-- 教师端学生证管理 -->
 <template>
   <div class="zjy-app">
-
     <zjy-table-search>
       <search-select label="入学年份" :options="years" :value.sync="enterYear"></search-select>
       <search-select label="申请状态" :options="status" :value.sync="dataStatus"></search-select>
@@ -66,7 +64,9 @@ import { _refresh } from '@/utils'
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 
+import properties from './properties'
 export default {
+  name: 'student-card',
   data () {
     return {
       list: [],
@@ -119,44 +119,7 @@ export default {
           value: 3
         }
       ],
-      columns: [
-        {
-          index: true,
-          select: true
-        }, {
-          label: '学号',
-          prop: 'studentNo'
-        }, {
-          label: '姓名',
-          prop: 'studentName'
-        }, {
-          label: '院系',
-          prop: 'facultyName'
-        }, {
-          label: '入学年份',
-          prop: 'enterYear'
-        }, {
-          label: '申请次数',
-          prop: 'appNum'
-        }, {
-          label: '状态',
-          prop: 'dataStatus',
-          formatter: this.statusFormat
-        }, {
-          label: '操作',
-          
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            },
-            {
-              label: '删除',
-              cmd: 'delete'
-            }
-          ]
-        }
-      ]
+      columns: properties.columns
     }
   },
 
@@ -228,10 +191,7 @@ export default {
       this.currentPage = pageNumber
     },
 
-    statusFormat (cellValue) {
-      return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
-    },
-
+   
     refresh () {
       _refresh.call(this)
     }

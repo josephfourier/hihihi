@@ -16,6 +16,7 @@
     <el-dialog title="审批进度" :visible.sync="visible" width="800px">
       <process-view
         v-loading="loading2"
+        element-loading-text="正在获取支付二维码"
         :data="data"
         v-model="value"
         v-if="visible"
@@ -81,13 +82,15 @@ export default {
     pay (data) {
       this.loading2 = true
       api.pay(data.insuranceUid).then(response => {
-        setTimeout(_ => {
-          this.visible = false
-          this.visible2 = true
-          // this.url = response.data
-          this.url = './qr-code.png'
-          this.loading2 = false
-        }, 1000)
+          if (response.code !== 1) {
+            MSG.warning('获取支付二维码失败')
+          } else {
+            this.visible = false
+            this.visible2 = true
+            this.url = response.data
+          }
+      }).finally(_ => {
+        this.loading2 = false
       })
     },
 

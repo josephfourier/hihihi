@@ -17,5 +17,7 @@ export default {
   noticeList: state => state.notice.noticeList,
 
   specialtyList: state => state.common.specialtyList,
-  facultyList: state => state.common.facultyList
+  facultyList: state => state.common.facultyList,
+  classList: state => state.common.classList,
+  isCollapsed: state => state.app.isCollapsed
 }

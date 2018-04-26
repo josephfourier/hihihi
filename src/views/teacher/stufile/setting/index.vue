@@ -4,7 +4,7 @@
     <div class="zjy-table">
 
       <zjy-table-operator>
-        <operator-item clz="create" @click="create">新增</operator-item>
+        <operator-item clz="create" @click="create" v-if="hasPermission('swms:stufile-set:create')">新增</operator-item>
       </zjy-table-operator>
 
       <zjy-table
@@ -56,19 +56,17 @@ export default {
           label: '档案材料名称',
           prop: 'stufileName'
         },
-        // }, {
-        //   label: '档案描述',
-        //   prop: 'description'
-        // }, 
         {
           label: '操作',
           operators: [
             {
               label: '编辑',
+              render: row => this.hasPermission('swms:stufile-set:update'),
               cmd: 'edit'
             },
             {
               label: '删除',
+              render: row => this.hasPermission('swms:stufile-set:delete'),
               cmd: 'delete'
             }
           ]

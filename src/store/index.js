@@ -7,6 +7,7 @@ import schedule from './modules/schedule'
 import dict from './modules/dict'
 import common from './modules/common'
 import notice from './modules/notice'
+import app from './modules/app'
 
 import getters from './getters'
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
     schedule,
     dict,
     common,
-    notice
+    notice,
+    app
   },
   getters
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-wrap" :class="{hideSide: isCollapse}">
-    <div class="logo">
+    <div class="logo" @click="handleClick">
       <img src="./logo.png" alt="职教云logo">
     </div>
     <el-scrollbar class="scrollbar">
@@ -84,6 +84,10 @@ export default {
     }
   },
   methods: {
+    handleClick() {
+      this.collapse()
+      this.isCollapse = !this.isCollapse
+    },
     handleOpen(key, keyPath) {
     },
     handleClose(key, keyPath) {
@@ -100,7 +104,10 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-@import 'src/styles/mixin.scss';
+@import "src/styles/mixin.scss";
+.logo {
+  cursor: pointer;
+}
 .scrollbar {
   height: 100%;
   background-color: #1e2a3c;
@@ -160,24 +167,24 @@ export default {
   margin-right: 5px;
   position: relative;
   top: 1px;
-  background: url('./zjy-icon-basic.png') no-repeat 0 0;
+  background: url("./zjy-icon-basic.png") no-repeat 0 0;
 }
 
 .zjy-icon-basic {
-  background: url('./zjy-icon-basic.png') no-repeat 0 0;
+  background: url("./zjy-icon-basic.png") no-repeat 0 0;
 }
 .zjy-icon-rewards {
-  background: url('./zjy-icon-rewards.png') no-repeat 0 0;
+  background: url("./zjy-icon-rewards.png") no-repeat 0 0;
 }
 .zjy-icon-fund {
-  background: url('./zjy-icon-fund.png') no-repeat 0 0;
+  background: url("./zjy-icon-fund.png") no-repeat 0 0;
 }
 .zjy-icon-statistical {
-  background: url('./zjy-icon-statistical.png') no-repeat 0 0;
+  background: url("./zjy-icon-statistical.png") no-repeat 0 0;
 }
 
 .zjy-icon-general {
-  background: url('./zjy-icon-general.png') no-repeat 0 0;
+  background: url("./zjy-icon-general.png") no-repeat 0 0;
 }
 
 // 激活时变色，打开时不变色
@@ -185,19 +192,19 @@ export default {
 .el-menu-item.is-active {
   .zjy-icon-basic,
   .zjy-icon {
-    background: url('./zjy-icon-basic1.png') no-repeat 0 0;
+    background: url("./zjy-icon-basic1.png") no-repeat 0 0;
   }
   .zjy-icon-fund {
-    background: url('./zjy-icon-fund1.png') no-repeat 0 0;
+    background: url("./zjy-icon-fund1.png") no-repeat 0 0;
   }
   .zjy-icon-statistical {
-    background: url('./zjy-icon-statistical1.png') no-repeat 0 0;
+    background: url("./zjy-icon-statistical1.png") no-repeat 0 0;
   }
   .zjy-icon-general {
-    background: url('./zjy-icon-general1.png') no-repeat 0 0;
+    background: url("./zjy-icon-general1.png") no-repeat 0 0;
   }
   .zjy-icon-rewards {
-    background: url('./zjy-icon-rewards1.png') no-repeat 0 0;
+    background: url("./zjy-icon-rewards1.png") no-repeat 0 0;
   }
 }
 </style>

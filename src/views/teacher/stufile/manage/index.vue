@@ -3,7 +3,7 @@
   <div class="zjy-app">
     <zjy-table-search>
       <search-select label="入学年份" :options="years" :value.sync="enterYear"></search-select>
-      <search-select label="班级" :options="classes" :value.sync="classId" :loading="isLoading" @focus="handleFocus"></search-select>
+      <search-select label="班级" :options="myClassList" :value.sync="classId" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-input label="学号" :value.sync="studentNo"></search-input>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
@@ -11,8 +11,10 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="create" clz="create">新增</operator-item>
-      <operator-item @click="_import" clz="import">导入</operator-item>
+      <template v-if="hasPermission('swms:stufile-tea:create')">
+        <operator-item @click="create" clz="create">新增</operator-item>
+        <operator-item @click="_import" clz="import">导入</operator-item>
+      </template>
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
@@ -119,6 +121,7 @@ import properties from './properties'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'student-file',
   data() {
     return {
       action: process.env.BASE_URL + '/manage/upload/uploadDatas',
@@ -139,6 +142,7 @@ export default {
       classId: '',
       studentNo: '',
       query: properties.query,
+      queryExport: properties.queryExport,
       list: [],
       currentPage: 1,
       total: 0,
@@ -146,7 +150,6 @@ export default {
 
       years: properties.years,
 
-      classes: [],
       columns: properties.columns,
       visible: false,
       visible2: false,
@@ -158,27 +161,16 @@ export default {
       fileList: [],
       settings: [],
 
-      selectedRows: [] // 多选行
+      selectedRows: [], // 多选行
+      exportData: []
     }
   },
 
   methods: {
     handleFocus() {
-      if (this.classes.length > 0) return
-      commonAPI.queryClassList().then(response => {
-        if (response.code !== 1) {
-          console.warn('query classes error')
-        } else {
-          this.classes = response.data.map(i => {
-            return {
-              label: i.className,
-              value: i.classId
-            }
-          })
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+      if (this.myClassList.length === 0) {
+        this.$store.dispatch('setClassList')
+      }
     },
     handleSuccess(response, file, fileList) {
       if (response.code == 90002) {
@@ -211,7 +203,7 @@ export default {
       // 成功时也会调用，添加show修复此问题
       if (this.hasError || !this.show) return
       if (!/\.(xls|xlsx)$/gi.test(file.name)) {
-        MSG.warning('请上传excel格式文件')
+        MSG.warning('不支持的文件格式')
         this.clearFile()
         return false
       }
@@ -275,7 +267,6 @@ export default {
       this.refresh()
     },
 
-
     create() {
       this.type = +this.$t('zjy.operator.CREATE')
       this.file = {}
@@ -286,23 +277,56 @@ export default {
       }).catch(error => {
         MSG.warning(error)
       })
-
     },
 
     _export() {
-      const header = properties.header
-      const filter = properties.filter
-      const excelName = properties.excelName
-      const data = this.selectedRows.length > 0 ? this.selectedRows : this.list
-      this.loading = true
-      export2excel(header, filter, data, excelName, (filter, data) => {
-        return data.map(v => filter.map(j => {
-          if (j === 'stufileDate') {
-            return _dateFormat(v[j])
-          } else return v[j]
-        }))
-      }).then(_ => {
-        this.loading = false
+      this.getExportData().then(response => {
+        this.exportData = response
+
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'stufileDate') {
+              return _dateFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+
+    getExportData() {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch() {
+      return new Promise((resolve, reject) => {
+        this.queryExport.classId = this.classId
+        this.queryExport.enterYear = this.enterYear
+        this.queryExport.studentNo = this.studentNo
+        stufileManageAPI.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
       })
     },
 
@@ -323,6 +347,7 @@ export default {
     edit(row) {
       this.type = +this.$t('zjy.operator.EDIT')
       this.title = '编辑学生档案'
+      this.loading = true
       this.querySetting().then(_ => {
         stufileManageAPI.queryForObject(row.stufileUid).then(response => {
           if (response.code !== 1) MSG.success('获取学生档案失败')
@@ -347,6 +372,8 @@ export default {
         }).catch(error => {
           console.log(error)
         })
+      }).finally(_ => {
+        this.loading = false
       })
 
     },
@@ -354,35 +381,36 @@ export default {
     querySetting() {
       return new Promise((resolve, reject) => {
         if (this.settings.length > 0) resolve()
-
-        stufileAPI.queryForList().then(resposne => {
-          if (resposne.code !== 1) {
-            // MSG.success('获取档案设置失败')
-            reject('获取档案设置失败')
-          } else {
-            this.settings = resposne.data
-            for (let i = 0; i < this.settings.length; ++i) {
-              this.fileList.push({
-                index: i,
-                stufileName: '',
-                stufilesettingUid: this.settings[i].stufilesettingUid,
-                stufilePath: ''
-              })
+        else {
+          stufileAPI.queryForList().then(resposne => {
+            if (resposne.code !== 1) {
+              // MSG.success('获取档案设置失败')
+              reject('获取档案设置失败')
+            } else {
+              this.settings = resposne.data
+              for (let i = 0; i < this.settings.length; ++i) {
+                this.fileList.push({
+                  index: i,
+                  stufileName: '',
+                  stufilesettingUid: this.settings[i].stufilesettingUid,
+                  stufilePath: ''
+                })
+              }
+              resolve()
             }
-            resolve()
-          }
-        }).catch(error => {
-          console.log(error)
-        })
+          }).catch(error => {
+            console.log(error)
+          })
+        }
       })
     },
 
     view(row) {
       this.type = +this.$t('zjy.operator.VIEW')
       this.title = '查看学生档案'
+      this.loading = true
       this.querySetting().then(_ => {
         stufileManageAPI.queryForObject(row.stufileUid).then(response => {
-          console.log(response)
           if (response.code !== 1) MSG.success('获取学生档案失败')
           this.file = response.data
           const _ = response.data.stufileListList
@@ -405,8 +433,9 @@ export default {
         }).catch(error => {
           console.log(error)
         })
+      }).finally(_ => {
+        this.loading = false
       })
-
     },
 
     pageChanged(pageNumber) {
@@ -426,9 +455,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['token']),
+    ...mapGetters(['token', 'classList']),
+    myClassList() {
+      return this.classList.map(i => {
+        return {
+          label: i.className,
+          value: i.classId
+        }
+      })
+    },
     isLoading() {
-      return this.classes.length === 0
+      return this.myClassList.length === 0
     }
   },
 

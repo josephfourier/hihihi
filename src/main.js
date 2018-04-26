@@ -24,7 +24,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 Vue.prototype.$empty = obj => !obj ? true : Object.keys(obj).length === 0
-Vue.prototype.$hasPermission = permission => store.getters.permissions.indexOf(permission) !== -1
+Vue.prototype.hasPermission = permission => store.getters.permissions.indexOf(permission) !== -1
 
 Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
 

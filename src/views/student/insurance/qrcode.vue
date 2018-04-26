@@ -1,7 +1,7 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if="url">
     <img src="./img_zf.png" alt="" class="img img1">
-    <img src="./qr-code.png" alt="" class="img img2">
+    <img :src="url" alt="" class="img img2">
     <p class="tip">请扫描二维码支付</p>
   </div>
 </template>
@@ -16,18 +16,14 @@ export default {
     url: String
   }
 }
-
 </script>
 <style lang='scss' scoped>
   .wrapper {
     img {
       vertical-align: top;
       border: none;
-      &.img1 {
-        padding-top: 10px;
-      }
       &.img2 {
-        padding-top: 60px;
+        padding-top: 40px;
         width: 190px;
         height: 190px;
       }
@@ -36,7 +32,7 @@ export default {
       position: absolute;
       right: 128px;
       font-size: 14px;
-      bottom: 42px;
+      bottom: 60px;
     }
   }
 </style>

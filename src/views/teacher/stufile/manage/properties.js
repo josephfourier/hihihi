@@ -1,9 +1,15 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 export default {
   query: {
     offset: 0,
     limit: 10,
+    enterYear: '',
+    classId: '',
+    studentNo: ''
+  },
+
+  queryExport: {
     enterYear: '',
     classId: '',
     studentNo: ''
@@ -75,7 +81,6 @@ export default {
     },
     {
       label: '操作',
-
       operators: [
         {
           label: '查看',
@@ -83,6 +88,7 @@ export default {
         },
         {
           label: '编辑',
+          render: _ => hasPermission('swms:stufile-tea:update'),
           cmd: 'edit'
         }
       ]

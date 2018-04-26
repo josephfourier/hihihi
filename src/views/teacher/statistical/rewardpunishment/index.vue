@@ -7,7 +7,7 @@
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
-    <div class="echart" v-loading="loading">
+    <div :class="['echart', {isCollapse: isCollapsed}]" v-loading="loading">
       <div class="charts">
         <div class="mychart">
           <pie-chart
@@ -39,6 +39,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'index',
+  inject: ['isCollapse'],
   data () {
     return {
       types: properties.types,
@@ -86,7 +87,6 @@ export default {
           this.data = response.data.peopleProportionDto.map(i => {
             return {
               value: +i.value,
-              // name: i.name + ' ' + ((+i.value) / sum * 100).toFixed(2) + '%'
               name: i.name
             }
           }).filter(i => i.value !== 0)
@@ -98,7 +98,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['facultyList']),
+    ...mapGetters(['facultyList', 'isCollapsed']),
     myFacultyList() {
       return this.facultyList.map(i => {
           return {
@@ -132,19 +132,6 @@ export default {
 
   mounted () {
     this.$store.dispatch('setFacultyList')
-
-    // api.queryFacultyList().then(response => {
-    //   if (response.code !== 1) {
-    //     this.$alert('获取院系失败')
-    //   } else {
-    //     this.facultyList  = response.data.map(i => {
-    //       return {
-    //         label: i.facultyName,
-    //         value: i.facultyCode
-    //       }
-    //     })
-    //   }
-    // })
   },
   components: {
     ZjyTableSearch,
@@ -164,6 +151,10 @@ export default {
     left: 0;
     padding-left: 160px;
     right: 0;
+    &.isCollapse {
+      padding-left: 54px;
+    }
+    transition: all .2s;
   }
   .charts {
     background-color: #eef1f5;

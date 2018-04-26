@@ -1,11 +1,16 @@
 <!-- 学生档案实体 -->
 <template>
-  <div class="zjy-form" id="zjy-upload-form">
+  <div 
+    class="zjy-form" 
+    id="zjy-upload-form" 
+    v-loading="checkLoading"
+    element-loading-text="正在查找学生信息"
+  >
     <p class="zjy-form__title">学生信息</p>
     <el-form :model="data" :rules="rules" ref="data" label-width="80px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="学号:" prop="studentNo" class="inline" v-if="type === 2">
+          <el-form-item label="学号:" prop="studentNo" class="inline is-required" v-if="type === 2">
             <el-input @change="handleChange" v-model="data.studentNo" :class="['search-input']">
               <div class="search" slot="append" @click="check">
                 <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
@@ -57,7 +62,9 @@
       </el-row>
 
     </el-form>
-    <p class="zjy-form__title" v-if="fileList.length > 0">档案材料清单</p>
+    <div class="zjy-form__title" v-if="fileList.length > 0">
+      <p>档案材料清单<span class="warning">上传附件格式仅限为pdf、word、excel、jpg格式</span></p>
+    </div>
 
     <div class="zjy-table" v-if="fileList.length > 0">
       <el-table :data="value" style="width: 100%" :show-header="false" v-loading="loading" border element-loading-background="rgba(0, 0, 0, 0.2)">
@@ -69,8 +76,28 @@
         </el-table-column>
         <el-table-column label="文件上传" width="200">
           <template slot-scope="scope">
-            <zjy-upload :ref="'upload' + scope.$index" :disabled="isUploading" v-if="!fileList[scope.$index].stufilePath" class="zjy-table-upload" 
-            accept="image/gif, image/jpeg, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" :action="action + '?index=' + scope.$index" :headers="{'Zjy-Token': token}" multiple :limit="3" :showFileList="false" :before-upload="handleBeforeUpload" :on-progress="handleProgress" :on-success="handleSuccess" :on-error="handleError" :auto-upload="true" :file-list="fl">
+            <zjy-upload 
+              :ref="'upload' + scope.$index" 
+              :disabled="isUploading" 
+              v-if="!fileList[scope.$index].stufilePath" 
+              class="zjy-table-upload" 
+              accept="
+                image/jpeg,
+                application/msword,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
+                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                application/pdf
+              " 
+              :action="action + '?index=' + scope.$index" 
+              :headers="{'Zjy-Token': token}" 
+              :showFileList="false" 
+              :before-upload="handleBeforeUpload" 
+              :on-progress="handleProgress" 
+              :on-success="handleSuccess" 
+              :on-error="handleError" 
+              :auto-upload="true" 
+              :file-list="fl"
+            >
               <el-button :disabled="isUploading" size="small" type="primary" @click="test(scope.row, scope.$index)">
                 上传附件
               </el-button>
@@ -101,7 +128,6 @@
 
             <template v-if="!fileList[scope.$index].stufilePath">
               <p :id="'tip' + scope.$index"></p>
-
               <transition name="breadcrumb1">
                 <div role="progressbar" class="el-progress el-progress--line" color="#36c6d3" :id="'per' + scope.$index">
                   <div class="el-progress-bar">
@@ -115,8 +141,6 @@
                 </div>
               </transition>
             </template>
-
-            <!-- <div :ref="'ref' + scope.$index"></div> -->
           </template>
         </el-table-column>
       </el-table>
@@ -146,38 +170,41 @@ export default {
         return callback(new Error('请输入学号'))
       } else {
         if (!this.doQuery) return
+        this.checkLoading = true
         stufileManageAPI.checkExists(value).then(response => {
           if (response.code !== 1) {
-            callback(new Error('输入学号有误'))
+            callback(new Error(response.message))
           } else {
             this.student = response.data
             callback()
           }
-          this.doQuery = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
+          this.doQuery = false
+          this.checkLoading = false
         })
       }
     }
     return {
       data: {},
+      checkLoading: false,
       action: process.env.BASE_URL + '/upload/stufileUpload',
       rules: {
         studentNo: [
-          { required: true, message: '请输入学生学号', trigger: 'blur' },
           { validator: checkStudent, trigger: 'change' }
         ],
         stufileNo: [
-          { required: true, message: '请输入档案编号', trigger: 'blur' }
+          { required: true, message: '请输入档案编号', trigger: 'change' }
         ],
         append: [
-          { required: true, message: '请输入档案编号', trigger: 'blur' }
+          { required: true, message: '请输入档案编号', trigger: 'change' }
         ],
         recipient: [
-          { required: true, message: '请输入接收人', trigger: 'blur' }
+          { required: true, message: '请输入接收人', trigger: 'change' }
         ],
         stufileDate: [
-          { required: true, message: '请选择建档日期', trigger: 'blur' }
+          { required: true, message: '请选择建档日期', trigger: 'change' }
         ]
       },
 
@@ -232,7 +259,16 @@ export default {
       }
     },
 
+    isValidatedFile (file) {
+      return /\.(jpeg|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
+    },
+
     handleBeforeUpload(file) {
+      if (!this.isValidatedFile(file)) {
+        MSG.warning('不支持的文件格式')
+        return false
+      }
+
       this.fileList[this.activeFileIndex].index = this.activeFileIndex
       this.fileList[this.activeFileIndex].stufileName = file.name
       this.fileList[this.activeFileIndex].uid = file.uid
@@ -299,8 +335,6 @@ export default {
 
 
     submitForm(formName) {
-
-
       if (this.type === 2)
         this.doQuery = true
 
@@ -421,6 +455,15 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.warning {
+  font-size: 12px;
+  font-weight: normal;
+  background-color: #fbefbd;
+  color: #9e5b0b;
+  padding: 3px 10px;
+  margin-left: 10px;
+
+}
 .el-form {
   padding: 0 50px;
   .el-form-item {

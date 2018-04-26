@@ -44,7 +44,6 @@ router.beforeEach((to, from, next) => {
       })
     }).catch(error => {
       console.log(error)
-      this.$alert(error)
       // next({path: '/500'})
     })
   } else {

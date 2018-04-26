@@ -26,7 +26,7 @@
       @submit="handleSubmit"
     >
     </zjy-process>
-  </transition>>
+  </transition>
 </div>
 </template>
 

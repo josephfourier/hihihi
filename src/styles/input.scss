@@ -4,6 +4,9 @@
   display: inline-block;
   width: 100%;
 }
+.zjy-process--textarea .zjy-textarea__inner  {
+  resize:none;
+}
 
 .zjy-input__inner {
   -webkit-appearance: none;

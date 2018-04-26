@@ -109,12 +109,8 @@ export default {
   },
   methods: {
     handleClick () {
-      // if (this.done) {
-      //   this.showPercent = false
-      // }
     },
     handleBeforeUpload(file) {
-      // this.loading = true
       this.done = false
       this.showPercent = true
     },

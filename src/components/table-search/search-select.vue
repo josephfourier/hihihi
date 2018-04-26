@@ -11,6 +11,12 @@
       :loading-text="loadingText"
     >
       <el-option
+        key="-1"
+        :label="initText ? initText : '不限'"
+        value=""
+      >
+      </el-option>
+      <el-option
         v-for="item in options"
         :key="item.value"
         :label="item.label"
@@ -37,6 +43,7 @@ export default {
     placeholder: String,
     options: Array,
     loading: Boolean,
+    initText: String,
     loadingText: {
       type: String,
       default () {

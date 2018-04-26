@@ -81,9 +81,15 @@
       <zjy-button type="primary" v-else @click="submit">提交</zjy-button>
     </div>
 
-    <el-dialog class="inner" width="30%" title="请输入拒绝原因" :visible.sync="innerVisible" append-to-body>
-      <zjy-input type="textarea" v-model="reason"></zjy-input>
-
+    <el-dialog 
+      class="inner" 
+      width="30%" 
+      title="请输入拒绝原因" 
+      :visible.sync="innerVisible"
+      @close="innerNo"
+      append-to-body
+    >
+      <zjy-input class="zjy-process--textarea" type="textarea" v-model="reason"></zjy-input>
       <transition name="el-zoom-in-top">
         <div class="tip-box">
           <transition name="el-zoom-in-top">
@@ -196,6 +202,7 @@ export default {
 
     innerNo () {
       this.innerVisible = false
+      this.hasNoReason = false // 修复点击取消后仍显示错误提示
       this.reason = ''
     },
 

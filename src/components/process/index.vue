@@ -1,11 +1,12 @@
 <!-- 教师审批流程组件 -->
 <template>
-  <div class="zjy-process">
+  <div class="zjy-process" v-if="hasStep">
     <slot :formData="data" name="header"></slot>
     <slot name="warning" v-if="$slots.warning && !hasStep"></slot>
     <template>
       <p v-if="!hasStep && !$slots.warning" class="warning">{{ empty || $t('zjy.process.none') }}</p>
       <div class="zjy-steps" v-if="hasStep">
+        <p class="zjy-steps__title">{{ $t('zjy.process.schedule')}}</p>
         <zjy-steps :active="step" align-center :space="space">
           <!-- 新添加teacherName 有可能是来自教师的申请 -->
           <zjy-step
@@ -81,15 +82,14 @@
       <zjy-button type="primary" v-else @click="submit">提交</zjy-button>
     </div>
 
-    <el-dialog 
-      class="inner" 
-      width="30%" 
-      title="请输入拒绝原因" 
+    <el-dialog
+      class="inner"
+      width="30%"
+      title="请输入拒绝原因"
       :visible.sync="innerVisible"
-      @close="innerNo"
       append-to-body
     >
-      <zjy-input class="zjy-process--textarea" type="textarea" v-model="reason"></zjy-input>
+      <zjy-input class="zjy-process--textarea" type="textarea" v-model="reason" :maxlength="256"></zjy-input>
       <transition name="el-zoom-in-top">
         <div class="tip-box">
           <transition name="el-zoom-in-top">
@@ -103,7 +103,7 @@
         <zjy-button type="primary" @click="innerYes">确定</zjy-button>
       </div>
     </el-dialog>
-    <p v-if="reason && isFinished" class="refused">拒绝原因: {{ reason }}</p>
+    <div v-if="reason && isFinished" class="refused"><p>拒绝原因</p>{{ reason }}</div>
   </div>
 
 </template>
@@ -160,6 +160,9 @@ export default {
     },
     hasError () {
       return !!this.error
+    },
+    limit () {
+      return this.reason.length
     }
   },
 
@@ -187,6 +190,8 @@ export default {
     },
 
     no () {
+      this.hasNoReason = false
+      this.reason = ''
       this.innerVisible = true
     },
 
@@ -253,8 +258,7 @@ export default {
 
         // this.hasNextApprover = !this.$empty(this.approverList)
         // 新添加若当前步骤是职务则必然是需要选择教师
-        console.log(val.swmsApprovals)
-        this.hasNextApprover = !this.$empty(this.approverList) || val.swmsApprovals.find(x => x.approvalStep === this.step).approvalType == 1
+        this.hasNextApprover = !this.$empty(this.approverList) || !this.isFinished && val.swmsApprovals.find(x => x.approvalStep === this.step).approvalType == 1
       }
     },
 
@@ -272,6 +276,7 @@ export default {
 <style lang='scss' scoped>
   .validate {
     width: 120px;
+    text-align: center;
   }
   .warning {
     color: #ED7734;
@@ -294,5 +299,10 @@ export default {
     &.inner {
        top: -5px;
     }
+  }
+  .zjy-steps__title {
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
   }
 </style>

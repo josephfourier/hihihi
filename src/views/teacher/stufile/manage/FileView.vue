@@ -121,9 +121,9 @@
       <zjy-input type="textarea" v-model="data.stufileDescription" disabled></zjy-input>
     </template>
 
-    <div class="zjy-footer">
+    <!-- <div class="zjy-footer">
       <zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
-    </div>
+    </div> -->
   </div>
 </template>
 

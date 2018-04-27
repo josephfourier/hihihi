@@ -16,7 +16,13 @@
       </table>
       <p class="process-title">申请原因</p>
       <div class="textarea-wrapper">
-        <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :disabled="data.dataStatus && data.dataStatus !== '0'"></zjy-input>
+        <zjy-input 
+          type="textarea" 
+          v-model="innerApplyReason" 
+          @change="$emit('update:applyReason', innerApplyReason)" 
+          :disabled="data.dataStatus && data.dataStatus !== '0'"
+          :maxlength="1024"
+        ></zjy-input>
         <div class="form-tip-box">
           <transition name="el-zoom-in-top">
             <span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>

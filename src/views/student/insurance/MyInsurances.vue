@@ -1,11 +1,6 @@
 <template>
   <div class="zjy-app">
-    <zjy-table
-      :data="list"
-      :loading="loading"
-      :columns="columns"
-      @view="view"
-     >
+    <zjy-table :data="list" :loading="loading" :columns="columns" @view="view">
     </zjy-table>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
@@ -14,35 +9,20 @@
     </div>
 
     <el-dialog title="审批进度" :visible.sync="visible" width="800px">
-      <process-view
-        v-loading="loading2"
-        element-loading-text="正在获取支付二维码"
-        :data="data"
-        v-model="value"
-        v-if="visible"
-        :visible.sync="visible"
-      >
+      <process-view v-loading="loading2" element-loading-text="正在获取支付二维码" :data="data" v-model="value" v-if="visible" :visible.sync="visible">
         <template slot-scope="props" slot="header">
           <view-apply :data="props.formData"></view-apply>
         </template>
 
         <!-- 因审批进度中可能会出现付款因此需要自定义操作 -->
         <template slot-scope="props" slot="footer">
-          <zjy-footer
-            :data="props.data"
-            :steps="props.steps"
-            @submit="pay"
-            :visible.sync="visible"
-          ></zjy-footer>
+          <zjy-footer :data="props.data" :steps="props.steps" @submit="pay" :visible.sync="visible"></zjy-footer>
         </template>
       </process-view>
     </el-dialog>
 
     <el-dialog title="扫码付款" :visible.sync="visible2" width="680px" @close="refresh">
-      <qrcode
-        :url="url"
-        v-if="visible2"
-      ></qrcode>
+      <qrcode :url="url" v-if="visible2"></qrcode>
     </el-dialog>
   </div>
 </template>
@@ -82,13 +62,13 @@ export default {
     pay (data) {
       this.loading2 = true
       api.pay(data.insuranceUid).then(response => {
-          if (response.code !== 1) {
-            MSG.warning('获取支付二维码失败')
-          } else {
-            this.visible = false
-            this.visible2 = true
-            this.url = response.data
-          }
+        if (response.code !== 1) {
+          MSG.warning('获取支付二维码失败')
+        } else {
+          this.visible = false
+          this.visible2 = true
+          this.url = response.data
+        }
       }).finally(_ => {
         this.loading2 = false
       })

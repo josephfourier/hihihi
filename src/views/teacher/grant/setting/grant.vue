@@ -157,16 +157,12 @@ export default {
 
 
     handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handlePreview(file) {
-      console.log(file);
     },
     handleError (err, file, fileList) {
-
     },
     handleChecked(val) {
-      console.log(val)
       this.scopeList = val.map(element => {
         return {
           postId: element

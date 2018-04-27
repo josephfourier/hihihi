@@ -10,7 +10,7 @@
 
     <div class="zjy-line"></div>
 
-    <zjy-table-operator>
+    <zjy-table-operator v-if="hasPermission('swms:insurance-tea:create')">
       <operator-item @click="visible2 = true" clz="create">批量投保</operator-item>
     </zjy-table-operator>
 
@@ -102,7 +102,6 @@ export default {
   },
 
   methods: {
-
     pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
@@ -133,6 +132,7 @@ export default {
           setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.visible = false
           this.refresh()
+          this.$store.dispatch('setSchedules')
         } else {
           MSG.success('保存失败')
         }

@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 const operFormat = (row, cellValue) => '查看'
 const statusFormat = (cellValue) => ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款'][+cellValue]
 
@@ -48,31 +48,26 @@ export default {
       index: true
     }, {
       label: '学号',
-      prop: 'studentNo',
-      width: 100
+      prop: 'studentNo'
     }, {
       label: '学生姓名',
-      prop: 'studentName',
-      width: 100
+      prop: 'studentName'
     }, {
       label: '院系',
       prop: 'facultyName'
     }, {
       label: '申请日期',
       prop: 'applyDate',
-      width: 80,
       formatter: dateFormat
     }, {
       label: '险种名称',
       prop: 'insuranceName'
     }, {
       label: '保险费用',
-      prop: 'insuranceCost',
-      width: 70
+      prop: 'insuranceCost'
     }, {
       label: '状态',
       prop: 'dataStatus',
-      width: 50,
       formatter: statusFormat
     }, {
       label: '操作',
@@ -80,6 +75,7 @@ export default {
         {
           label: '查看',
           cmd: 'view',
+          render: row => hasPermission('swms:insurance-tea:update'),
           formatter: operFormat
         }
       ]

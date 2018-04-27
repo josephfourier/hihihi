@@ -141,7 +141,6 @@ export default {
     },
     handleSubmit (data, steps) {
       api.create(this.makeFormData(data, steps)).then(response => {
-        console.log(response)
         if (response.code !== 1) {
           this.$alert('申请失败')
         } else {
@@ -197,7 +196,6 @@ export default {
         this.query.offset = this.query.limit * (val - 1)
         api.queryForList(this.query).then(response => {
           this.list = response.rows
-          console.log(this.list)
           this.total = response.total
         }).catch(error => {
           console.log(error)

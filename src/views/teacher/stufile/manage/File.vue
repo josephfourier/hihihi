@@ -1,8 +1,8 @@
 <!-- 学生档案实体 -->
 <template>
-  <div 
-    class="zjy-form" 
-    id="zjy-upload-form" 
+  <div
+    class="zjy-form"
+    id="zjy-upload-form"
     v-loading="checkLoading"
     element-loading-text="正在查找学生信息"
   >
@@ -41,16 +41,16 @@
       </el-form-item>
 
       <el-form-item label="档案编号" prop="stufileNo" class="inline pull-left">
-        <el-input type="text" v-model="data.stufileNo"></el-input>
+        <el-input type="text" v-model="data.stufileNo" maxlength="16"></el-input>
       </el-form-item>
       <span class="concat">+ 学号 +</span>
       <el-form-item  class="inline pull-right append" prop="append">
-        <el-input type="text" v-model="data.append"></el-input>
+        <el-input type="text" v-model="data.append" maxlength="16"></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="12">
           <el-form-item label="接收人" prop="recipient" class="inline pull-left">
-            <el-input type="text" v-model="data.recipient"></el-input>
+            <el-input type="text" v-model="data.recipient" maxlength="64"></el-input>
           </el-form-item>
 
         </el-col>
@@ -76,26 +76,26 @@
         </el-table-column>
         <el-table-column label="文件上传" width="200">
           <template slot-scope="scope">
-            <zjy-upload 
-              :ref="'upload' + scope.$index" 
-              :disabled="isUploading" 
-              v-if="!fileList[scope.$index].stufilePath" 
-              class="zjy-table-upload" 
+            <zjy-upload
+              :ref="'upload' + scope.$index"
+              :disabled="isUploading"
+              v-if="!fileList[scope.$index].stufilePath"
+              class="zjy-table-upload"
               accept="
                 image/jpeg,
                 application/msword,
-                application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
                 application/pdf
-              " 
-              :action="action + '?index=' + scope.$index" 
-              :headers="{'Zjy-Token': token}" 
-              :showFileList="false" 
-              :before-upload="handleBeforeUpload" 
-              :on-progress="handleProgress" 
-              :on-success="handleSuccess" 
-              :on-error="handleError" 
-              :auto-upload="true" 
+              "
+              :action="action + '?index=' + scope.$index"
+              :headers="{'Zjy-Token': token}"
+              :showFileList="false"
+              :before-upload="handleBeforeUpload"
+              :on-progress="handleProgress"
+              :on-success="handleSuccess"
+              :on-error="handleError"
+              :auto-upload="true"
               :file-list="fl"
             >
               <el-button :disabled="isUploading" size="small" type="primary" @click="test(scope.row, scope.$index)">
@@ -146,7 +146,7 @@
       </el-table>
     </div>
     <p class="zjy-form__title">档案说明</p>
-    <zjy-input type="textarea" v-model="data.stufileDescription"></zjy-input>
+    <zjy-input type="textarea" v-model="data.stufileDescription" :resize="'none'" :maxlength="256"></zjy-input>
 
     <div class="zjy-footer">
       <zjy-button type="plain" @click="$emit('update:visible', false)">取消</zjy-button>

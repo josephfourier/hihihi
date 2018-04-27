@@ -100,7 +100,9 @@ export default {
           MSG.warning(response.message)
         } else {
           this.refresh(auto)
-          MSG.success(this.$t('zjy.message.delete.success'))
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
         }
       }).catch(error => {
         console.log(error)

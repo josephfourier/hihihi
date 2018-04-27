@@ -11,7 +11,8 @@ export default {
       },
       delete: {
         error: '删除失败',
-        success: '删除成功'
+        success: '删除成功',
+        none: '至少选择一条记录'
       }
     },
     userType: {

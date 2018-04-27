@@ -3,8 +3,8 @@
   <div class="zjy-app">
     <div class="zjy-table">
 
-      <zjy-table-operator>
-        <operator-item clz="create" @click="create" v-if="hasPermission('swms:stufile-set:create')">新增</operator-item>
+      <zjy-table-operator v-if="hasPermission('swms:stufile-set:create')">
+        <operator-item clz="create" @click="create">新增</operator-item>
       </zjy-table-operator>
 
       <zjy-table
@@ -16,7 +16,7 @@
       ></zjy-table>
 
       <div class="zjy-dialog">
-        <el-dialog title="请输入档案材料名称" :visible.sync="visible" width="800px">
+        <el-dialog title="请输入档案材料名称" :visible.sync="visible" width="600px">
           <stufile-setting
             v-if="visible"
             :formData="stufile"

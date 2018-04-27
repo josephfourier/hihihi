@@ -101,7 +101,9 @@ export default {
       settingAPI.delete(row.punishsettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
-          MSG.success(this.$t('zjy.message.delete.success'))
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
         } else {
           // this.$alert(response.message)
           MSG.warning(response.message)

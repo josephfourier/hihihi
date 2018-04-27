@@ -160,7 +160,6 @@ export default {
     },
 
     handleEdit (row) {
-      console.log(row)
       this.queryPostList().then(_ => {
         this.data = row
         this.visible3 = true

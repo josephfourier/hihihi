@@ -1,21 +1,22 @@
 <template>
- <div class="zjy-process">
+ <div class="process">
    <table class="process-table">
      <tr>
-       <td>学号: {{ data.studentNo }}</td>
-       <td>学生姓名: {{ data.studentName }}</td>
-       <td>年级: {{ data.facultyName }}</td>
-       <td>院系: {{ data.facultyName }}</td>
+       <td>学号：<span>{{ data.studentNo }}</span></td>
+       <td>学生姓名：<span>{{ data.studentName }}</span></td>
+       <td>年级：<span>{{ data.facultyName }}</span></td>
+       <td>院系：<span>{{ data.facultyName }}</span></td>
      </tr>
      <tr>
-       <td>专业: {{ data.specialtyName }}</td>
-       <td>班级: {{ data.className }}</td>
-       <td>申请日期: {{ data.applyDate | dateFormat }}</td>
+       <td>专业：<span>{{ data.specialtyName }}</span></td>
+       <td>班级：<span>{{ data.className }}</span></td>
+       <td>申请日期：<span>{{ data.applyDate | dateFormat }}</span></td>
      </tr>
    </table>
-   <p class="process-title">申请原因</p>
-   <p class="content">{{ data.applyReason }}</p>
-   <p class="process-title">审批进度</p>
+   <div class="process-item">
+     <p class="process-item__title">申请原因</p>
+     <div class="process-item__content">{{ data.applyReason }}</div>
+   </div>
  </div>
 </template>
 <script>

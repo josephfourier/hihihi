@@ -34,6 +34,7 @@
       @change="handleChange"
     >
     </textarea>
+    <p v-if="maxlength" style="float:right;font-size:12px">{{ value ? value.length : 0 }} / {{ maxlength }}</p>
   </div>
 </template>
 

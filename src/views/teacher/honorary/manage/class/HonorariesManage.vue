@@ -21,7 +21,8 @@
         :columns="columns"
         @view="handleView"
         @delete="handleDelete"
-        @selection-change="handleSelectionChange">
+        @selection-change="handleSelectionChange"
+      >
       </zjy-table>
     </div>
 
@@ -243,7 +244,7 @@ export default {
           }
         }).catch(error => {
           console.log(error)
-          
+
         }).finally(_ => {
 this.loading = false
         })

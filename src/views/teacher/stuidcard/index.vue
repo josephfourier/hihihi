@@ -9,7 +9,7 @@
 
     <div class="zjy-line"></div>
 
-    <zjy-table-operator>
+    <zjy-table-operator v-if="hasPermission('swms:stuidcard-tea:update')">
       <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
     </zjy-table-operator>
 
@@ -19,7 +19,9 @@
         :loading="loading"
         :columns="columns"
         @view="view"
-        @delete="_delete">
+        @delete="_delete"
+        @selection-change="handleSelectionChange"
+      >
       </zjy-table>
     </div>
 
@@ -75,13 +77,7 @@ export default {
       visible: false,
       value: '',
       data: '',
-      query: {
-        offset: 0,
-        limit: 10,
-        dataStatus: '', // 0:待审批, 1:已通过, 2:已拒绝, 3:审批中
-        enterYear: '',
-        studentCode: ''
-      },
+      query: properties.query,
       enterYear: '',
       dataStatus: '',
       studentCode: '',
@@ -89,36 +85,8 @@ export default {
       loading: false,
       selectedRows: [],
 
-      years: [
-        {
-          label: '2017年',
-          value: 2017
-        },
-        {
-          label: '2018年',
-          value: 2018
-        }
-      ],
-
-      status: [
-        {
-          label: '待审批',
-          value: 0
-        },
-
-        {
-          label: '已通过',
-          value: 1
-        },
-        {
-          label: '已拒绝',
-          value: 2
-        },
-        {
-          label: '审批中',
-          value: 3
-        }
-      ],
+      years: properties.years,
+      status: properties.status,
       columns: properties.columns
     }
   },
@@ -147,7 +115,7 @@ export default {
     handleSubmit (data, steps) {
       cardAPI.approved(this.data, steps).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => {MSG.success('保存成功')}, 200)
+          setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.refresh()
           this.visible = false
           //  待办状态刷新
@@ -159,15 +127,26 @@ export default {
     },
 
     batchRemove () {
-      if (this.selectedRows.length === 0) return
+      if (this.selectedRows.length === 0) {
+        MSG.warning(this.$t('zjy.message.delete.none'))
+        return
+      }
 
       let ids = ''
+      const auto = this.selectedRows.length === this.list.length && this.currentPage !== 1
       this.selectedRows.forEach(x => {
         ids += x.studentId + '-'
       })
       this.loading = true
       cardAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
-        this.refresh()
+        if (response.code !== 1) {
+          MSG.warning(this.$t('zjy.message.delete.error'))
+        } else {
+          this.refresh(auto)
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+        }
       }).catch(error => {
         console.log(error)
       })
@@ -175,12 +154,15 @@ export default {
 
     _delete (row) {
       this.loading = true
+      const auto = this.list.length === 1 && this.currentPage !== 1
       cardAPI.batchRemove(row.studentId).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(this.$t('zjy.message.delete.error'))
         } else {
-          MSG.success('删除成功')
-          this.refresh()
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+          this.refresh(auto)
         }
       }).catch(error => {
         console.log(error)
@@ -191,9 +173,8 @@ export default {
       this.currentPage = pageNumber
     },
 
-   
-    refresh () {
-      _refresh.call(this)
+    refresh (auto) {
+      _refresh.call(this, auto)
     }
   },
 

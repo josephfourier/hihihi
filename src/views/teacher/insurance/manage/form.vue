@@ -1,32 +1,38 @@
 <template>
-  <div class="zjy-process">
+  <div class="process">
+    <div v-if="data.dataStatus === '5'" class="status">
+      <img src="./ic_wait.png" alt="待付款">
+      <span class="status-text">{{ data.dataStatusName }}</span>
+    </div>
     <table class="process-table">
       <tr>
-        <td><span>学号:</span> {{ data.studentNo }}</td>
-        <td>学生姓名: {{ data.studentName }}</td>
-        <td>入学年份: {{ data.enterYear }}</td>
-        <td>院系: {{ data.facultyName }}</td>
+        <td>学号：{{ data.studentNo }}</td>
+        <td>学生姓名：{{ data.studentName }}</td>
+        <td>入学年份：{{ data.enterYear }}</td>
       </tr>
       <tr>
-        <td>专业: {{ data.specialtyName }}</td>
-        <td>班级: {{ data.className }}</td>
-        <td>申请日期: {{ data.applyDate | dateFormat }}</td>
-        <td>保险名称: {{ data.insuranceName }}</td>
+        <td>院系：{{ data.facultyName }}</td>
+        <td>专业：{{ data.specialtyName }}</td>
+        <td>班级：{{ data.className }}</td>
       </tr>
       <tr>
-        <td>保险金额: {{ data.insuranceCost }}</td>
-        <td>险种类别: {{ data.insuranceCategory }}</td>
-        <td>保险期限: {{ data.insuranceLimit }}</td>
+        <td>申请日期：{{ data.applyDate | dateFormat }}</td>
+        <td>保险名称：{{ data.insuranceName }}</td>
+        <td>保险金额：{{ data.insuranceCost }}</td>
+      </tr>
+      <tr>
+        <td>险种类别：{{ data.insuranceCategory }}</td>
+        <td>保险期限：{{ data.insuranceLimit }}</td>
       </tr>
     </table>
-    <p class="process-title">保险责任</p>
-    <p class="content">{{ data.insuranceLiability }}</p>
-    <p class="process-title">审批进度</p>
+    <div class="process-item detail">
+      <p class="process-item__title">详细条款</p>
+      <div class="process-item__content">{{ data.detailedTerms }}</div>
+    </div>
   </div>
 </template>
-<!--{{ data.applyReason }}-->
-<script>
 
+<script>
 export default {
   name: 'ZjyFrom',
   props: {
@@ -36,29 +42,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-  .zjy-process {
-    /*.process-table {*/
-      /*width: 100%;*/
-      /*td {*/
-        /*padding-bottom: 10px;*/
-        /*color: #323232;*/
-        /*span{*/
-          /*color: #666666;*/
-        /*}*/
-      /*}*/
-    /*}*/
-    /*.process-title {*/
-      /*font-weight: bold;*/
-      /*margin-top: 5px;*/
-      /*&:last-child {*/
-        /*margin-bottom: 10px;*/
-      /*}*/
-    /*}*/
-    .content {
-      word-break: break-all;
-      margin-bottom: 15px;
-    }
+  .detail {
+    padding: 20px;
+    background-color: #f5f5f5;
+    margin-bottom: 15px;
   }
-
+  .status {
+    margin-bottom: 10px;
+  }
+  .status-text {
+    color: #ef7727;
+    font-size: 16px;
+    vertical-align: top;
+    position: relative;
+    top: 6px;
+    left: 2px;
+  }
 </style>

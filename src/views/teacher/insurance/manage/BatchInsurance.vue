@@ -154,8 +154,6 @@ export default {
     this.loading = true
     axios.all([commonAPI.queryFacultyList(), insuranceSettingAPI.queryForList()])
       .then(axios.spread((r1, r2) => {
-        console.log(r1)
-        console.log(r2)
         if (r1.code !== 1 || r2.code !== 1) {
           MSG.success('获取数据失败')
         } else {

@@ -54,7 +54,6 @@ export default {
   created () {
     // commonAPI.queryMyFacultyListNotApplied(this.data.honorarysettingUid).then(response => {
     commonAPI.queryMyFacultyList(this.data.honorarysettingUid).then(response => {
-      console.log(response.data)
       this.innerFac = response.data.find(i => i.facultyId === this.data.facultyId)
       // this.facs = response.data
     }).catch(error => {

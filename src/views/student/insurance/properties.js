@@ -1,3 +1,5 @@
+import { hasPermission } from '@/utils'
+
 const statusFormatALL = (cellValue) => {
   return ['可申请', '申请中'][+cellValue]
 }
@@ -16,8 +18,7 @@ export default {
       index: true
     }, {
       label: '险种名称',
-      prop: 'insuranceName',
-      width: 200
+      prop: 'insuranceName'
     }, {
       label: '保险公司',
       prop: 'insuranceCompany'
@@ -44,7 +45,7 @@ export default {
         },
         {
           label: '申请',
-          render: row => row.applyStatus !== '1',
+          render: row => row.applyStatus !== '1' && hasPermission('swms:insurance-stu:create'),
           cmd: 'create'
         }
       ]
@@ -55,8 +56,7 @@ export default {
       index: true
     }, {
       label: '险种名称',
-      prop: 'insuranceName',
-      width: 200
+      prop: 'insuranceName'
     }, {
       label: '保险公司',
       prop: 'insuranceCompany'

@@ -106,7 +106,6 @@ export default {
     },
 
     view (row) {
-      console.log(row)
       this.applyReason = row.applyReson
       commonAPI.queryApprovalProcess(row.studentId, row.workstudyUid).then(response => {
         this.data = row

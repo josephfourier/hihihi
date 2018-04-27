@@ -3,7 +3,7 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData">
       <el-form-item prop="stufileName">
-        <el-input type="textarea" v-model="formData.stufileName"></el-input>
+        <el-input type="textarea" v-model="formData.stufileName" :maxlength="128"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -19,6 +19,7 @@ import ZjyButton from '@/components/button'
 import stufileAPI from '@/api/teacher/stufile/setting'
 
 export default {
+  name: 'student-file-setting',
   data () {
     let that = this
     let checkExists = (rule, value, callback) => {
@@ -29,7 +30,7 @@ export default {
     return {
       rules: {
         stufileName: [
-          {required: true, message: '请输入档案名称', trigger: 'blur'},
+          {required: true, message: '请输入档案名称', trigger: 'change'},
           {validator: checkExists, trigger: 'blur'}
         ]
       }

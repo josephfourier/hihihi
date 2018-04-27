@@ -214,17 +214,21 @@
 }
 
 // 审批流程样式
-.zjy-process {
+.process {
     .process-table {
         width: 100%;
         td {
             padding-bottom: 10px;
         }
+        margin-bottom: 10px;
     }
-    .process-title {
+    .process-item__title {
         font-weight: bold;
         color: #333333;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
+    }
+    .process-item {
+        margin-bottom: 20px;
     }
     .content {
         word-break: break-all;

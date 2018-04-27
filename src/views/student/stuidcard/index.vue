@@ -32,7 +32,7 @@
       </div>
       <div class="form-item block">
         <span>申请原因</span>
-        <zjy-input type="textarea" v-model="reissued.applyReason" :disabled="!isFinished && step !== 1"></zjy-input>
+        <zjy-input type="textarea" v-model="reissued.applyReason" :disabled="!isFinished && step !== 1" :maxlength="256"></zjy-input>
       </div>
       <div class="tip-box">
         <transition name="el-zoom-in-top">
@@ -323,6 +323,11 @@ export default {
 
 .zjy-btn-group {
   padding: 50px 0;
+  text-align: center;
+}
+
+.validate {
+  width: 120px;
   text-align: center;
 }
 </style>

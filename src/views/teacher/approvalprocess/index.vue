@@ -288,7 +288,9 @@ export default {
         .then(response => {
           if (response.code === 1) {
             // this.value.splice(this.value.findIndex(v => v.templateUid === item.templateUid), 1)
-            MSG.success(this.$t('zjy.message.delete.success'))
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.delete.success'))
+            }, 200)
             this.refresh()
           } else {
             MSG.success(this.$t('zjy.message.delete.error'))

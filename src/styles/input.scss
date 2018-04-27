@@ -4,7 +4,8 @@
   display: inline-block;
   width: 100%;
 }
-.zjy-process--textarea .zjy-textarea__inner  {
+.zjy-process--textarea .zjy-textarea__inner,
+.zjy-form .zjy-textarea__inner  {
   resize:none;
 }
 

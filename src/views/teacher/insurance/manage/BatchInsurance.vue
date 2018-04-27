@@ -127,10 +127,12 @@ export default {
         if (valid) {
           insuranceManageAPI.batch(this.formData).then(response => {
             if (response.code !== 1) {
-              this.$alert(response.message)
+              MSG.warning(response.message)
             } else {
-              MSG.success('投保成功')
-              this.$emit('closed')
+              setTimeout(_ => {
+                MSG.success('投保成功')
+              }, 200)
+              this.$emit('update:visible', false)
             }
           }).catch(error => {
             console.log(error)

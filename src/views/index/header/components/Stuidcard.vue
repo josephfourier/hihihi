@@ -76,7 +76,9 @@ export default {
           setTimeout(_ => {
             MSG.success('保存成功')
           }, 200)
-          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('setSchedules')
+          // 提交成功后不再发送请求
+          this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
         } else {
           MSG.success('保存失败')
         }

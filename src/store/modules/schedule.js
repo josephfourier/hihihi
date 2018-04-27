@@ -7,10 +7,17 @@ const state = {
 const mutations = {
   [types.SET_TODO_LIST] (state, todoList) {
     state.todoList = todoList
+  },
+  [types.REMOVE_FROM_LIST] (state, id) {
+    state.todoList.splice(state.todoList.findIndex(i => i.dataUid === id), 1)
   }
 }
 
 const actions = {
+  removeFromTodoList ({ commit }, id) {
+    commit(types.REMOVE_FROM_LIST, id)
+  },
+
   setTodoList ({ commit }, todoList) {
     commit(types.SET_TODO_LIST, todoList)
   },

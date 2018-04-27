@@ -1,3 +1,5 @@
+import { hasPermission } from '@/utils'
+
 export default {
   query: {
     offset: 0,
@@ -30,6 +32,7 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:permission-tea:read'),
           cmd: 'view'
         }
       ]

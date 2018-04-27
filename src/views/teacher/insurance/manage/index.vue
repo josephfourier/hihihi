@@ -116,6 +116,7 @@ export default {
 
     handleView (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.insuranceUid).then(response => {
+        console.log(response)
         this.setting = row
         this.value = response.data
         this.visible = true

@@ -62,6 +62,14 @@ export default {
     }
   },
 
+  created() {
+    // 若操作下无操作按钮则不显示操作列
+    const pos = this.columns.findIndex(i => i.operators && i.operators.length === 1 && !i.render)
+    pos > -1 
+    ? this.columns.splice(pos, 1)
+    : ''
+  },
+
   methods: {
     pageChanged (pageNumber) {
       this.currentPage = pageNumber

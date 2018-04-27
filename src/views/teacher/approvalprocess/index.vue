@@ -16,13 +16,11 @@
     <div class="workflow">
       <div class="workflow-header">
         <p>2.设置流程</p>
-        <a href="javascript:" class="zjy-link-add" @click="addWorkflow">
+        <a href="javascript:" class="zjy-link-add" @click="addWorkflow" v-if="hasPermission('swms:approvaltempate-set:create')">
           <i class="zjy-link-icon zjy-icon-add"></i>
           添加步骤</a>
       </div>
       <div class="workflow-body" v-loading="loading2">
-
-        <!-- <table v-loading="loading"> -->
         <transition-group name="list" tag="table">
           <tr :key="'-1'" class="workflow-body__item">
             <th>步骤序号</th>
@@ -35,10 +33,10 @@
             <td v-else>{{ item.postName }}</td>
             <td>
               <div class="zjy-link-group">
-                <a href="javascript:" class="zjy-link-config" @click="configWorkflow(item, index)">
+                <a href="javascript:" class="zjy-link-config" @click="configWorkflow(item, index)" v-if="hasPermission('swms:approvaltempate-set:update')">
                   <i class="zjy-link-icon zjy-icon-config"></i>
                   配置</a>
-                <a href="javascript:" class="zjy-link-delete" v-if="index === workflow.length - 1" @click="deleteWorkflow(item, index)">
+                <a href="javascript:" class="zjy-link-delete" v-if="index === workflow.length - 1 && hasPermission('swms:approvaltempate-set:delete')" @click="deleteWorkflow(item, index)">
                   <i class="zjy-link-icon zjy-icon-delete"></i>
                   删除</a>
               </div>

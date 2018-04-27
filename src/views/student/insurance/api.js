@@ -28,5 +28,8 @@ export default {
   },
   pay (id) {
     return ajax.get('/manage/swmsXFTPay/insurancePay/' + id)
+  },
+  assert (arg) {
+    return ajax.put('/manage/insurance/' + arg.insuranceUid, arg)
   }
 }

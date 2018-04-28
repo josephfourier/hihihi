@@ -34,7 +34,7 @@
       >
         <template slot-scope="scope">
           <template v-if="item.operators">
-            <div class="table-operator-group">
+            <div class="table-operator-group" :style="item.operators.length > 2 ? {width: '160px'} : ''">
               <operator-content
                 v-for="child in item.operators"
                 :key="child.label"

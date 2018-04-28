@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div>
     <transition name="fade" mode="out-in">
@@ -9,11 +8,5 @@
 
 <script>
 export default {
-  data () {
-    return {}
-  }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

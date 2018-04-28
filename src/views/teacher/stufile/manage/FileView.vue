@@ -8,7 +8,7 @@
           <el-form-item label="学号:" prop="studentNo" class="inline">
             <el-input v-model="studentNo" disabled :class="['search-input']">
               <div class="search" slot="append">
-                <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
+                <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
               </div>
             </el-input>
           </el-form-item>
@@ -60,16 +60,16 @@
         </el-table-column>
         <el-table-column label="文件上传" width="200">
           <template slot-scope="scope">
-            <zjy-upload 
-              :ref="'upload' + scope.$index" 
-              v-if="!fileList[scope.$index].stufilePath" 
-              class="zjy-table-upload" 
-              accept="image/gif, image/jpeg" 
-              :action="action + '?index=' + scope.$index" 
-              :headers="{'Zjy-Token': token}" 
-              multiple 
-              :limit="3" 
-              :showFileList="false" 
+            <zjy-upload
+              :ref="'upload' + scope.$index"
+              v-if="!fileList[scope.$index].stufilePath"
+              class="zjy-table-upload"
+              accept="image/gif, image/jpeg"
+              :action="action + '?index=' + scope.$index"
+              :headers="{'Zjy-Token': token}"
+              multiple
+              :limit="3"
+              :showFileList="false"
               :file-list="fl"
             >
               <el-button size="small" type="primary">

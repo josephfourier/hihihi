@@ -91,7 +91,7 @@ export default {
             }
           }).filter(i => i.value !== 0)
         }
-      }).finally (_ => {
+      }).finally(_ => {
         this.loading = false
       })
     }
@@ -99,12 +99,12 @@ export default {
 
   computed: {
     ...mapGetters(['facultyList', 'isCollapsed']),
-    myFacultyList() {
+    myFacultyList () {
       return this.facultyList.map(i => {
-          return {
-            label: i.facultyName,
-            value: i.facultyCode
-          }
+        return {
+          label: i.facultyName,
+          value: i.facultyCode
+        }
       })
     },
     title () {

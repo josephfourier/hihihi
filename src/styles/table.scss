@@ -104,7 +104,7 @@
   }
 
   .zjy-table-search__button {
-    background: #37c6d4 url("../assets/images/zjy-icon-search.png") 15px 10px
+    background: #37c6d4 url("../assets/imgs/zjy-icon-search.png") 15px 10px
       no-repeat;
     width: 45px;
     height: 34px;
@@ -140,4 +140,15 @@
 }
 .el-select-dropdown__empty {
   font-size: 12px;
+}
+
+.table-operator-group {
+  width: 100px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+// 水平滚动
+.el-table--scrollable-x .el-table__body-wrapper {
+  overflow: hidden;
 }

@@ -17,7 +17,7 @@
     display: block;
   }
 
-  .zjy-select-panel__item+.zjy-select-panel__item, 
+  .zjy-select-panel__item+.zjy-select-panel__item,
   .el-transfer__button [class*=el-icon-]+span {
     margin-left: 0;
   }
@@ -44,6 +44,7 @@
         line-height: 40px;
         cursor: pointer;
         text-indent: 20px;
+        margin-bottom: -1px;
         &:first-of-type {
           border-top: 1px solid #c6c6c6;
         }
@@ -98,5 +99,5 @@
 .zjy-search-input__icon {
   width: 15px;
   height: 16px;
-  background: url(../assets/imgs/zjy-icon-search.png) 0 0 no-repeat;
+  background: url(../assets/imgs/zjy-icon-ss.png) 0 0 no-repeat;
 }

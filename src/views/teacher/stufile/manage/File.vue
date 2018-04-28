@@ -13,7 +13,7 @@
           <el-form-item label="学号:" prop="studentNo" class="inline is-required" v-if="type === 2">
             <el-input @change="handleChange" v-model="data.studentNo" :class="['search-input']">
               <div class="search" slot="append" @click="check">
-                <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
+                <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
               </div>
             </el-input>
           </el-form-item>
@@ -21,7 +21,7 @@
           <el-form-item label="学号:" class="inline" v-else>
             <el-input :value="data.studentNo" :class="['search-input']" disabled>
               <div class="search" slot="append" @click="check">
-                <img src="@/assets/images/zjy-icon-search.png" alt="搜索">
+                <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
               </div>
             </el-input>
           </el-form-item>
@@ -163,7 +163,7 @@ import { mapGetters } from 'vuex'
 import ZjyUpload from '@/components/upload/index'
 
 export default {
-  data() {
+  data () {
     var checkStudent = (rule, value, callback) => {
       if (!value) {
         this.doQuery = false
@@ -227,27 +227,27 @@ export default {
   },
 
   methods: {
-    abort() {
+    abort () {
       this.$refs['upload' + this.activeFileIndex].abort()
       this.$refs['ref' + this.activeFileIndex].style.width = 0 + '%'
       this.$refs['ref2' + this.activeFileIndex].innerHTML = 0 + '%'
       this.isUploading = false
     },
-    test(row, index) {
+    test (row, index) {
       if (this.isUploading) return
       this.activeFileIndex = index
       this.activeSettingId = row.stufilesettingUid
     },
 
-    deleteFile(index) {
+    deleteFile (index) {
       this.fileList[index].stufilePath = ''
       this.fileList[index].stufileName = ''
     },
 
-    handleUpload(index, row) {
+    handleUpload (index, row) {
     },
 
-    handleProgress(event, file, fileList) {
+    handleProgress (event, file, fileList) {
       try {
         this.isUploading = true
         const index = this.activeFileIndex
@@ -263,7 +263,7 @@ export default {
       return /\.(jpeg|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
     },
 
-    handleBeforeUpload(file) {
+    handleBeforeUpload (file) {
       if (!this.isValidatedFile(file)) {
         MSG.warning('不支持的文件格式')
         return false
@@ -282,7 +282,7 @@ export default {
       return true
     },
 
-    handleSuccess(response, file, fileList) {
+    handleSuccess (response, file, fileList) {
       try {
         let which = -1
         which = this.fileList.findIndex(x => x.uid === file.uid)
@@ -311,32 +311,30 @@ export default {
       }
     },
 
-    handleError(err, file, fileList) {
+    handleError (err, file, fileList) {
       console.log(err)
     },
 
-    handleEdit(index, row) {
+    handleEdit (index, row) {
       console.log(index, row)
     },
 
-    handleDelete(index, row) {
+    handleDelete (index, row) {
       console.log(index, row)
     },
 
-    check() {
+    check () {
       if (this.type === 1) return
       this.doQuery = true
       this.$refs.data.validateField('studentNo')
     },
 
-    handleChange() {
+    handleChange () {
       // this.clearData()
     },
 
-
-    submitForm(formName) {
-      if (this.type === 2)
-        this.doQuery = true
+    submitForm (formName) {
+      if (this.type === 2) { this.doQuery = true }
 
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -418,7 +416,7 @@ export default {
     ZjyInput
   },
 
-  beforeDestroy() {
+  beforeDestroy () {
     for (let i = 0; i < this.fileList.length; ++i) {
       if (this.isUploading) try { this.$refs['upload' + i].abort() } catch (e) { }
     }
@@ -427,7 +425,7 @@ export default {
   watch: {
     formData: {
       immediate: true,
-      handler(val, oldVal) {
+      handler (val) {
         this.data = val
         try {
           if (this.data.ucenterStudent.studentNo) {
@@ -447,7 +445,7 @@ export default {
 
     list: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.fileList = val
       }
     }

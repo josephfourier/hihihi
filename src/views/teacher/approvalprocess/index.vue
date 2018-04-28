@@ -528,18 +528,18 @@ export default {
   overflow: hidden;
   padding: 30px 40px;
   font-size: 14px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .menu {
   width: 260px;
-  float: left;
   margin-right: 20px;
   margin-bottom: 10px;
   min-height: 300px;
 }
 
 .workflow {
-  float: left;
   width: 600px;
   border: 1px solid #c6c6c6;
   min-height: 300px;

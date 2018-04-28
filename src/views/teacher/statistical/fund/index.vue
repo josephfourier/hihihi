@@ -7,7 +7,7 @@
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
-    <div class="echart" v-loading="loading">
+    <div :class="['echart', {isCollapse: isCollapsed}]" v-loading="loading">
       <div class="charts">
         <div class="mychart">
           <pie-chart
@@ -39,6 +39,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'index',
+  inject: ['isCollapse'],
   data () {
     return {
       types: properties.types,
@@ -90,20 +91,20 @@ export default {
             }
           }).filter(i => i.value !== 0)
         }
-      }).finally (_ => {
+      }).finally(_ => {
         this.loading = false
       })
     }
   },
 
   computed: {
-    ...mapGetters(['facultyList']),
-    myFacultyList() {
+    ...mapGetters(['facultyList', 'isCollapsed']),
+    myFacultyList () {
       return this.facultyList.map(i => {
-          return {
-            label: i.facultyName,
-            value: i.facultyCode
-          }
+        return {
+          label: i.facultyName,
+          value: i.facultyCode
+        }
       })
     },
     title () {
@@ -156,6 +157,10 @@ export default {
     left: 0;
     padding-left: 160px;
     right: 0;
+    &.isCollapse {
+      padding-left: 54px;
+    }
+    transition: all .2s;
   }
   .charts {
     background-color: #eef1f5;

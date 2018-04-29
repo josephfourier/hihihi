@@ -58,17 +58,27 @@
 .validate {
   .el-input__inner {
     border-color: #ed7734;
+    &:hover {
+      border-color: #ed7734;
+    }
+  }
+  .el-icon-arrow-up:before {
+    color: #ed7734;
   }
   input::-webkit-input-placeholder{
     color:#ed7734;
+    opacity: 1;
   }
   input::-moz-placeholder{   /* Mozilla Firefox 19+ */
     color:#ed7734;
+    opacity: 1;
   }
   input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
     color:#ed7734;
+    opacity: 1;
   }
   input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
     color:#ed7734;
+    opacity: 1;
   }
 }

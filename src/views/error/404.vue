@@ -25,7 +25,13 @@ export default {
   created () {
     if (window.screen.width < 1400) {
       this.imgHeight = '350px'
+      return
     }
+    //  未测试
+    if (window.screen.width < 1000) {
+      this.imgHeight = '250px'
+    }
+    
   },
   methods: {
     index () {

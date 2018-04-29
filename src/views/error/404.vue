@@ -2,7 +2,7 @@
   <div class="err-container">
     <div class="wrap">
       <div class="img-group">
-        <img src="./bg_404.png" alt="页面未找到">
+        <img src="./bg_404.png" alt="页面未找到" :style="{height: imgHeight}">
         <p class="tip">很抱歉，您访问的页面不存在</p>
       </div>
       <div class="button-group">
@@ -17,6 +17,18 @@
 import ZjyButton from '@/components/button'
 
 export default {
+  data () {
+    return {
+      imgHeight: 419
+    }
+  },
+  created () {
+    console.log(document.documentElement.clientHeight)
+    console.log(window.screen.height)
+    if (window.screen.width < 1400) {
+      this.imgHeight = 350
+    }
+  },
   methods: {
     index () {
       this.$router.push({ path: '/home' })

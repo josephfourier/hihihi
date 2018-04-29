@@ -329,5 +329,6 @@ export default {
 .validate {
   width: 120px;
   text-align: center;
+  margin: 0 auto;
 }
 </style>

@@ -1,8 +1,10 @@
 <template>
   <div class="err-container">
-    <div class="wrap"> -->
-      <img src="./bg_404.png" alt="页面未找到">
-      <p class="tip">很抱歉，您访问的页面不存在</p>
+    <div class="wrap">
+      <div class="img-group">
+        <img src="./bg_404.png" alt="页面未找到">
+        <p class="tip">很抱歉，您访问的页面不存在</p>
+      </div>
       <div class="button-group">
         <ZjyButton class="err" @click.native="index">返回首页</ZjyButton>
         <ZjyButton class="err" @click.native="back">后退一步</ZjyButton>
@@ -39,14 +41,19 @@ export default {
   right: 0;
   min-height: 100%;
   .wrap {
-    margin: 0 auto;
-    width: 587px;
-    height: 320px;
-
-    > img {
-      width: 100%;
-      height: 100%;
-    }
+    /*margin: 0 auto;*/
+    /*width: 587px;*/
+    /*height: 320px;*/
+    margin-top: 50px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /*> img {*/
+      /*!*width: 100%;*!*/
+      /*!*height: 200px;*!*/
+    /*}*/
 
     .button-group {
       text-align: center;

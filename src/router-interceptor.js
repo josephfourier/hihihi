@@ -3,7 +3,7 @@ import store from '@/store'
 import { getToken, setToken } from '@/utils/cookie'
 import NProgress from '@/utils/nprogress'
 
-const whiteList = ['/404', '/500']
+// const whiteList = ['/404', '/500']
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
@@ -14,11 +14,11 @@ router.beforeEach((to, from, next) => {
     setToken(to.query.token)
   }
 
-  if (whiteList.indexOf(to.path) > -1) {
-    NProgress.done()
-    next()
-    return
-  }
+  // if (whiteList.indexOf(to.path) > -1) {
+  //   NProgress.done()
+  //   next()
+  //   return
+  // }
 
   if (!getToken()) {
     window.location.href = process.env.SSO_URL

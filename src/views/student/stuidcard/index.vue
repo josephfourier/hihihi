@@ -32,7 +32,7 @@
       </div>
       <div class="form-item block">
         <span>申请原因</span>
-        <zjy-input type="textarea" v-model="reissued.applyReason" :disabled="!isFinished && step !== 1" :maxlength="256"></zjy-input>
+        <zjy-input type="textarea" v-model="reissued.applyReason" :disabled="isProcessing" :maxlength="256"></zjy-input>
       </div>
       <div class="tip-box">
         <transition name="el-zoom-in-top">
@@ -42,7 +42,7 @@
     </div>
     <div v-if="steps.length !== 0">
       <div class="zjy-steps">
-        <p class="step-title">申请流程配置</p>
+        <p class="step-title">{{ stepTitle }}</p>
         <zjy-steps :active="step" align-center>
           <zjy-step title="发起人" :description="'(' + student.studentName + ')'" v-if="steps.length !== 0">
           </zjy-step>
@@ -160,6 +160,7 @@ export default {
 
     reSubmit () {
       this.isReapplyed = true
+      // this.reissued.stuidcardUid = ''
       this.clear()
       this.reissued = {
         studentId: this.student.studentId || '',
@@ -221,6 +222,12 @@ export default {
     },
     hasError2 () {
       return !!this.error2
+    },
+    isProcessing () {
+      return !!this.reissued.stuidcardUid
+    },
+    stepTitle () {
+      return this.reissued.stuidcardUid ? '审批进度' : '审批流程配置'
     }
   },
 

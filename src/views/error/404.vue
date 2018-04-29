@@ -31,7 +31,6 @@ export default {
     if (window.screen.width < 1000) {
       this.imgHeight = '250px'
     }
-    
   },
   methods: {
     index () {

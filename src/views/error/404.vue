@@ -19,14 +19,12 @@ import ZjyButton from '@/components/button'
 export default {
   data () {
     return {
-      imgHeight: 419
+      imgHeight: '419px'
     }
   },
   created () {
-    console.log(document.documentElement.clientHeight)
-    console.log(window.screen.height)
     if (window.screen.width < 1400) {
-      this.imgHeight = 350
+      this.imgHeight = '350px'
     }
   },
   methods: {
@@ -75,7 +73,7 @@ export default {
       text-align: center;
       font-size: 24px;
       color: #ffffff;
-      padding-top: 70px;
+      padding-top: 30px;
     }
   }
   .zjy-button.err {

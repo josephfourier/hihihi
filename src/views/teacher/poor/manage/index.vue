@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="zjy-app">
     <zjy-table-search>
@@ -13,12 +12,12 @@
 
     <zjy-table-operator>
       <!--<operator-item @click="visible2 = true" clz="create">批量通过</operator-item>-->
-      <operator-item @click="visible2 = true" clz="import">导入</operator-item>
-      <operator-item @click="visible2 = true" clz="export">导出</operator-item>
+      <operator-item @click="visible2 = true" clz="import" v-if="hasPermission('swms:poor-tea:create')">导入</operator-item>
+      <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
     <div class="zjy-table">
-      <zjy-table :data="list" :loading="loading" :columns="columns" @view="handleView">
+      <zjy-table :data="list" :loading="loading" :columns="columns" @view="handleView"  @selection-change="handleSelectionChange">
       </zjy-table>
     </div>
 
@@ -55,7 +54,7 @@ import commonAPI from '@/api/common'
 
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
-import { _refresh } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat, _statusFormat } from '@/utils'
 import properties from './properties'
 import { mapGetters } from 'vuex'
 
@@ -72,7 +71,7 @@ export default {
       dataStatus: '',
 
       loading: false,
-      isLoading2: false,
+      // isLoading2: false,
       currentPage: 1,
       total: 0,
 
@@ -82,7 +81,10 @@ export default {
       mySpecialtyList: [],
       optionsYears: properties.optionsYears,
       optionsStatus: properties.optionsStatus,
-      columns: properties.columns
+      columns: properties.columns,
+      selectedRows: [],
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
 
@@ -109,6 +111,9 @@ export default {
     // },
     isLoading () {
       return this.myFacultyList.length === 0
+    },
+    isLoading2 () {
+      return this.mySpecialtyList.length === 0
     }
   },
 
@@ -166,13 +171,71 @@ export default {
     handleSubmit (data, steps) {
       api.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => { MSG.success('保存成功') }, 200)
+          setTimeout(_ => { MSG.success(this.$t('zjy.message.approve.success')) }, 200)
           this.visible = false
           this.refresh()
         } else {
-          MSG.success('保存失败')
+          MSG.success(this.$t('zjy.message.approve.error'))
         }
       }).catch(error => {
+      })
+    },
+    handleSelectionChange (rows) {
+      this.selectedRows = rows
+    },
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
+
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'applyDate') {
+              return _dateFormat(v[j])
+            } else if (j === 'dataStatus') {
+              return _statusFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.dataStatus = this.dataStatus
+        this.queryExport.applyYear = this.applyYear
+        this.queryExport.facultyCode = this.facultyCode
+        api.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
       })
     }
   },

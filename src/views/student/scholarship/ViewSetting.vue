@@ -13,6 +13,9 @@
         <td>发放对象: {{ data.grantObject }}</td>
       </tr>
     </table>
+    <div class="zjy-footer" slot="footer">
+      <zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
+    </div>
   </div>
 </template>
 

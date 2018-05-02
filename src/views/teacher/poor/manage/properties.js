@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 const statusFormat = (cellValue) => {
   return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
@@ -78,9 +78,18 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:poor-tea:update'),
           cmd: 'view'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    facultyCode: '',
+    applyYear: '',
+    dataStatus: ''
+  },
+  header: ['院系', '专业', '班级', '班主任', '手机号码', '申请日期', '状态'],
+  filter: ['facultyName', 'specialtyName', 'className', 'gradHeadteacher', 'phone', 'applyDate', 'dataStatus'],
+  excelName: '困难生'
 }

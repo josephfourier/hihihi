@@ -8,13 +8,6 @@ export default {
     classId: '',
     studentNo: ''
   },
-
-  queryExport: {
-    enterYear: '',
-    classId: '',
-    studentNo: ''
-  },
-
   years: [
     {
       label: '2017年',
@@ -94,6 +87,12 @@ export default {
       ]
     }
   ],
+
+  queryExport: {
+    enterYear: '',
+    classId: '',
+    studentNo: ''
+  },
   header: ['学号', '姓名', '院系', '专业', '班级', '建档日期', '入学年份'],
   filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'stufileDate', 'enterYear'],
   excelName: '学生档案'

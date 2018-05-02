@@ -10,9 +10,9 @@
         <td>结束时间：{{ data.endDate | dateFormat }}</td>
       </tr>
     </table>
-    <!--<div class="zjy-footer" slot="footer">-->
-      <!--<zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>-->
-    <!--</div>-->
+    <div class="zjy-footer" slot="footer">
+      <zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
+    </div>
   </div>
 </template>
 

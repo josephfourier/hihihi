@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 const statusFormat = (cellValue) => {
   return ['', '已生效', '已撤销'][+cellValue]
@@ -12,6 +12,7 @@ export default {
     punishYear: '',
     studentCode: ''
   },
+
   optionsYear: [
     {
       label: '2017年',
@@ -34,8 +35,7 @@ export default {
   ],
   columns: [
     {
-      index: true,
-      select: true
+      index: true
     },
     {
       label: '学号',
@@ -64,14 +64,23 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ =>  hasPermission('swms:punish-tea:update'),
           cmd: 'view'
         },
         {
           label: '删除',
-          render: (row) => row.punishStatus === '2',
+          render: (row) => row.punishStatus === '2' && hasPermission('swms:punish-tea:delete'),
           cmd: 'delete'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    punishStatus: '',
+    punishYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '学生姓名', '院系', '处分日期', '处分类型', '状态'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'punishDate', 'punishName', 'punishStatusName'],
+  excelName: '违纪处分'
 }

@@ -1,8 +1,8 @@
 <template>
   <div class="zjy-app">
     <zjy-table-operator>
-      <operator-item clz="create" @click="visible=true">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item clz="create" @click="visible=true" v-if="hasPermission('swms:allowance-set:create')">新增</operator-item>
+      <!--<operator-item @click="batchRemove" clz="delete">批量删除</operator-item>-->
     </zjy-table-operator>
 
     <zjy-table v-loading="loading" :data="list" :columns="columns" @edit="edit" @delete="_delete" @selection-change="handleSelectionChange"></zjy-table>
@@ -22,8 +22,6 @@ import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
 
-import { _refresh } from '@/utils'
-
 import api from './api'
 import properties from './properties'
 
@@ -31,7 +29,7 @@ import AllowanceSetting from './AllowanceSetting'
 
 export default {
   name: 'index',
-  data() {
+  data () {
     return {
       list: [],
       loading: false,
@@ -45,18 +43,30 @@ export default {
   },
 
   methods: {
-    currentChange(pageNumber) {
+    currentChange (pageNumber) {
       this.currentPage = pageNumber
     },
-    handleSelectionChange(rows) {
+    handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
-    refresh(auto) {
-      return _refresh.call(this, auto)
+    refresh () {
+      this.loading = true
+      api.queryForList().then(response => {
+        if (response.code !== 1) {
+          MSG.warning('获取设置失败')
+        } else {
+          this.list = response.data
+        }
+      }).catch(error => {
+        console.log(error)
+      }).finally(_ => {
+        this.loading = false
+      })
+      return this
     },
 
-    batchRemove() {
+    batchRemove () {
       if (this.selectedRows.length === 0) {
         MSG.warning('至少选择一条记录')
         return
@@ -76,38 +86,46 @@ export default {
       })
     },
 
-    edit(row) {
+    edit (row) {
       this.formData = row
       this.visible = true
     },
 
-    _delete(row) {
+    _delete (row) {
+      this.loading = true
       api.delete(row.allsettingUid).then(response => {
         if (response.code === 1) {
           this.refresh()
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         }
       })
     },
 
-    handleSubmit(formData) {
+    handleSubmit (formData) {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
         api.update(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
             this.refresh().visible = false
           }
         })
       } else {
         api.create(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('新建成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.create.success'))
+            }, 200)
+
             this.refresh().visible = false
           }
         })
@@ -116,10 +134,10 @@ export default {
   },
 
   computed: {
-    title() {
+    title () {
       return !this.formData.allsettingUid ? '新增困难补助类型' : '修改难补助类型'
     },
-    type() {
+    type () {
       return !this.formData.allsettingUid ? +this.$t('zjy.operator.CREATE') : +this.$t('zjy.operator.EDIT')
     }
   },
@@ -132,23 +150,12 @@ export default {
     AllowanceSetting
   },
 
-  created() {
-    this.loading = true
-    api.queryForList().then(response => {
-      if (response.code !== 1) {
-        MSG.warning('获取设置失败')
-      } else {
-        this.list = response.data
-      }
-    }).catch(error => {
-      console.log(error)
-    }).finally(_ => {
-      this.loading = false
-    })
+  created () {
+    this.refresh()
   },
 
   watch: {
-    visible(val) {
+    visible (val) {
       if (!val) this.formData = {}
     }
   }

@@ -11,9 +11,8 @@
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
-   
     <div class="zjy-table">
-      <zjy-table :data="list" :loading="loading" :columns="columns">
+      <zjy-table :data="list" :loading="loading" :columns="columns" @selection-change="handleSelectionChange">
       </zjy-table>
     </div>
 
@@ -35,12 +34,12 @@ import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
 import ZjyPagination from '@/components/pagination'
 
-import { _refresh } from '@/utils'
+import { _refresh, export2excel } from '@/utils'
 
 import api from './api'
 import properties from './properties'
 export default {
-  data() {
+  data () {
     return {
       applyYear: '',
       studentCode: '',
@@ -51,7 +50,11 @@ export default {
       yearList: properties.yearList,
 
       list: [],
-      columns: properties.columns
+      columns: properties.columns,
+
+      selectedRows: [],
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
 
@@ -60,24 +63,67 @@ export default {
       this.query.applyYear = ''
       this.query.studentCode = ''
     },
-    searchFilter() {
+    searchFilter () {
       this.currentPage = 1
       this.query.applyYear = this.applyYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.refresh()
     },
-    pageChanged(pageNumber) {
+    pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
-    
-    _export () {
 
+    handleSelectionChange (rows) { this.selectedRows = rows },
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
+
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
     },
-    refresh(auto) {
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.applyYear = this.applyYear
+        this.queryExport.studentCode = this.studentCode.trim()
+        api.queryList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
+    },
+    refresh (auto) {
       return _refresh.call(this, auto)
-    },
+    }
   },
- 
+
   components: {
     ZjyTableSearch,
     SearchInput,
@@ -94,9 +140,9 @@ export default {
   },
 
   watch: {
-     currentPage: {
+    currentPage: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.loading = true

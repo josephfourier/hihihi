@@ -1,8 +1,8 @@
 <template>
   <div class="zjy-app">
     <zjy-table-operator>
-      <operator-item clz="create" @click="visible=true">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item clz="create" @click="visible=true" v-if="hasPermission('swms:workstudy-set:create')">新增</operator-item>
+      <!--<operator-item @click="batchRemove" clz="delete">批量删除</operator-item>-->
     </zjy-table-operator>
 
     <zjy-table v-loading="loading" :data="list" :columns="columns" @edit="edit" @delete="_delete" @selection-change="handleSelectionChange"></zjy-table>
@@ -37,7 +37,7 @@ import StudySetting from './StudySetting'
 
 export default {
   name: 'index',
-  data() {
+  data () {
     return {
       query: properties.query,
       list: [],
@@ -54,19 +54,19 @@ export default {
   },
 
   methods: {
-    pageChanged(pageNumber) {
+    pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    handleSelectionChange(rows) {
+    handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
-    refresh(auto) {
+    refresh (auto) {
       return _refresh.call(this, auto)
     },
 
-    batchRemove() {
+    batchRemove () {
       if (this.selectedRows.length === 0) {
         MSG.warning('至少选择一条记录')
         return
@@ -87,39 +87,48 @@ export default {
       })
     },
 
-    edit(row) {
+    edit (row) {
       this.formData = row
       this.visible = true
     },
 
-    _delete(row) {
+    _delete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
       api.delete(row.worksettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
-          MSG.success('删除成功')
+
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         }
       })
     },
 
-    handleSubmit(formData) {
+    handleSubmit (formData) {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
         api.update(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
+
             this.refresh().visible = false
           }
         })
       } else {
         api.create(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('新建成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.create.success'))
+            }, 200)
+
             this.refresh().visible = false
           }
         })
@@ -128,10 +137,10 @@ export default {
   },
 
   computed: {
-    title() {
+    title () {
       return !this.formData.worksettingUid ? '新增岗位' : '修改岗位'
     },
-    type() {
+    type () {
       return !this.formData.worksettingUid ? +this.$t('zjy.operator.CREATE') : +this.$t('zjy.operator.EDIT')
     }
   },
@@ -148,7 +157,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val, oldval) {
+      handler (val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -163,7 +172,7 @@ export default {
         })
       }
     },
-    visible(val) {
+    visible (val) {
       if (!val) this.formData = {}
     }
   }

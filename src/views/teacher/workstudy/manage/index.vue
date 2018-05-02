@@ -10,8 +10,8 @@
   <div class="zjy-line"></div>
 
   <zjy-table-operator>
-    <operator-item @click="create" clz="create">新增</operator-item>
-    <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+    <operator-item @click="create" clz="create" v-if="hasPermission('swms:workstudy-tea:create')">新增</operator-item>
+    <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:workstudy:delete')">批量删除</operator-item>
     <operator-item @click="_export" clz="export">导出</operator-item>
   </zjy-table-operator>
 
@@ -82,7 +82,7 @@ import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import WorkStudy from './WorkStudy'
 
-import { _refresh } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat, _statusFormat } from '@/utils'
 import properties from './properties'
 export default {
   name: 'index',
@@ -102,7 +102,10 @@ export default {
       visible2: false,
       optionsYears: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
-      columns: properties.columns
+      columns: properties.columns,
+
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
   methods: {
@@ -112,11 +115,10 @@ export default {
     searchFilter () {
       this.query.dataStatus = this.dataStatus
       this.query.applyYear = this.applyYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.currentPage = 1
       this.refresh()
     },
-    // ---------------- 搜索 ----------------
 
     create () {
       this.visible2 = true
@@ -125,9 +127,12 @@ export default {
     handleCreate (arg) {
       api.create(arg).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         } else {
-          MSG.success('新增成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.create.success'))
+          }, 200)
+
           this.refresh().visible2 = false
         }
       }).catch(error => {
@@ -136,6 +141,10 @@ export default {
     },
 
     batchRemove () {
+      if (this.selectedRows.length === 0) {
+        MSG.warning(this.$t('zjy.message.delete.none'))
+        return
+      }
       let workstudyUids = []
       this.selectedRows.forEach(x => workstudyUids.push(x.workstudyUid))
 
@@ -144,9 +153,12 @@ export default {
 
       api.batchRemove(workstudyUids).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         } else {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+
           this.refresh(auto)
         }
       }).catch(error => {
@@ -155,14 +167,66 @@ export default {
       })
     },
 
-    _export () {},
     handleSelectionChange (rows) {
       this.selectedRows = rows
     },
-    //  ---------------- 表格头操作 ----------------
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
+
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'applyDate') {
+              return _dateFormat(v[j])
+            } else if (j === 'dataStatus') {
+              return _statusFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.dataStatus = this.dataStatus
+        this.queryExport.applyYear = this.applyYear
+        this.queryExport.studentCode = this.studentCode.trim()
+        api.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
+    },
 
     handleView (row) {
-      // 缺少
       commonAPI.queryApprovalProcess(row.studentId, row.workstudyUid).then(response => {
         this.setting = row
         this.value = response.data
@@ -171,18 +235,21 @@ export default {
     },
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
+      this.loading = true
       api.delete(row.workstudyUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+
           this.refresh(auto)
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         }
       }).catch(error => {
         console.log(error)
       })
     },
-    //  ---------------- 表格行操作 ----------------
 
     pageChanged (pageNumber) {
       this.currentPage = pageNumber
@@ -192,12 +259,13 @@ export default {
       api.submit(data, steps).then(response => {
         if (response.code === 1) {
           this.refresh().visible = false
-          setTimeout(() => {
-            MSG.success('保存成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.approve.success'))
           }, 200)
-          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('setSchedules')
+          this.$store.dispatch('removeFromTodoList', data.workstudyUid)
         } else {
-          MSG.success('保存失败')
+          MSG.warning(response.message)
         }
       }).catch(error => {
         console.log(error)

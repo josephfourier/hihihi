@@ -94,11 +94,14 @@ export default {
       } else {
         facAPI.create(data.honorarysettingUid, this.fac, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            MSG.success('申请成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.apply.success'))
+            }, 200)
             this.refresh().visible = false
-            bus.$emit('applied')
+            // bus.$emit('applied')
           } else {
-            this.$alert(response.message)
+            console.warn(response.message)
+            MSG.warning(this.$t('zjy.message.apply.error'))
           }
         }).catch(error => {})
       }

@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 const statusFormatALL = (cellValue) => {
   return ['可申请', '申请中'][+cellValue]
@@ -72,7 +72,7 @@ export default {
         },
         {
           label: '申请',
-          render: row =>  row.applyStatus === '0',
+          render: row =>  row.applyStatus === '0' && hasPermission('swms:fachonorary-tea:create'),
           cmd: 'create'
         }
       ]
@@ -146,13 +146,22 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:fachonorary-tea-manage:update'),
           cmd: 'view'
         },
         {
           label: '删除',
+          render: row => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:fachonorary-tea:delete'),
           cmd: 'delete'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    dataStatus: '',
+    applyYear: ''
+  },
+  header: ['申请人', '院系名称', '申请日期', '荣誉称号名称', '申请年份', '状态'],
+  filter: ['teacherName', 'facultyName', 'applyDate', 'honoraryName', 'applyYear', 'dataStatusName'],
+  excelName: '院系荣誉称号'
 }

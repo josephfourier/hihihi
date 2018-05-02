@@ -2,7 +2,7 @@
   <div class="zjy-form" v-loading="loading">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="80px">
       <el-form-item label="文件名称" prop="fileName" class="block">
-        <el-input v-model="formData.fileName" disabled class="upload-file__input"></el-input>
+        <el-input v-model="formData.fileName" disabled class="upload-file__input" :maxlength="128"></el-input>
       </el-form-item>
 
       <el-form-item label="文件路径" prop="filePath" v-show="false">
@@ -12,18 +12,26 @@
       <el-form-item label="上传附件" style="margin-bottom: 0; overflow:hidden;">
          <el-upload
           class="upload-file"
-          :action="action" 
-          :headers="{'Zjy-Token': token}" 
-          :on-preview="handlePreview" 
-          :on-remove="handleRemove" 
-          :before-upload="handleBeforeUpload" 
-          :on-change="handleChange" 
-          :on-success="handleSuccess" 
+          :action="action"
+          :headers="{'Zjy-Token': token}"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-upload="handleBeforeUpload"
+          :on-change="handleChange"
+          :on-success="handleSuccess"
           :on-error="handleError"
           :on-progress="handleProgress"
           :show-file-list="false"
+          accept="
+                image/jpeg,
+                image/png,
+                application/msword,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                application/pdf
+              "
         >
-          <div class="upload-wrapper" style="display:flex;flex-direction:row"> 
+          <div class="upload-wrapper" style="display:flex;flex-direction:row">
             <el-button size="small" type="primary" class="upload-btn" @click="handleClick">上传附件</el-button>
             <transition name="el-zoom-in-center">
               <div class="upload-status" v-if="showPercent">
@@ -51,9 +59,9 @@
       <transition name="el-zoom-in-top">
         <div class="panel" v-if="show">
           <select-panel
-            :data="post" 
-            :title="'选择范围'" 
-            @checked="handleChecked" 
+            :data="post"
+            :title="'选择范围'"
+            @checked="handleChecked"
             :filterable="false"
           >
           </select-panel>
@@ -76,7 +84,7 @@ import { mapGetters } from 'vuex'
 
 export default {
 
-  data() {
+  data () {
     return {
       action: process.env.BASE_URL + '/upload/stufileUpload',
       formData: {},
@@ -110,59 +118,46 @@ export default {
   methods: {
     handleClick () {
     },
-    handleBeforeUpload(file) {
+    isAcceptedFile (file) {
+      return /\.(jpeg|png|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
+    },
+    handleBeforeUpload (file) {
+      if (!this.isAcceptedFile(file)) {
+        MSG.warning('不支持的文件格式')
+        return false
+      }
       this.done = false
       this.showPercent = true
     },
-    handleProgress(event, file, fileList) {
+    handleProgress (event, file, fileList) {
       this.percent = +((event.percent).toFixed(2))
       this.percentText = this.percent < 99 ? this.percent + '%' : '处理中...'
     },
 
-    handleChange(file, fileList) {
-      // if (this.hasError) return
-      // if (!/\.(xls|xlsx)$/gi.test(file.name)) {
-      //   MSG.warning('请上传excel格式文件')
-      //   this.clearFile()
-      //   return false
-      // }
-      // this.fileName = file.name
-      // this.myfile = file
+    handleChange (file, fileList) {
+      console.log(file)
     },
 
-    handleSuccess(response, file, fileList) {
+    handleSuccess (response, file, fileList) {
       this.loading = false
       this.done = true
       if (response.code === 1) {
         this.formData.filePath = response.data
-        this.formData.fileName = file.name  
+        this.formData.fileName = file.name
         this.percentText = '完成'
       } else {
         this.percentText = '失败'
       }
-      
-      // if (response.code == 90002) {
-      //   this.errorLink = response.data
-      //   this.showError = true
-      //   this.hasError = true
-      // } else if (response.code === 90003) {
-      //   this.hasError = true
-      //   MSG.warning('导入数据异常')
-      // } else if (response.code === 90001) {
-      //   MSG.success('导入数据成功')
-      // }
-      // this.clearFile()
-      // this.showPercent = false
     },
 
-
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
     },
-    handlePreview(file) {
+    handlePreview (file) {
     },
     handleError (err, file, fileList) {
+      console.log(err)
     },
-    handleChecked(val) {
+    handleChecked (val) {
       this.scopeList = val.map(element => {
         return {
           postId: element
@@ -170,7 +165,7 @@ export default {
       })
       // this.scopeList.push()
     },
-    submitForm(formName) {
+    submitForm (formName) {
       if (this.show && this.scopeList.length === 0) {
         MSG.warning('请选择可见范围')
         return
@@ -178,7 +173,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           Object.assign(this.formData, {
-            functionClass: "1",
+            functionClass: '1',
             swmsNoticeReadscopeList: this.scopeList
           })
           this.$emit('submit', this.formData)

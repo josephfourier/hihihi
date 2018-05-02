@@ -2,11 +2,11 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="80px">
       <el-form-item label="类型名称" prop="punishName">
-        <el-input v-model="formData.punishName"></el-input>
+        <el-input v-model="formData.punishName" :maxlength="128"></el-input>
       </el-form-item>
 
       <el-form-item label="类型说明" prop="punishtDescription">
-        <el-input v-model="formData.punishtDescription" type="textarea"></el-input>
+        <el-input v-model="formData.punishtDescription" type="textarea" :maxlength="1024"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -27,11 +27,11 @@ export default {
       formData: {},
       rules: {
         punishName: [
-          { required: true, message: '请输入类型名称', trigger: 'blur' }
+          { required: true, message: '请输入类型名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         punishtDescription: [
-          { required: true, message: '请输入类型描述', trigger: 'blur' }
+          { required: true, message: '请输入类型描述', trigger: 'change' }
         ]
       }
     }
@@ -60,7 +60,7 @@ export default {
   watch: {
     data: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.formData = {...val}
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <div class="zjy-app">
-    <zjy-table-operator>
+    <zjy-table-operator v-if="hasPermission('swms:poor-set:create')">
       <operator-item clz="create" @click="visible=true">新增</operator-item>
     </zjy-table-operator>
 
@@ -168,6 +168,9 @@ export default {
       }
     },
     visible (val) {
+      if (!val) this.formData = {}
+    },
+    visible2 (val) {
       if (!val) this.formData = {}
     }
   }

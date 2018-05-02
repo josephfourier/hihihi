@@ -1,6 +1,10 @@
 export default {
   zjy: {
     message: {
+      apply: {
+        success: '申请成功',
+        error: '申请失败'
+      },
       approve: {
         success: '审批成功',
         error: '审批失败'

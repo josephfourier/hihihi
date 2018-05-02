@@ -16,15 +16,21 @@
       <p class="process-item__title">详细条款</p>
       <div class="process-item__content">{{ data.detailedTerms }}</div>
     </div>
+    <div class="zjy-footer" slot="footer">
+      <zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
+    </div>
   </div>
 </template>
 
 <script>
-
+import ZjyButton from '@/components/button'
 export default {
   name: 'view-setting',
   props: {
     data: Object
+  },
+  components: {
+    ZjyButton
   }
 }
 </script>

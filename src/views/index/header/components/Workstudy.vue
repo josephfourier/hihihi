@@ -1,26 +1,21 @@
 <template>
-  <div>
-    <div class="zjy-process" v-loading="loading">
+    <div class="process" v-loading="loading">
       <table class="process-table">
         <tr>
-          <td><span>学号:</span> {{ data.studentNo }}</td>
-          <td>学生姓名: {{ data.studentName }}</td>
-          <td>班级: {{ data.className }}</td>
-          <td>院系: {{ data.facultyName }}</td>
+          <td>岗位名称: {{ data.postName }}</td>
+          <td>人数限制: {{ data.numberLimit }}</td>
+          <td>专业要求：{{ data.specialtyName }}</td>
         </tr>
         <tr>
-          <td>家庭总人口: {{ data.totalPopulation }}</td>
-          <td>家庭年收入: {{ data.annualIncome }}</td>
-          <td>人均月收入: {{ data.pcmIncome }}</td>
-          <td>家庭困难类型: {{ data.poorType | poorTypeFormat }}</td>
+          <td>薪资待遇：{{ data.salary }}</td>
+          <td>开始时间: {{ data.startDate | dateFormat }}</td>
+          <td>结束时间: {{ data.endDate | dateFormat }}</td>
         </tr>
       </table>
-      <p class="process-title">家庭困难情况</p>
-      <p class="content">{{ data.poorDescription }}</p>
-      <p class="process-title">曾受资助情况</p>
-      <p class="content">{{ data.receivedFunding }}</p>
-      <p class="process-title">审批进度</p>
-    </div>
+      <div class="process-item">
+        <p class="process-item__title">申请原因</p>
+        <div class="process-item__content">{{ data.applyReson }}</div>
+      </div>
     <transition name="el-zoom-in-top">
       <zjy-process
         v-if="innerVisible"
@@ -85,11 +80,11 @@ export default {
       api.submitWorkstudy(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success('审批成功')
           }, 200)
           this.$store.dispatch('setSchedules')
         } else {
-          MSG.success('保存失败')
+          MSG.success('审批失败')
         }
       }).catch(error => {
       }).finally(() => {
@@ -99,7 +94,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

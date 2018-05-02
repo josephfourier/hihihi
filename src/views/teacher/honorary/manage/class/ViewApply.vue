@@ -1,11 +1,11 @@
 <!--设置详情数据查看 -->
 <template>
-  <div class="zjy-process">
+  <div class="process">
     <table class="process-table">
       <tr>
-        <td>荣誉称号名称: {{ data.honoraryName }}</td>
-        <td>申请人: {{ user.fullName }}</td>
-        <td style="width: 300px;text-align: right">申请班级:
+        <td>荣誉称号名称：{{ data.honoraryName }}</td>
+        <td>申请人：{{ user.fullName }}</td>
+        <td style="text-align: right;">申请班级：
           <el-select v-model="innerClz" @change="$emit('update:clz', innerClz)">
           <el-option
             v-for="item in clzs"
@@ -18,13 +18,16 @@
         </el-select></td>
       </tr>
     </table>
-    <p class="process-title">申请原因</p>
-    <div class="textarea-wrapper">
-      <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :disabled="data.dataStatus && data.dataStatus !== '0'"></zjy-input>
-      <div class="form-tip-box">
-        <transition name="el-zoom-in-top">
-          <span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>
-        </transition>
+
+    <div class="process-item" style="margin-bottom: 0;">
+      <p class="process-item__title">申请原因</p>
+      <div class="process-item__content">
+        <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :maxlength="1024"></zjy-input>
+        <div class="tip-box">
+          <transition name="el-zoom-in-top">
+            <span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>
+          </transition>
+        </div>
       </div>
     </div>
 

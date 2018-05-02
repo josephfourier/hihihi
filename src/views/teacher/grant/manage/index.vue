@@ -35,8 +35,8 @@ export default {
     }
   },
   components: {
-   List,
-   File
+    List,
+    File
   }
 }
 </script>

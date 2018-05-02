@@ -45,7 +45,6 @@ import api from '../api'
 import {selfMerge} from '@/utils'
 
 export default {
-  name: 'MyInsurance',
   data () {
     return {
       data: {},
@@ -82,12 +81,12 @@ export default {
       api.submitInsurance(data.insuranceUid, data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success('审批成功')
           }, 200)
           // this.$store.dispatch('setSchedules')
           this.$store.dispatch('removeFromTodoList', data.inssettingUid)
         } else {
-          MSG.success('保存失败')
+          MSG.success('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

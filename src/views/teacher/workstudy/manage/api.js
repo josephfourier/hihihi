@@ -38,9 +38,9 @@ export default {
     return ajax.delete('/manage/swmsWorkstud/' + id)
   },
 
-  batchRemove (ids) {
-    return ajax.delete('/manage/swmsWorkstud/' + ids)
-  },
+  // batchRemove (ids) {
+  //   return ajax.delete('/manage/swmsWorkstud/' + ids)
+  // },
   // 获取open=1的困难补助
   querySettingList (query) {
     return ajax.get('/manage/swmsWorkstudySetting/open')
@@ -52,13 +52,13 @@ export default {
   // 教师新增一个学生困难补助
   create (arg) {
     return ajax.post('/manage/swmsWorkstud/teacher', arg)
-  }
+  },
 
-  // batchRemove (arg) {
-  //   return ajax({
-  //     method: 'delete',
-  //     url: '/manage/scholarship',
-  //     data: arg
-  //   })
-  // }
+  batchRemove (arg) {
+    return ajax({
+      method: 'delete',
+      url: '/manage/swmsWorkstud/teacher',
+      data: arg
+    })
+  }
 }

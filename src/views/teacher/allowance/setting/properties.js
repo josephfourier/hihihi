@@ -1,10 +1,11 @@
+import { hasPermission } from '@/utils'
+
 const openFormat = (val) => ['否', '是'][+val]
 
 export default {
   columns: [
     {
-      index: true,
-      select: true
+      index: true
     },
     {
       label: '困难补助名称',
@@ -27,10 +28,12 @@ export default {
       operators: [
         {
           label: '编辑',
+          render: _ => hasPermission('swms:allowance-set:update'),
           cmd: 'edit'
         },
         {
           label: '删除',
+          render: _ => hasPermission('swms:allowance-set:delete'),
           cmd: 'delete'
         }
       ]

@@ -88,11 +88,11 @@ export default {
       api.submitStayholiday(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success('审批成功')
           }, 200)
           this.$store.dispatch('setSchedules')
         } else {
-          MSG.success('保存失败')
+          MSG.success('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="zjy-process">
+  <div class="process">
     <div class="status">
       <img src="./ic_sx.png" alt="状态" v-if="data.punishStatus === '1'">
       <img src="./ic_cx.png" alt="状态" v-else>
@@ -7,18 +7,22 @@
     </div>
     <table class="process-table">
       <tr>
-        <td>学号: {{ data.studentCode }}</td>
-        <td>学生姓名: {{ data.studentName }}</td>
-        <td>入学年份: {{ data.enterYear }}</td>
+        <td>学号：{{ data.studentCode }}</td>
+        <td>学生姓名：{{ data.studentName }}</td>
+        <td>入学年份：{{ data.enterYear }}</td>
       </tr>
       <tr>
-        <td>院系: {{ data.facultyName }}</td>
-        <td>违纪类型: {{ data.punishName }}</td>
+        <td>院系：{{ data.facultyName }}</td>
+        <td>违纪类型：{{ data.punishName }}</td>
         <td>处分日期: {{ data.punishDate | dateFormat }}</td>
       </tr>
     </table>
-    <p class="process-title">处分说明</p>
-    <span>{{ data.punishDescription }}</span>
+    <div class="process-item">
+      <p class="process-item__title">处分说明</p>
+      <div class="process-item__content">
+        {{ data.punishDescription }}
+      </div>
+    </div>
   </div>
 </template>
 

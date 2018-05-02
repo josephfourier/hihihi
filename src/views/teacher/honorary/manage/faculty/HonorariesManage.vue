@@ -9,8 +9,8 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="create" clz="create">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item @click="create" clz="create" v-if="hasPermission('swms:fachonorary-tea-manage:create')">新增</operator-item>
+      <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:fachonorary-tea:delete')">批量删除</operator-item>
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
@@ -81,7 +81,7 @@ import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import Honorary from './Honorary'
 
-import { _refresh } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat } from '@/utils'
 import properties from './properties'
 
 export default {
@@ -100,7 +100,10 @@ export default {
       visible2: false,
       optionsYears: properties.optionsYears,
       optionsStatus: properties.optionsStatus,
-      columns: properties.columnsMANAGE
+      columns: properties.columnsMANAGE,
+
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
   methods: {
@@ -121,9 +124,12 @@ export default {
     handleCreate (uid, id, arg) {
       api.create(uid, id, arg).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.warning(this.$t('zjy.message.create.error'))
         } else {
-          MSG.success('新增成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.create.success'))
+          }, 200)
           this.refresh().visible2 = false
         }
       }).catch(error => {
@@ -132,6 +138,11 @@ export default {
     },
 
     batchRemove () {
+      if (this.selectedRows.length === 0) {
+        MSG.warning(this.$t('zjy.message.delete.none'))
+        return
+      }
+
       let fachonoraryUids = []
 
       this.selectedRows.forEach(x => fachonoraryUids.push(x.fachonoraryUid))
@@ -140,9 +151,10 @@ export default {
 
       facAPI.batchRemove(fachonoraryUids).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.warning(this.$t('zjy.message.delete.error'))
         } else {
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
         }
       }).catch(error => {
@@ -150,7 +162,58 @@ export default {
       })
     },
 
-    _export () {},
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
+
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'applyDate') {
+              return _dateFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.dataStatus = this.dataStatus
+        this.queryExport.applyYear = this.applyYear
+        facAPI.queryAppliedList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
+    },
     handleSelectionChange (rows) {
       this.selectedRows = rows
     },
@@ -165,12 +228,14 @@ export default {
 
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
+      this.loading = true
       facAPI.delete(row.fachonoraryUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
         } else {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.warning(this.$t('zjy.message.delete.error'))
         }
       }).catch(error => {
         console.log(error)
@@ -191,7 +256,7 @@ export default {
     handleSubmit (data, steps) {
       facAPI.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => {MSG.success('保存成功')}, 200)
+          setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.refresh().visible = false
           // 审批完成后可能需要刷新自己申请的班级荣誉称号列表
           // bus.$emit('applied')

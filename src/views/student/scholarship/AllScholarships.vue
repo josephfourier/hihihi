@@ -89,7 +89,7 @@ export default {
         allAPI.create(data.scholarshipsettingUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
-              MSG.success(this.$t('zjy.message.create.success'))
+              MSG.success(this.$t('zjy.message.apply.success'))
             }, 200)
             this.visible = false
             this.refresh()

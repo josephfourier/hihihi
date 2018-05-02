@@ -17,7 +17,6 @@ export default {
       value: 2018
     }
   ],
-  //  ---------------- select初始化 ----------------
   columns: [
     {
       index: true,
@@ -42,5 +41,13 @@ export default {
       label: '年级',
       prop: 'year'
     }
-  ]
+  ],
+  queryExport: {
+    specialtyCode: '',
+    year: '',
+    facultyCode: ''
+  },
+  header: ['院系', '专业', '班级', '班主任', '班主任电话'],
+  filter: ['facultyName', 'specialtyName', 'className', 'bzrName', 'bzrPhone'],
+  excelName: '班级信息'
 }

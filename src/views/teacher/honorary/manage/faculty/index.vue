@@ -1,15 +1,17 @@
 <template>
   <div class="zjy-tabs">
     <el-tabs type="border-card" v-model="current" @tab-click="tabClick">
-      <el-tab-pane label="荣誉称号管理" name="manage">
+      <el-tab-pane label="荣誉称号管理" name="manage" v-if="hasPermission('swms:fachonorary-tea-apptab:read')">
         <honoraries-manage class="zjy-tab__item" v-if="active.manage"></honoraries-manage>
       </el-tab-pane>
-      <el-tab-pane label="院系荣誉称号" name="fac">
-        <my-honoraries class="zjy-tab__item" v-if="active.fac"></my-honoraries>
-      </el-tab-pane>
-      <el-tab-pane label="全部荣誉称号" name="all">
-        <all-honoraries class="zjy-tab__item" v-if="active.all"></all-honoraries>
-      </el-tab-pane>
+      <template v-if="hasPermission('swms:fachonorary-tea:create')">
+        <el-tab-pane label="院系荣誉称号" name="fac">
+          <my-honoraries class="zjy-tab__item" v-if="active.fac"></my-honoraries>
+        </el-tab-pane>
+        <el-tab-pane label="全部荣誉称号" name="all">
+          <all-honoraries class="zjy-tab__item" v-if="active.all"></all-honoraries>
+        </el-tab-pane>
+      </template>
     </el-tabs>
   </div>
 </template>

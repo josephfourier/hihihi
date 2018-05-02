@@ -36,25 +36,10 @@
 
 <script>
 import ZjyButton from '@/components/button'
-import api from './api'
 
 export default {
 
   data () {
-    const checkYear = (rule, value, callback) => {
-      if (!this.formData.applyYear) return
-      if (this.isEdit) callback()
-
-      api.checkYear(this.formData.applyYear).then(response => {
-        if (response.data) {
-          callback(new Error('该学年已经添加,请重新选择'))
-        } else {
-          callback()
-        }
-      }).catch(error => {
-        console.log(error)
-      })
-    }
     return {
       optionsYears: [
         {
@@ -85,43 +70,11 @@ export default {
         }
       },
       rules: {
-        applyYear: [
-          { required: true, message: '请选择申请学年', trigger: 'blur' },
-          { validator: checkYear, trigger: 'change' }
-        ],
-        applyDescription: [
-          { required: true, message: '请输入申请说明', trigger: 'blur' }
-        ],
-        startDate: [
-          { required: true, message: '请选择起始日期', trigger: 'blur' }
-        ],
-        endDate: [
-          { required: true, message: '请选择结束日期', trigger: 'blur' }
-        ]
       }
-    }
-  },
-
-  methods: {
-    submitForm (formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$emit('submit', this.formData)
-        } else {
-          return false
-        }
-      })
-    }
-  },
-
-  computed: {
-    isEdit () {
-      return this.type === +this.$t('zjy.operator.EDIT')
     }
   },
   props: {
     formData: Object,
-    type: Number,
     visible: Boolean
   },
   components: {

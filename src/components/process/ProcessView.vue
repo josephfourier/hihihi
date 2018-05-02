@@ -34,7 +34,10 @@
       </zjy-steps>
     </div>
 
-    <p v-if="reason && isFinished" class="refused">拒绝原因: {{ reason }}</p>
+    <div v-if="reason && isFinished" class="refused">
+      <p>拒绝原因</p>
+      {{ reason }}
+    </div>
 
     <!-- 根据数据状态可以定制显示操作按钮 -->
     <slot :data="data" :steps="steps" name="footer"></slot>

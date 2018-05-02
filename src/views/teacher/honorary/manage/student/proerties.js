@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 const statusFormat = (cellValue) => {
   return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
@@ -55,16 +55,9 @@ export default {
       label: '申请日期',
       prop: 'applyDate',
       formatter: dateFormat
-    }, {
-      label: '申请年份',
-      prop: 'applyYear'
-    }, {
+    },  {
       label: '荣誉称号名称',
       prop: 'honoraryName'
-    }, {
-      label: '电话',
-      prop: 'phone'
-
     }, {
       label: '状态',
       prop: 'dataStatus',
@@ -74,14 +67,23 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:stuhonorary-tea:update'),
           cmd: 'view'
         },
         {
           label: '删除',
-          render: (row) => row.dataStatus === '1' || row.dataStatus === '2',
+          render: (row) => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:stuhonorary:delete'),
           cmd: 'delete'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    dataStatus: '',
+    applyYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '学生姓名', '院系', '申请日期', '奖学金名称', '状态'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'applyDate', 'honoraryName', 'dataStatusName'],
+  excelName: '个人荣誉称号'
 }

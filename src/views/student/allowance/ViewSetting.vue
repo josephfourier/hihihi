@@ -1,14 +1,16 @@
-<!--设置详情数据查看 -->
 <template>
-  <div class="zjy-process">
+  <div class="process">
     <table class="process-table">
       <tr>
-        <td>荣誉称号名称: {{ data.honoraryName }}</td>
-        <td>人数限制: {{ data.numberLimit }}</td>
+        <td>困难补助名称：{{ data.allowanceName }}</td>
+        <td>发放方式：{{ data.grantWay | scholarshipGrantWayFormat }}</td>
+        <td>名额限制：{{ data.numberLimit }}</td>
       </tr>
       <tr>
-        <td>开始时间: {{ data.startDate | dateFormat }}</td>
-        <td>结束时间: {{ data.endDate | dateFormat }}</td>
+        <td>金额：{{ data.money }}</td>
+        <td>发放对象：{{ data.grantObject }}</td>
+        <td>申请时间：{{ data.startDate | dateFormat }} </td>
+        <!--<td>申请时间：{{ data.startDate | dateFormat }} - - {{ data.endDate | dateFormat }}</td>-->
       </tr>
     </table>
     <div class="zjy-footer" slot="footer">

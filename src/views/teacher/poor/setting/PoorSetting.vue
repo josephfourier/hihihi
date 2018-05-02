@@ -24,7 +24,7 @@
       </el-form-item>
 
       <el-form-item label="申请说明" prop="applyDescription">
-        <el-input v-model="formData.applyDescription" type="textarea"></el-input>
+        <el-input v-model="formData.applyDescription" type="textarea" :maxlength="1024"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -92,13 +92,13 @@ export default {
           { validator: checkYear, trigger: 'change' }
         ],
         applyDescription: [
-          { required: true, message: '请输入申请说明', trigger: 'blur' }
+          { required: true, message: '请输入申请说明', trigger: 'change' }
         ],
         startDate: [
-          { required: true, message: '请选择起始日期', trigger: 'blur' }
+          { required: true, message: '请选择起始日期', trigger: 'change' }
         ],
         endDate: [
-          { required: true, message: '请选择结束日期', trigger: 'blur' }
+          { required: true, message: '请选择结束日期', trigger: 'change' }
         ]
       }
     }
@@ -132,7 +132,7 @@ export default {
   watch: {
     data: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.formData = {...val}
       }
     }

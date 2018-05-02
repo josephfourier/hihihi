@@ -21,7 +21,7 @@
           </el-select>
           <div class="tip-box">
             <transition name="el-zoom-in-top">
-              <span class="tip type" v-if="hasError && !innerType">请选择假期类型</span>
+              <span class="tip type" v-if="hasError && !innerType" style="top: 1px;">请选择假期类型</span>
             </transition>
           </div>
         </td>
@@ -33,7 +33,7 @@
         <zjy-input type="textarea" v-model="innerReason" @change="$emit('update:reason', innerReason)" :maxlength="1024"></zjy-input>
         <div class="tip-box">
           <transition name="el-zoom-in-top">
-            <span class="tip reason" v-if="hasError && !innerReason" style="position: relative;top: -6px;">请填写申请原因</span>
+            <span class="tip reason" v-if="hasError && !innerReason" style="position: relative;top: -3px;">请填写申请原因</span>
           </transition>
         </div>
       </div>

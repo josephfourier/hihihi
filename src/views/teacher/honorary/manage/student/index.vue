@@ -1,4 +1,3 @@
-<!-- 假期留校管理 -->
 <template>
   <div class="zjy-app">
     <zjy-table-search>
@@ -11,8 +10,8 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="create" clz="create">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item @click="create" clz="create" v-if="hasPermission('swms:stuhonorary-tea:create')">新增</operator-item>
+      <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:stuhonorary:delete')">批量删除</operator-item>
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
@@ -58,7 +57,7 @@ import ZjyPagination from '@/components/pagination'
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import properties from './proerties'
-import { _refresh } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat } from '@/utils'
 
 import stuAPI from '@/api/teacher/honorary/stu'
 import api from './api'
@@ -67,7 +66,7 @@ import Honorary from './Honorary'
 
 export default {
   name: 'index',
-  data() {
+  data () {
     return {
       dataStatus: '',
       applyYear: '',
@@ -82,33 +81,37 @@ export default {
       total: 0,
       loading: false,
       selectedRows: [],
-
       optionsYears: properties.optionsYears,
-
       optionsStatus: properties.optionsStatus,
+      columns: properties.columns,
 
-      columns: properties.columns
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
 
   methods: {
-    searchFilter() {
+    searchFilter () {
       this.query.dataStatus = this.dataStatus
       this.query.applyYear = this.applyYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.currentPage = 1
       this.refresh()
     },
 
-    pageChanged(pageNumber) { this.currentPage = pageNumber },
+    pageChanged (pageNumber) { this.currentPage = pageNumber },
 
-    refresh(auto) { return _refresh.call(this, auto) },
+    refresh (auto) { return _refresh.call(this, auto) },
 
-    handleSelectionChange(rows) {
+    handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
-    batchRemove() {
+    batchRemove () {
+      if (this.selectedRows.length === 0) {
+        MSG.warning(this.$t('zjy.message.delete.none'))
+        return
+      }
       let stuhonoraryUids = []
       this.selectedRows.forEach(x => stuhonoraryUids.push(x.stuhonoraryUid))
 
@@ -119,7 +122,7 @@ export default {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
         }
       }).catch(error => {
@@ -127,13 +130,15 @@ export default {
       })
     },
 
-    create() {
+    create () {
       this.visible2 = true
     },
-    handleCreate(id, arg) {
+    handleCreate (id, arg) {
       api.create(id, arg).then(response => {
         if (response.code === 1) {
-          MSG.success('新增成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.create.success'))
+          }, 200)
           this.refresh().visible2 = false
         } else {
           this.$alert(response.message)
@@ -141,7 +146,7 @@ export default {
       })
     },
 
-    view(row) {
+    view (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.stuhonoraryUid).then(response => {
         this.data = row
         this.value = response.data
@@ -149,15 +154,66 @@ export default {
       })
     },
 
-    _export(row) {
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
 
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'applyDate') {
+              return _dateFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
     },
 
-    _delete(row) {
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.dataStatus = this.dataStatus
+        this.queryExport.applyYear = this.applyYear
+        this.queryExport.studentCode = this.studentCode.trim()
+        stuAPI.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
+    },
+
+    _delete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
+      this.loading = true
       stuAPI.delete(row.stuhonoraryUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
         } else {
           this.$alert(response.message)
@@ -165,19 +221,23 @@ export default {
       })
     },
 
-    makeFormData(data, steps) {
+    makeFormData (data, steps) {
       return {
         'stuhonoraryUid': data.stuhonoraryUid,
         'swmsApprovalList': steps
       }
     },
 
-    handleSubmit(data, steps) {
+    handleSubmit (data, steps) {
       stuAPI.submit(this.makeFormData(data, steps)).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.approve.success'))
+          }, 200)
           this.refresh().visible = false
+          this.$store.dispatch('removeFromTodoList', data.stuhonoraryUid)
         }
       }).catch(error => {
         console.log(error)
@@ -205,7 +265,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.loading = true

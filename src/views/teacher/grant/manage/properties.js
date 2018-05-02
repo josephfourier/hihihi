@@ -74,10 +74,18 @@ export default {
       operators: [
         {
           label: '查看',
-          render: (row) => { return hasPermission('swms:approvaltempate-set:create') },
+          // render: (row) => { return hasPermission('swms:approvaltempate-set:create') },
           cmd: 'view'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    functionClass: '1',
+    applyYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '姓名', '院系', '专业', '班级', '电话', '申请年份'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'phone', 'applyYear'],
+  excelName: '助学金申请'
 }

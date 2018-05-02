@@ -85,10 +85,13 @@ export default {
       } else {
         clzAPI.update(data.clahonoraryUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
             this.refresh().visible = false
           } else {
-            this.$alert(response.message)
+            console.warn(response.message)
+            MSG.warning(this.$t('zjy.message.update.error'))
           }
         }).catch(error => {
 
@@ -98,13 +101,15 @@ export default {
     _delete (data) {
       clzAPI.delete(data.clahonoraryUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
           this.refresh().visible = false
         } else {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.warning(this.$t('zjy.message.delete.error'))
         }
       }).catch(error => {
-
       })
     },
 
@@ -169,10 +174,3 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
-.zjy-table {
-  table {
-    width: 100% !important;
-  }
-}
-</style>

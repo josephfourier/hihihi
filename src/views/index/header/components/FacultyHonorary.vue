@@ -1,29 +1,34 @@
 <template>
-  <div>
-    <div class="zjy-process" v-loading="loading">
+    <div class="process">
       <table class="process-table">
         <tr>
-          <td>荣誉称号名称: {{ data.honoraryName }}</td>
-          <td>申请人: {{ data.teacherName }}</td>
-          <td>申请院系:
-            {{ data.facultyName }}
-          </td>
+          <td>荣誉称号名称：{{ data.honoraryName }}</td>
+          <td>荣誉称号类别：{{ data.honoraryCategory | honoraryTypeFormat}}</td>
+          <td>申请人：{{ data.teacherName }}</td>
+        </tr>
+        <tr>
+          <td>申请时间：{{ data.applyDate | dateFormat }}</td>
+          <td>年级：{{ data.year }}</td>
+          <td>院系：{{ data.facultyName }}</td>
         </tr>
       </table>
-      <p class="process-title">申请原因</p>
-      <span>{{ data.applyReson }}</span>
+      <div class="process-item">
+        <p class="process-item__title">申请原因</p>
+        <div class="process-item__content">
+          {{ data.applyReson }}
+        </div>
+      </div>
+      <transition name="el-zoom-in-top">
+        <zjy-process
+          v-if="innerVisible"
+          :data="data"
+          v-model="value"
+          :visible.sync="innerVisible"
+          @submit="handleSubmit"
+        >
+        </zjy-process>
+      </transition>
     </div>
-    <transition name="el-zoom-in-top">
-      <zjy-process
-        v-if="innerVisible"
-        :data="data"
-        v-model="value"
-        :visible.sync="innerVisible"
-        @submit="handleSubmit"
-      >
-      </zjy-process>
-    </transition>
-  </div>
 </template>
 
 <script>
@@ -32,7 +37,6 @@ import api from '../api'
 import {selfMerge} from '@/utils'
 
 export default {
-  name: 'MyInsurance',
   data () {
     return {
       data: {},
@@ -75,11 +79,11 @@ export default {
       api.submitFacultyHonorary(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success('审批成功')
           }, 200)
           this.$store.dispatch('setSchedules')
         } else {
-          MSG.success('保存失败')
+          MSG.success('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

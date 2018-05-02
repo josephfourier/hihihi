@@ -39,7 +39,11 @@ export default {
   },
 
   batchRemove (ids) {
-    return ajax.delete('/manage/swmsAllowance/' + ids)
+    return ajax({
+      method: 'delete',
+      url: '/manage/swmsAllowance/teacher',
+      data: ids
+    })
   },
   // 获取open=1的困难补助
   querySettingList (query) {

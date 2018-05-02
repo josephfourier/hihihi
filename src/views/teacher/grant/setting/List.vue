@@ -11,7 +11,7 @@
     <div class="zjy-line"></div>
     <zjy-table-operator>
       <operator-item @click="_export" clz="export">导出</operator-item>
-      <operator-item @click="_import" clz="import">导入</operator-item>
+      <operator-item @click="_import" clz="import" v-if="hasPermission('swms:stulist:create')">导入</operator-item>
     </zjy-table-operator>
 
     <transition name="slide-fade">
@@ -69,7 +69,13 @@
     </transition>
 
     <div class="zjy-table">
-      <zjy-table :data="list" :loading="loading" :columns="columns" @delete="handleDelete">
+      <zjy-table
+        :data="list"
+        :loading="loading"
+        :columns="columns"
+        @delete="handleDelete"
+        @selection-change="handleSelectionChange"
+      >
       </zjy-table>
     </div>
 
@@ -92,7 +98,7 @@ import OperatorItem from '@/components/table-operator/operator-item'
 import ZjyPagination from '@/components/pagination'
 
 import ZjyProgress from '@/components/progress'
-import { _refresh } from '@/utils'
+import { _refresh, export2excel } from '@/utils'
 
 import api from './api'
 import properties from './properties'
@@ -126,7 +132,11 @@ export default {
       fileName: '导入文件',
 
       myfile: '',
-      baseModel: 'studyGrant'
+      baseModel: 'studyGrant',
+
+      selectedRows: [],
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
 
@@ -227,7 +237,7 @@ export default {
       this.query.classId = this.classId
       this.query.applyYear = this.applyYear
       this.query.facultyCode = this.facultyCode
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.refresh()
     },
     pageChanged (pageNumber) {
@@ -251,21 +261,72 @@ export default {
     },
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
+      this.loading = true
       api.deleteStudent(row.stulistUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+
           this.refresh(auto)
         } else {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.warning(this.$t('zjy.message.delete.error'))
         }
       }).catch(error => {
         console.log(error)
       })
     },
-
+    handleSelectionChange (rows) { this.selectedRows = rows },
     _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
 
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
     },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.classId = this.classId
+        this.queryExport.facultyCode = this.facultyCode
+        this.queryExport.applyYear = this.applyYear
+        this.queryExport.studentCode = this.studentCode.trim()
+        api.queryList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
+    },
+
     refresh (auto) {
       return _refresh.call(this, auto)
     }
@@ -302,7 +363,7 @@ export default {
         this.query.offset = this.query.limit * (val - 1)
         api.queryList(this.query).then(response => {
           if (response.code !== 1) {
-            alert(response.message)
+            MSG.warning(response.message)
           } else {
             this.list = response.rows
             this.total = response.total

@@ -5,7 +5,7 @@
       <search-select label="年级" :options="years" :value.sync="year"></search-select>
       <search-select label="院系" :options="myFacultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-select label="专业" :options="mySpecialtyList" :value.sync="specialtyCode" @focus="handleInit"></search-select>
-      <search-input label="学号" :value.sync="studentCode"></search-input>
+      <!--<search-input label="学号" :value.sync="studentCode"></search-input>-->
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
@@ -39,7 +39,7 @@ import OperatorItem from '@/components/table-operator/operator-item'
 
 import ZjyPagination from '@/components/pagination'
 
-import { _refresh, export2excel } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat } from '@/utils'
 
 import properties from './properties'
 import api from './api'
@@ -49,7 +49,6 @@ export default {
   data () {
     return {
       query: properties.query,
-      studentCode: '',
       specialtyCode: '',
       facultyCode: '',
       year: '',
@@ -61,8 +60,11 @@ export default {
       columns: properties.columns,
       visible: false,
 
-      selectedRows: [], // 多选行
-      mySpecialtyList: []
+      mySpecialtyList: [],
+
+      queryExport: properties.queryExport,
+      selectedRows: [],
+      exportData: []
     }
   },
 
@@ -104,28 +106,71 @@ export default {
       this.query.specialtyCode = this.specialtyCode
       this.query.facultyCode = this.facultyCode
       this.query.year = this.year
-      this.query.studentCode = this.studentCode
       this.refresh()
     },
 
-    // 多选导出
     handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
     _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
 
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'stufileDate') {
+              return _dateFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
     },
-    edit (row) {
+
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
     },
-    view (row) {
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.specialtyCode = this.specialtyCode
+        this.queryExport.facultyCode = this.facultyCode
+        this.queryExport.year = this.year
+        api.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.data.rows)
+          }
+        })
+      })
     },
 
     pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
-
-    // --------------- 搜索 END ---------------
 
     refresh () {
       return _refresh.call(this)
@@ -133,10 +178,6 @@ export default {
     handleRefresh () {
       this.refresh()
     }
-  },
-
-  mounted () {
-
   },
 
   components: {
@@ -193,6 +234,3 @@ export default {
 }
 
 </script>
-<style lang='scss' scoped>
-
-</style>

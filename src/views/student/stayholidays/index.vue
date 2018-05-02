@@ -142,7 +142,7 @@ export default {
             this.$alert(response.message)
           } else {
             setTimeout(_ => {
-              MSG.success(this.$t('zjy.message.create.success'))
+              MSG.success(this.$t('zjy.message.apply.success'))
             }, 200)
             this.visible = false
             this.refresh()

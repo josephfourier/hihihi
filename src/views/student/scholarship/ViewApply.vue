@@ -2,13 +2,13 @@
     <div class="process">
       <table class="process-table">
         <tr>
-          <td>奖学金名称: {{ data.scholarshipName }}</td>
-          <td>发放方式: {{ data.grantWay | scholarshipGrantWayFormat}}</td>
-          <td>奖学金级别: {{ data.scholarshipLevel }}</td>
+          <td>奖学金名称：{{ data.scholarshipName }}</td>
+          <td>发放方式：{{ data.grantWay | scholarshipGrantWayFormat}}</td>
+          <td>奖学金级别：{{ data.scholarshipLevel }}</td>
         </tr>
         <tr>
-          <td>金额: {{ data.money }}</td>
-          <td>人数限制: {{ data.numberLimit }}</td>
+          <td>金额：{{ data.money }}</td>
+          <td>人数限制：{{ data.numberLimit }}</td>
           <td>发放对象: {{ data.grantObject }}</td>
         </tr>
       </table>
@@ -19,7 +19,7 @@
           <zjy-input v-else type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :maxlength="1024"></zjy-input>
           <div class="tip-box">
             <transition name="el-zoom-in-top">
-              <span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>
+              <span class="tip reason" v-if="hasError && !innerApplyReason" style="position: relative;top: -3px;">请填写申请原因</span>
             </transition>
           </div>
         </div>

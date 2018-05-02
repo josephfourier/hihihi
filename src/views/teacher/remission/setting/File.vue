@@ -1,6 +1,6 @@
 <template>
   <div class="zjy-app">
-    <zjy-table-operator>
+    <zjy-table-operator v-if="hasPermission('swms:notice-file:create')">
       <operator-item @click="create" clz="create">新增</operator-item>
     </zjy-table-operator>
 
@@ -33,13 +33,13 @@
 
     <div class="zjy-dialog">
       <el-dialog title="新增文件" :visible.sync="visible2" width="800px">
-        <zjy-grant v-if="visible2" :post="postList" :visible.sync="visible2" @submit="handleCreate"></zjy-grant>
+        <zjy-remission v-if="visible2" :post="postList" :visible.sync="visible2" @submit="handleCreate"></zjy-remission>
       </el-dialog>
     </div>
 
     <div class="zjy-dialog">
       <el-dialog title="编辑文件" :visible.sync="visible3" width="800px">
-        <grant-update v-if="visible3" :data="data" :post="postList" :visible.sync="visible3" @submit="handleUpdate"></grant-update>
+        <remission-update v-if="visible3" :data="data" :post="postList" :visible.sync="visible3" @submit="handleUpdate"></remission-update>
       </el-dialog>
     </div>
 
@@ -56,9 +56,8 @@ import ImageView from './ImageView'
 import ZjyButton from '@/components/button'
 import api from './api'
 
-import ZjyGrant from './grant'
-import GrantUpdate from './grantUpdate'
-import { _refresh } from '@/utils'
+import ZjyRemission from './remission'
+import RemissionUpdate from './RemissionUpdate'
 import properties from './properties'
 
 export default {
@@ -199,8 +198,8 @@ export default {
     ZjyTable,
     ZjyPreview,
     ZjyButton,
-    ZjyGrant,
-    GrantUpdate,
+    ZjyRemission,
+    RemissionUpdate,
     ImageView
   },
 

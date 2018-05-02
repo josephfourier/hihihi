@@ -2,7 +2,7 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
       <el-form-item label="岗位名称" prop="postName" class="block">
-        <el-input v-model="formData.postName"></el-input>
+        <el-input v-model="formData.postName" :maxlength="128"></el-input>
       </el-form-item>
 
        <el-form-item label="要求专业" prop="specialtyId" class="inline">
@@ -18,11 +18,11 @@
       </el-form-item>
 
        <el-form-item label="名额限制" prop="numberLimit" class="inline pull-right">
-        <el-input v-model="formData.numberLimit"></el-input>
+        <el-input v-model="formData.numberLimit" :maxlength="6"></el-input>
       </el-form-item>
 
        <el-form-item label="薪资待遇" prop="salary" class="inline block">
-        <el-input v-model="formData.salary"></el-input>
+        <el-input v-model="formData.salary" :maxlength="11"></el-input>
       </el-form-item>
 
       <el-form-item label="申请时间" required>
@@ -52,10 +52,17 @@
 <script>
 import ZjyButton from '@/components/button'
 import { mapGetters } from 'vuex'
+import validator from '@/utils/validator'
 
 export default {
   name: 'study-setting',
   data () {
+    const limited = (rule, value, callback) => {
+      if (!validator.isInteger(+value)) {
+        return callback(new Error('请输入合法数字,如15'))
+      }
+      callback()
+    }
     return {
       formData: {},
       startOption: {
@@ -74,7 +81,7 @@ export default {
       },
       rules: {
         postName: [
-          { required: true, message: '请输入岗位名称', trigger: 'blur' }
+          { required: true, message: '请输入岗位名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         specialtyId: [
@@ -82,20 +89,22 @@ export default {
         ],
 
         numberLimit: [
-          { required: true, message: '请输入名额限制', trigger: 'blur' }
+          { required: true, message: '请输入名额限制', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
         ],
 
         salary: [
-          { required: true, message: '请输入薪资待遇', trigger: 'blur' }
+          { required: true, message: '请输入薪资待遇', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
         ],
         startDate: [
-          { required: true, message: '请选择起始日期', trigger: 'blur' }
+          { required: true, message: '请选择起始日期', trigger: 'change' }
         ],
         endDate: [
-          { required: true, message: '请选择结束日期', trigger: 'blur' }
+          { required: true, message: '请选择结束日期', trigger: 'change' }
         ],
         isOpen: [
-          { required: true, message: '请选择是否开放', trigger: 'change' }
+          { required: true, message: '请选择是否开放申请', trigger: 'change' }
         ]
       }
     }
@@ -105,6 +114,9 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          Object.assign(this.formData, {
+            specialtyName: this.specialtyList.find(x => x.specialtyId === this.formData.specialtyId).specialtyName
+          })
           this.$emit('submit', this.formData)
         } else {
           return false
@@ -117,7 +129,7 @@ export default {
     ...mapGetters(['specialtyList'])
   },
 
-  created() {
+  created () {
     this.$store.dispatch('setSpecialtyList')
   },
 
@@ -131,7 +143,7 @@ export default {
   watch: {
     data: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.formData = {...val}
       }
     }

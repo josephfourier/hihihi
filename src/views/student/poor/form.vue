@@ -4,21 +4,21 @@
       <el-form :model="formData" :rules="rules" ref="formData" label-width="110px">
         <el-form-item >
           <ul class="list">
-            <li>姓名:{{student.studentName}}</li>
-            <li>学号:{{student.studentNo}}</li>
-            <li>院系:{{student.facultyName}}</li>
-            <li>班级:{{student.className}}</li>
+            <li>姓名：{{student.studentName}}</li>
+            <li>学号：{{student.studentNo}}</li>
+            <li>院系：{{student.facultyName}}</li>
+            <li>班级：{{student.className}}</li>
           </ul>
         </el-form-item>
         <el-form-item label="家庭总人口数" prop="totalPopulation" class="inline">
-          <el-input v-model="formData.totalPopulation"></el-input> 人
+          <el-input v-model="formData.totalPopulation" :maxlength="6"></el-input> 人
         </el-form-item>
 
         <el-form-item label="家庭年收入" prop="annualIncome" class="inline">
-          <el-input v-model="formData.annualIncome" type="input"></el-input> 元
+          <el-input v-model="formData.annualIncome" type="input" :maxlength="11"></el-input> 元
         </el-form-item>
         <el-form-item label="人均月收入" prop="pcmIncome" class="inline">
-          <el-input v-model="formData.pcmIncome" type="input"></el-input> 元
+          <el-input v-model="formData.pcmIncome" type="input" :maxlength="11"></el-input> 元
         </el-form-item>
         <el-form-item label="家庭困难类型" prop="poorType" class="checkbox">
           <el-checkbox-group v-model="formData.poorType">
@@ -33,10 +33,10 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="家庭困难情况" prop="poorDescription">
-          <el-input v-model="formData.poorDescription" type="textarea"></el-input>
+          <el-input v-model="formData.poorDescription" type="textarea" :maxlength="1024"></el-input>
         </el-form-item>
         <el-form-item label="曾受资助情况" prop="receivedFunding">
-          <el-input v-model="formData.receivedFunding" type="textarea"></el-input>
+          <el-input v-model="formData.receivedFunding" type="textarea" :maxlength="1024"></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -53,10 +53,17 @@
 <script>
 import StudentProcess from '@/components/process/StudentProcess'
 import commonAPI from '@/api/common'
+import validator from '@/utils/validator'
 
 export default {
 
   data () {
+    const limited = (rule, value, callback) => {
+      if (!validator.isInteger(+value)) {
+        return callback(new Error('请输入合法数字,如15'))
+      }
+      callback()
+    }
     return {
       formData: {
         poorType: []
@@ -65,23 +72,26 @@ export default {
       innerVisible: true,
       rules: {
         totalPopulation: [
-          { required: true, message: '请输入家庭总人口数', trigger: 'blur' }
-          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入家庭总人口数', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change' }
         ],
         annualIncome: [
-          { required: true, message: '请输入家庭年收入', trigger: 'blur' }
+          { required: true, message: '请输入家庭年收入', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
         ],
         pcmIncome: [
-          { required: true, message: '请输入人均月收入', trigger: 'blur' }
+          { required: true, message: '请输入人均月收入', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
         ],
         poorType: [
           { type: 'array', required: true, message: '请至少选择一种家庭困难类型', trigger: 'change' }
         ],
         poorDescription: [
-          { required: true, message: '请输入人均月收入', trigger: 'blur' }
+          { required: true, message: '请输入家庭困难情况', trigger: 'change' }
         ],
         receivedFunding: [
-          { required: true, message: '请输入人均月收入', trigger: 'blur' }
+          { required: true, message: '请输入曾受资助情况', trigger: 'change' }
         ]
       }
     }

@@ -141,7 +141,6 @@ export default {
       classId: '',
       studentNo: '',
       query: properties.query,
-      queryExport: properties.queryExport,
       list: [],
       currentPage: 1,
       total: 0,
@@ -160,7 +159,8 @@ export default {
       fileList: [],
       settings: [],
 
-      selectedRows: [], // 多选行
+      queryExport: properties.queryExport,
+      selectedRows: [],
       exportData: []
     }
   },
@@ -330,8 +330,6 @@ export default {
         })
       })
     },
-
-    // 多选导出
     handleSelectionChange (rows) {
       this.selectedRows = rows
     },

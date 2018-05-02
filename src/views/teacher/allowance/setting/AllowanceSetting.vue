@@ -2,15 +2,15 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
       <el-form-item label="困难补助名称" prop="allowanceName" class="block">
-        <el-input v-model="formData.allowanceName"></el-input>
+        <el-input v-model="formData.allowanceName" :maxlength="128"></el-input>
       </el-form-item>
 
       <el-form-item label="名额限制" prop="numberLimit" class="inline">
-        <el-input v-model="formData.numberLimit"></el-input>
+        <el-input v-model="formData.numberLimit" :maxlength="6"></el-input>
       </el-form-item>
 
       <el-form-item label="金额" prop="money" class="inline pull-right">
-        <el-input v-model="formData.money"></el-input>
+        <el-input v-model="formData.money" :maxlength="11"></el-input>
       </el-form-item>
 
        <el-form-item label="发放方式" prop="grantWay" class="inline">
@@ -26,7 +26,7 @@
       </el-form-item>
 
        <el-form-item label="发放对象" prop="grantObject" class="inline pull-right">
-        <el-input v-model="formData.grantObject"></el-input>
+        <el-input v-model="formData.grantObject" :maxlength="256"></el-input>
       </el-form-item>
 
       <el-form-item label="申请时间" required>
@@ -56,10 +56,17 @@
 <script>
 import ZjyButton from '@/components/button'
 import { mapGetters } from 'vuex'
+import validator from '@/utils/validator'
 
 export default {
   name: 'allowance-setting',
   data () {
+    const limited = (rule, value, callback) => {
+      if (!validator.isInteger(+value)) {
+        return callback(new Error('请输入合法数字,如15'))
+      }
+      callback()
+    }
     return {
       formData: {},
       startOption: {
@@ -78,31 +85,33 @@ export default {
       },
       rules: {
         allowanceName: [
-          { required: true, message: '请输入困难补助名称', trigger: 'blur' }
+          { required: true, message: '请输入困难补助名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         grantWay: [
           { required: true, message: '请选择发放方式', trigger: 'change' }
         ],
         money: [
-          { required: true, message: '请输入金额', trigger: 'change' }
+          { required: true, message: '请输入金额', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
         ],
 
         numberLimit: [
-          { required: true, message: '请输入名额限制', trigger: 'blur' }
+          { required: true, message: '请输入名额限制', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
         ],
 
         grantObject: [
-          { required: true, message: '请输入发放对象', trigger: 'blur' }
+          { required: true, message: '请输入发放对象', trigger: 'change' }
         ],
         startDate: [
-          { required: true, message: '请选择起始日期', trigger: 'blur' }
+          { required: true, message: '请选择起始日期', trigger: 'change' }
         ],
         endDate: [
-          { required: true, message: '请选择结束日期', trigger: 'blur' }
+          { required: true, message: '请选择结束日期', trigger: 'change' }
         ],
         isOpen: [
-          { required: true, message: '请选择是否开放', trigger: 'change' }
+          { required: true, message: '请选择是否开放申请', trigger: 'change' }
         ]
       }
     }
@@ -126,7 +135,7 @@ export default {
     })
   },
 
-  created() {
+  created () {
     this.$store.dispatch('setGrantWay')
   },
 
@@ -140,13 +149,8 @@ export default {
   watch: {
     data: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.formData = {...val}
-        // if (!this.formData.isOpen) {
-
-        // }
-
-        // console.log(this.formData)
       }
     }
   }

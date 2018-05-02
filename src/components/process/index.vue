@@ -50,7 +50,7 @@
               </el-select>
               <div class="tip-box">
                 <transition name="el-zoom-in-top">
-                  <span class="tip" v-if="hasError && index === step - 1">{{ error }}</span>
+                  <span class="tip" v-if="hasError && index === step - 1" style="top: -1px;">{{ error }}</span>
                 </transition>
               </div>
             </div>
@@ -83,7 +83,7 @@
         <zjy-button type="primary" @click="innerYes">确定</zjy-button>
       </div>
     </el-dialog>
-    <div v-if="reason && isFinished" class="refused">
+    <div v-if="reason && isFinished" class="refused" style="margin-top: -20px;">
       <p>拒绝原因</p>{{ reason }}</div>
   </div>
 

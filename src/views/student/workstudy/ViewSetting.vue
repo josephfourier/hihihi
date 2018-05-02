@@ -1,12 +1,13 @@
-<!--设置详情数据查看 -->
 <template>
-  <div class="zjy-process">
+  <div class="process">
     <table class="process-table">
       <tr>
-        <td>荣誉称号名称: {{ data.honoraryName }}</td>
+        <td>岗位名称: {{ data.postName }}</td>
         <td>人数限制: {{ data.numberLimit }}</td>
+        <td>专业要求：{{ data.specialtyName }}</td>
       </tr>
       <tr>
+        <td>薪资待遇：{{ data.salary }}</td>
         <td>开始时间: {{ data.startDate | dateFormat }}</td>
         <td>结束时间: {{ data.endDate | dateFormat }}</td>
       </tr>

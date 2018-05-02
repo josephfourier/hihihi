@@ -1,4 +1,3 @@
-<!-- 学生假期留校管理 -->
 <template>
   <div class="zjy-app">
 
@@ -118,9 +117,12 @@ export default {
       const auto = this.list.length === 1 && this.currentPage !== 1
       api.delete(data.poorUid).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.warning(this.$t('zjy.message.delete.error'))
         } else {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
         }
       }).finally(() => {
         this.refresh(auto).visible3 = false
@@ -133,18 +135,24 @@ export default {
       api.update(d).then(response => {
         this.visible3 = false
         if (response.code !== 1) {
-          MSG.warning('修改失败')
+          console.warn(response.message)
+          MSG.success(this.$t('zjy.message.update.error'))
         } else {
-          MSG.success('修改成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.update.success'))
+          }, 200)
         }
       }).catch().finally(this.refresh())
     },
     handleSubmit (data, steps) {
       api.create(this.makeFormData(data, steps)).then(response => {
         if (response.code !== 1) {
-          this.$alert('申请失败')
+          console.warn(response.message)
+          MSG.warning(this.$t('zjy.message.apply.error'))
         } else {
-          MSG.success('申请成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.apply.success'))
+          }, 200)
           this.refresh().visible = false
         }
       }).catch(error => {

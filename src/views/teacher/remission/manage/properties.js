@@ -76,5 +76,13 @@ export default {
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    functionClass: '2',
+    applyYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '姓名', '院系', '专业', '班级', '电话', '申请年份'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'phone', 'applyYear'],
+  excelName: '学费减免'
 }

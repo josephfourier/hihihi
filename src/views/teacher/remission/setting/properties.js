@@ -1,3 +1,5 @@
+import { hasPermission } from '@/utils'
+
 const openFormat = cellValue => {
   return ['否', '是'][+cellValue]
 }
@@ -60,6 +62,7 @@ export default {
       operators: [
         {
           label: '删除',
+          render: _ => hasPermission('swms:stulist:delete'),
           cmd: 'delete'
         }
       ]
@@ -87,13 +90,25 @@ export default {
         },
         {
           label: '编辑',
+          render: _ => hasPermission('swms:notice-file:update'),
           cmd: 'edit'
         },
         {
           label: '删除',
+          render: _ => hasPermission('swms:notice-file:delete'),
           cmd: 'delete'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    functionClass: '2',
+    applyYear: '',
+    facultyCode: '',
+    classId: '',
+    studentCode: ''
+  },
+  header: ['学号', '姓名', '院系', '专业', '班级', '电话', '申请年份'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'phone', 'applyYear'],
+  excelName: '学费减免'
 }

@@ -57,7 +57,7 @@
             </el-select>
             <div class="tip-box">
               <transition name="el-zoom-in-top">
-                <span class="tip" v-if="hasError && index === 0">{{ error }}</span>
+                <span class="tip" v-if="hasError && index === 0" style="top: -1px;">{{ error }}</span>
               </transition>
             </div>
           </div>

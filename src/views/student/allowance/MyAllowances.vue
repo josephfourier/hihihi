@@ -63,12 +63,11 @@ export default {
     }
   },
 
-  created() {
+  created () {
     this.refresh()
   },
 
   methods: {
-  
     update (data) {
       if (!this.applyReason) {
         this.hasError = true
@@ -79,11 +78,11 @@ export default {
         api.update(data).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
-               MSG.success('修改成功')
+              MSG.success(this.$t('zjy.message.update.success'))
             }, 200)
             this.refresh().visible = false
           } else {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           }
         }).catch(error => {
 
@@ -94,11 +93,11 @@ export default {
       api.delete(data.allowanceUid).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-               MSG.success('删除成功')
-            }, 200)
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
           this.refresh().visible = false
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         }
       }).catch(error => {
 
@@ -114,8 +113,7 @@ export default {
       })
     },
 
-
-    refresh() {
+    refresh () {
       api.queryMyApplyList().then(response => {
         if (response.code !== 1) {
           MSG.warning('获取数据失败')
@@ -125,7 +123,7 @@ export default {
       })
       return this
     }
-  
+
   },
   components: {
     ProcessView,

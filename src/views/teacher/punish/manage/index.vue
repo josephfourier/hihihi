@@ -10,8 +10,8 @@
   <div class="zjy-line"></div>
 
   <zjy-table-operator>
-    <operator-item @click="create" clz="create">新增</operator-item>
-    <!--<operator-item @click="batchRemove" clz="delete">批量删除</operator-item>-->
+    <operator-item @click="create" clz="create" v-if="hasPermission('swms:punish-tea:create')">新增</operator-item>
+    <!--<operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:punish-tea:delete')">批量删除</operator-item>-->
     <operator-item @click="_export" clz="export">导出</operator-item>
   </zjy-table-operator>
 
@@ -76,7 +76,8 @@ import api from './api'
 import ZjyForm from './form'
 import Punish from './Punish'
 
-import { _refresh } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat } from '@/utils'
+
 import properties from './properties'
 
 export default {
@@ -92,14 +93,15 @@ export default {
       studentCode: '',
 
       selectedRows: [],
-      // ---------------- 搜索 ----------------
       loading: false,
       visible: false,
       visible2: false,
       optionsYears: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
-      columns: properties.columns
-      // ---------------- 表格 ----------------
+      columns: properties.columns,
+
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
   methods: {
@@ -110,12 +112,10 @@ export default {
     searchFilter () {
       this.query.punishStatus = this.punishStatus
       this.query.punishYear = this.punishYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.currentPage = 1
       this.refresh()
     },
-    // ---------------- 搜索 ----------------
-
     create () {
       this.visible2 = true
     },
@@ -124,9 +124,12 @@ export default {
     rescind (data) {
       api.update(data.punishUid, data).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.success('撤销失败')
         } else {
-          MSG.success('撤销成功')
+          setTimeout(_ => {
+            MSG.success('撤销成功')
+          }, 200)
           this.refresh().visible = false
         }
         this.loading = false
@@ -136,6 +139,11 @@ export default {
     },
 
     batchRemove () {
+      if (this.selectedRows.length === 0) {
+        MSG.warning(this.$t('zjy.message.delete.none'))
+        return
+      }
+
       let ids = ''
       this.selectedRows.forEach(x => { ids += x.punishUid + '-' })
       this.loading = true
@@ -143,9 +151,10 @@ export default {
 
       api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.success(this.$t('zjy.message.delete.error'))
         } else {
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
         }
       }).catch(error => {
@@ -153,11 +162,62 @@ export default {
       })
     },
 
-    _export () {},
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
+
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'punishDate') {
+              return _dateFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.punishStatus = this.punishStatus
+        this.queryExport.punishYear = this.punishYear
+        this.queryExport.studentCode = this.studentCode.trim()
+        api.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
+    },
     handleSelectionChange (rows) {
       this.selectedRows = rows
     },
-    //  ---------------- 表格头操作 ----------------
 
     handleView (row) {
       this.data = row
@@ -168,37 +228,37 @@ export default {
       const auto = this.list.length === 1 && this.currentPage !== 1
       api.delete(row.punishUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
           this.refresh(auto)
         } else {
-          this.$alert(response.message)
+          console.warn(response.message)
+          MSG.success(this.$t('zjy.message.delete.error'))
         }
       }).catch(error => {
         console.log(error)
       })
     },
-    //  ---------------- 表格行操作 ----------------
 
     pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
-    //  ---------------- 分页 ----------------
-
-    //  ---------------- formatter ----------------
 
     handleSubmit (data) {
       api.create(data.punishSettingUid, data).then(response => {
         if (response.code === 1) {
-          MSG.success('新增成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.create.success'))
+          }, 200)
           this.refresh().visible2 = false
         } else {
-          MSG.success('新增失败')
+          MSG.success(this.$t('zjy.message.create.error'))
         }
       }).catch(error => {
         console.log(error)
       })
     }
-    //   ---------------- 审批操作 ----------------
   },
 
   components: {

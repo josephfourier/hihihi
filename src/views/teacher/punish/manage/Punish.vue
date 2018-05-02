@@ -6,13 +6,13 @@
         <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>
 
-      <el-form-item label="学生姓名:" class="inline pull-right">
+      <el-form-item label="学生姓名" class="inline pull-right">
         <el-input v-model="student.studentName" disabled></el-input>
       </el-form-item>
-      <el-form-item label="班级:"  class="inline">
+      <el-form-item label="班级"  class="inline">
         <el-input v-model="student.className" disabled></el-input>
       </el-form-item>
-      <el-form-item label="院系:" class="inline pull-right">
+      <el-form-item label="院系" class="inline pull-right">
         <el-input v-model="student.facultyName" disabled></el-input>
       </el-form-item>
 
@@ -34,7 +34,7 @@
       </el-form-item>
 
       <el-form-item label="处分说明" prop="punishDescription">
-        <el-input type="textarea" v-model="formData.punishDescription"></el-input>
+        <el-input type="textarea" v-model="formData.punishDescription" :maxlength="1024"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -88,10 +88,10 @@ export default {
 
         punishDate: [
           // { validator: validateStartDate, trigger: 'blur' },
-          { required: true, message: '请选择处分日期', trigger: 'blur' }
+          { required: true, message: '请选择处分日期', trigger: 'change' }
         ],
         punishDescription: [
-          { required: true, message: '请填写处分说明', trigger: 'blur' }
+          { required: true, message: '请填写处分说明', trigger: 'change' }
         ]
       }
     }

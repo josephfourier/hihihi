@@ -41,7 +41,7 @@
       </el-form-item>
 
       <el-form-item label="申请原因" prop="applyReason">
-        <el-input type="textarea" v-model="formData.applyReason"></el-input>
+        <el-input type="textarea" v-model="formData.applyReason" :maxlength="1024"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -101,10 +101,10 @@ export default {
 
         applyDate: [
           // { validator: validateStartDate, trigger: 'blur' },
-          { required: true, message: '请选择申请日期', trigger: 'blur' }
+          { required: true, message: '请选择申请日期', trigger: 'change' }
         ],
         applyReason: [
-          { required: true, message: '请填写申请原因', trigger: 'blur' }
+          { required: true, message: '请填写申请原因', trigger: 'change' }
         ]
       },
       optionsYears: [

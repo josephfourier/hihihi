@@ -1,15 +1,17 @@
 <template>
   <div class="zjy-tabs">
     <el-tabs type="border-card" v-model="current" @tab-click="tabClick">
-      <el-tab-pane label="荣誉称号管理" name="manage">
+      <el-tab-pane label="荣誉称号管理" name="manage"  v-if="hasPermission('swms:clahonorary-tea-apptab:read')">
         <honoraries-manage class="zjy-tab__item" v-if="active.manage"></honoraries-manage>
       </el-tab-pane>
-      <el-tab-pane label="班级荣誉称号" name="clz">
-        <my-honoraries class="zjy-tab__item" v-if="active.clz"></my-honoraries>
-      </el-tab-pane>
-      <el-tab-pane label="全部荣誉称号" name="all">
-        <all-honoraries class="zjy-tab__item" v-if="active.all"></all-honoraries>
-      </el-tab-pane>
+      <template v-if="hasPermission('swms:clahonorary-tea:create')">
+        <el-tab-pane label="班级荣誉称号" name="clz">
+          <my-honoraries class="zjy-tab__item" v-if="active.clz"></my-honoraries>
+        </el-tab-pane>
+        <el-tab-pane label="全部荣誉称号" name="all">
+          <all-honoraries class="zjy-tab__item" v-if="active.all"></all-honoraries>
+        </el-tab-pane>
+      </template>
     </el-tabs>
   </div>
 </template>
@@ -46,6 +48,3 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

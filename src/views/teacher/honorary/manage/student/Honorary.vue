@@ -46,7 +46,7 @@
       </el-form-item>
 
       <el-form-item label="申请原因" prop="applyReson">
-        <el-input type="textarea" v-model="formData.applyReson"></el-input>
+        <el-input type="textarea" v-model="formData.applyReson" :maxlength="1024"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -107,10 +107,10 @@ export default {
 
         applyDate: [
           // { validator: validateStartDate, trigger: 'blur' },
-          { required: true, message: '请选择申请日期', trigger: 'blur' }
+          { required: true, message: '请选择申请日期', trigger: 'change' }
         ],
         applyReson: [
-          { required: true, message: '请填写申请原因', trigger: 'blur' }
+          { required: true, message: '请填写申请原因', trigger: 'change' }
         ]
       }
     }
@@ -155,20 +155,11 @@ export default {
       })
     }
   },
-  computed: {
-  },
   props: {
     visible: Boolean
   },
   components: {
     ZjyButton
-  },
-  watch: {
-
   }
 }
 </script>
-
-<style scoped>
-
-</style>

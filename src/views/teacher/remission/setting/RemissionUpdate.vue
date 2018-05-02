@@ -12,18 +12,18 @@
       <el-form-item label="上传附件" style="margin-bottom: 0; overflow:hidden;">
          <el-upload
           class="upload-file"
-          :action="action" 
-          :headers="{'Zjy-Token': token}" 
-          :on-preview="handlePreview" 
-          :on-remove="handleRemove" 
-          :before-upload="handleBeforeUpload" 
-          :on-change="handleChange" 
-          :on-success="handleSuccess" 
+          :action="action"
+          :headers="{'Zjy-Token': token}"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-upload="handleBeforeUpload"
+          :on-change="handleChange"
+          :on-success="handleSuccess"
           :on-error="handleError"
           :on-progress="handleProgress"
           :show-file-list="false"
         >
-          <div class="upload-wrapper" style="display:flex;flex-direction:row"> 
+          <div class="upload-wrapper" style="display:flex;flex-direction:row">
             <el-button size="small" type="primary" class="upload-btn" @click="handleClick">上传附件</el-button>
             <transition name="el-zoom-in-center">
               <div class="upload-status" v-if="showPercent">
@@ -51,9 +51,10 @@
       <transition name="el-zoom-in-top">
         <div class="panel" v-if="show">
           <select-panel
-            :data="post" 
-            :title="'选择范围'" 
-            @checked="handleChecked" 
+            :data="post"
+            :title="'选择范围'"
+            :defaultChecked="defaultChecked"
+            @checked="handleChecked"
             :filterable="false"
           >
           </select-panel>
@@ -76,16 +77,16 @@ import { mapGetters } from 'vuex'
 
 export default {
 
-  data() {
+  data () {
     return {
-      action: process.env.BASE_URL + '/upload/stufileUpload',
       formData: {},
+      action: process.env.BASE_URL + '/upload/stufileUpload',
       done: false,
       loading: false,
       showPercent: false,
       percent: 0,
       percentText: '',
-      scopeList: [],
+      defaultChecked: [],
       rules: {
         fileName: [
           { required: true, message: '请上传文件', trigger: 'change' }
@@ -108,21 +109,17 @@ export default {
   },
   methods: {
     handleClick () {
-      // if (this.done) {
-      //   this.showPercent = false
-      // }
     },
-    handleBeforeUpload(file) {
-      // this.loading = true
+    handleBeforeUpload (file) {
       this.done = false
       this.showPercent = true
     },
-    handleProgress(event, file, fileList) {
+    handleProgress (event, file, fileList) {
       this.percent = +((event.percent).toFixed(2))
       this.percentText = this.percent < 99 ? this.percent + '%' : '处理中...'
     },
 
-    handleChange(file, fileList) {
+    handleChange (file, fileList) {
       // if (this.hasError) return
       // if (!/\.(xls|xlsx)$/gi.test(file.name)) {
       //   MSG.warning('请上传excel格式文件')
@@ -133,58 +130,41 @@ export default {
       // this.myfile = file
     },
 
-    handleSuccess(response, file, fileList) {
+    handleSuccess (response, file, fileList) {
       this.loading = false
       this.done = true
       if (response.code === 1) {
         this.formData.filePath = response.data
-        this.formData.fileName = file.name  
+        this.formData.fileName = file.name
         this.percentText = '完成'
       } else {
         this.percentText = '失败'
       }
-      
-      // if (response.code == 90002) {
-      //   this.errorLink = response.data
-      //   this.showError = true
-      //   this.hasError = true
-      // } else if (response.code === 90003) {
-      //   this.hasError = true
-      //   MSG.warning('导入数据异常')
-      // } else if (response.code === 90001) {
-      //   MSG.success('导入数据成功')
-      // }
-      // this.clearFile()
-      // this.showPercent = false
     },
 
-
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
     },
-    handlePreview(file) {
+    handlePreview (file) {
     },
     handleError (err, file, fileList) {
 
     },
-    handleChecked(val) {
-      this.scopeList = val.map(element => {
+    handleChecked (val) {
+      this.formData.swmsNoticeReadscopeList = val.map(element => {
         return {
           postId: element
         }
       })
-      // this.scopeList.push()
     },
-    submitForm(formName) {
-      if (this.show && this.scopeList.length === 0) {
+    submitForm (formName) {
+      if (this.show && !this.formData.swmsNoticeReadscopeList ||
+      this.show && this.formData.swmsNoticeReadscopeList.length === 0
+      ) {
         MSG.warning('请选择可见范围')
         return
       }
       this.$refs[formName].validate(valid => {
         if (valid) {
-          Object.assign(this.formData, {
-            functionClass: "2",
-            swmsNoticeReadscopeList: this.scopeList
-          })
           this.$emit('submit', this.formData)
         } else {
           return false
@@ -194,12 +174,27 @@ export default {
   },
   props: {
     post: Array,
+    data: Object,
     visible: Boolean
   },
   components: {
     ZjyButton,
     SelectPanel,
     ZjyProgress
+  },
+
+  watch: {
+    data: {
+      immediate: true,
+      handler (val) {
+        if (val && val.swmsNoticeReadscopeList) {
+          this.defaultChecked = val.swmsNoticeReadscopeList.map(i => {
+            return i.postId
+          })
+        }
+        this.formData = {...val}
+      }
+    }
   }
 }
 </script>

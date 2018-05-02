@@ -1,11 +1,11 @@
 <template>
   <div class="zjy-app">
-   
+
     <div class="zjy-table">
-      <zjy-table 
-        :data="list" 
-        :loading="loading" 
-        :columns="columns" 
+      <zjy-table
+        :data="list"
+        :loading="loading"
+        :columns="columns"
         @view="handleView"
       >
       </zjy-table>
@@ -41,7 +41,7 @@ import { _refresh } from '@/utils'
 import properties from './properties'
 
 export default {
-  data() {
+  data () {
     return {
       list: [],
 
@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.loading = true
       api.queryFileList(2).then(response => {
         if (response.code !== 1) {
@@ -69,13 +69,12 @@ export default {
       })
     },
 
-    handleView(row) {
+    handleView (row) {
       this.isImageView = this.isImage(row.filePath)
       this.src = row.filePath
       this.visible = true
     },
 
-   
     isImage (filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
@@ -88,7 +87,7 @@ export default {
     ImageView
   },
 
-  created() {
+  created () {
     this.refresh()
   },
 

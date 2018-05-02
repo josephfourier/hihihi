@@ -1,32 +1,35 @@
 <!--设置详情数据查看 -->
 <template>
-    <div class="zjy-process">
+    <div class="process">
       <table class="process-table">
         <tr>
-          <td>荣誉称号名称: {{ data.honoraryName }}</td>
-          <td>人数限制: {{ data.numberLimit }}</td>
+          <td>困难补助名称：{{ data.allowanceName }}</td>
+          <td>发放方式：{{ data.grantWay | scholarshipGrantWayFormat }}</td>
+          <td>名额限制：{{ data.numberLimit }}</td>
         </tr>
         <tr>
-          <td>开始时间: {{ data.startDate | dateFormat }}</td>
-          <td>结束时间: {{ data.endDate | dateFormat }}</td>
-        </tr>
-        <tr v-if="data.dataStatusName">
-          <td>审批状态: {{ data.dataStatusName }}</td>
+          <td>金额：{{ data.money }}</td>
+          <td>发放对象：{{ data.grantObject }}</td>
+          <td>申请时间：{{ data.startDate | dateFormat }} </td>
         </tr>
       </table>
-      <p class="process-title">申请原因</p>
-      <div class="textarea-wrapper">
-        <zjy-input 
-          type="textarea" 
-          v-model="innerApplyReason" 
-          @change="$emit('update:applyReason', innerApplyReason)" 
-          :disabled="data.dataStatus && data.dataStatus !== '0'"
-          :maxlength="1024"
-        ></zjy-input>
-        <div class="form-tip-box">
-          <transition name="el-zoom-in-top">
-            <span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>
-          </transition>
+      <div class="process-item" style="margin-bottom: 0;">
+        <p class="process-item__title">申请原因</p>
+        <div class="process-item__content">
+          <span v-if="data.dataStatus && data.dataStatus !== '0'">{{ innerApplyReason }}</span>
+          <zjy-input
+            type="textarea"
+            v-model="innerApplyReason"
+            @change="$emit('update:applyReason', innerApplyReason)"
+            v-else
+            :maxlength="1024"
+          ></zjy-input>
+
+          <div class="tip-box">
+            <transition name="el-zoom-in-top">
+              <span class="tip reason" v-if="hasError && !innerApplyReason" style="position: relative;top: -3px;">请填写申请原因</span>
+            </transition>
+          </div>
         </div>
       </div>
     </div>
@@ -65,7 +68,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>

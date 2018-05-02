@@ -44,5 +44,13 @@ export default {
       label: '入学年份',
       prop: 'enterYear'
     }
-  ]
+  ],
+  queryExport: {
+    specialtyCode: '',
+    enterYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '姓名', '院系', '专业', '班级', '家长电话', '入学年份'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'familyPhone', 'enterYear'],
+  excelName: '学生信息'
 }

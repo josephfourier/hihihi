@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 export default {
   query: {
@@ -13,10 +13,10 @@ export default {
       label: '学年',
       prop: 'applyYear'
     },
-    {
-      label: '设置信息',
-      prop: 'applyDescription'
-    },
+    // {
+    //   label: '设置信息',
+    //   prop: 'applyDescription'
+    // },
     {
       label: '申请时间',
       prop: 'startDate',
@@ -36,6 +36,7 @@ export default {
         },
         {
           label: '编辑',
+          render: _ => hasPermission('swms:poor-set:update'),
           cmd: 'edit'
         }
       ]

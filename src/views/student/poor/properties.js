@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 const statusFormat = (cellValue) => {
   if (!cellValue) return '未申请'
   return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue.dataStatus]
@@ -44,7 +44,7 @@ export default {
         {
           label: '申请',
           cmd: 'create',
-          render: row => !row.swmsPoor
+          render: row => !row.swmsPoor && hasPermission('swms:poor-stu:create')
         }
       ]
     }

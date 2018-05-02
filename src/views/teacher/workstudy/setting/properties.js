@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 const openFormat = (val) => ['否', '是'][+val]
 
 export default {
@@ -8,8 +8,7 @@ export default {
   },
   columns: [
     {
-      index: true,
-      select: true
+      index: true
     },
     {
       label: '岗位名称',
@@ -41,10 +40,12 @@ export default {
       operators: [
         {
           label: '编辑',
+          render: _ => hasPermission('swms:workstudy-set:update'),
           cmd: 'edit'
         },
         {
           label: '删除',
+          render: _ => hasPermission('swms:workstudy-set:delete'),
           cmd: 'delete'
         }
       ]

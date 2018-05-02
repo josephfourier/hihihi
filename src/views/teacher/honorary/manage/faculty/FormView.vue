@@ -1,25 +1,53 @@
-<!--设置详情数据查看 -->
 <template>
-  <div class="zjy-process">
+  <div class="process">
     <table class="process-table">
       <tr>
-        <td>荣誉称号名称: {{ data.honoraryName }}</td>
-        <td>申请人: {{ user.fullName }}</td>
-        <td>申请院系:
-          {{ innerFac.facultyName }}
-        </td>
+        <td>荣誉称号名称：{{ data.honoraryName }}</td>
+        <td>申请人：{{ user.fullName }}</td>
+        <td>申请班级：{{ innerFac.facultyName }}</td>
       </tr>
     </table>
-    <p class="process-title">申请原因</p>
-    <span v-if="data.dataStatus && data.dataStatus !== '0'">{{ innerApplyReason }}</span>
-    <div class="textarea-wrapper" v-else>
-      <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)"></zjy-input>
-      <div class="form-tip-box">
-        <transition name="el-zoom-in-top">
-          <span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>
-        </transition>
+
+    <div class="process-item" v-if="data.dataStatus && data.dataStatus !== '0'">
+      <p class="process-item__title">申请原因</p>
+      <div class="process-item__content">
+        {{ innerApplyReason }}
       </div>
     </div>
+    <div class="process-item" v-else style="margin-bottom: 0;">
+      <p class="process-item__title">申请原因</p>
+      <div class="process-item__content">
+        <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :maxlength="1024"></zjy-input>
+        <div class="tip-box">
+          <transition name="el-zoom-in-top">
+            <span class="tip reason" v-if="hasError && !innerApplyReason"
+                  style="position: relative;top: -6px;">请填写申请原因</span>
+          </transition>
+        </div>
+      </div>
+    </div>
+
+
+    <!---->
+    <!--<table class="process-table">-->
+      <!--<tr>-->
+        <!--<td>荣誉称号名称: {{ data.honoraryName }}</td>-->
+        <!--<td>申请人: {{ user.fullName }}</td>-->
+        <!--<td>申请院系:-->
+          <!--{{ innerFac.facultyName }}-->
+        <!--</td>-->
+      <!--</tr>-->
+    <!--</table>-->
+    <!--<p class="process-title">申请原因</p>-->
+    <!--<span v-if="data.dataStatus && data.dataStatus !== '0'">{{ innerApplyReason }}</span>-->
+    <!--<div class="textarea-wrapper" v-else>-->
+      <!--<zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)"></zjy-input>-->
+      <!--<div class="form-tip-box">-->
+        <!--<transition name="el-zoom-in-top">-->
+          <!--<span class="tip reason" v-if="hasError && !innerApplyReason">请填写申请原因</span>-->
+        <!--</transition>-->
+      <!--</div>-->
+    <!--</div>-->
 
   </div>
 </template>
@@ -33,7 +61,7 @@ export default {
   data () {
     return {
       innerApplyReason: '',
-      innerFac: '',
+      innerFac: ''
       // facs: []
     }
   },

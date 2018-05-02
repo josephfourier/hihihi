@@ -1,26 +1,25 @@
 <template>
-  <div>
-    <div class="zjy-process" v-loading="loading">
-      <table class="process-table">
-        <tr>
-          <td>荣誉称号名称: {{ data.honoraryName }}</td>
-          <td>荣誉称号类别: {{ data.honoraryCategory }}</td>
-          <td>申请人: {{ data.studentName }}</td>
-          <td>申请时间: {{ data.applyDate | dateFormat }}</td>
-        </tr>
-        <tr>
-          <td>入学年份: {{ data.enterYear }}</td>
-          <td>院系: {{ data.facultyName }}</td>
-          <td>政治面貌: {{ data.politics }}</td>
-          <td>专业: {{ data.specialtyName }}</td>
-        </tr>
-        <tr>
-
-        </tr>
-      </table>
-      <p class="process-title">申请原因</p>
-      <p class="content">{{ data.applyReson }}</p>
-      <p class="process-title">审批进度</p>
+  <div class="process">
+    <table class="process-table">
+      <tr>
+        <td>荣誉称号名称：{{ data.honoraryName }}</td>
+        <td>申请人：{{ data.studentName }}</td>
+        <td>入学年份：{{ data.enterYear }}</td>
+      </tr>
+      <tr>
+        <td>政治面貌：{{ data.politics | politicsFormat}}</td>
+        <td>院系：{{ data.facultyName }}</td>
+        <td>专业：{{ data.specialtyName }}</td>
+      </tr>
+      <tr>
+        <td>人数限制：{{ data.numberLimit }}</td>
+        <td>开始时间：{{ data.startDate | dateFormat }}</td>
+        <td>结束时间：{{ data.endDate | dateFormat }}</td>
+      </tr>
+    </table>
+    <div class="process-item">
+      <p class="process-item__title">申请原因</p>
+      <div class="process-item__content">{{ data.applyReson }}</div>
     </div>
     <transition name="el-zoom-in-top">
       <zjy-process
@@ -33,6 +32,7 @@
       </zjy-process>
     </transition>
   </div>
+
 </template>
 
 <script>
@@ -73,7 +73,6 @@ export default {
   },
 
   methods: {
-
     makeFormData (data, steps) {
       return {
         'stuhonoraryUid': data.stuhonoraryUid,
@@ -84,11 +83,12 @@ export default {
       api.submitStudentHonorary(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success('审批成功')
           }, 200)
-          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('setSchedules')
+          this.$store.dispatch('removeFromTodoList', data.stuhonoraryUid)
         } else {
-          MSG.success('保存失败')
+          MSG.warning('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

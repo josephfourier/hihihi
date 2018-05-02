@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 const statusFormat = (cellValue) => {
   return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
@@ -46,8 +46,7 @@ export default {
     },
     {
       label: '学号',
-      prop: 'studentNo',
-      width: 100
+      prop: 'studentNo'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -77,14 +76,23 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:allowance-tea:update'),
           cmd: 'view'
         },
         {
           label: '删除',
-          render: (row) => row.dataStatus === '1' || row.dataStatus === '2',
+          render: (row) => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:allowance:delete'),
           cmd: 'delete'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    dataStatus: '',
+    applyYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '学生姓名', '院系', '申请日期',  '困难补助名称', '金额', '申请年份', '状态'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'applyDate', 'allowanceName', 'money', 'applyYear', 'dataStatus'],
+  excelName: '困难补助申请'
 }

@@ -94,11 +94,14 @@ export default {
       } else {
         clzAPI.create(data.honorarysettingUid, this.clz, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            MSG.success('申请成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.apply.success'))
+            }, 200)
             this.refresh().visible = false
-            bus.$emit('applied')
+            // bus.$emit('applied')
           } else {
-            this.$alert(response.message)
+            console.warn(response.message)
+            MSG.success(this.$t('zjy.message.apply.error'))
           }
         }).catch(error => {})
       }
@@ -166,7 +169,7 @@ export default {
           this.list = response.rows
           this.total = response.total
         }).catch(error => {
-        }).finally (_ => {
+        }).finally(_ => {
           this.loading = false
         })
       }
@@ -196,7 +199,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

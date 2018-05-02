@@ -80,11 +80,11 @@ export default {
       api.submitScholarship(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success(this.$t('zjy.message.approve.success'))
+            MSG.success('审批成功')
           }, 200)
           this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
         } else {
-          MSG.success(this.$t('zjy.message.approve.error'))
+          MSG.success('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

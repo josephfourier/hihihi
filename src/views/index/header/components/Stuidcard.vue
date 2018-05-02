@@ -74,13 +74,13 @@ export default {
       api.submitStuidcard(data, steps).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success('审批成功')
           }, 200)
           // this.$store.dispatch('setSchedules')
           // 提交成功后不再发送请求
           this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
         } else {
-          MSG.success('保存失败')
+          MSG.success('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

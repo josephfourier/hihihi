@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <div class="zjy-process" v-loading="loading">
-      <table class="process-table">
-        <tr>
-          <td>荣誉称号名称: {{ data.honoraryName }}</td>
-          <td>荣誉称号类别: {{ data.honoraryCategory | honoraryTypeFormat}}</td>
-          <td>申请人: {{ data.bzrName }}</td>
-          <td>申请时间: {{ data.applyDate | dateFormat }}</td>
-        </tr>
-        <tr>
-          <td>年级: {{ data.year }}</td>
-
-          <td>班级: {{ data.className }}</td>
-        </tr>
-      </table>
-      <p class="process-title">申请原因</p>
-      <p class="content">{{ data.applyReson }}</p>
-      <p class="process-title">审批进度</p>
+  <div class="process">
+    <table class="process-table">
+      <tr>
+        <td>荣誉称号名称：{{ data.honoraryName }}</td>
+        <td>荣誉称号类别：{{ data.honoraryCategory | honoraryTypeFormat}}</td>
+        <td>申请人：{{ data.teacherName }}</td>
+      </tr>
+      <tr>
+        <td>申请时间：{{ data.applyDate | dateFormat }}</td>
+        <td>年级：{{ data.year }}</td>
+        <td>班级：{{ data.className }}</td>
+      </tr>
+    </table>
+    <div class="process-item">
+      <p class="process-item__title">申请原因</p>
+      <div class="process-item__content">
+        {{ data.applyReson }}
+      </div>
     </div>
     <transition name="el-zoom-in-top">
       <zjy-process v-if="innerVisible" :data="data" v-model="value" :visible.sync="innerVisible" @submit="handleSubmit">
@@ -31,7 +31,7 @@ import api from '../api'
 import { selfMerge } from '@/utils'
 
 export default {
-  data() {
+  data () {
     return {
       data: {},
       value: {},
@@ -46,7 +46,7 @@ export default {
   components: {
     ZjyProcess
   },
-  created() {
+  created () {
     api.queryObjectOfClassHonorary(this.uid).then(response => {
       if (response.code !== 1) {
         this.$alert('获取信息失败')
@@ -65,21 +65,21 @@ export default {
   },
 
   methods: {
-    makeFormData(data, steps) {
+    makeFormData (data, steps) {
       return {
         'clahonoraryUid': data.clahonoraryUid,
         'swmsApprovalList': steps
       }
     },
-    handleSubmit(data, steps) {
+    handleSubmit (data, steps) {
       api.submitClassHonorary(this.makeFormData(data, steps)).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success('审批成功')
           }, 200)
           this.$store.dispatch('setSchedules')
         } else {
-          MSG.success('保存失败')
+          MSG.success('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

@@ -36,7 +36,7 @@
       </div>
       <div class="tip-box">
         <transition name="el-zoom-in-top">
-          <span class="tip" v-if="hasError && !this.reissued.applyReason">{{ error }}</span>
+          <span class="tip" v-if="hasError && !this.reissued.applyReason" style="position: relative;top: -1px;">{{ error }}</span>
         </transition>
       </div>
     </div>
@@ -148,7 +148,7 @@ export default {
       }
 
       cardAPI.create(this.reissued, this.steps).then(response => {
-        const msg = response.code === 1 ? '保存成功' : response.message
+        const msg = response.code === 1 ? '申请成功' : response.message
         MSG.success(msg)
         this.refresh()
       }).catch(error => {

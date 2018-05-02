@@ -5,8 +5,7 @@ export default {
   },
   columns: [
     {
-      index: true,
-      select: true
+      index: true
     },
     {
       label: '荣誉称号名称',

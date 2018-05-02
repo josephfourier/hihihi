@@ -1,7 +1,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-operator>
-      <operator-item @click="create" clz="create">新增</operator-item>
+      <operator-item @click="create" clz="create" v-if="hasPermission('swms:notice-file:create')">新增</operator-item>
     </zjy-table-operator>
 
     <div class="zjy-table">
@@ -16,7 +16,7 @@
             <zjy-button type="primary" @click="handleClick">关闭</zjy-button>
           </div>
         </image-view>
-        <zjy-preview v-else src="https://wkbos.bdimg.com/v1/wenku52//aac7d325b2fdae6ff10c983564c80241?responseContentDisposition=attachment%3B%20filename%3D%22%25E4%25B9%25A6%25E6%25B3%2595%25E4%25B8%258E%25E6%25B3%2595%25E4%25B9%25A6.doc%22%3B%20filename%2A%3Dutf-8%27%27%25E4%25B9%25A6%25E6%25B3%2595%25E4%25B8%258E%25E6%25B3%2595%25E4%25B9%25A6.doc&responseContentType=application%2Foctet-stream&responseCacheControl=no-cache&authorization=bce-auth-v1%2Ffa1126e91489401fa7cc85045ce7179e%2F2018-04-18T10%3A04%3A55Z%2F3600%2Fhost%2F7b5bd6536f7ae8c1a2095d0d19daad4ee4d9a5dfac61efac5f1d13b21ca1c5d3&token=1e1174b9e2c6ecb38c8051e6914749ac91e5d243610e472c42e4a8294913570f&expire=2018-04-18T11:04:55Z">
+        <zjy-preview v-else :src="src">
           <div class="zjy-footer">
             <zjy-button type="primary" @click="handleClick">关闭</zjy-button>
           </div>
@@ -55,7 +55,7 @@ import { _refresh } from '@/utils'
 import properties from './properties'
 
 export default {
-  data() {
+  data () {
     return {
       list: [],
 
@@ -73,7 +73,7 @@ export default {
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.loading = true
       api.queryFileList(1).then(response => {
         if (response.code !== 1) {
@@ -88,7 +88,7 @@ export default {
       })
     },
 
-    queryPostList() {
+    queryPostList () {
       return new Promise((resolve, reject) => {
         if (this.postList.length === 0) {
           api.queryPostList().then(response => {
@@ -112,7 +112,7 @@ export default {
       })
     },
 
-    create() {
+    create () {
       this.queryPostList().then(_ => {
         this.visible2 = true
       }).catch(error => {
@@ -120,39 +120,41 @@ export default {
       })
     },
 
-    handleCreate(formData) {
+    handleCreate (formData) {
       api.saveFile(formData).then(response => {
         if (response.code !== 1) {
-          MSG.warning('保存失败')
+          console.log(response.message)
+          MSG.warning(this.$t('zjy.message.create.error'))
         } else {
           this.visible2 = false
           this.refresh()
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success(this.$t('zjy.message.create.success'))
           }, 200)
         }
       }).catch(error => { })
     },
 
-    handleUpdate(formData) {
+    handleUpdate (formData) {
       api.updateFile(formData).then(response => {
         if (response.code !== 1) {
-          MSG.warning('修改失败')
+          MSG.warning(this.$t('zjy.message.update.error'))
+          console.warn(response.message)
         } else {
           this.visible3 = false
           this.refresh()
           setTimeout(_ => {
-            MSG.success('修改成功')
+            MSG.success(this.$t('zjy.message.update.success'))
           }, 200)
         }
       }).catch(error => { })
     },
 
-    handleClick() {
+    handleClick () {
       this.visible = false
     },
 
-    handleEdit(row) {
+    handleEdit (row) {
       this.queryPostList().then(_ => {
         this.data = row
         this.visible3 = true
@@ -161,26 +163,31 @@ export default {
       })
     },
 
-    handleView(row) {
+    handleView (row) {
       this.isImageView = this.isImage(row.filePath)
       this.src = row.filePath
       this.visible = true
     },
 
-    handleDelete(row) {
+    handleDelete (row) {
+      this.loading = true
       api.deleteFile(row.noticeUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+
           this.refresh()
         } else {
-          MSG.warning('删除失败')
+          MSG.warning(this.$t('zjy.message.delete.error'))
+          console.warn(response.message)
         }
       }).catch(error => {
         console.log(error)
       })
     },
 
-    isImage(filePath) {
+    isImage (filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
 
@@ -197,7 +204,7 @@ export default {
     ImageView
   },
 
-  created() {
+  created () {
     this.refresh()
   },
 

@@ -1,8 +1,8 @@
 <template>
   <div class="zjy-app">
     <zjy-table-operator>
-      <operator-item clz="create" @click="visible=true">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">删除</operator-item>
+      <operator-item clz="create" @click="visible=true" v-if="hasPermission('swms:punish-set:create')">新增</operator-item>
+      <!--<operator-item @click="batchRemove" clz="delete">删除</operator-item>-->
     </zjy-table-operator>
 
     <zjy-table
@@ -116,18 +116,24 @@ export default {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
         settingAPI.update(formData.punishsettingUid, formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            console.warn(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
             this.refresh().visible = false
           }
         })
       } else {
         settingAPI.create(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            // this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('新建成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.create.success'))
+            }, 200)
             this.refresh().visible = false
           }
         })

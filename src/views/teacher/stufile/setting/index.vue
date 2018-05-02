@@ -107,9 +107,9 @@ export default {
       this.loading = true
       stufileAPI.queryForList().then(response => {
         this.list = response.data
-        this.loading = false
       }).catch(error => {
         console.log(error)
+      }).finally(_ => {
         this.loading = false
       })
     }

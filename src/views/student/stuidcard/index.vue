@@ -3,31 +3,31 @@
   <div class="stuidcard" v-loading="loading">
     <div class="zjy-form">
       <div class="form-item">
-        <span>学号:</span>
+        <span>学号：</span>
         <zjy-input disabled :value="student.studentCode"></zjy-input>
       </div>
       <div class="form-item">
-        <span>学生姓名:</span>
+        <span>学生姓名：</span>
         <zjy-input disabled :value="student.studentName"></zjy-input>
       </div>
       <div class="form-item">
-        <span>入学年份:</span>
+        <span>入学年份：</span>
         <zjy-input disabled :value="student.enterYear"></zjy-input>
       </div>
       <div class="form-item">
-        <span>院系:</span>
+        <span>院系：</span>
         <zjy-input disabled :value="student.facultyName"></zjy-input>
       </div>
       <div class="form-item">
-        <span>专业:</span>
+        <span>专业：</span>
         <zjy-input disabled :value="student.specialtyName"></zjy-input>
       </div>
       <div class="form-item">
-        <span>班级:</span>
+        <span>班级：</span>
         <zjy-input disabled :value="student.className"></zjy-input>
       </div>
       <div class="form-item" v-if="reissued.applyDate">
-        <span>申请日期:</span>
+        <span>申请日期：</span>
         <zjy-input disabled :value="reissued.applyDate | dateFormat"></zjy-input>
       </div>
       <div class="form-item block">

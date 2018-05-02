@@ -221,6 +221,10 @@
     width: 100%;
     td {
       padding-bottom: 10px;
+      max-width: 240px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
     margin-bottom: 10px;
   }
@@ -232,9 +236,10 @@
   .process-item {
     margin-bottom: 20px;
   }
-  .content {
+  .process-item__content {
     word-break: break-all;
-    margin-bottom: 15px;
+    max-height: 150px;
+    overflow: auto;
   }
 }
 

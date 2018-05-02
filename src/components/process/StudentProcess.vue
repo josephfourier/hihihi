@@ -183,7 +183,8 @@ export default {
 
         this.approverList = val[+Object.keys(val).find(x => Number(x) == x)] || {}
         this.steps = val.swmsApprovals.sort((x, y) => x.approvalStep - y.approvalStep)
-        this.hasNextApprover = !this.$empty(this.approverList)
+        // this.hasNextApprover = !this.$empty(this.approverList)
+        this.hasNextApprover = !this.$empty(this.approverList) || this.value.swmsApprovals.find(x => x.approvalStep === this.step).approvalType === '1'
       }
     }
   }

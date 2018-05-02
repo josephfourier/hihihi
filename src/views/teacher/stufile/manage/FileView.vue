@@ -42,7 +42,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="建档日期" prop="stufileDate" class=" pull-right">
-            <el-date-picker type="date" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" disabled></el-date-picker>
+           <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" disabled></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>

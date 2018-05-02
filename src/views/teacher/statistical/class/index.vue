@@ -4,7 +4,7 @@
     <zjy-table-search>
       <search-select label="年级" :options="years" :value.sync="year"></search-select>
       <search-select label="院系" :options="myFacultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
-      <search-select label="专业" :options="specialtyList" :value.sync="specialtyCode"></search-select>
+      <search-select label="专业" :options="mySpecialtyList" :value.sync="specialtyCode" @focus="handleInit"></search-select>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
@@ -46,34 +46,29 @@ import api from './api'
 import { mapGetters } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       query: properties.query,
       studentCode: '',
       specialtyCode: '',
       facultyCode: '',
       year: '',
-      //  --------------- 搜索 END ---------------
       list: [],
       currentPage: 1,
       total: 0,
       loading: false,
-      //  初始化select
       years: properties.optionsYears,
-      //  --------------- 初始化select END ---------------
       columns: properties.columns,
-      // dialog
       visible: false,
 
       selectedRows: [], // 多选行
-      // facultyList: [],
-      specialtyList: []
+      mySpecialtyList: []
     }
   },
 
   computed: {
-    ...mapGetters(['facultyList']),
-    myFacultyList() {
+    ...mapGetters(['facultyList', 'specialtyList']),
+    myFacultyList () {
       return this.facultyList.map(i => {
         return {
           label: i.facultyName,
@@ -81,30 +76,30 @@ export default {
         }
       })
     },
-    isLoading() {
+    isLoading () {
       return this.myFacultyList.length === 0
     }
   },
 
   methods: {
-    handleFocus() {
+    handleFocus () {
       if (this.myFacultyList.length === 0) {
         this.$store.dispatch('setFacultyList')
-        // api.queryFacultyList().then(response => {
-        //   if (response.code !== 1) {
-        //     this.$alert('获取院系失败')
-        //   } else {
-        //     this.facultyList = response.data.map(i => {
-        //       return {
-        //         label: i.facultyName,
-        //         value: i.facultyCode
-        //       }
-        //     })
-        //   }
-        // })
       }
     },
-    searchFilter() {
+    handleInit () {
+      if (!this.facultyCode) {
+        this.$store.dispatch('setSpecialtyList').then(_ => {
+          this.mySpecialtyList = this.specialtyList.map(i => {
+            return {
+              label: i.specialtyName,
+              value: i.specialtyCode
+            }
+          })
+        })
+      }
+    },
+    searchFilter () {
       this.currentPage = 1
       this.query.specialtyCode = this.specialtyCode
       this.query.facultyCode = this.facultyCode
@@ -114,33 +109,33 @@ export default {
     },
 
     // 多选导出
-    handleSelectionChange(rows) {
+    handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
-    _export() {
+    _export () {
 
     },
-    edit(row) {
+    edit (row) {
     },
-    view(row) {
+    view (row) {
     },
 
-    pageChanged(pageNumber) {
+    pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
 
     // --------------- 搜索 END ---------------
 
-    refresh() {
+    refresh () {
       return _refresh.call(this)
     },
-    handleRefresh() {
+    handleRefresh () {
       this.refresh()
     }
   },
 
-  mounted() {
+  mounted () {
 
   },
 
@@ -158,7 +153,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -177,12 +172,14 @@ export default {
       }
     },
 
-    facultyCode(val) {
+    facultyCode (val) {
+      if (!val) return
+
       api.querySpecialtyByFaculty(val).then(response => {
         if (response.code !== 1) {
-          this.$alert('获取专业失败')
+          MSG.warning('获取专业失败')
         } else {
-          this.specialtyList = response.data.map(i => {
+          this.mySpecialtyList = response.data.map(i => {
             return {
               label: i.specialtyName,
               value: i.specialtyCode

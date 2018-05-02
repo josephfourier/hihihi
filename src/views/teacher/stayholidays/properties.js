@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 const statusFormat = (cellValue) =>  ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
 
@@ -44,11 +44,10 @@ export default {
   columns: [
     {
       index: true,
-      indexWidth: 50
+      select: true
     }, {
       label: '学号',
-      prop: 'studentNo',
-      width: 100
+      prop: 'studentNo'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -78,13 +77,24 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:stayholidays-tea:create'),
           cmd: 'view'
         },
         {
           label: '删除',
+          render: row => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:stayholidays:delete'),
           cmd: 'delete'
         }
       ]
     }
-  ]
+  ],
+
+  queryExport: {
+    dataStatus: '',
+    applyYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '学生姓名', '院系', '申请日期', '申请年份', '假期名称', '电话', '状态'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'applyDate', 'applyYear', 'holidayName', 'phone', 'dataStatus'],
+  excelName: '假期留校'
 }

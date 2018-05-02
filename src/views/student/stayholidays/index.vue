@@ -2,24 +2,24 @@
 <template>
   <div class="zjy-app">
 
-    <zjy-table-operator>
+    <zjy-table-operator v-if="hasPermission('swms:stayholidays-stu:create')">
       <operator-item @click="create" clz="create">新增</operator-item>
     </zjy-table-operator>
 
-      <zjy-table
-        :data="list"
-        :loading="loading"
-        :columns="columns"
-        @view="view"
-      >
-      </zjy-table>
+    <zjy-table
+      :data="list"
+      :loading="loading"
+      :columns="columns"
+      @view="view"
+    >
+    </zjy-table>
 
     <div class="zjy-pagination" v-if="list.length !== 0">
       <zjy-pagination :currentPage="currentPage" :total="total" @current-change="currentChange">
       </zjy-pagination>
     </div>
 
-    <el-dialog :title="title" :visible.sync="visible" width="800px">
+    <el-dialog title="title" :visible.sync="visible" width="800px">
       <student-process
         v-if="visible"
         :data="data"
@@ -53,6 +53,18 @@
             :hasError="hasError"
           ></zjy-form-view>
         </template>
+
+        <template slot-scope="props" slot="footer">
+          <zjy-footer
+            :data="props.data"
+            :steps="props.steps"
+            :visible.sync="visible2"
+            :reason="reason"
+            :type="type"
+            @update="update"
+            @delete="_delete"
+          ></zjy-footer>
+        </template>
       </process-view>
     </el-dialog>
 
@@ -60,8 +72,8 @@
 </template>
 
 <script>
-import stayholidaysAPI from '@/api/student/stayholidays'
-import {dateFormat as _dateFormat, getPermissionId, _refresh} from '@/utils'
+import stayholidaysAPI from './api'
+import {getPermissionId, _refresh} from '@/utils'
 
 import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
@@ -71,10 +83,12 @@ import StudentProcess from '@/components/process/StudentProcess'
 import ProcessView from '@/components/process/ProcessView'
 import ZjyForm from './form'
 import ZjyFormView from './FormView'
+import ZjyFooter from './Footer'
 
 import commonAPI from '@/api/common'
 import axios from 'axios'
-
+import properties from './properties'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -83,59 +97,14 @@ export default {
       list: [],
       currentPage: 1,
       total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
+      query: properties.query,
 
-      title: '',
+      title: '留校申请',
       loading: false,
       visible: false,
       visible2: false,
 
-      columns: [
-        {
-          index: true,
-          indexWidth: 50
-        }, {
-          label: '学号',
-          prop: 'studentNo',
-          width: 100
-        }, {
-          label: '学生姓名',
-          prop: 'studentName'
-        }, {
-          label: '院系',
-          prop: 'facultyName'
-        }, {
-          label: '申请日期',
-          prop: 'applyDate',
-          formatter: this.dateFormat
-        }, {
-          label: '申请年份',
-          prop: 'applyYear'
-        }, {
-          label: '假期名称',
-          prop: 'holidayName'
-        }, {
-          label: '电话',
-          prop: 'phone'
-
-        }, {
-          label: '状态',
-          prop: 'dataStatus',
-          formatter: this.statusFormat
-        }, {
-          label: '操作',
-          
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            }
-          ]
-        }
-      ],
+      columns: properties.columns,
       // 业务数据
       reason: '',
       type: '',
@@ -145,33 +114,22 @@ export default {
 
   methods: {
     create () {
-      // 获取流程、假期类型、学生信息数据(并发)
       axios.all([
         commonAPI.queryInitial(getPermissionId(this.$route)),
-        commonAPI.queryHolidayTypeList(),
         commonAPI.queryStudent()
-      ]).then(axios.spread((r1, r2, r3) => {
-        if (r1.code !== 1 || r2.code !== 1 || r3.code !== 1) {
+      ]).then(axios.spread((r1, r3) => {
+        if (r1.code !== 1  || r3.code !== 1) {
           this.$alert('获取数据失败')
         } else {
           this.value = r1.data   // 流程数据传入组件即可
           // 添加业务数据
           Object.assign(this.data, {
             student: r3.data,
-            holidayType: r2.data
+            holidayType: this.holidayTypeList
           })
-          this.title = '留校申请'
           this.visible = true
         }
       }))
-    },
-
-    dateFormat (cellValue) {
-      return _dateFormat(cellValue)
-    },
-
-    statusFormat (cellValue) {
-      return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
     },
 
     handleSubmit (data, steps) {
@@ -183,6 +141,9 @@ export default {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.create.success'))
+            }, 200)
             this.visible = false
             this.refresh()
           }
@@ -194,9 +155,13 @@ export default {
 
     view (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.stayholidayUid).then(response => {
-        this.title = '留校申请'
         this.data = row
+        this.type = row.holidayId
+        this.reason = this.data.stayReason
         this.value = response.data
+        Object.assign(this.data, {
+          holidayType: this.holidayTypeList
+        })
         this.visible2 = true
       })
     },
@@ -216,9 +181,58 @@ export default {
       }
     },
 
+    update (data, steps) {
+      if (!this.reason) {
+        this.hasError = true
+      } else {
+        stayholidaysAPI.update(data).then(response => {
+          if (response.code !== 1) {
+            this.$alert(response.message)
+          } else {
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
+            this.visible2 = false
+            this.refresh()
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
+    },
+
+    _delete (data) {
+      stayholidaysAPI.delete(data.stayholidayUid).then(response => {
+        if (response.code !== 1) {
+          this.$alert(response.message)
+        } else {
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+          this.visible2 = false
+          this.refresh()
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
     refresh () {
       _refresh.call(this)
+    },
+    clear () {
+      this.type = ''
+      this.reason = ''
+      this.hasError = false
     }
+  },
+
+  computed: {
+    ...mapGetters(['holidayTypeList'])
+  },
+
+  created () {
+    this.$store.dispatch('setHolidayTypeList')
   },
 
   components: {
@@ -229,7 +243,8 @@ export default {
     StudentProcess,
     ProcessView,
     ZjyForm,
-    ZjyFormView
+    ZjyFormView,
+    ZjyFooter
   },
 
   watch: {
@@ -243,23 +258,23 @@ export default {
         stayholidaysAPI.queryForList(this.query).then(response => {
           this.list = response.rows
           this.total = response.total
-          this.loading = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
           this.loading = false
         })
       }
     },
     visible (val) {
       if (!val) {
-        this.type = ''
-        this.reason = ''
-        this.hasError = false
+        this.clear()
+      }
+    },
+    visible2 (val) {
+      if (!val) {
+        this.clear()
       }
     }
   }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

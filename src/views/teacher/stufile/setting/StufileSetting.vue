@@ -1,9 +1,8 @@
-<!--  -->
 <template>
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData">
       <el-form-item prop="stufileName">
-        <el-input type="textarea" v-model="formData.stufileName" :maxlength="128"></el-input>
+        <el-input type="textarea" v-model="formData.stufileName" :maxlength="256"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -72,14 +71,6 @@ export default {
 
   components: {
     ZjyButton
-  },
-
-  watch: {
-    // closed(val) {
-    //   if (val) {
-    //     this.$refs['formData'].resetFields()
-    //   }
-    // }
   }
 }
 

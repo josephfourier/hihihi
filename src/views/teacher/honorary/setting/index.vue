@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import settingAPI from '@/api/teacher/Honorary/setting'
+import settingAPI from './api'
 
 import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
@@ -80,9 +80,9 @@ export default {
       settingAPI.delete(row.honorarysettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         }
       })
     },
@@ -94,7 +94,7 @@ export default {
             this.$alert(response.message)
           } else {
             setTimeout(_ => {
-              MSG.success('修改成功')
+              MSG.success(this.$t('zjy.message.update.success'))
             }, 200)
             this.refresh().visible = false
           }
@@ -102,10 +102,11 @@ export default {
       } else {
         settingAPI.create(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            // this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
             setTimeout(_ => {
-              MSG.success('新建成功')
+              MSG.success(this.$t('zjy.message.create.success'))
             }, 200)
             this.refresh().visible = false
           }

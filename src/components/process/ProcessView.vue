@@ -37,7 +37,7 @@
     <p v-if="reason && isFinished" class="refused">拒绝原因: {{ reason }}</p>
 
     <!-- 根据数据状态可以定制显示操作按钮 -->
-      <slot :data="data" :steps="steps" name="footer"></slot>
+    <slot :data="data" :steps="steps" name="footer"></slot>
   </div>
 
 </template>

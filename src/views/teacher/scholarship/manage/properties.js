@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 
 const statusFormat = (cellValue) => {
   return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
@@ -33,13 +33,11 @@ export default {
     }, {
       label: '已拒绝',
       value: 2
-
     }, {
       label: '审批中',
       value: 3
     }
   ],
-  //  ---------------- select初始化 ----------------
   columns: [
     {
       index: true,
@@ -78,14 +76,23 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:scholarship-tea:update'),
           cmd: 'view'
         },
         {
           label: '删除',
-          render: (row) => row.dataStatus === '1' || row.dataStatus === '2',
+          render: (row) => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:scholarship:delete'),
           cmd: 'delete'
         }
       ]
     }
-  ]
+  ],
+  queryExport: {
+    dataStatus: '',
+    applyYear: '',
+    studentCode: ''
+  },
+  header: ['学号', '学生姓名', '院系', '申请日期', '奖学金名称', '金额',  '申请年份', '状态'],
+  filter: ['studentNo', 'studentName', 'facultyName', 'scholarshipName', 'holidayName', 'money', 'applyYear', 'dataStatusName'],
+  excelName: '奖学金'
 }

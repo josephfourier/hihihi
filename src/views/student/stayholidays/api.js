@@ -1,18 +1,16 @@
 import ajax from '@/utils/ajax'
-import {selfMerge} from '@/utils'
+import { selfMerge } from '@/utils'
 
 export default {
-
   queryForList (query) {
-    return ajax.get('/manage/teacher/swmsStayholidays', {
+    return ajax.get('/manage/student/swmsStayholidays', {
       params: query,
       transformResponse: data => {
         const json = JSON.parse(data)
         if (json.code !== 1) return json
 
-        const total = json.data.total
         const code = json.code
-
+        const total = json.data.total
         let rows = []
 
         for (let i = 0; i < json.data.rows.length; ++i) {
@@ -29,15 +27,13 @@ export default {
     })
   },
 
-  queryForObject (id) {
-    return ajax.get('/manage/teacher/swmsStayholiday/' + id)
+  create (arg) {
+    return ajax.post('manage/student/swmsStayholiday', arg)
   },
-
-  delete (id) {
-    return ajax.delete('/manage/student/swmsStayholiday/' + id)
-  },
-
   update (arg) {
-    return ajax.put('/manage/teacher/swmsStayholiday', arg)
+    return ajax.put('manage/student/swmsStayholiday', arg)
+  },
+  delete (stayholidayUids) {
+    return ajax.delete('/manage/student/swmsStayholiday/' + stayholidayUids)
   }
 }

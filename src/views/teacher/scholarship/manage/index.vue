@@ -10,8 +10,8 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <operator-item @click="create" clz="create">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item @click="create" clz="create" v-if="hasPermission('swms:scholarship-tea:create')">新增</operator-item>
+      <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:scholarship:delete')">批量删除</operator-item>
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
@@ -29,7 +29,6 @@
       <el-dialog title="奖学金审批" :visible.sync="visible" width="800px">
         <zjy-process v-if="visible" :data="setting" v-model="value" @close="visible = false" @submit="handleSubmit">
           <p slot="warning" class="warning">教师添加无审批流程</p>
-
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
@@ -41,7 +40,7 @@
         </scholarship>
       </el-dialog>
     </div>
-    
+
   </div>
 </template>
 
@@ -64,11 +63,11 @@ import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 import Scholarship from './Scholarship'
 
-import { _refresh } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat } from '@/utils'
 import properties from './properties'
 export default {
   name: 'index',
-  data() {
+  data () {
     return {
       list: [],
       setting: '',
@@ -84,30 +83,36 @@ export default {
       visible2: false,
       optionsYears: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
-      columns: properties.columns
+      columns: properties.columns,
+
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
   methods: {
-    refresh(auto) {
+    refresh (auto) {
       return _refresh.call(this, auto)
     },
-    searchFilter() {
+    searchFilter () {
       this.query.dataStatus = this.dataStatus
       this.query.applyYear = this.applyYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.currentPage = 1
       this.refresh()
     },
 
-    create() {
+    create () {
       this.visible2 = true
     },
-    handleCreate(id, arg) {
+    handleCreate (id, arg) {
       api.create(id, arg).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
-          MSG.success('新增成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.create.success'))
+          }, 200)
+
           this.refresh().visible2 = false
         }
       }).catch(error => {
@@ -115,7 +120,15 @@ export default {
       })
     },
 
-    batchRemove() {
+    handleSelectionChange (rows) {
+      this.selectedRows = rows
+    },
+    batchRemove () {
+      if (this.selectedRows.length === 0) {
+        MSG.warning(this.$t('zjy.message.delete.none'))
+        return
+      }
+
       let scholarshipUids = []
       this.selectedRows.forEach(x => scholarshipUids.push(x.scholarshipUid))
 
@@ -136,24 +149,77 @@ export default {
       })
     },
 
-    _export() { },
-    handleSelectionChange(rows) {
-      this.selectedRows = rows
-    },
-    //  ---------------- 表格头操作 ----------------
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
 
-    handleView(row) {
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'applyDate') {
+              return _dateFormat(v[j])
+            } else {
+              return v[j]
+            }
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.dataStatus = this.dataStatus
+        this.queryExport.applyYear = this.applyYear
+        this.queryExport.studentCode = this.studentCode.trim()
+        scholarshipManageAPI.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
+    },
+
+    handleView (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.scholarshipUid).then(response => {
         this.setting = row
         this.value = response.data
         this.visible = true
       })
     },
-    handleDelete(row) {
+    handleDelete (row) {
+      this.loading = true
       const auto = this.list.length === 1 && this.currentPage !== 1
       scholarshipManageAPI.delete(row.scholarshipUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
           this.refresh(auto)
         } else {
           this.$alert(response.message)
@@ -162,20 +228,19 @@ export default {
         console.log(error)
       })
     },
-    pageChanged(pageNumber) {
+    pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
-    handleSubmit(data, steps) {
+    handleSubmit (data, steps) {
       scholarshipManageAPI.submit(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
-
           this.refresh().visible = false
-          setTimeout(() => {
-            MSG.success('保存成功')
-          }, 200)
-          this.$store.dispatch('setSchedules')
+
+          MSG.success(this.$t('zjy.message.approve.success'))
+          // this.$store.dispatch('setSchedules')
+          this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
         } else {
-          MSG.success('保存失败')
+          MSG.success(this.$t('zjy.message.approve.error'))
         }
       }).catch(error => {
         console.log(error)
@@ -204,7 +269,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val, oldval) {
+      handler (val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true

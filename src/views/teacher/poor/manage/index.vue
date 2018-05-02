@@ -3,7 +3,7 @@
   <div class="zjy-app">
     <zjy-table-search>
       <search-select label="院系" :options="myFacultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
-      <search-select label="专业" :options="specialtyList" :value.sync="specialtyCode"></search-select>
+      <search-select label="专业" :options="mySpecialtyList" :value.sync="specialtyCode" @focus="handleInit" :loading="isLoading2"></search-select>
       <search-select label="申请状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
       <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
       <search-button @query="searchFilter"></search-button>
@@ -72,13 +72,14 @@ export default {
       dataStatus: '',
 
       loading: false,
+      isLoading2: false,
       currentPage: 1,
       total: 0,
 
       visible: false,
 
       // facultyList: [],
-      specialtyList: [],
+      mySpecialtyList: [],
       optionsYears: properties.optionsYears,
       optionsStatus: properties.optionsStatus,
       columns: properties.columns
@@ -86,7 +87,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['facultyList']),
+    ...mapGetters(['facultyList', 'specialtyList']),
     myFacultyList () {
       return this.facultyList.map(i => {
         return {
@@ -95,12 +96,35 @@ export default {
         }
       })
     },
+    // mySpecialtyList () {
+    //   if (!this.factoryCode) {
+    //     return this.specialtyList.map(i => {
+    //       return {
+    //         label: i.specialtyName,
+    //         value: i.specialtyCode
+    //       }
+    //     })
+    //   } else {
+    //   }
+    // },
     isLoading () {
       return this.myFacultyList.length === 0
     }
   },
 
   methods: {
+    handleInit () {
+      if (!this.facultyCode) {
+        this.$store.dispatch('setSpecialtyList').then(_ => {
+          this.mySpecialtyList = this.specialtyList.map(i => {
+            return {
+              label: i.specialtyName,
+              value: i.specialtyCode
+            }
+          })
+        })
+      }
+    },
     handleFocus () {
       if (this.myFacultyList.length === 0) {
         this.$store.dispatch('setFacultyList')
@@ -181,20 +205,21 @@ export default {
             this.list = response.rows
             this.total = response.total
           }
-          this.loading = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
           this.loading = false
         })
       }
     },
 
     facultyCode (val) {
+      if (!val) return
       commonAPI.querySpecialtyByFaculty(val).then(response => {
         if (response.code !== 1) {
           this.$alert('获取专业失败')
         } else {
-          this.specialtyList = response.data.map(i => {
+          this.mySpecialtyList = response.data.map(i => {
             return {
               label: i.specialtyName,
               value: i.specialtyCode

@@ -1,6 +1,10 @@
 export default {
   zjy: {
     message: {
+      approve: {
+        success: '审批成功',
+        error: '审批失败'
+      },
       create: {
         error: '新增失败',
         success: '新增成功'
@@ -13,6 +17,9 @@ export default {
         error: '删除失败',
         success: '删除成功',
         none: '至少选择一条记录'
+      },
+      export: {
+        none: '无导出数据'
       }
     },
     userType: {

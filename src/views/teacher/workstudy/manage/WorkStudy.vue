@@ -29,7 +29,7 @@
       </el-form-item>
 
       <el-form-item label="申请时间" prop="applyDate" class="inline">
-        <el-date-picker type="date" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
+       <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
       </el-form-item>
 
       <el-form-item label="专业" prop="specialtyCode" class="inline pull-right">
@@ -73,7 +73,7 @@ export default {
           if (response.code !== 1) {
             callback(new Error(response.data))
           } else {
-   
+
             this.student = response.data
             callback()
           }

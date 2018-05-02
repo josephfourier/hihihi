@@ -31,7 +31,7 @@
       </el-form-item>
 
       <el-form-item label="申请时间" prop="applyDate" class="inline pull-right">
-        <el-date-picker type="date" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
+       <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
       </el-form-item>
 
       <el-form-item label="入学年份" prop="enterYear" class="inline">
@@ -49,7 +49,7 @@
       </el-form-item>
 
       <el-form-item label="申请原因" prop="applyReson">
-        <el-input type="textarea" v-model="formData.applyReson"></el-input>
+        <el-input type="textarea" v-model="formData.applyReson" :maxlength="1024"></el-input>
       </el-form-item>
 
       <div class="zjy-footer">
@@ -99,8 +99,8 @@ export default {
       formData: {},
       rules: {
         studentCode: [
-          { required: true, message: '请输入学生学号', trigger: 'blur' },
-          { validator: checkStudent, trigger: 'change' }
+          { required: true, message: '请输入学生学号', trigger: 'change' },
+          { validator: checkStudent, trigger: 'blur' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         scholarshipsettingUid: [
@@ -109,10 +109,10 @@ export default {
 
         applyDate: [
           // { validator: validateStartDate, trigger: 'blur' },
-          { required: true, message: '请选择申请日期', trigger: 'blur' }
+          { required: true, message: '请选择申请日期', trigger: 'change' }
         ],
         applyReson: [
-          { required: true, message: '请填写申请原因', trigger: 'blur' }
+          { required: true, message: '请填写申请原因', trigger: 'change' }
         ]
       },
       optionsYears: [

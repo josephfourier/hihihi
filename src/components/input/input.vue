@@ -34,7 +34,7 @@
       @change="handleChange"
     >
     </textarea>
-    <p v-if="maxlength" style="float:right;font-size:12px">{{ value ? value.length : 0 }} / {{ maxlength }}</p>
+    <p v-if="maxlength && limited" style="float:right;font-size:12px">{{ value ? value.length : 0 }} / {{ maxlength }}</p>
   </div>
 </template>
 
@@ -64,6 +64,7 @@ export default {
     readonly: Boolean,
     autofocus: Boolean,
     disabled: Boolean,
+    limited: Boolean,
     type: {
       type: String,
       default: 'text'

@@ -1,33 +1,35 @@
 <template>
-<div>
-  <div class="zjy-process" v-loading="loading">
+  <div class="process" v-loading="loading">
     <table class="process-table">
       <tr>
-        <td>学号: {{ data.studentNo }}</td>
-        <td>学生姓名: {{ data.studentName }}</td>
-        <td>入学年份: {{ data.enterYear }}</td>
-        <td>院系: {{ data.facultyName }}</td>
+        <td>学号：{{ data.studentCode }}</td>
+        <td>学生姓名：{{ data.studentName }}</td>
+        <td>入学年份：{{ data.enterYear }}</td>
       </tr>
       <tr>
-        <td>电话: {{ data.phone }}</td>
+        <td>院系：{{ data.facultyName }}</td>
+        <td>电话：{{ data.phone }}</td>
         <td>假期名称: {{ data.holidayName }}</td>
       </tr>
     </table>
-    <p class="process-title">留校原因</p>
-    <p class="content">{{ data.stayReason }}</p>
-    <p class="process-title">审批进度</p>
+    <div class="process-item">
+      <p class="process-item__title">留校原因</p>
+      <div class="process-item__content">
+        {{ data.stayReason }}
+      </div>
+    </div>
+
+    <transition name="el-zoom-in-top">
+      <zjy-process
+        v-if="innerVisible"
+        :data="data"
+        v-model="value"
+        :visible.sync="innerVisible"
+        @submit="handleSubmit"
+      >
+      </zjy-process>
+    </transition>
   </div>
-  <transition name="el-zoom-in-top">
-    <zjy-process
-      v-if="innerVisible"
-      :data="data"
-      v-model="value"
-      :visible.sync="innerVisible"
-      @submit="handleSubmit"
-    >
-    </zjy-process>
-  </transition>
-</div>
 </template>
 
 <script>
@@ -36,7 +38,7 @@ import api from '../api'
 import { selfMerge } from '@/utils'
 
 export default {
-  name: 'MyInsurance',
+  name: 'stay-holiday',
   data () {
     return {
       data: {},
@@ -100,7 +102,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

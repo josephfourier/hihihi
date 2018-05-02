@@ -26,22 +26,22 @@
         <div class="upload">
           <div class="download-body">
             <p class="file-input" @click="notClick" :title="fileName">{{ fileName }}</p>
-            <el-upload 
-              class="myupload" 
-              ref="uploadExcel" 
-              :action="action" 
-              :headers="{'Zjy-Token': token}" 
-              :data="{baseModel: baseModel}" 
-              :on-preview="handlePreview" 
-              :on-remove="handleRemove" 
-              :file-list="myFileList" 
-              :before-upload="handleBeforeUpload" 
-              :on-change="handleChange" 
-              :on-success="handleSuccess" 
-              :on-error="handleError" 
-              :on-progress="handleProgress" 
-              :auto-upload="false" 
-              :show-file-list="false" 
+            <el-upload
+              class="myupload"
+              ref="uploadExcel"
+              :action="action"
+              :headers="{'Zjy-Token': token}"
+              :data="{baseModel: baseModel}"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="myFileList"
+              :before-upload="handleBeforeUpload"
+              :on-change="handleChange"
+              :on-success="handleSuccess"
+              :on-error="handleError"
+              :on-progress="handleProgress"
+              :auto-upload="false"
+              :show-file-list="false"
               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             >
               <a slot="trigger" class="upload-view" ref="uploadTrigger" @click="clearError">浏览</a>
@@ -110,7 +110,6 @@ import { _refresh, export2excel, dateFormat as _dateFormat } from '@/utils'
 
 import stufileManageAPI from '@/api/teacher/stufile/manage'
 import stufileAPI from '@/api/teacher/stufile/setting'
-import commonAPI from '@/api/common'
 
 import ZjyFile from './File'
 import FileView from './FileView'
@@ -122,7 +121,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'student-file',
-  data() {
+  data () {
     return {
       action: process.env.BASE_URL + '/manage/upload/uploadDatas',
       percent: 0,
@@ -167,12 +166,12 @@ export default {
   },
 
   methods: {
-    handleFocus() {
+    handleFocus () {
       if (this.myClassList.length === 0) {
         this.$store.dispatch('setClassList')
       }
     },
-    handleSuccess(response, file, fileList) {
+    handleSuccess (response, file, fileList) {
       if (response.code == 90002) {
         this.errorLink = response.data
         this.showError = true
@@ -188,18 +187,18 @@ export default {
       this.clearFile()
       this.showPercent = false
     },
-    handleError(error, file, fileList) {
+    handleError (error, file, fileList) {
       console.log(error)
     },
-    handleProgress(event, file, fileList) {
+    handleProgress (event, file, fileList) {
       this.percent = +(event.percent).toFixed(2)
       this.percentText = this.percent < 99 ? this.percent + '%' : '处理中...'
     },
-    notClick() {
+    notClick () {
       this.$refs.uploadTrigger.click()
       this.clearError()
     },
-    handleChange(file, fileList) {
+    handleChange (file, fileList) {
       // 成功时也会调用，添加show修复此问题
       if (this.hasError || !this.show) return
       if (!/\.(xls|xlsx)$/gi.test(file.name)) {
@@ -211,15 +210,15 @@ export default {
       this.fileName = this.myfile.name
     },
 
-    handleBeforeUpload(file) {
+    handleBeforeUpload (file) {
       this.clearError()
     },
-    abortUpload() {
+    abortUpload () {
       this.$refs.uploadExcel.abort()
       this.clearFile()
       this.clearError()
     },
-    submitUpload() {
+    submitUpload () {
       if (!this.myfile) MSG.warning('请选择文件')
       else {
         this.clearError()
@@ -227,45 +226,45 @@ export default {
         this.$refs.uploadExcel.submit()
       }
     },
-    _import() {
-      this.show = !this.show;
+    _import () {
+      this.show = !this.show
       if (!this.show) {
         this.clearFile()
       } else { }
     },
-    clearPercent() {
-      this.showPercent = false;
+    clearPercent () {
+      this.showPercent = false
     },
-    clearFile() {
+    clearFile () {
       this.fileName = '导入文件'
       this.myfile = ''
       this.showPercent = false
     },
-    clearError() {
+    clearError () {
       this.showError = false
       this.hasError = false
     },
 
-    handleRemove(file, fileList) {
+    handleRemove (file, fileList) {
     },
-    handlePreview(file) {
+    handlePreview (file) {
     },
 
-    download(event) {
+    download (event) {
       event.preventDefault()
       api.ajaxDownload('/export/template/swmsStufile', {}, 'excel.xlsx').catch(error => {
         MSG.warning('下载错误')
       })
     },
-    searchFilter() {
+    searchFilter () {
       this.currentPage = 1
       this.query.classId = this.classId
       this.query.enterYear = this.enterYear
-      this.query.studentNo = this.studentNo
+      this.query.studentNo = this.studentNo.trim()
       this.refresh()
     },
 
-    create() {
+    create () {
       this.type = +this.$t('zjy.operator.CREATE')
       this.file = {}
       this.title = '新增学生档案'
@@ -277,7 +276,7 @@ export default {
       })
     },
 
-    _export() {
+    _export () {
       this.getExportData().then(response => {
         this.exportData = response
 
@@ -285,6 +284,10 @@ export default {
         const filter = properties.filter
         const excelName = properties.excelName
         const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
         this.loading = true
         export2excel(header, filter, data, excelName, (filter, data) => {
           return data.map(v => filter.map(j => {
@@ -299,7 +302,7 @@ export default {
       })
     },
 
-    getExportData() {
+    getExportData () {
       return new Promise((resolve, reject) => {
         if (this.selectedRows.length > 0) {
           resolve(this.selectedRows)
@@ -313,11 +316,11 @@ export default {
       })
     },
 
-    exportSearch() {
+    exportSearch () {
       return new Promise((resolve, reject) => {
         this.queryExport.classId = this.classId
         this.queryExport.enterYear = this.enterYear
-        this.queryExport.studentNo = this.studentNo
+        this.queryExport.studentNo = this.studentNo.trim()
         stufileManageAPI.queryForList(this.queryExport).then(response => {
           if (response.code !== 1) {
             reject(new Error('获取导出数据失败'))
@@ -329,11 +332,11 @@ export default {
     },
 
     // 多选导出
-    handleSelectionChange(rows) {
+    handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
-    clearFileList() {
+    clearFileList () {
       for (let i = 0; i < this.fileList.length; ++i) {
         this.fileList[i].stufileName = ''
         this.fileList[i].stufilePath = ''
@@ -342,7 +345,7 @@ export default {
       }
     },
 
-    edit(row) {
+    edit (row) {
       this.type = +this.$t('zjy.operator.EDIT')
       this.title = '编辑学生档案'
       this.loading = true
@@ -373,10 +376,9 @@ export default {
       }).finally(_ => {
         this.loading = false
       })
-
     },
 
-    querySetting() {
+    querySetting () {
       return new Promise((resolve, reject) => {
         if (this.settings.length > 0) resolve()
         else {
@@ -403,7 +405,7 @@ export default {
       })
     },
 
-    view(row) {
+    view (row) {
       this.type = +this.$t('zjy.operator.VIEW')
       this.title = '查看学生档案'
       this.loading = true
@@ -436,25 +438,25 @@ export default {
       })
     },
 
-    pageChanged(pageNumber) {
+    pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    refresh() {
+    refresh () {
       return _refresh.call(this)
     },
-    handleRefresh() {
+    handleRefresh () {
       this.refresh()
     }
   },
 
-  mounted() {
+  mounted () {
 
   },
 
   computed: {
     ...mapGetters(['token', 'classList']),
-    myClassList() {
+    myClassList () {
       return this.classList.map(i => {
         return {
           label: i.className,
@@ -462,7 +464,7 @@ export default {
         }
       })
     },
-    isLoading() {
+    isLoading () {
       return this.myClassList.length === 0
     }
   },
@@ -485,7 +487,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val, oldval) {
+      handler (val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true

@@ -11,8 +11,8 @@
     <div class="zjy-line"></div>
 
     <zjy-table-operator>
-      <!--<operator-item @click="batchRemove" clz="delete">批量删除</operator-item>-->
-      <operator-item @click="_import" clz="import">导入</operator-item>
+      <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:stayholidays:delete')">批量删除</operator-item>
+      <!--<operator-item @click="_import" clz="import" v-if="hasPermission('swms:stayholidays-tea:create')">导入</operator-item>-->
       <operator-item @click="_export" clz="export">导出</operator-item>
     </zjy-table-operator>
 
@@ -22,7 +22,9 @@
         :loading="loading"
         :columns="columns"
         @view="view"
-        @delete="_delete">
+        @delete="_delete"
+        @selection-change="handleSelectionChange"
+      >
       </zjy-table>
     </div>
 
@@ -65,9 +67,9 @@ import ZjyPagination from '@/components/pagination'
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
 
-import { _refresh } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat, _statusFormat } from '@/utils'
 
-import stayholidaysAPI from '@/api/teacher/stayholidays'
+import stayholidaysAPI from './api'
 import commonAPI from '@/api/common'
 import properties from './properties'
 export default {
@@ -85,32 +87,56 @@ export default {
       currentPage: 1,
       total: 0,
       loading: false,
-
+      selectedRows: [],
       optionsYear: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
-      columns: properties.columns
+      columns: properties.columns,
+
+      queryExport: properties.queryExport,
+      exportData: []
     }
   },
 
   methods: {
-    // 搜索
     searchFilter () {
       this.query.dataStatus = this.dataStatus
       this.query.applyYear = this.applyYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.currentPage = 1
       this.refresh()
     },
 
     pageChanged (pageNumber) { this.currentPage = pageNumber },
 
-    // --------------- 搜索 END ---------------
-
     refresh (auto) { _refresh.call(this, auto) },
 
-    // --------------- table操作 ---------------
-    batchRemove () {
+    handleSelectionChange (rows) {
+      this.selectedRows = rows
+    },
 
+    batchRemove () {
+      if (this.selectedRows.length === 0) {
+        MSG.warning(this.$t('zjy.message.delete.none'))
+      } else {
+        let uids = []
+        this.selectedRows.forEach(x => uids.push(x.stayholidayUid))
+        this.loading = true
+        const auto = this.selectedRows.length === this.list.length && this.currentPage !== 1
+
+        this.loading = true
+        stayholidaysAPI.batchRemove(uids).then(response => {
+          if (response.code !== 1) {
+            MSG.warning(response.message)
+          } else {
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.delete.success'))
+            }, 200)
+            this.refresh(auto)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
 
     view (row) {
@@ -124,16 +150,72 @@ export default {
     _import (row) {
 
     },
-    _export (row) {
 
+    _export () {
+      this.getExportData().then(response => {
+        this.exportData = response
+
+        const header = properties.header
+        const filter = properties.filter
+        const excelName = properties.excelName
+        const data = this.exportData
+        if (data.length === 0) {
+          MSG.warning(this.$t('zjy.message.export.none'))
+          return
+        }
+        this.loading = true
+        export2excel(header, filter, data, excelName, (filter, data) => {
+          return data.map(v => filter.map(j => {
+            if (j === 'applyDate') {
+              return _dateFormat(v[j])
+            } else if (j === 'dataStatus') {
+              return _statusFormat(v[j])
+            } else return v[j]
+          }))
+        }).finally(_ => {
+          this.loading = false
+          this.exportData = []
+        })
+      })
+    },
+    getExportData () {
+      return new Promise((resolve, reject) => {
+        if (this.selectedRows.length > 0) {
+          resolve(this.selectedRows)
+        } else {
+          if (this.exportData.length === 0) {
+            this.exportSearch().then(response => {
+              resolve(response)
+            })
+          }
+        }
+      })
+    },
+
+    exportSearch () {
+      return new Promise((resolve, reject) => {
+        this.queryExport.dataStatus = this.dataStatus
+        this.queryExport.applyYear = this.applyYear
+        this.queryExport.studentCode = this.studentCode.trim()
+        stayholidaysAPI.queryForList(this.queryExport).then(response => {
+          if (response.code !== 1) {
+            reject(new Error('获取导出数据失败'))
+          } else {
+            resolve(response.rows)
+          }
+        })
+      })
     },
 
     _delete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
+      this.loading = true
       stayholidaysAPI.delete(row.stayholidayUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
         } else {
           this.$alert(response.message)
         }
@@ -161,14 +243,12 @@ export default {
         } else {
           this.refresh(false)
           this.visible = false
-          this.$store.dispatch('setSchedules')
+          this.$store.dispatch('removeFromTodoList', data.stayholidayUid)
         }
       }).catch(error => {
         console.log(error)
       })
     }
-
-  //  --------------- 审批操作 END ---------------
   },
 
   components: {

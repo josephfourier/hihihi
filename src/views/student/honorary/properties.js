@@ -1,4 +1,4 @@
-import { dateFormat } from '@/utils'
+import { dateFormat, hasPermission } from '@/utils'
 const statusFormatALL = (cellValue) => {
   return ['可申请', '申请中'][+cellValue]
 }
@@ -18,8 +18,7 @@ export default {
     },
     {
       label: '荣誉称号名称',
-      prop: 'honoraryName',
-      width: 100
+      prop: 'honoraryName'
     }, {
       label: '人数限制',
       prop: 'numberLimit'
@@ -46,7 +45,7 @@ export default {
         },
         {
           label: '申请',
-          render: row =>  row.applyStatus === '0',
+          render: row =>  row.applyStatus === '0' && hasPermission('swms:stuhonorary-stu:create'),
           cmd: 'create'
         }
       ]
@@ -59,8 +58,7 @@ export default {
     },
     {
       label: '荣誉称号名称',
-      prop: 'honoraryName',
-      width: 100
+      prop: 'honoraryName'
     }, {
       label: '人数限制',
       prop: 'numberLimit'

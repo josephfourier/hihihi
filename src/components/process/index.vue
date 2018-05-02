@@ -35,9 +35,9 @@
               </div>
             </div>
 
-            <div 
-              class="validate" 
-              slot="custom" 
+            <div
+              class="validate"
+              slot="custom"
               slot-scope="props"
             >
               <el-select class="zjy-select" popper-class="zjy-process-select" v-model="approver" :placeholder="$t('zjy.process.selectPlaceholder')" @change="handleChange" v-if="props.data.approvalType == 1
@@ -99,7 +99,7 @@ import ZjyInput from '@/components/input'
 import { mapGetters } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       step: 1,
       steps: [],              // 审批流程步骤
@@ -133,16 +133,16 @@ export default {
 
   computed: {
     ...mapGetters(['user']),
-    hasStep() {
+    hasStep () {
       return this.steps.length > 0
     },
-    hasFooter() {
+    hasFooter () {
       return this.$slots.footer
     },
-    hasError() {
+    hasError () {
       return !!this.error
     },
-    limit() {
+    limit () {
       return this.reason.length
     }
   },
@@ -157,7 +157,7 @@ export default {
   },
 
   methods: {
-    handleChange(val) {
+    handleChange (val) {
       this.nextApproverId = val
       if (this.hasNextApprover) {
         this.nextApproverName = this.approverList.find(x => x.teacherId === val).teacherName
@@ -165,18 +165,18 @@ export default {
       this.error = ''
     },
 
-    yes() {
+    yes () {
       this.steps[this.step - 1].approvalStatus = this.STATUS.yes
       this.isApprovered = true
     },
 
-    no() {
+    no () {
       this.hasNoReason = false
       this.reason = ''
       this.innerVisible = true
     },
 
-    innerYes() {
+    innerYes () {
       if (!this.reason) {
         this.hasNoReason = true
         return
@@ -186,13 +186,13 @@ export default {
       this.innerVisible = false
     },
 
-    innerNo() {
+    innerNo () {
       this.innerVisible = false
       this.hasNoReason = false // 修复点击取消后仍显示错误提示
       this.reason = ''
     },
 
-    submit() {
+    submit () {
       if (this.hasNextApprover && !this.approver && !this.reason) {
         this.error = this.$t('zjy.process.selectPlaceholder')
         return
@@ -215,7 +215,7 @@ export default {
   watch: {
     value: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         if (this.$empty(val)) return
 
         this.steps = val.swmsApprovals.sort((x, y) => x.approvalStep - y.approvalStep)
@@ -239,15 +239,19 @@ export default {
 
         // this.hasNextApprover = !this.$empty(this.approverList)
         // 新添加若当前步骤是职务则必然是需要选择教师
-        this.hasNextApprover = !this.$empty(this.approverList) || !this.isFinished && val.swmsApprovals.find(x => x.approvalStep === this.step).approvalType == 1
+        // this.hasNextApprover = !this.$empty(this.approverList) || !this.isFinished && val.swmsApprovals.find(x => x.approvalStep === this.step).approvalType === '1'
       }
     },
 
-    isApprovered(val) {
+    step (val) {
+      if (val <= this.steps.length) { this.hasNextApprover = !this.$empty(this.approverList) || !this.isFinished && this.value.swmsApprovals.find(x => x.approvalStep === val).approvalType === '1' }
+    },
+
+    isApprovered (val) {
       if (val) this.step++
       else this.step--
     },
-    reason(val) {
+    reason (val) {
       if (val) this.hasNoReason = false
     }
 

@@ -57,7 +57,7 @@ import ZjyForm from './form'
 import properties from './properties'
 export default {
   name: 'student-card',
-  data() {
+  data () {
     return {
       list: [],
       total: '',
@@ -80,7 +80,7 @@ export default {
   },
 
   methods: {
-    view(row) {
+    view (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.stuidcardUid).then(response => {
         this.data = row
         this.value = response.data
@@ -88,11 +88,11 @@ export default {
       })
     },
 
-    handleSelectionChange(rows) {
+    handleSelectionChange (rows) {
       this.selectedRows = rows
     },
 
-    searchFilter() {
+    searchFilter () {
       this.currentPage = 1
       this.query.dataStatus = this.dataStatus
       this.query.enterYear = this.enterYear
@@ -100,21 +100,22 @@ export default {
       this.refresh()
     },
 
-    handleSubmit(data, steps) {
+    handleSubmit (data, steps) {
       cardAPI.approved(this.data, steps).then(response => {
         if (response.code === 1) {
           setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.refresh()
           this.visible = false
           //  待办状态刷新
-          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('setSchedules')
+          this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
         } else {
           MSG.success('保存失败')
         }
       }).catch(error => { })
     },
 
-    batchRemove() {
+    batchRemove () {
       if (this.selectedRows.length === 0) {
         MSG.warning(this.$t('zjy.message.delete.none'))
         return
@@ -140,7 +141,7 @@ export default {
       })
     },
 
-    _delete(row) {
+    _delete (row) {
       this.loading = true
       const auto = this.list.length === 1 && this.currentPage !== 1
       cardAPI.batchRemove(row.studentId).then(response => {
@@ -157,11 +158,11 @@ export default {
       })
     },
 
-    currentChange(pageNumber) {
+    currentChange (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    refresh(auto) {
+    refresh (auto) {
       _refresh.call(this, auto)
     }
   },
@@ -183,7 +184,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val, oldval) {
+      handler (val, oldval) {
         if (val === -1 || val === 0) return
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
@@ -204,6 +205,3 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

@@ -27,11 +27,11 @@
 
       <el-form-item label="申请时间" required>
           <el-form-item prop="startDate" class="inline">
-            <el-date-picker type="date" placeholder="选择起始日期" value-format="timestamp" v-model="formData.startDate" style="width: 100%;"  :picker-options="startOption"></el-date-picker>
+           <el-date-picker type="date" :editable="false" placeholder="选择起始日期" value-format="timestamp" v-model="formData.startDate" style="width: 100%;"  :picker-options="startOption"></el-date-picker>
           </el-form-item>
           <span>至</span>
           <el-form-item prop="endDate" class="inline">
-            <el-date-picker type="date" placeholder="选择结束日期" value-format="timestamp"  v-model="formData.endDate" style="width: 100%;" :picker-options="endOption"></el-date-picker>
+           <el-date-picker type="date" :editable="false" placeholder="选择结束日期" value-format="timestamp"  v-model="formData.endDate" style="width: 100%;" :picker-options="endOption"></el-date-picker>
           </el-form-item>
       </el-form-item>
       <el-form-item label="开放申请" prop="isOpen">
@@ -80,7 +80,7 @@ export default {
         specialtyId: [
           { required: true, message: '请选择专业要求', trigger: 'change' }
         ],
-     
+
         numberLimit: [
           { required: true, message: '请输入名额限制', trigger: 'blur' }
         ],

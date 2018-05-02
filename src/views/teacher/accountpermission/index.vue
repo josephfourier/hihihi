@@ -42,6 +42,7 @@ import ZjyList from '@/components/list'
 import ZjyTable from '@/components/table'
 
 import properties from './properties'
+import { _refresh } from '@/utils'
 
 export default {
   data () {
@@ -62,31 +63,27 @@ export default {
     }
   },
 
-  created() {
+  created () {
     // 若操作下无操作按钮则不显示操作列
     const pos = this.columns.findIndex(i => i.operators && i.operators.length === 1 && !i.render)
-    pos > -1 
-    ? this.columns.splice(pos, 1)
-    : ''
+    pos > -1
+      ? this.columns.splice(pos, 1)
+      : ''
   },
 
   methods: {
+    refresh () {
+      _refresh.call(this)
+    },
     pageChanged (pageNumber) {
       this.currentPage = pageNumber
     },
 
     searchFilter () {
-      this.loading = true
+      // this.loading = true
       this.teacherName = this.query.teacherName
-      accountAPI.queryForList(0, this.query.limit, this.teacherName).then(resp => {
-        this.list = resp.items
-        this.total = resp.total
-        this.loading = false
-        this.currentPage = 1
-      }).catch(error => {
-      }).finally(_ => {
-        this.loading = false
-      })
+      this.currentPage = 1
+      this.refresh()
     },
 
     handleView (row) {
@@ -130,14 +127,13 @@ export default {
         accountAPI.queryForList((val - 1) * this.query.limit, this.query.limit, this.teacherName).then(resp => {
           this.list = resp.items
           this.total = resp.total
-          this.loading = false
         }).catch(error => {
           console.log(error)
+        }).finally(_ => {
+          this.loading = false
         })
       }
     }
   }
 }
 </script>
-<style lang="scss">
-</style>

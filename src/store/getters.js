@@ -19,5 +19,7 @@ export default {
   specialtyList: state => state.common.specialtyList,
   facultyList: state => state.common.facultyList,
   classList: state => state.common.classList,
+  holidayTypeList: state => state.common.holidayTypeList,
+  student: state => state.common.student,
   isCollapsed: state => state.app.isCollapsed
 }

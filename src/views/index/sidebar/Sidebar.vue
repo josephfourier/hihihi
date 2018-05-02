@@ -33,7 +33,7 @@
 <script>
 export default {
   inject: ['reload', 'force', 'collapse'],
-  data() {
+  data () {
     return {
       isCollapse: false,
       clientWidth: document.body.clientWidth
@@ -43,21 +43,20 @@ export default {
   props: {
     routes: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     }
   },
 
-  created() {
+  created () {
   },
 
-  mounted() {
+  mounted () {
     const that = this
     window.onresize = _.debounce(() => {
       that.clientWidth = document.body.clientWidth
       if (that.clientWidth < 950) {
-
         if (!that.isCollapse) {
           that.collapse()
           that.isCollapse = true
@@ -68,7 +67,6 @@ export default {
           that.isCollapse = false
         }
       }
-
     }, 100)
   },
 
@@ -76,29 +74,29 @@ export default {
     // isCollapse () {
     //   return false
     // },
-    multi() {
+    multi () {
       return this.routes.filter(item => !item.hidden && item.children.length > 1)
     },
-    single() {
+    single () {
       return this.routes.filter(item => !item.hidden && item.children.length === 1)
     }
   },
   methods: {
-    handleClick() {
+    handleClick () {
       this.collapse()
       this.isCollapse = !this.isCollapse
     },
-    handleOpen(key, keyPath) {
+    handleOpen (key, keyPath) {
     },
-    handleClose(key, keyPath) {
+    handleClose (key, keyPath) {
     },
-    refresh() {
+    refresh () {
       if (this.force) { this.reload() }
     }
   },
 
   watch: {
-    $route(to, from) {
+    $route (to, from) {
     }
   }
 }

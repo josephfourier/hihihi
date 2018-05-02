@@ -52,6 +52,7 @@ import ViewApply from './ViewApply'
 import ZjyFooter from './Footer'
 import ZjyTable from '@/components/table'
 import { _refresh } from '@/utils'
+import properties from './properties'
 
 export default {
   data () {
@@ -61,60 +62,17 @@ export default {
       list: [],
       currentPage: 1,
       total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
+      query: properties.query,
 
       loading: false,
       visible: false,
-      columns: [
-        {
-          index: true
-        }, {
-          label: '奖学金名称',
-          prop: 'scholarshipName',
-          width: 200
-        }, {
-          label: '人数限制',
-          prop: 'numberLimit'
-        }, {
-          label: '奖学金级别',
-          prop: 'scholarshipLevel'
-        }, {
-          label: '金额',
-          prop: 'money'
-        }, {
-          label: '发放对象',
-          prop: 'grantObject'
-        }, {
-          label: '申请年份',
-          prop: 'applyYear'
-        }, {
-          label: '状态',
-          prop: 'dataStatus',
-          formatter: this.statusFormat
-        },
-        {
-          label: '操作',
-          
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            }
-          ]
-        }
-      ],
+      columns: properties.columns,
       applyReason: '',
       hasError: false
     }
   },
 
   methods: {
-    statusFormat (cellValue) {
-      return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
-    },
 
     makeFormData (data, steps) {
       return {
@@ -128,7 +86,10 @@ export default {
       } else {
         myAPI.update(data.scholarshipUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
+
             this.refresh().visible = false
           } else {
             this.$alert(response.message)
@@ -141,7 +102,10 @@ export default {
     _delete (data) {
       myAPI.delete(data.scholarshipUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+
           this.refresh().visible = false
         } else {
           this.$alert(response.message)
@@ -208,6 +172,3 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

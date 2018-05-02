@@ -111,7 +111,7 @@
 <script>
 import axios from 'axios'
 import commonAPI from '@/api/common'
-import approvalAPI from '@/api/approval'
+import approvalAPI from './api'
 
 import SearchPanel from '@/components/search-panel/search-panel'
 import ZjyButton from '@/components/button'
@@ -543,6 +543,7 @@ export default {
   width: 600px;
   border: 1px solid #c6c6c6;
   min-height: 300px;
+  color: #222222;
   .workflow-header {
     position: relative;
     height: 40px;

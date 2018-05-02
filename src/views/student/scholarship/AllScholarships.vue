@@ -52,6 +52,7 @@ import ViewSetting from './ViewSetting'
 import axios from 'axios'
 
 import ZjyTable from '@/components/table'
+import properties from './properties'
 export default {
   data () {
     return {
@@ -60,57 +61,12 @@ export default {
       list: [],
       currentPage: 1,
       total: 0,
-      query: {
-        offset: 0,
-        limit: 10
-      },
+      query: properties.query,
       loading: false,
       visible: false,
       type: '', // 查看或申请操作
 
-      columns: [
-        {
-          index: true
-        }, {
-          label: '奖学金名称',
-          prop: 'scholarshipName',
-          width: 200
-        }, {
-          label: '人数限制',
-          prop: 'numberLimit'
-        }, {
-          label: '奖学金级别',
-          prop: 'scholarshipLevel'
-        }, {
-          label: '金额',
-          prop: 'money'
-        }, {
-          label: '发放对象',
-          prop: 'grantObject'
-        }, {
-          label: '申请年份',
-          prop: 'grantWayName'
-        }, {
-          label: '状态',
-          prop: 'applyStatus',
-          formatter: this.statusFormat
-        },
-        {
-          label: '操作',
-          
-          operators: [
-            {
-              label: '查看',
-              cmd: 'view'
-            },
-            {
-              label: '申请',
-              render: row =>  row.applyStatus === '0',
-              cmd: 'create'
-            }
-          ]
-        }
-      ],
+      columns: properties.columnsALL,
       // 申请原因
       applyReason: '',
       hasError: false
@@ -118,9 +74,6 @@ export default {
   },
 
   methods: {
-    statusFormat (cellValue) {
-      return ['可申请', '申请中'][+cellValue]
-    },
 
     makeFormData (data, steps) {
       return {
@@ -136,7 +89,7 @@ export default {
         allAPI.create(data.scholarshipsettingUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
-              MSG.success('申请成功')
+              MSG.success(this.$t('zjy.message.create.success'))
             }, 200)
             this.visible = false
             this.refresh()
@@ -153,13 +106,6 @@ export default {
       this.type = +this.$t('zjy.operator.VIEW')
       this.data = row
       this.visible = true
-      // allAPI.queryForObject(row.scholarshipsettingUid).then(response => {
-      //   this.data = response.data
-      //   // Object.assign(this.data, {
-      //   //   applyReson: ''
-      //   // })
-      //   this.visible = true
-      // }).catch(error => {})
     },
 
     create (row) {

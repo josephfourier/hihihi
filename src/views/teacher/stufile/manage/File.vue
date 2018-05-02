@@ -56,7 +56,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="建档日期" prop="stufileDate" class=" pull-right">
-            <el-date-picker type="date" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" :editable="false"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -146,7 +146,7 @@
       </el-table>
     </div>
     <p class="zjy-form__title">档案说明</p>
-    <zjy-input type="textarea" v-model="data.stufileDescription" :resize="'none'" :maxlength="256"></zjy-input>
+    <zjy-input type="textarea" v-model="data.stufileDescription" :maxlength="256"></zjy-input>
 
     <div class="zjy-footer">
       <zjy-button type="plain" @click="$emit('update:visible', false)">取消</zjy-button>

@@ -30,7 +30,7 @@
       </el-form-item>
 
       <el-form-item label="处分日期" prop="punishDate" class="pull-right">
-        <el-date-picker type="date" placeholder="选择日期" v-model="formData.punishDate" style="width: 100%"></el-date-picker>
+       <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="formData.punishDate" style="width: 100%"></el-date-picker>
       </el-form-item>
 
       <el-form-item label="处分说明" prop="punishDescription">

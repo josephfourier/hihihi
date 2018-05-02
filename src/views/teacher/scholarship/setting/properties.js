@@ -1,3 +1,4 @@
+import { hasPermission } from '@/utils'
 const statusFormat = (cellValue) => ['否', '是'][+cellValue]
 
 export default {
@@ -35,10 +36,12 @@ export default {
       operators: [
         {
           label: '编辑',
+          render: _ => hasPermission('swms:scholarship-set:update'),
           cmd: 'edit'
         },
         {
           label: '删除',
+          render: _ => hasPermission('swms:scholarship-set:delete'),
           cmd: 'delete'
         }
       ]

@@ -1,6 +1,6 @@
 <template>
   <div class="zjy-app">
-    <zjy-table-operator>
+    <zjy-table-operator v-if="hasPermission('swms:scholarship-set:create')">
       <operator-item clz="create" @click="visible=true">新增</operator-item>
     </zjy-table-operator>
 
@@ -85,7 +85,6 @@ export default {
     refresh (auto) {
       return _refresh.call(this, auto)
     },
-    //  ------------ 表格头操作 END ------------
 
     edit (row) {
       this.formData = row
@@ -97,7 +96,7 @@ export default {
       settingAPI.delete(row.scholarshipsettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
-          MSG.success('删除成功')
+          MSG.success(this.$t('zjy.message.delete.success'))
         }
       })
     },
@@ -110,16 +109,20 @@ export default {
           if (response.code !== 1) {
             this.$alert(response.message)
           } else {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.update.success'))
+            }, 200)
             this.refresh().visible = false
           }
         })
       } else {
         settingAPI.create(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('新建成功')
+            setTimeout(_ => {
+              MSG.success(this.$t('zjy.message.create.success'))
+            }, 200)
             this.refresh().visible = false
           }
         })

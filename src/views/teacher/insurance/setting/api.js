@@ -23,23 +23,6 @@ export default {
         reject(error)
       })
     })
-
-    // return ajax.get('/manage/insurance-setting', {
-    //   params: query,
-    //   transformResponse: data => {
-    //     const json = JSON.parse(data)
-    //     if (json.code !== 1) return json
-    //
-    //     const total = json.data.total
-    //     const rows = json.data.rows
-    //     const code = json.code
-    //     return {
-    //       code,
-    //       total,
-    //       rows
-    //     }
-    //   }
-    // })
   },
 
   create (setting) {

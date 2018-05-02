@@ -63,6 +63,7 @@
   background-image: none;
   border: 1px solid #dcdfe6;
   transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+  resize: none;
 }
 
 // 文件上传input禁用样式

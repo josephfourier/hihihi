@@ -69,8 +69,7 @@ import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
 import OperatorItem from '@/components/table-operator/operator-item'
 
-import insuranceManageAPI from '@/api/teacher/insurance/manage'
-import commonAPI from '@/api/common'
+import api from './api'
 
 import ZjyProcess from '@/components/process'
 import ZjyForm from './form'
@@ -115,8 +114,7 @@ export default {
     },
 
     handleView (row) {
-      commonAPI.queryApprovalProcess(row.studentId, row.insuranceUid).then(response => {
-        console.log(response)
+      api.queryApprovalProcess(row.studentId, row.insuranceUid).then(response => {
         this.setting = row
         this.value = response.data
         this.visible = true
@@ -128,12 +126,13 @@ export default {
     },
 
     handleSubmit (data, steps) {
-      insuranceManageAPI.submit(data.insuranceUid, data.inssettingUid, steps).then(response => {
+      api.submit(data.insuranceUid, data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
           setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.visible = false
           this.refresh()
-          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('setSchedules')
+          this.$store.dispatch('removeFromTodoList', data.inssettingUid)
         } else {
           MSG.success('保存失败')
         }
@@ -164,7 +163,7 @@ export default {
 
         this.loading = true
         this.query.offset = this.query.limit * (val - 1)
-        insuranceManageAPI.queryForList(this.query).then(response => {
+        api.queryForList(this.query).then(response => {
           if (response.code !== 1) {
             alert(response.message)
           } else {

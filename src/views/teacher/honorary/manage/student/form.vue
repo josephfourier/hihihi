@@ -1,28 +1,28 @@
 <template>
-  <div class="zjy-process">
+  <div class="process">
     <table class="process-table">
       <tr>
-        <td>荣誉称号名称: {{ data.honoraryName }}</td>
-        <td>荣誉称号类别: {{ data.honoraryCategory }}</td>
-        <td>申请人: {{ data.studentName }}</td>
-        <td>申请时间: {{ data.applyDate | dateFormat }}</td>
+        <td>荣誉称号名称：{{ data.honoraryName }}</td>
+        <td>申请人：{{ data.studentName }}</td>
+        <td>入学年份：{{ data.enterYear }}</td>
       </tr>
       <tr>
-        <td>入学年份: {{ data.enterYear }}</td>
-        <td>院系: {{ data.facultyName }}</td>
-        <td>政治面貌: {{ data.politics }}</td>
-        <td>专业: {{ data.specialtyName }}</td>
+        <td>政治面貌：{{ data.politics | politicsFormat}}</td>
+        <td>院系：{{ data.facultyName }}</td>
+        <td>专业：{{ data.specialtyName }}</td>
       </tr>
       <tr>
-
+        <td>人数限制：{{ data.numberLimit }}</td>
+        <td>开始时间：{{ data.startDate | dateFormat }}</td>
+        <td>结束时间：{{ data.endDate | dateFormat }}</td>
       </tr>
     </table>
-    <p class="process-title">申请原因</p>
-    <p class="content">{{ data.applyReson }}</p>
-    <p class="process-title">审批进度</p>
+    <div class="process-item">
+      <p class="process-item__title">申请原因</p>
+      <div class="process-item__content">{{ data.applyReson }}</div>
+    </div>
   </div>
 </template>
-<!--{{ data.applyReason }}-->
 <script>
 
 export default {
@@ -32,7 +32,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>

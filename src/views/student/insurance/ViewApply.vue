@@ -17,6 +17,7 @@
       <tr>
         <td>保险费用：{{ data.insuranceCost }}</td>
         <td>保险期限：{{ data.insuranceLimit }}</td>
+        <td>保险状态：{{ data.dataStatusName || '未申请' }}</td>
       </tr>
     </table>
     <div class="process-item detail">
@@ -45,7 +46,7 @@
 import ZjyButton from '@/components/button'
 export default {
   name: 'view-apply',
-  data() {
+  data () {
     return {
       rules: {
 
@@ -53,7 +54,7 @@ export default {
           { required: true, message: '请选择是否开通', trigger: 'change' }
         ]
       }
-    }  
+    }
   },
   props: {
     data: Object,
@@ -81,6 +82,11 @@ export default {
   padding: 20px;
   background-color: #f5f5f5;
   margin-bottom: 15px;
+  max-height: 100px;
+  overflow: auto;
+ .process-item__content {
+   font-size: 12px;
+ }
 }
 .status {
   margin-bottom: 10px;

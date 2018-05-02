@@ -56,7 +56,7 @@ export default {
   },
 
   queryFacultyList () {
-    return ajax.get('/manage/insurance/faculty')
+    return ajax.get('/manage/common/schoolFaculty')
   },
 
   querySpecialtyList () {
@@ -64,13 +64,15 @@ export default {
   },
 
   querySpecialtyByFaculty (code) {
+    if (!code) return
     return ajax.get('/manage/insurance/specialty/' + code)
   },
 
   queryClassByFaculty (code) {
+    if (!code) return
     return ajax.get('/manage/common/facultyClass/' + code)
   },
-
+  // 不是通用
   queryClassList () {
     return ajax.get('/manage/stufile/student/class')
   },

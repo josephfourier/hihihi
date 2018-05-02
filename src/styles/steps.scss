@@ -1,11 +1,12 @@
-.tip-box,
-.form-tip-box {
+.tip-box{
   height: 20px;
   position: relative;
   .tip {
     font-size: 12px;
     display: inline-block;
     color: #f56c6c;
+    top: -1px;
+    position: relative;
   }
 }
 

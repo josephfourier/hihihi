@@ -2,8 +2,8 @@
 <template>
   <div class="zjy-app">
     <zjy-table-operator>
-      <operator-item clz="create" @click="create" class="create">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+      <operator-item clz="create" @click="create" class="create" v-if="hasPermission('swms:insurance-set:create')">新增</operator-item>
+      <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:insurance-set:delete')">批量删除</operator-item>
     </zjy-table-operator>
 
     <zjy-table v-loading="loading" :data="list" :columns="columns" @edit="edit" @delete="_delete" @selection-change="handleSelectionChange"></zjy-table>
@@ -15,7 +15,7 @@
 
     <div class="zjy-dialog">
       <el-dialog :title="title" :visible.sync="visible" width="800px">
-        <insurance-setting v-if="visible" :formData="setting" :type="type" :visible.sync="visible" @submit="handleSubmit">
+        <insurance-setting v-if="visible" :data="setting" :type="type" :visible.sync="visible" @submit="handleSubmit">
         </insurance-setting>
       </el-dialog>
     </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import insuranceAPI from '@/api/teacher/insurance/setting'
+import api from './api'
 import InsuranceSetting from './InsuranceSetting'
 import ZjyPagination from '@/components/pagination'
 
@@ -55,7 +55,7 @@ export default {
   methods: {
     handleSubmit (data) {
       if (this.type === 1) {
-        insuranceAPI.update(data.inssettingUid, data).then(response => {
+        api.update(data.inssettingUid, data).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.update.success'))
@@ -65,7 +65,7 @@ export default {
           }
         })
       } else {
-        insuranceAPI.create(data).then(response => {
+        api.create(data).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.create.success'))
@@ -82,20 +82,16 @@ export default {
     },
 
     edit (row) {
-      insuranceAPI.queryForObject.call(this, row.inssettingUid).then(response => {
-        this.title = '编辑保险'
-        this.type = 1
-        this.visible = true
-        this.setting = response.data
-      }).catch(error => {
-        console.log(error)
-      })
+      this.title = '编辑保险'
+      this.type = 1
+      this.visible = true
+      this.setting = row
     },
 
     _delete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
       this.loading = true
-      insuranceAPI.delete(row.inssettingUid).then(response => {
+      api.delete(row.inssettingUid).then(response => {
         if (response.code !== 1) {
           MSG.warning(response.message)
         } else {
@@ -111,12 +107,10 @@ export default {
 
     batchRemove () {
       let ids = ''
-      this.selectedRows.forEach(x => {
-        ids += x.inssettingUid + '-'
-      })
+      this.selectedRows.forEach(x => { ids += x.inssettingUid + '-' })
 
       this.loading = true
-      insuranceAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
+      api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
         } else {
@@ -156,7 +150,7 @@ export default {
         if (val === -1 || val === 0) return
 
         this.query.offset = this.query.limit * (val - 1)
-        insuranceAPI.queryForList.call(this, this.query).then(response => {
+        api.queryForList.call(this, this.query).then(response => {
           this.list = response.rows
           this.total = response.total
         }).catch(error => {

@@ -1,6 +1,6 @@
 <!--设置详情数据查看 -->
 <template>
-  <div class="zjy-process">
+  <div class="process">
     <table class="process-table">
       <tr>
         <td>奖学金名称: {{ data.scholarshipName }}</td>
@@ -13,9 +13,6 @@
         <td>发放对象: {{ data.grantObject }}</td>
       </tr>
     </table>
-    <div class="zjy-footer" slot="footer">
-      <zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
-    </div>
   </div>
 </template>
 

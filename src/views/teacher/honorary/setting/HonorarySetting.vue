@@ -2,7 +2,7 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
       <el-form-item label="荣誉称号名称" prop="honoraryName" class="block">
-        <el-input v-model="formData.honoraryName"></el-input>
+        <el-input v-model="formData.honoraryName" :maxlength="128"></el-input>
       </el-form-item>
 
       <el-form-item label="荣誉称号类别" prop="honoraryCategory" class="inline">
@@ -18,21 +18,21 @@
       </el-form-item>
 
       <el-form-item label="名额限制" prop="numberLimit" class="inline pull-right">
-        <el-input v-model="formData.numberLimit"></el-input>
+        <el-input v-model="formData.numberLimit" :maxlength="6"></el-input>
       </el-form-item>
 
       <el-form-item label="申请时间" required>
           <el-form-item prop="startDate" class="inline">
-            <el-date-picker type="date" placeholder="选择起始日期" value-format="timestamp" v-model="formData.startDate" style="width: 100%;"  :picker-options="startOption"></el-date-picker>
+           <el-date-picker type="date" :editable="false" placeholder="选择起始日期" value-format="timestamp" v-model="formData.startDate" style="width: 100%;"  :picker-options="startOption"></el-date-picker>
           </el-form-item>
           <span>至</span>
           <el-form-item prop="endDate" class="inline">
-            <el-date-picker type="date" placeholder="选择结束日期" value-format="timestamp"  v-model="formData.endDate" style="width: 100%;" :picker-options="endOption"></el-date-picker>
+           <el-date-picker type="date" :editable="false" placeholder="选择结束日期" value-format="timestamp"  v-model="formData.endDate" style="width: 100%;" :picker-options="endOption"></el-date-picker>
           </el-form-item>
       </el-form-item>
 
       <el-form-item label="荣誉称号简介" prop="honoraryIntroduction">
-        <el-input type="textarea" v-model="formData.honoraryIntroduction"></el-input>
+        <el-input type="textarea" v-model="formData.honoraryIntroduction" :maxlength="256"></el-input>
       </el-form-item>
 
       <el-form-item label="开放申请" prop="isOpen">
@@ -52,10 +52,16 @@
 
 <script>
 import ZjyButton from '@/components/button'
-
+import validator from '@/utils/validator'
 export default {
   name: 'honorary-setting',
   data () {
+    const limited = (rule, value, callback) => {
+      if (!validator.isInteger(+value)) {
+        return callback(new Error('请输入合法数字,如15'))
+      }
+      callback()
+    }
     return {
       formData: {},
       startOption: {
@@ -88,28 +94,29 @@ export default {
       ],
       rules: {
         honoraryName: [
-          { required: true, message: '请输入荣誉称号名称', trigger: 'blur' }
-          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入荣誉称号名称', trigger: 'change' }
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change' }
         ],
         honoraryCategory: [
           { required: true, message: '请选择荣誉称号类别', trigger: 'change' }
         ],
 
         numberLimit: [
-          { required: true, message: '请输入名额限制', trigger: 'blur' }
+          { required: true, message: '请输入名额限制', trigger: 'change' },
+          { validator: limited, trigger: 'change' }
         ],
 
         honoraryIntroduction: [
-          { required: true, message: '请输入荣誉称号简介', trigger: 'blur' }
+          { required: true, message: '请输入荣誉称号简介', trigger: 'change' }
         ],
         startDate: [
-          { required: true, message: '请选择起始日期', trigger: 'blur' }
+          { required: true, message: '请选择起始日期', trigger: 'change' }
         ],
         endDate: [
-          { required: true, message: '请选择结束日期', trigger: 'blur' }
+          { required: true, message: '请选择结束日期', trigger: 'change' }
         ],
         isOpen: [
-          { required: true, message: '请选择是否开放', trigger: 'change' }
+          { required: true, message: '请选择是否开放申请', trigger: 'change' }
 
         ]
       }
@@ -138,7 +145,7 @@ export default {
   watch: {
     data: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.formData = {...val}
       }
     }

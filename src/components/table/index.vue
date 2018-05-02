@@ -34,7 +34,10 @@
       >
         <template slot-scope="scope">
           <template v-if="item.operators">
-            <div class="table-operator-group" :style="item.operators.length > 2 ? {width: '160px'} : ''">
+            <div
+              class="table-operator-group"
+              :style="{width: item.operators.length > 2 ? '160px' : '', textAlign: item.operators.length === 1 ? 'center' : ''}"
+            >
               <operator-content
                 v-for="child in item.operators"
                 :key="child.label"

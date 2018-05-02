@@ -1,7 +1,11 @@
 <template>
   <div class="process">
     <div v-if="data.dataStatus === '5'" class="status">
-      <img src="./ic_wait.png" alt="待付款">
+      <img src="./ic_money.png" alt="待付款">
+      <span class="status-text">{{ data.dataStatusName }}</span>
+    </div>
+    <div v-if="data.dataStatus === '4'" class="status">
+      <img src="./ic_wait.png" alt="待确认">
       <span class="status-text">{{ data.dataStatusName }}</span>
     </div>
     <table class="process-table">
@@ -23,6 +27,7 @@
       <tr>
         <td>险种类别：{{ data.insuranceCategory }}</td>
         <td>保险期限：{{ data.insuranceLimit }}</td>
+        <td>保险状态：{{ data.dataStatusName }}</td>
       </tr>
     </table>
     <div class="process-item detail">
@@ -46,6 +51,9 @@ export default {
     padding: 20px;
     background-color: #f5f5f5;
     margin-bottom: 15px;
+    .process-item__content {
+      font-size: 12px;
+    }
   }
   .status {
     margin-bottom: 10px;

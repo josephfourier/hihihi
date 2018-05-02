@@ -56,17 +56,14 @@
 
       <div class="zjy-footer">
         <zjy-button type="plain" @click="$emit('update:visible', false)">取消</zjy-button>
-        <zjy-button type="primary" @click="submitForm('formData')">提交</zjy-button>
+        <zjy-button type="primary" @click="submitForm('formData')">确定</zjy-button>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import commonAPI from '@/api/common'
-import insuranceSettingAPI from '@/api/teacher/insurance/setting'
-import insuranceManageAPI from '@/api/teacher/insurance/manage'
-
+import api from './api'
 import axios from 'axios'
 
 import ZjyButton from '@/components/button'
@@ -125,7 +122,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          insuranceManageAPI.batch(this.formData).then(response => {
+          api.batch(this.formData).then(response => {
             if (response.code !== 1) {
               MSG.warning(response.message)
             } else {
@@ -154,7 +151,7 @@ export default {
 
   created () {
     this.loading = true
-    axios.all([commonAPI.queryFacultyList(), insuranceSettingAPI.queryForList()])
+    axios.all([api.queryFacultyList(), api.queryForList()])
       .then(axios.spread((r1, r2) => {
         if (r1.code !== 1 || r2.code !== 1) {
           MSG.success('获取数据失败')
@@ -183,7 +180,7 @@ export default {
     factoryCode (val) {
       if (val) {
         this.formData.specialtyCode = ''
-        commonAPI.querySpecialtyByFaculty(val).then(response => {
+        api.querySpecialtyByFaculty(val).then(response => {
           if (response.code !== 1) {
             this.specialtyList = []
           } else {

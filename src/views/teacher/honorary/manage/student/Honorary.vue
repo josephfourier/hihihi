@@ -28,7 +28,7 @@
       </el-form-item>
 
       <el-form-item label="申请时间" prop="applyDate" class="inline pull-right">
-        <el-date-picker type="date" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
+       <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
       </el-form-item>
 
       <el-form-item label="入学年份" prop="enterYear" class="inline">

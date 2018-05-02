@@ -33,7 +33,7 @@ import axios from 'axios'
 import properties from './properties'
 import ZjyTable from '@/components/table'
 export default {
-  data() {
+  data () {
     return {
       data: {},    // 设置详情
       value: {},   // 对应审批
@@ -53,21 +53,21 @@ export default {
   },
 
   methods: {
-    makeFormData(data, steps) {
+    makeFormData (data, steps) {
       return {
         'applyReson': this.applyReason,
         'swmsApprovalList': steps
       }
     },
 
-    handleSubmit(data, steps) {
+    handleSubmit (data, steps) {
       if (!this.applyReason) {
         this.hasError = true
       } else {
         allAPI.create(data.honorarysettingUid, this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
-               MSG.success('申请成功')
+              MSG.success('申请成功')
             }, 200)
             this.refresh().visible = false
           } else {
@@ -79,29 +79,29 @@ export default {
       }
     },
 
-    view(row) {
+    view (row) {
       this.type = +this.$t('zjy.operator.VIEW')
       this.data = row
       this.visible = true
     },
 
-    create(row) {
+    create (row) {
       this.type = +this.$t('zjy.operator.CREATE')
       // 优化
-      axios.all([commonAPI.queryInitial(getPermissionId(this.$route)), allAPI.queryForObject(row.honorarysettingUid)]).then(
-        axios.spread((r1, r2) => {
+      axios.all([commonAPI.queryInitial(getPermissionId(this.$route))]).then(
+        axios.spread((r1) => {
           this.value = r1.data
-          this.data = r2.data
+          this.data = row
           this.visible = true
         })
       )
     },
 
-    currentChange(pageNumber) {
+    currentChange (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    refresh() {
+    refresh () {
       return _refresh.call(this)
     }
   },
@@ -122,7 +122,7 @@ export default {
   },
 
   computed: {
-    title() {
+    title () {
       return this.type === +this.$t('zjy.operator.CREATE') ? '荣誉称号申请' : '荣誉称号详情'
     }
   },
@@ -130,7 +130,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val, oldval) {
+      handler (val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -146,11 +146,11 @@ export default {
       }
     },
 
-    active(val) {
+    active (val) {
       if (val) this.refresh()
     },
 
-    visible(val) {
+    visible (val) {
       if (!val) {
         this.applyReason = ''
         this.hasError = false

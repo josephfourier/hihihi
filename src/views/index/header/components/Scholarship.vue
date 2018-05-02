@@ -1,28 +1,29 @@
 <template>
-  <div>
-    <div class="zjy-process" v-loading="loading">
+    <div class="process" v-loading="loading">
       <table class="process-table">
         <tr>
-          <td>奖学金名称: {{ data.scholarshipName }}</td>
-          <td>发放方式: {{ data.grantWay }}</td>
-          <td>奖学金级别: {{ data.scholarshipLevel }}</td>
-          <td>金额: {{ data.money }}</td>
+          <td>奖学金名称：{{ data.scholarshipName }}</td>
+          <td>发放方式：{{ data.grantWay | scholarshipGrantWayFormat }}</td>
+          <td>奖学金级别：{{ data.scholarshipLevel }}</td>
         </tr>
         <tr>
-          <td>申请人: {{ data.studentName }}</td>
-          <td>申请时间: {{ data.applyDate | dateFormat }}</td>
-          <td>入学年份: {{ data.enterYear }}</td>
-          <td>院系: {{ data.facultyName }}</td>
+          <td>金额：{{ data.money }}</td>
+          <td>申请人：{{ data.studentName }}</td>
+          <td>申请时间：{{ data.applyDate | dateFormat }}</td>
         </tr>
         <tr>
-          <td>政治面貌: {{ data.politics | politicsFormat }}</td>
-          <td>专业: {{ data.specialtyName }}</td>
+          <td>入学年份：{{ data.enterYear }}</td>
+          <td>院系：{{ data.facultyName }}</td>
+          <td>政治面貌：{{ data.politics | politicsFormat }}</td>
+        </tr>
+        <tr>
+          <td>专业：{{ data.specialtyName }}</td>
         </tr>
       </table>
-      <p class="process-title">申请原因</p>
-      <p class="content">{{ data.applyReson }}</p>
-      <p class="process-title">审批进度</p>
-    </div>
+      <div class="process-item">
+        <p class="process-item__title">申请原因</p>
+        <div class="process-item__content">{{ data.applyReson }}</div>
+      </div>
     <transition name="el-zoom-in-top">
 
       <zjy-process
@@ -34,7 +35,6 @@
       >
       </zjy-process>
     </transition>
-    >
   </div>
 </template>
 
@@ -80,11 +80,11 @@ export default {
       api.submitScholarship(data.scholarshipUid, steps).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.success(this.$t('zjy.message.approve.success'))
           }, 200)
-          this.$store.dispatch('setSchedules')
+          this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
         } else {
-          MSG.success('保存失败')
+          MSG.success(this.$t('zjy.message.approve.error'))
         }
       }).catch(error => {
       }).finally(() => {

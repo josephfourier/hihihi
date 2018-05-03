@@ -35,17 +35,17 @@
       </el-form-item>
 
       <el-form-item label="入学年份" prop="enterYear" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input v-model="student.enterYear" disabled></el-input>
       </el-form-item>
       <el-form-item label="院系" prop="factoryCode" class="inline pull-right">
         <el-input v-model="student.facultyName" disabled></el-input>
       </el-form-item>
       <el-form-item label="专业" prop="specialtyCode" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input v-model="student.specialtyName" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="政治面貌" prop="specialtyCode" class="inline pull-right">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input :value="student.politics | politicsFormat" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="申请原因" prop="applyReson">
@@ -79,6 +79,7 @@ export default {
         if (!this.doQuery) return
         api.queryStudent(value, this.formData.scholarshipsettingUid).then(response => {
           if (response.code !== 1) {
+            this.student = {}
             callback(new Error(response.message))
           } else {
             this.student = response.data
@@ -99,7 +100,7 @@ export default {
       formData: {},
       rules: {
         studentCode: [
-          { required: true, message: '请输入学生学号', trigger: 'change' },
+          { required: true, message: '请输入学生学号', trigger: 'blur' },
           { validator: checkStudent, trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],

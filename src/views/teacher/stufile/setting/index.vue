@@ -82,10 +82,16 @@ export default {
     },
 
     _delete (row) {
+      this.loading = true
       stufileAPI.delete(row.stufilesettingUid).then(response => {
         if (response.code === 1) {
-          MSG.success('删除成功')
+          setTimeout(_ => {
+             MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
           this.refresh()
+        } else {
+          MSG.warning(response.message)
+          this.loading = false
         }
       })
     },

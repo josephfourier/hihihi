@@ -103,14 +103,14 @@ export default {
     handleSubmit (data, steps) {
       cardAPI.approved(this.data, steps).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => { MSG.success('保存成功') }, 200)
+          setTimeout(_ => { MSG.success('审批成功') }, 200)
           this.refresh()
           this.visible = false
           //  待办状态刷新
           this.$store.dispatch('setSchedules')
           // this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
         } else {
-          MSG.success('保存失败')
+          MSG.success('审批失败')
         }
       }).catch(error => { })
     },
@@ -130,6 +130,7 @@ export default {
       cardAPI.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
           MSG.warning(this.$t('zjy.message.delete.error'))
+          this.loading = false
         } else {
           this.refresh(auto)
           setTimeout(_ => {
@@ -146,6 +147,7 @@ export default {
       const auto = this.list.length === 1 && this.currentPage !== 1
       cardAPI.batchRemove(row.studentId).then(response => {
         if (response.code !== 1) {
+          this.loading = false
           MSG.warning(this.$t('zjy.message.delete.error'))
         } else {
           setTimeout(_ => {

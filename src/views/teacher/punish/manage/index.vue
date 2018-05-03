@@ -227,6 +227,7 @@ export default {
 
     handleDelete (row) {
       const auto = this.list.length === 1 && this.currentPage !== 1
+      this.loading = true
       api.delete(row.punishUid).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
@@ -236,6 +237,7 @@ export default {
         } else {
           console.warn(response.message)
           MSG.success(this.$t('zjy.message.delete.error'))
+          this.loading = false
         }
       }).catch(error => {
         console.log(error)

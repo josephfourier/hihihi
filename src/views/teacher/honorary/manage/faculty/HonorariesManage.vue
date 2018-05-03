@@ -153,6 +153,7 @@ export default {
         if (response.code !== 1) {
           console.warn(response.message)
           MSG.warning(this.$t('zjy.message.delete.error'))
+          this.loading = false
         } else {
           MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
@@ -237,6 +238,7 @@ export default {
         } else {
           console.warn(response.message)
           MSG.warning(this.$t('zjy.message.delete.error'))
+          this.loading = false
         }
       }).catch(error => {
         console.log(error)

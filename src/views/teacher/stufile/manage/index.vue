@@ -76,7 +76,14 @@
     </transition>
 
     <div class="zjy-table">
-      <zjy-table :data="list" :loading="loading" :columns="columns" @view="view" @edit="edit" @selection-change="handleSelectionChange">
+      <zjy-table 
+        :data="list" 
+        :loading="loading" 
+        :columns="columns" 
+        @view="view" 
+        @edit="edit" 
+        @selection-change="handleSelectionChange"
+      >
       </zjy-table>
     </div>
 
@@ -86,7 +93,15 @@
     </div>
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
-      <zjy-file v-if="visible" :formData="file" v-model="settings" :type="type" :visible.sync="visible" :list="fileList" @refresh="handleRefresh"></zjy-file>
+      <zjy-file
+        v-if="visible" 
+        :formData="file" 
+        v-model="settings" 
+        :type="type"
+        :visible.sync="visible" 
+        :list="fileList" 
+        @refresh="handleRefresh"
+      ></zjy-file>
     </el-dialog>
 
     <el-dialog :title="title" :visible.sync="visible2" width="800px">

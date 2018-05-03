@@ -137,6 +137,7 @@ export default {
       api.batchRemove(scholarshipUids).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
+          this.loading = false
         } else {
           setTimeout(_ => {
             MSG.success(this.$t('zjy.message.delete.success'))
@@ -223,7 +224,8 @@ export default {
           }, 200)
           this.refresh(auto)
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
+          this.loading = false
         }
       }).catch(error => {
         console.log(error)

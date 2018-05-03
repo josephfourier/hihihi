@@ -175,6 +175,7 @@ export default {
     },
 
     handleDelete (row) {
+      this.loading = true
       api.deleteFile(row.noticeUid).then(response => {
         if (response.code === 1) {
           MSG.success('删除成功')
@@ -182,6 +183,7 @@ export default {
           this.$store.dispatch('setNoticeList')
         } else {
           MSG.warning('删除失败')
+          this.loading = false
         }
       }).catch(error => {
         console.log(error)

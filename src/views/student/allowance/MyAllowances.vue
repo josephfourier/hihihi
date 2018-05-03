@@ -1,6 +1,5 @@
 <template>
   <div class="zjy-app">
-
     <zjy-table
       :data="list"
       :loading="loading"

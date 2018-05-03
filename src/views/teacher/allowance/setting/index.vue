@@ -101,6 +101,7 @@ export default {
           }, 200)
         } else {
           MSG.warning(response.message)
+          this.loading = false
         }
       })
     },

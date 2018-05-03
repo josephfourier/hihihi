@@ -92,11 +92,17 @@ export default {
     },
 
     _delete (row) {
+      this.loading = true
       const auto = this.list.length === 1 && this.currentPage !== 1
       settingAPI.delete(row.scholarshipsettingUid).then(response => {
         if (response.code === 1) {
           this.refresh(auto)
-          MSG.success(this.$t('zjy.message.delete.success'))
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+        } else {
+          MSG.warning(response.message)
+          this.loading = false
         }
       })
     },

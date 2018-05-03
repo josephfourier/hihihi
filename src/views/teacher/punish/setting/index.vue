@@ -107,6 +107,7 @@ export default {
         } else {
           // this.$alert(response.message)
           MSG.warning(response.message)
+          this.loading = false
         }
       }).finally(_ => {
       })

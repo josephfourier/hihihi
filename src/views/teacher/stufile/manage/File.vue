@@ -302,7 +302,6 @@ export default {
 
         this.fileList[index].stufilePath = path
 
-        // this.$refs['ref' + which].innerHTML = ''
         this.loading = false
         this.isUploading = false
       } catch (e) {
@@ -398,6 +397,11 @@ export default {
           }
         }
       })
+    },
+    abortAll () {
+      for (let i = 0; i < this.fileList.length; ++i) {
+        try { this.$refs['upload' + i].abort() } catch (e) { }
+      }
     }
   },
 
@@ -416,9 +420,7 @@ export default {
   },
 
   beforeDestroy () {
-    for (let i = 0; i < this.fileList.length; ++i) {
-      if (this.isUploading) try { this.$refs['upload' + i].abort() } catch (e) { }
-    }
+    this.abortAll()
   },
 
   watch: {

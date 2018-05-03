@@ -281,9 +281,7 @@ export default {
     },
 
     _delete (item) {
-      approvalAPI
-        .deleteProvalProcess(item.templateUid)
-        .then(response => {
+      approvalAPI.deleteProvalProcess(item.templateUid).then(response => {
           if (response.code === 1) {
             // this.value.splice(this.value.findIndex(v => v.templateUid === item.templateUid), 1)
             setTimeout(_ => {
@@ -293,8 +291,7 @@ export default {
           } else {
             MSG.success(this.$t('zjy.message.delete.error'))
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error)
         })
     },

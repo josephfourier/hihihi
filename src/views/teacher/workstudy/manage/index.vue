@@ -154,6 +154,7 @@ export default {
       api.batchRemove(workstudyUids).then(response => {
         if (response.code !== 1) {
           MSG.warning(response.message)
+          this.loading = false
         } else {
           setTimeout(_ => {
             MSG.success(this.$t('zjy.message.delete.success'))
@@ -247,6 +248,7 @@ export default {
           this.refresh(auto)
         } else {
           MSG.warning(response.message)
+          this.loading = false
         }
       }).catch(error => {
         console.log(error)

@@ -197,6 +197,7 @@ export default {
         api.batchRemove(uids).then(response => {
           if (response.code !== 1) {
             MSG.warning(response.message)
+            this.loading = false
           } else {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.delete.success'))
@@ -284,7 +285,8 @@ export default {
             MSG.success(this.$t('zjy.message.delete.success'))
           }, 200)
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
+          this.loading = false
         }
       })
     },

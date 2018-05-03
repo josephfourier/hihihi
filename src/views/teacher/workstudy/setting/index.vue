@@ -93,6 +93,7 @@ export default {
     },
 
     _delete (row) {
+      this.loading = true
       const auto = this.list.length === 1 && this.currentPage !== 1
       api.delete(row.worksettingUid).then(response => {
         if (response.code === 1) {
@@ -103,6 +104,7 @@ export default {
           }, 200)
         } else {
           MSG.warning(response.message)
+          this.loading  = false
         }
       })
     },

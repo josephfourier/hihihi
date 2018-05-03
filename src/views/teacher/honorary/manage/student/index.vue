@@ -121,6 +121,7 @@ export default {
       api.batchRemove(stuhonoraryUids).then(response => {
         if (response.code !== 1) {
           this.$alert(response.message)
+          this.loading = false
         } else {
           MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
@@ -218,7 +219,8 @@ export default {
           MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
+          this.loading = false
         }
       })
     },

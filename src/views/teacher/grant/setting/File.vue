@@ -182,6 +182,7 @@ export default {
         } else {
           MSG.warning(this.$t('zjy.message.delete.error'))
           console.warn(response.message)
+          this.loading = false
         }
       }).catch(error => {
         console.log(error)

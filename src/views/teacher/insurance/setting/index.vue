@@ -3,7 +3,7 @@
   <div class="zjy-app">
     <zjy-table-operator>
       <operator-item clz="create" @click="create" class="create" v-if="hasPermission('swms:insurance-set:create')">新增</operator-item>
-      <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:insurance-set:delete')">批量删除</operator-item>
+      <!-- <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:insurance-set:delete')">批量删除</operator-item> -->
     </zjy-table-operator>
 
     <zjy-table v-loading="loading" :data="list" :columns="columns" @edit="edit" @delete="_delete" @selection-change="handleSelectionChange"></zjy-table>
@@ -94,6 +94,7 @@ export default {
       api.delete(row.inssettingUid).then(response => {
         if (response.code !== 1) {
           MSG.warning(response.message)
+          this.loading = false
         } else {
           this.refresh(auto)
           setTimeout(_ => {
@@ -112,7 +113,8 @@ export default {
       this.loading = true
       api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(response.message)
+          this.loading = false
         } else {
           MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh()

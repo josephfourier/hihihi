@@ -140,6 +140,10 @@ export default {
     },
 
     batchRemove () {
+       if (this.selectedRows.length === 0) {
+        MSG.warning('至少选择一条记录')
+        return
+      }
       let allowanceUids = []
       this.selectedRows.forEach(x => allowanceUids.push(x.allowanceUid))
 
@@ -149,6 +153,7 @@ export default {
       api.batchRemove(allowanceUids).then(response => {
         if (response.code !== 1) {
           MSG.warning(response.message)
+          this.loading = false
         } else {
           setTimeout(_ => {
             MSG.success(this.$t('zjy.message.delete.success'))
@@ -241,6 +246,7 @@ export default {
           this.refresh(auto)
         } else {
           MSG.warning(response.message)
+          this.loading = false
         }
       }).catch(error => {
         console.log(error)

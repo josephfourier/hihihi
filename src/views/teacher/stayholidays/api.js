@@ -1,6 +1,17 @@
 import ajax from '@/utils/ajax'
 import {selfMerge} from '@/utils'
+const download = (data, fileName) => {
+  if (!data) return
 
+  let url = window.URL.createObjectURL(new Blob([data]))
+  let link = document.createElement('a')
+  link.style.display = 'none'
+  link.href = url
+  link.setAttribute('download', fileName)
+  document.body.appendChild(link)
+
+  link.click()
+}
 export default {
 
   queryForList (query) {
@@ -47,5 +58,23 @@ export default {
 
   update (arg) {
     return ajax.put('/manage/teacher/swmsStayholiday', arg)
+  },
+
+  ajaxDownload (url, data, fileName) {
+    return new Promise((resolve, reject) => {
+      ajax({
+        method: 'get',
+        url: url,
+        data: data,
+        responseType: 'blob'
+      }).then(res => {
+        if (res.type === 'application/x-xls') {
+          download(res, fileName)
+          resolve()
+        } else {
+          reject(new Error(res))
+        }
+      }).catch(error => console.log(error))
+    })
   }
 }

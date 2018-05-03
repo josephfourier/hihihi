@@ -102,6 +102,7 @@ export default {
     },
 
     _export () {
+      this.loading = true
       this.getExportData().then(response => {
         this.exportData = response
 
@@ -113,11 +114,12 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        this.loading = true
+       
         export2excel(header, filter, data, excelName).finally(_ => {
-          this.loading = false
           this.exportData = []
         })
+      }).finally(_ => {
+          this.loading = false
       })
     },
 
@@ -160,6 +162,12 @@ export default {
     handleRefresh () {
       this.refresh()
     }
+  },
+  destroyed () {
+    this.query.specialtyCode = ''
+    this.query.enterYear = ''
+    this.query.studentCode = ''
+    this.query.offset = 0
   },
   components: {
     ZjyTableSearch,

@@ -152,6 +152,8 @@ export default {
 
       myfile: '',
       baseModel: 'swmsPoor',
+
+      isLoading2: false
     }
   },
 
@@ -168,14 +170,15 @@ export default {
     isLoading () {
       return this.myFacultyList.length === 0
     },
-    isLoading2 () {
-      return this.mySpecialtyList.length === 0
-    }
+    // isLoading2 () {
+    //   return this.mySpecialtyList.length === 0
+    // }
   },
 
   methods: {
     handleInit () {
       if (!this.facultyCode) {
+        this.isLoading2 = true
         this.$store.dispatch('setSpecialtyList').then(_ => {
           this.mySpecialtyList = this.specialtyList.map(i => {
             return {
@@ -183,6 +186,8 @@ export default {
               value: i.specialtyCode
             }
           })
+        }).finally(_ => {
+          this.isLoading2 = false
         })
       }
     },
@@ -200,6 +205,7 @@ export default {
       this.query.facultyCode = this.facultyCode
       this.query.applyYear = this.applyYear
       this.query.dataStatus = this.dataStatus
+      this.query.specialtyCode = this.specialtyCode
       this.currentPage = 1
       this.refresh()
     },
@@ -240,6 +246,7 @@ export default {
       this.selectedRows = rows
     },
     _export () {
+      this.loading = true
       this.getExportData().then(response => {
         this.exportData = response
 
@@ -251,7 +258,6 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        this.loading = true
         export2excel(header, filter, data, excelName, (filter, data) => {
           return data.map(v => filter.map(j => {
             if (j === 'applyDate') {
@@ -261,9 +267,10 @@ export default {
             } else return v[j]
           }))
         }).finally(_ => {
-          this.loading = false
           this.exportData = []
         })
+      }).finally(_ => {
+        this.loading = false
       })
     },
     getExportData () {
@@ -379,6 +386,14 @@ export default {
         MSG.warning('下载错误')
       })
     },
+  },
+
+  destroyed () {
+    this.query.applyYear = ''
+    this.query.dataStatus = ''
+    this.query.facultyCode = ''
+    this.query.specialtyCode = ''
+    this.query.offset = 0
   },
 
   components: {

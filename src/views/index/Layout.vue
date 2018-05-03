@@ -34,7 +34,8 @@ export default {
     return {
       reload: this.reload,
       // 开发环境下点击可刷新
-      force: process.env.NODE_ENV === 'development',
+      // force: process.env.NODE_ENV === 'development',
+      force: true,
       collapse: this.collapse,
       isCollapse: this.isCollapse
     }

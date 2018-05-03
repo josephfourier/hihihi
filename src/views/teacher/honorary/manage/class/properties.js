@@ -8,10 +8,11 @@ const statusFormatMY = (cellValue) => {
 }
 
 export default {
-
   query: {
     offset: 0,
-    limit: 10
+    limit: 10,
+    dataStatus: '',
+    applyYear: ''
   },
   optionsStatus: [
     {

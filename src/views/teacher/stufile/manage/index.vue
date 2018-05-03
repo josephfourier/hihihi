@@ -283,6 +283,7 @@ export default {
     },
 
     _export () {
+      this.loading = true
       this.getExportData().then(response => {
         this.exportData = response
 
@@ -294,7 +295,7 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        this.loading = true
+        
         export2excel(header, filter, data, excelName, (filter, data) => {
           return data.map(v => filter.map(j => {
             if (j === 'stufileDate') {
@@ -302,9 +303,10 @@ export default {
             } else return v[j]
           }))
         }).finally(_ => {
-          this.loading = false
           this.exportData = []
         })
+      }).finally(_ => {
+          this.loading = false
       })
     },
 
@@ -454,8 +456,11 @@ export default {
     }
   },
 
-  mounted () {
-
+  destroyed () {
+    this.query.enterYear = ''
+    this.query.classId = ''
+    this.query.studentNo = ''
+    this.query.offset = 0
   },
 
   computed: {

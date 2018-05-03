@@ -139,6 +139,11 @@ export default {
     SearchSelect,
 
     PieChart
+  },
+  destroyed () {
+    this.query.facultyCode = ''
+    this.query.category = ''
+    this.query.applyYear = 0
   }
 }
 </script>

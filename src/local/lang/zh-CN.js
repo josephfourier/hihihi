@@ -23,7 +23,7 @@ export default {
         none: '至少选择一条记录'
       },
       export: {
-        none: '无导出数据'
+        none: '导出数据为空'
       }
     },
     userType: {

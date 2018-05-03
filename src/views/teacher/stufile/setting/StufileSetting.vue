@@ -32,8 +32,8 @@ export default {
     return {
       rules: {
         stufileName: [
-          // {required: true, message: '请输入档案名称', trigger: 'change'},
-          {validator: checkExists, trigger: 'blur'}
+          {required: true, message: '请输入档案名称', trigger: 'change'},
+          // {validator: checkExists, trigger: 'change'}
         ]
       }
     }
@@ -53,12 +53,16 @@ export default {
             stufileAPI.update(this.formData.stufilesettingUid, this.formData).then(response => {
               if (response.code === 1) {
                 this.$emit('close', 1)
+              } else {
+                MSG.warning(response.message)
               }
             })
           } else {
             stufileAPI.create(this.formData).then(response => {
               if (response.code === 1) {
                 this.$emit('close', 1)
+              } else {
+                MSG.warning(response.message)
               }
             })
           }
@@ -75,5 +79,3 @@ export default {
 }
 
 </script>
-<style lang='scss' scoped>
-</style>

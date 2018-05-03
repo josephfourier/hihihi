@@ -6,7 +6,7 @@ export default {
   query: {
     offset: 0,
     limit: 10,
-    dataStatus: '', // 0:待审批, 1:已通过, 2:已拒绝, 3:审批中
+    dataStatus: '',
     enterYear: '',
     studentCode: ''
   },

@@ -164,6 +164,7 @@ export default {
     },
 
     logout () {
+      MSG.success('正在退出中...', 5000)
       this.$store.dispatch('logout').then(_ =>
         window.location.href = process.env.SSO_URL
       ).catch(error => {

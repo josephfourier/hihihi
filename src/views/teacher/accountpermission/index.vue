@@ -117,6 +117,9 @@ export default {
     ZjyPagination,
     ZjyList
   },
+  destroyed () {
+    this.query.teacherName = ''
+  },
 
   watch: {
     currentPage: {

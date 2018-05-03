@@ -150,6 +150,7 @@ export default {
     },
 
     _export () {
+      this.loading = true
       this.getExportData().then(response => {
         this.exportData = response
 
@@ -161,7 +162,6 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        this.loading = true
         export2excel(header, filter, data, excelName, (filter, data) => {
           return data.map(v => filter.map(j => {
             if (j === 'applyDate') {
@@ -171,9 +171,10 @@ export default {
             }
           }))
         }).finally(_ => {
-          this.loading = false
           this.exportData = []
         })
+      }).finally(_ => {
+          this.loading = false
       })
     },
     getExportData () {
@@ -246,6 +247,13 @@ export default {
         console.log(error)
       })
     }
+  },
+
+  destroyed () {
+    this.query.applyYear = ''
+    this.query.dataStatus = ''
+    this.query.studentCode = ''
+    this.query.offset = 0
   },
 
   components: {

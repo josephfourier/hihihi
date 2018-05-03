@@ -141,6 +141,14 @@ export default {
     }
   },
 
+  destroyed () {
+    this.query.applyYear = ''
+    this.query.dataStatus = ''
+    this.query.studentCode = ''
+    this.query.offset = 0
+  },
+
+
   components: {
     ZjyTableSearch,
     SearchInput,

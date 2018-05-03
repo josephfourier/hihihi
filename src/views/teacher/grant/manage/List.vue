@@ -74,6 +74,7 @@ export default {
 
     handleSelectionChange (rows) { this.selectedRows = rows },
     _export () {
+      this.loading = true
       this.getExportData().then(response => {
         this.exportData = response
 
@@ -85,11 +86,11 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        this.loading = true
         export2excel(header, filter, data, excelName).finally(_ => {
-          this.loading = false
           this.exportData = []
         })
+      }).finally(_ => {
+        this.loading = false
       })
     },
     getExportData () {

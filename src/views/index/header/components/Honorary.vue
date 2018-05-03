@@ -1,5 +1,5 @@
 <template>
-  <div class="process">
+  <div class="process" v-loading="loading">
     <table class="process-table">
       <tr>
         <td>荣誉称号名称：{{ data.honoraryName }}</td>

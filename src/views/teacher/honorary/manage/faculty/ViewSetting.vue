@@ -1,14 +1,15 @@
-<!--设置详情数据查看 -->
 <template>
-  <div class="zjy-process">
-    <table class="process-table">
+  <div class="process">
+     <table class="process-table">
       <tr>
-        <td>荣誉称号名称: {{ data.honoraryName }}</td>
-        <td>人数限制: {{ data.numberLimit }}</td>
-        <td>奖学金级别: {{ data.honoraryCategory }}</td>
+        <td>荣誉称号名称：{{ data.honoraryName }}</td>
+        <td>荣誉称号类别：{{ data.honoraryCategory | honoraryTypeFormat}}</td>
+        <td>人数限制：{{ data.numberLimit }}</td>
       </tr>
-      <tr>
-        <td>金额: {{ data.money }}</td>
+       <tr>
+        <td>申请状态：{{ data.applyStatusName}}</td>
+        <td>申请时间：{{ data.startDate | dateFormat }}</td>
+        <td>结束时间：{{ data.endDate | dateFormat }}</td>
       </tr>
     </table>
     <div class="zjy-footer" slot="footer">

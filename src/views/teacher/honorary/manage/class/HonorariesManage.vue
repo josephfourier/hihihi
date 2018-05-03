@@ -176,7 +176,7 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        
+
         export2excel(header, filter, data, excelName, (filter, data) => {
           return data.map(v => filter.map(j => {
             if (j === 'applyDate') {
@@ -260,8 +260,8 @@ export default {
         if (response.code === 1) {
           setTimeout(_ => { MSG.success(this.$t('zjy.message.approve.success')) }, 200)
           this.refresh().visible = false
-          // this.$store.dispatch('setSchedules')
-          this.$store.dispatch('removeFromTodoList', data.clahonoraryUid)
+          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('removeFromTodoList', data.clahonoraryUid)
           // 审批完成后可能需要刷新自己申请的班级荣誉称号列表
           // bus.$emit('applied')
         } else {

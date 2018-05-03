@@ -200,7 +200,7 @@ export default {
       this.$refs.uploadTrigger.click()
       this.clearError()
     },
-     isAcceptedFile (file) {
+    isAcceptedFile (file) {
       return /\.(xls|xlsx)$/gi.test(file.name)
     },
     handleChange (file, fileList) {
@@ -295,7 +295,7 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        
+
         export2excel(header, filter, data, excelName, (filter, data) => {
           return data.map(v => filter.map(j => {
             if (j === 'stufileDate') {
@@ -306,7 +306,7 @@ export default {
           this.exportData = []
         })
       }).finally(_ => {
-          this.loading = false
+        this.loading = false
       })
     },
 

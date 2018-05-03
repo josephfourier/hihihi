@@ -19,7 +19,7 @@
       </zjy-pagination>
     </div>
 
-    <el-dialog title="title" :visible.sync="visible" width="800px">
+    <el-dialog :title="title" :visible.sync="visible" width="800px">
       <student-process
         v-if="visible"
         :data="data"

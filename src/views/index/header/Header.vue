@@ -26,7 +26,12 @@
 
       <div class="badge-wrap">
         <!-- 通过size可以为el-dropdown-menu添加不同的class -->
-        <el-dropdown class="badge" popper-class="your" size="mysize" v-if="user.usertypeId === +$t('zjy.userType.teacher')">
+        <el-dropdown
+          class="badge"
+          popper-class="your"
+          size="header"
+          v-if="user.usertypeId === +$t('zjy.userType.teacher')"
+        >
           <el-badge :value="todoValue" class="item todo" :max="5">
             <span class="el-dropdown-link">待办</span>
           </el-badge>
@@ -40,7 +45,10 @@
           </el-dropdown-menu>
         </el-dropdown>
 
-        <el-dropdown class="badge">
+        <el-dropdown
+          class="badge"
+          size="header"
+        >
           <el-badge :value="noticeValue" class="item notice" :max="5">
             <span class="el-dropdown-link">
               通知

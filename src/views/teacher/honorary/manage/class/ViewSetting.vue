@@ -8,6 +8,7 @@
       </tr>
       <tr>
         <td>结束时间：{{ data.endDate | dateFormat }}</td>
+        <td>申请状态：{{ data.applyStatusName }}</td>
       </tr>
     </table>
     <div class="zjy-footer" slot="footer">

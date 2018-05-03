@@ -14,7 +14,7 @@
       <tr>
         <td>院系：{{ data.facultyName }}</td>
         <td>违纪类型：{{ data.punishName }}</td>
-        <td>处分日期: {{ data.punishDate | dateFormat }}</td>
+        <td>处分日期：{{ data.punishDate | dateFormat }}</td>
       </tr>
     </table>
     <div class="process-item">

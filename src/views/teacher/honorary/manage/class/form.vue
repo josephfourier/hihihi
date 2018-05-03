@@ -3,7 +3,7 @@
     <table class="process-table">
       <tr>
         <td>荣誉称号名称：{{ data.honoraryName }}</td>
-        <td>荣誉称号类别：{{ data.honoraryCategory | honoraryTypeFormat}}</td>
+        <td>荣誉称号类别：{{ data.honoraryCategory | honoraryTypeFormat }}</td>
         <td>申请人：{{ data.teacherName }}</td>
       </tr>
       <tr>

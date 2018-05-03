@@ -167,7 +167,7 @@ export default {
           MSG.warning(this.$t('zjy.message.export.none'))
           return
         }
-        
+
         export2excel(header, filter, data, excelName, (filter, data) => {
           return data.map(v => filter.map(j => {
             if (j === 'applyDate') {
@@ -239,7 +239,8 @@ export default {
             MSG.success(this.$t('zjy.message.approve.success'))
           }, 200)
           this.refresh().visible = false
-          this.$store.dispatch('removeFromTodoList', data.stuhonoraryUid)
+          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('removeFromTodoList', data.stuhonoraryUid)
         }
       }).catch(error => {
         console.log(error)

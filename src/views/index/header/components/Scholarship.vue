@@ -82,7 +82,8 @@ export default {
           setTimeout(_ => {
             MSG.success('审批成功')
           }, 200)
-          this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
+          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
         } else {
           MSG.success('审批失败')
         }

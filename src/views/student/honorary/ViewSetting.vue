@@ -3,11 +3,13 @@
     <table class="process-table">
       <tr>
         <td>荣誉称号名称：{{ data.honoraryName }}</td>
+        <td>荣誉称号类别：{{ data.honoraryCategory | honoraryTypeFormat }}</td>
         <td>人数限制：{{ data.numberLimit }}</td>
       </tr>
       <tr>
         <td>开始时间：{{ data.startDate | dateFormat }}</td>
         <td>结束时间：{{ data.endDate | dateFormat }}</td>
+        <td>申请状态：{{ data.applyStatusName }}</td>
       </tr>
     </table>
     <div class="zjy-footer" slot="footer">

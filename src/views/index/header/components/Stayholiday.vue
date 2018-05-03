@@ -9,7 +9,7 @@
       <tr>
         <td>院系：{{ data.facultyName }}</td>
         <td>电话：{{ data.phone }}</td>
-        <td>假期名称: {{ data.holidayName }}</td>
+        <td>假期名称：{{ data.holidayName }}</td>
       </tr>
     </table>
     <div class="process-item">

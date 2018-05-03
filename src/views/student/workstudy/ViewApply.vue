@@ -2,14 +2,14 @@
     <div class="process">
       <table class="process-table">
         <tr>
-          <td>岗位名称: {{ data.postName }}</td>
-          <td>人数限制: {{ data.numberLimit }}</td>
+          <td>岗位名称：{{ data.postName }}</td>
+          <td>人数限制：{{ data.numberLimit }}</td>
           <td>专业要求：{{ data.specialtyName }}</td>
         </tr>
         <tr>
           <td>薪资待遇：{{ data.salary }}</td>
-          <td>开始时间: {{ data.startDate | dateFormat }}</td>
-          <td>结束时间: {{ data.endDate | dateFormat }}</td>
+          <td>开始时间：{{ data.startDate | dateFormat }}</td>
+          <td>结束时间：{{ data.endDate | dateFormat }}</td>
         </tr>
       </table>
       <!--<p class="process-title">申请原因</p>-->

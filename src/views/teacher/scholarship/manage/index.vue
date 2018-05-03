@@ -238,8 +238,8 @@ export default {
           this.refresh().visible = false
 
           MSG.success(this.$t('zjy.message.approve.success'))
-          // this.$store.dispatch('setSchedules')
-          this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
+          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
         } else {
           MSG.success(this.$t('zjy.message.approve.error'))
         }

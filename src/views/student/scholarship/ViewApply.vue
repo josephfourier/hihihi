@@ -9,7 +9,7 @@
         <tr>
           <td>金额：{{ data.money }}</td>
           <td>人数限制：{{ data.numberLimit }}</td>
-          <td>发放对象: {{ data.grantObject }}</td>
+          <td>发放对象：{{ data.grantObject }}</td>
         </tr>
       </table>
       <div class="process-item" style="margin-bottom: 0;">

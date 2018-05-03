@@ -3,19 +3,34 @@
     <label class="search-label" v-if="label || $slots.label" v-bind:style="labelStyle">
       <slot name="label"> {{ label }}</slot>
     </label>
-    <el-select 
-      v-model="inner" 
+    <!--<el-select-->
+      <!--v-model="inner"-->
+      <!--:placeholder="placeholder"-->
+      <!--@focus="handleFocus"-->
+      <!--:loading="loading"-->
+      <!--:loading-text="loadingText"-->
+    <!--&gt;-->
+      <!--<el-option-->
+        <!--key="-1"-->
+        <!--:label="initText ? initText : '不限'"-->
+        <!--value=""-->
+      <!--&gt;-->
+      <!--</el-option>-->
+      <!--<el-option-->
+        <!--v-for="item in options"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value"-->
+      <!--&gt;-->
+      <!--</el-option>-->
+    <!--</el-select>-->
+    <el-select
+      v-model="inner"
       :placeholder="placeholder"
       @focus="handleFocus"
       :loading="loading"
       :loading-text="loadingText"
     >
-      <el-option
-        key="-1"
-        :label="initText ? initText : '不限'"
-        value=""
-      >
-      </el-option>
       <el-option
         v-for="item in options"
         :key="item.value"

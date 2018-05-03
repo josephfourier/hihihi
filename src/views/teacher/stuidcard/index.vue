@@ -107,8 +107,8 @@ export default {
           this.refresh()
           this.visible = false
           //  待办状态刷新
-          // this.$store.dispatch('setSchedules')
-          this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
+          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
         } else {
           MSG.success('保存失败')
         }

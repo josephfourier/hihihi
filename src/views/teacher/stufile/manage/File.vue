@@ -1,4 +1,3 @@
-<!-- 学生档案实体 -->
 <template>
   <div
     class="zjy-form"

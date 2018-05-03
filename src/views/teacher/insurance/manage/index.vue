@@ -131,8 +131,8 @@ export default {
           setTimeout(_ => { MSG.success('保存成功') }, 200)
           this.visible = false
           this.refresh()
-          // this.$store.dispatch('setSchedules')
-          this.$store.dispatch('removeFromTodoList', data.inssettingUid)
+          this.$store.dispatch('setSchedules')
+          // this.$store.dispatch('removeFromTodoList', data.inssettingUid)
         } else {
           MSG.success('保存失败')
         }

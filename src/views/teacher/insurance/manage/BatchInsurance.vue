@@ -151,7 +151,7 @@ export default {
 
   created () {
     this.loading = true
-    axios.all([api.queryFacultyList(), api.queryForList()])
+    axios.all([api.queryFacultyList(), api.queryForSettingList()])
       .then(axios.spread((r1, r2) => {
         if (r1.code !== 1 || r2.code !== 1) {
           MSG.success('获取数据失败')

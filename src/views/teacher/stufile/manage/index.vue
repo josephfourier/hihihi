@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="zjy-app">
     <zjy-table-search>
@@ -42,7 +41,10 @@
               :on-progress="handleProgress"
               :auto-upload="false"
               :show-file-list="false"
-              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              accept="
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+              "
             >
               <a slot="trigger" class="upload-view" ref="uploadTrigger" @click="clearError">浏览</a>
               <a style="margin-left: 10px;" @click="submitUpload" class="upload-import">导入</a>
@@ -198,10 +200,14 @@ export default {
       this.$refs.uploadTrigger.click()
       this.clearError()
     },
+     isAcceptedFile (file) {
+      return /\.(xls|xlsx)$/gi.test(file.name)
+    },
     handleChange (file, fileList) {
+      console.log(file)
       // 成功时也会调用，添加show修复此问题
       if (this.hasError || !this.show) return
-      if (!/\.(xls|xlsx)$/gi.test(file.name)) {
+      if (!this.isAcceptedFile(file)) {
         MSG.warning('不支持的文件格式')
         this.clearFile()
         return false

@@ -171,7 +171,7 @@ export default {
     handleChange (file, fileList) {
       if (this.hasError || !this.show) return
       if (!/\.(xls|xlsx)$/gi.test(file.name)) {
-        MSG.warning('请上传excel格式文件')
+        MSG.warning('不支持的文件格式')
         this.clearFile()
         return false
       }

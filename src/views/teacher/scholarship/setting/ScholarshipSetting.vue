@@ -127,8 +127,8 @@ export default {
         grantObject: [
           { required: true, message: '请输入发放对象', trigger: 'change' }
         ],
-        fundsSource: [
-          { required: true, message: '请输入资金来源', trigger: 'change' }
+        scholarshipLevel: [
+          { required: true, message: '请输入奖学金级别', trigger: 'change' }
         ],
         money: [
           { required: true, message: '请输入金额', trigger: 'change' },

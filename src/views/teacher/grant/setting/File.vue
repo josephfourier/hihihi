@@ -131,6 +131,7 @@ export default {
           setTimeout(_ => {
             MSG.success(this.$t('zjy.message.create.success'))
           }, 200)
+          this.$store.dispatch('setNoticeList')
         }
       }).catch(error => { })
     },
@@ -176,7 +177,7 @@ export default {
           setTimeout(_ => {
             MSG.success(this.$t('zjy.message.delete.success'))
           }, 200)
-
+          this.$store.dispatch('setNoticeList')
           this.refresh()
         } else {
           MSG.warning(this.$t('zjy.message.delete.error'))

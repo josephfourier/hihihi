@@ -100,7 +100,7 @@ export default {
       rules: {
         studentCode: [
           { required: true, message: '请输入学生学号', trigger: 'change' },
-          { validator: checkStudent, trigger: 'blur' }
+          { validator: checkStudent, trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         scholarshipsettingUid: [

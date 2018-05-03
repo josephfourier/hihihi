@@ -119,7 +119,7 @@ export default {
     handleClick () {
     },
     isAcceptedFile (file) {
-      return /\.(jpeg|png|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
+      return /\.(jpeg|jpg|png|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
     },
     handleBeforeUpload (file) {
       if (!this.isAcceptedFile(file)) {

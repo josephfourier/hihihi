@@ -260,7 +260,7 @@ export default {
     },
 
     isValidatedFile (file) {
-      return /\.(jpeg|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
+      return /\.(jpeg|jpg|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
     },
 
     handleBeforeUpload (file) {

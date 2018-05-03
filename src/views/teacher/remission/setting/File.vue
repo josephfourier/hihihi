@@ -129,13 +129,14 @@ export default {
     handleCreate (formData) {
       api.saveFile(formData).then(response => {
         if (response.code !== 1) {
-          MSG.warning('保存失败')
+          MSG.warning(this.$t('zjy.message.create.error'))
         } else {
           this.visible2 = false
           this.refresh()
           setTimeout(_ => {
-            MSG.success('保存成功')
+            MSG.warning(this.$t('zjy.message.create.success'))
           }, 200)
+          this.$store.dispatch('setNoticeList')
         }
       }).catch(error => {})
     },
@@ -178,6 +179,7 @@ export default {
         if (response.code === 1) {
           MSG.success('删除成功')
           this.refresh()
+          this.$store.dispatch('setNoticeList')
         } else {
           MSG.warning('删除失败')
         }

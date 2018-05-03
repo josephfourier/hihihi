@@ -4,7 +4,7 @@
      <tr>
        <td>学号：<span>{{ data.studentNo }}</span></td>
        <td>学生姓名：<span>{{ data.studentName }}</span></td>
-       <td>年级：<span>{{ data.facultyName }}</span></td>
+       <td>年级：<span>{{ data.year }}</span></td>
        <td>院系：<span>{{ data.facultyName }}</span></td>
      </tr>
      <tr>

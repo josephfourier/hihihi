@@ -1,4 +1,3 @@
-<!-- 假期留校管理 -->
 <template>
   <div class="zjy-app">
     <zjy-table-search>

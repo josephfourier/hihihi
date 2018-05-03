@@ -31,7 +31,7 @@ export default {
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         punishtDescription: [
-          { required: true, message: '请输入类型描述', trigger: 'change' }
+          { required: true, message: '请输入类型说明', trigger: 'change' }
         ]
       }
     }

@@ -12,6 +12,15 @@
           <all-honoraries class="zjy-tab__item" v-if="active.all"></all-honoraries>
         </el-tab-pane>
       </template>
+
+      <el-tab-pane
+        label="无权限"
+        name="default"
+        v-if="!hasPermission('swms:fachonorary-tea-apptab:read')
+          && !hasPermission('swms:fachonorary-tea:create')"
+       >
+        <span style="font-size:12px;color:#666;padding:15px;">无查看权限</span>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -45,6 +54,10 @@ export default {
     AllHonoraries,
     MyHonoraries,
     HonorariesManage
+  },
+   mounted() {
+    if (!this.hasPermission('swms:fachonorary-tea-apptab:read') && !this.hasPermission('swms:fachonorary-tea:create'))
+      this.current = 'default'
   }
 }
 </script>

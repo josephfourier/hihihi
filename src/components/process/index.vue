@@ -128,7 +128,7 @@ export default {
     value: Object,
     space: Number,
     empty: String,
-    visible: Boolean // 弹窗时
+    visible: Boolean
   },
 
   computed: {

@@ -1,10 +1,10 @@
 <template>
   <div class="zjy-tabs">
     <el-tabs type="border-card" v-model="current" @tab-click="tabClick">
-      <el-tab-pane label="荣誉称号管理" name="manage"  v-if="hasPermission('swms:clahonorary-tea-apptab:read')">
+      <el-tab-pane label="荣誉称号管理" name="manage"  v-if="hasPermission('swms:clahonorary-tea-mantab:read')">
         <honoraries-manage class="zjy-tab__item" v-if="active.manage"></honoraries-manage>
       </el-tab-pane>
-      <template v-if="hasPermission('swms:clahonorary-tea:create')">
+      <template v-if="hasPermission('swms:clahonorary-tea-apptab:read')">
         <el-tab-pane label="班级荣誉称号" name="clz">
           <my-honoraries class="zjy-tab__item" v-if="active.clz"></my-honoraries>
         </el-tab-pane>
@@ -16,8 +16,8 @@
        <el-tab-pane
         label="无权限"
         name="default"
-        v-if="!hasPermission('swms:clahonorary-tea-apptab:read')
-          && !hasPermission('swms:clahonorary-tea:create')"
+        v-if="!hasPermission('swms:clahonorary-tea-mantab:read')
+          && !hasPermission('swms:clahonorary-tea-apptab:read')"
        >
         <span style="font-size:12px;color:#666;padding:15px;">无查看权限</span>
       </el-tab-pane>
@@ -33,7 +33,7 @@ import HonorariesManage from './HonorariesManage'
 export default {
   data () {
     return {
-      current: this.hasPermission('swms:clahonorary-tea-apptab:read') ? 'manage' : 'clz',
+      current: this.hasPermission('swms:clahonorary-tea-mantab:read') ? 'manage' : 'clz',
       active: {
         'manage': true,
         'clz': false,
@@ -56,7 +56,7 @@ export default {
     HonorariesManage
   },
   mounted() {
-    if (!this.hasPermission('swms:clahonorary-tea-apptab:read') && !this.hasPermission('swms:clahonorary-tea:create'))
+    if (!this.hasPermission('swms:clahonorary-tea-mantab:read') && !this.hasPermission('swms:clahonorary-tea-apptab:read'))
       this.current = 'default'
   }
 }

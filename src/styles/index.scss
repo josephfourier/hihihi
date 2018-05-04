@@ -388,7 +388,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 }
 
 .notice .zjy-preview--iframe {
-  margin-top: 0;
+  margin-top: -96px;
 }
 
 .zjy-dialog.zjy-preview {
@@ -460,3 +460,6 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   }
 }
 
+.preview {
+  overflow: hidden;
+}

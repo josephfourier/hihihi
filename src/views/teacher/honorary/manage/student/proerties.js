@@ -44,7 +44,7 @@ export default {
       select: true
     }, {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -84,6 +84,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '学生姓名', '院系', '申请日期', '奖学金名称', '状态'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'applyDate', 'honoraryName', 'dataStatusName'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'honoraryName', 'dataStatusName'],
   excelName: '个人荣誉称号'
 }

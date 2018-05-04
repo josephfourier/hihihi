@@ -16,14 +16,13 @@ export default {
       value: 2018
     }
   ],
-  //  ---------------- select初始化 ----------------
   columns: [
     {
       index: true,
       select: true
     }, {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     }, {
       label: '姓名',
       prop: 'studentName'
@@ -51,6 +50,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '姓名', '院系', '专业', '班级', '家长电话', '入学年份'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'familyPhone', 'enterYear'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'specialtyName', 'className', 'familyPhone', 'enterYear'],
   excelName: '学生信息'
 }

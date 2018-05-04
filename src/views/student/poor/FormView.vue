@@ -6,7 +6,7 @@
         <el-form-item >
           <ul class="list">
             <li>姓名：{{student.studentName}}</li>
-            <li>学号：{{student.studentNo}}</li>
+            <li>学号：{{student.studentCode}}</li>
             <li>院系：{{student.facultyName}}</li>
             <li>班级：{{student.className}}</li>
           </ul>

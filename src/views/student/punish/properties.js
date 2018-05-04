@@ -11,7 +11,7 @@ export default {
       indexWidth: 50
     }, {
       label: '学号',
-      prop: 'studentNo',
+      prop: 'studentCode',
       width: 100
     }, {
       label: '学生姓名',

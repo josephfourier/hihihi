@@ -29,7 +29,7 @@ export default {
     },
     {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     },
     {
       label: '姓名',
@@ -86,6 +86,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '姓名', '院系', '专业', '班级', '电话', '申请年份'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'phone', 'applyYear'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'specialtyName', 'className', 'phone', 'applyYear'],
   excelName: '助学金申请'
 }

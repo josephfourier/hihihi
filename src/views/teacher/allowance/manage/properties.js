@@ -46,7 +46,7 @@ export default {
     },
     {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -93,6 +93,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '学生姓名', '院系', '申请日期',  '困难补助名称', '金额', '申请年份', '状态'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'applyDate', 'allowanceName', 'money', 'applyYear', 'dataStatus'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'allowanceName', 'money', 'applyYear', 'dataStatus'],
   excelName: '困难补助申请'
 }

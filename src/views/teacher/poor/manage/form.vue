@@ -2,7 +2,7 @@
   <div class="process">
     <table class="process-table">
       <tr>
-        <td>学号：{{ data.studentNo }}</td>
+        <td>学号：{{ data.studentCode }}</td>
         <td>学生姓名：{{ data.studentName }}</td>
         <td>班级：{{ data.className }}</td>
       </tr>

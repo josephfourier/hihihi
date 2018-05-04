@@ -5,8 +5,8 @@
     <el-form :model="data" :rules="rules" ref="data" label-width="80px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="学号:" prop="studentNo" class="inline">
-            <el-input v-model="studentNo" disabled :class="['search-input']">
+          <el-form-item label="学号:" prop="studentCode" class="inline">
+            <el-input v-model="studentCode" disabled :class="['search-input']">
               <div class="search" slot="append">
                 <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
               </div>
@@ -185,13 +185,13 @@ export default {
       handler(val, oldVal) {
         this.data = val
         try {
-          if (this.data.ucenterStudent.studentNo) {
-            this.studentNo = this.data.ucenterStudent.studentNo
+          if (this.data.ucenterStudent.studentCode) {
+            this.studentCode = this.data.ucenterStudent.studentCode
             this.data.studentName = this.data.ucenterStudent.studentName
             this.data.className = this.data.ucenterStudent.className
             this.data.facultyName = this.data.ucenterStudent.facultyName
-            this.data.studentNo = this.data.ucenterStudent.studentNo
-           const splite = val.stufileNo.split(this.studentNo)
+            this.data.studentCode = this.data.ucenterStudent.studentCode
+           const splite = val.stufileNo.split(this.studentCode)
             this.data.stufileNo = splite[0]
             this.data.append = splite[1]
           }

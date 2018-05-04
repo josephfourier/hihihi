@@ -39,7 +39,7 @@ export default {
     },
     {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -81,6 +81,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '学生姓名', '院系', '处分日期', '处分类型', '状态'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'punishDate', 'punishName', 'punishStatusName'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'punishDate', 'punishName', 'punishStatusName'],
   excelName: '违纪处分'
 }

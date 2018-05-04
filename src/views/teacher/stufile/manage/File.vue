@@ -9,8 +9,8 @@
     <el-form :model="data" :rules="rules" ref="data" label-width="80px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="学号:" prop="studentNo" class="inline is-required" v-if="type === 2">
-            <el-input @change="handleChange" v-model="data.studentNo" :class="['search-input']">
+          <el-form-item label="学号:" prop="studentCode" class="inline is-required" v-if="type === 2">
+            <el-input @change="handleChange" v-model="data.studentCode" :class="['search-input']">
               <div class="search" slot="append" @click="check">
                 <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
               </div>
@@ -18,7 +18,7 @@
           </el-form-item>
 
           <el-form-item label="学号:" class="inline" v-else>
-            <el-input :value="data.studentNo" :class="['search-input']" disabled>
+            <el-input :value="data.studentCode" :class="['search-input']" disabled>
               <div class="search" slot="append" @click="check">
                 <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
               </div>
@@ -190,7 +190,7 @@ export default {
       checkLoading: false,
       action: process.env.BASE_URL + '/upload/stufileUpload',
       rules: {
-        studentNo: [
+        studentCode: [
           { validator: checkStudent, trigger: 'change' }
         ],
         stufileNo: [
@@ -324,7 +324,7 @@ export default {
     check () {
       if (this.type === 1) return
       this.doQuery = true
-      this.$refs.data.validateField('studentNo')
+      this.$refs.data.validateField('studentCode')
     },
 
     handleChange () {
@@ -339,8 +339,8 @@ export default {
           let arg = {}
 
           arg.stufileNo = this.type === 1
-            ? this.data.stufileNo + this.data.studentNo + this.data.append
-            : this.data.stufileNo + this.student.studentNo + this.data.append
+            ? this.data.stufileNo + this.data.studentCode + this.data.append
+            : this.data.stufileNo + this.student.studentCode + this.data.append
           arg.recipient = this.data.recipient
           arg.schoolCode = this.data.schoolCode
           arg.stufileDate = new Date(this.data.stufileDate).getTime()
@@ -363,7 +363,7 @@ export default {
           arg.stufileListList = stufileListList
 
           if (this.type === 2) {
-            arg.studentNo = this.data.studentNo
+            arg.studentCode = this.data.studentCode
             arg.studentId = this.student.studentId
 
             stufileManageAPI.create(arg).then(response => {
@@ -429,13 +429,13 @@ export default {
       handler (val) {
         this.data = val
         try {
-          if (this.data.ucenterStudent.studentNo) {
-            this.studentNo = this.data.ucenterStudent.studentNo
+          if (this.data.ucenterStudent.studentCode) {
+            this.studentCode = this.data.ucenterStudent.studentCode
             this.data.studentName = this.data.ucenterStudent.studentName
             this.data.className = this.data.ucenterStudent.className
             this.data.facultyName = this.data.ucenterStudent.facultyName
-            this.data.studentNo = this.data.ucenterStudent.studentNo
-            const splite = val.stufileNo.split(this.studentNo)
+            this.data.studentCode = this.data.ucenterStudent.studentCode
+            const splite = val.stufileNo.split(this.studentCode)
             this.data.stufileNo = splite[0]
             this.data.append = splite[1]
           }

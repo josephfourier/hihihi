@@ -46,7 +46,7 @@ export default {
       select: true
     }, {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     }, {
       label: '姓名',
       prop: 'studentName'

@@ -3,7 +3,7 @@
     <zjy-table-search>
       <search-select label="入学年份" :options="years" :value.sync="enterYear"></search-select>
       <search-select label="班级" :options="myClassList" :value.sync="classId" :loading="isLoading" @focus="handleFocus"></search-select>
-      <search-input label="学号" :value.sync="studentNo"></search-input>
+      <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
@@ -156,7 +156,7 @@ export default {
       ],
       enterYear: '',
       classId: '',
-      studentNo: '',
+      studentCode: '',
       query: properties.query,
       list: [],
       currentPage: 1,
@@ -281,7 +281,7 @@ export default {
       this.currentPage = 1
       this.query.classId = this.classId
       this.query.enterYear = this.enterYear
-      this.query.studentNo = this.studentNo.trim()
+      this.query.studentCode = this.studentCode.trim()
       this.refresh()
     },
 
@@ -343,7 +343,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.queryExport.classId = this.classId
         this.queryExport.enterYear = this.enterYear
-        this.queryExport.studentNo = this.studentNo.trim()
+        this.queryExport.studentCode = this.studentCode.trim()
         stufileManageAPI.queryForList(this.queryExport).then(response => {
           if (response.code !== 1) {
             reject(new Error('获取导出数据失败'))
@@ -474,7 +474,7 @@ export default {
   destroyed () {
     this.query.enterYear = ''
     this.query.classId = ''
-    this.query.studentNo = ''
+    this.query.studentCode = ''
     this.query.offset = 0
   },
 

@@ -46,7 +46,7 @@ export default {
     },
     {
       label: '学号',
-      prop: 'studentNo',
+      prop: 'studentCode',
       width: 100
     }, {
       label: '学生姓名',
@@ -94,6 +94,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '学生姓名', '院系', '申请日期',  '岗位名称', '薪资', '申请年份', '状态'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'applyDate', 'postName', 'salary', 'applyYear', 'dataStatus'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'postName', 'salary', 'applyYear', 'dataStatus'],
   excelName: '勤工助学'
 }

@@ -47,7 +47,7 @@ export default {
       select: true
     }, {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     }, {
       label: '学生姓名',
       prop: 'studentName'
@@ -95,6 +95,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '学生姓名', '院系', '申请日期', '申请年份', '假期名称', '电话', '状态'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'applyDate', 'applyYear', 'holidayName', 'phone', 'dataStatus'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'applyYear', 'holidayName', 'phone', 'dataStatus'],
   excelName: '假期留校'
 }

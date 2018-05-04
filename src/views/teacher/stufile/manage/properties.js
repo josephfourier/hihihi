@@ -6,7 +6,7 @@ export default {
     limit: 10,
     enterYear: '',
     classId: '',
-    studentNo: ''
+    studentCode: ''
   },
   years: [
     {
@@ -45,7 +45,7 @@ export default {
     },
     {
       label: '学号',
-      prop: 'studentNo'
+      prop: 'studentCode'
     },
     {
       label: '姓名',
@@ -91,9 +91,9 @@ export default {
   queryExport: {
     enterYear: '',
     classId: '',
-    studentNo: ''
+    studentCode: ''
   },
   header: ['学号', '姓名', '院系', '专业', '班级', '建档日期', '入学年份'],
-  filter: ['studentNo', 'studentName', 'facultyName', 'specialtyName', 'className', 'stufileDate', 'enterYear'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'specialtyName', 'className', 'stufileDate', 'enterYear'],
   excelName: '学生档案'
 }

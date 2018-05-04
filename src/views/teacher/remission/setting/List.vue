@@ -215,7 +215,7 @@ export default {
 
     download (event) {
       event.preventDefault()
-      api.ajaxDownload('/export/template/studyGrant', {}, 'excel.xlsx').catch(error => {
+      api.ajaxDownload('/export/template/tuitionWaiver', {}, '学费减免导入模板.xlsx').catch(error => {
         MSG.warning('下载错误')
       })
     },

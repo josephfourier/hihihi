@@ -382,7 +382,7 @@ export default {
 
     download (event) {
       event.preventDefault()
-      api.ajaxDownload('/export/template/swmsPoor', {}, 'excel.xlsx').catch(error => {
+      api.ajaxDownload('/export/template/swmsPoor', {}, '困难生导入模板.xlsx').catch(error => {
         MSG.warning('下载错误')
       })
     },

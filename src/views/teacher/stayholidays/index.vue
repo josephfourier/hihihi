@@ -401,7 +401,7 @@ export default {
 
     download (event) {
       event.preventDefault()
-      api.ajaxDownload('/export/template/swmsStayholiday', {}, 'excel.xlsx').catch(error => {
+      api.ajaxDownload('/export/template/swmsStayholiday', {}, '假期留校导入模板.xlsx').catch(error => {
         MSG.warning('下载错误')
       })
     }

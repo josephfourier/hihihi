@@ -95,15 +95,3 @@ export default {
   }
 }
 </script>
-
-<!--<style>-->
-<!--.AppHeaderPanel {-->
-  <!--display: none;-->
-<!--}-->
-<!--.WACFrameWord.cui-exth {-->
-  <!--margin-top: -88px;-->
-<!--}-->
-<!--.cui-toolbar-buttondock.alignright {-->
-  <!--display: none;-->
-<!--}-->
-<!--</style>-->

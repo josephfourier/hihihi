@@ -1,4 +1,3 @@
-<!-- 学生端流程进度查看，不包含任何操作 -->
 <template>
   <div class="zjy-process">
     <slot :formData="data" name="header"></slot>

@@ -273,7 +273,7 @@ export default {
 
     download (event) {
       event.preventDefault()
-      api.ajaxDownload('/export/template/swmsStufile', {}, 'excel.xlsx').catch(error => {
+      api.ajaxDownload('/export/template/swmsStufile', {}, '学生档案导入模板.xlsx').catch(error => {
         MSG.warning('下载错误')
       })
     },

@@ -33,7 +33,7 @@ import HonorariesManage from './HonorariesManage'
 export default {
   data () {
     return {
-      current: 'manage',
+      current: '',
       active: {
         'manage': true,
         'fac': false,
@@ -56,8 +56,15 @@ export default {
     HonorariesManage
   },
    mounted() {
-    if (!this.hasPermission('swms:fachonorary-tea-mantab:read') && !this.hasPermission('swms:fachonorary-tea-apptab:read'))
+    if (this.hasPermission('swms:fachonorary-tea-mantab:read')) {
+      this.current = 'manage'
+      this.active.manage = true
+    } else if (this.hasPermission('swms:fachonorary-tea-apptab:read')) {
+      this.current = 'fac'
+      this.active.fac = true
+    } else {
       this.current = 'default'
+    }
   }
 }
 </script>

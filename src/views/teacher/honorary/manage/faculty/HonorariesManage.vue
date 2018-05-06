@@ -233,7 +233,9 @@ export default {
       this.loading = true
       facAPI.delete(row.fachonoraryUid).then(response => {
         if (response.code === 1) {
-          MSG.success(this.$t('zjy.message.delete.success'))
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
           this.refresh(auto)
         } else {
           console.warn(response.message)

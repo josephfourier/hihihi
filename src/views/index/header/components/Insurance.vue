@@ -86,7 +86,7 @@ export default {
           this.$store.dispatch('setSchedules')
           // this.$store.dispatch('removeFromTodoList', data.inssettingUid)
         } else {
-          MSG.success('审批失败')
+          MSG.warning('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

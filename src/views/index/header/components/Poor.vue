@@ -60,8 +60,10 @@ export default {
 
   created () {
     api.queryObjectOfPoor(this.uid).then(response => {
-      if (response.code !== 1) {
-        this.$alert('获取信息失败')
+      if (response.code !== 1 || !response.data) {
+        MSG.warning('获取信息失败')
+        this.$store.dispatch('setSchedules')
+        this.$emit('update:visible', false)
       } else {
         const sid = response.data.studentId
         selfMerge(response.data, this.data)
@@ -90,7 +92,7 @@ export default {
           }, 200)
           this.$store.dispatch('setSchedules')
         } else {
-          MSG.success('审批失败')
+          MSG.warning('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

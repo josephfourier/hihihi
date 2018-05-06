@@ -77,12 +77,16 @@
               </el-select>
               <div class="tip-box">
                 <transition name="el-zoom-in-top">
-                  <span class="tip" v-if="hasError2 && index === 0">{{ error2 }}</span>
+                  <span class="tip" v-if="hasError2 && index === 0" style="top: -2px;">{{ error2 }}</span>
                 </transition>
               </div>
             </div>
           </zjy-step>
         </zjy-steps>
+      </div>
+
+      <div v-if="reason" class="refused" style="margin-top: -20px;margin-right: 30px;">
+        <p>拒绝原因</p>{{ reason }}
       </div>
 
       <div class="zjy-btn-group">
@@ -121,6 +125,7 @@ export default {
       nextTeacherId: '',
       isFinished: false,
       isReapplyed: false,
+      reason: '',
       empty: this.$t('zjy.process.loading'),
       loading: false,
       error: '',
@@ -162,6 +167,7 @@ export default {
       this.isReapplyed = true
       // this.reissued.stuidcardUid = ''
       this.clear()
+      this.reason = ''
       this.reissued = {
         studentId: this.student.studentId || '',
         applyReason: ''
@@ -200,6 +206,10 @@ export default {
             this.isFinished = true
           }
           this.isFinished = this.steps.every(x => x.approvalStatus && x.approvalStatus == 1) || this.steps.some(x => x.approvalStatus && x.approvalStatus == 2)
+
+          if (this.steps.find(x => x.approvalStatus && x.approvalStatus == 2)) {
+            this.reason = this.steps.find(x => x.approvalStatus && x.approvalStatus == 2).approvalOpinion
+          }
         }).catch(error => {
         })
       }).catch(error => {
@@ -282,6 +292,9 @@ export default {
             this.isFinished = true
           }
           this.isFinished = this.steps.every(x => x.approvalStatus && x.approvalStatus == 1) || this.steps.some(x => x.approvalStatus && x.approvalStatus == 2)
+          if (this.steps.find(x => x.approvalStatus && x.approvalStatus == 2)) {
+            this.reason = this.steps.find(x => x.approvalStatus && x.approvalStatus == 2).approvalOpinion
+          }
         }).catch(error => {
         })
       }

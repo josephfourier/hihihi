@@ -120,7 +120,7 @@ export default {
 
       api.batchRemove(stuhonoraryUids).then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(response.message)
           this.loading = false
         } else {
           MSG.success(this.$t('zjy.message.delete.success'))
@@ -142,7 +142,7 @@ export default {
           }, 200)
           this.refresh().visible2 = false
         } else {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         }
       })
     },
@@ -179,7 +179,7 @@ export default {
           this.exportData = []
         })
       }).finally(_ => {
-          this.loading = false
+        this.loading = false
       })
     },
     getExportData () {

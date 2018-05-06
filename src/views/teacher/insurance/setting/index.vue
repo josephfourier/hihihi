@@ -1,4 +1,3 @@
-<!-- 投保管理教师端 -->
 <template>
   <div class="zjy-app">
     <zjy-table-operator>
@@ -60,8 +59,9 @@ export default {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.update.success'))
             }, 200)
-
             this.refresh().visible = false
+          } else {
+            MSG.warning(response.message)
           }
         })
       } else {
@@ -71,6 +71,8 @@ export default {
               MSG.success(this.$t('zjy.message.create.success'))
             }, 200)
             this.refresh().visible = false
+          } else {
+            MSG.warning(response.message)
           }
         })
       }

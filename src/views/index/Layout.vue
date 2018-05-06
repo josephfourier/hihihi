@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="zjy-wrapper">
     <zjy-header :class="[{'isCollapse': isCollapse}]"></zjy-header>

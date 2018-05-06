@@ -1,4 +1,3 @@
-<!-- 投保管理教师端 -->
 <template>
   <div class="zjy-app">
     <zjy-table :data="list" :loading="loading" :columns="columns" @view="view" @create="create">
@@ -30,7 +29,6 @@ import { getPermissionId, _refresh } from '@/utils'
 
 import StudentProcess from '@/components/process/StudentProcess'
 import ViewSetting from './ViewSetting'
-import axios from 'axios'
 
 import ZjyTable from '@/components/table'
 import ZjyButton from '@/components/button'
@@ -38,7 +36,7 @@ import ViewApply from './ViewApply'
 
 import properties from './properties'
 export default {
-  data() {
+  data () {
     return {
       data: {}, // 保单设置详情
       value: {},   // 保单对应审批
@@ -55,7 +53,7 @@ export default {
   },
 
   methods: {
-    handleSubmit(data, steps) {
+    handleSubmit (data, steps) {
       insuranceAPI.create(data.inssettingUid, steps).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
@@ -63,44 +61,36 @@ export default {
           }, 200)
           this.refresh().visible = false
         } else {
-          this.$alert(response.message)
+          this.$MSG.warning(response.message)
         }
       }).catch(error => {
 
       })
     },
 
-    view(row) {
+    view (row) {
       this.title = '保单详情'
       this.type = +this.$t('zjy.operator.VIEW')
       this.data = row
       this.visible = true
     },
 
-    create(row) {
+    create (row) {
       this.title = '保单申请'
       this.type = +this.$t('zjy.operator.CREATE')
 
       commonAPI.queryInitial(getPermissionId(this.$route)).then(response => {
-          this.value = response.data
-          this.data = row
-          this.visible = true
+        this.value = response.data
+        this.data = row
+        this.visible = true
       })
-
-      // axios.all([commonAPI.queryInitial(getPermissionId(this.$route)), insuranceAPI.queryForObject(row.inssettingUid)]).then(
-      //   axios.spread((r1, r2) => {
-      //     this.value = r1.data
-      //     this.data = r2.data
-      //     this.visible = true
-      //   })
-      // )
     },
 
-    currentChange(pageNumber) {
+    currentChange (pageNumber) {
       this.currentPage = pageNumber
     },
 
-    refresh(auto) {
+    refresh (auto) {
       return _refresh.call(this, auto)
     }
   },
@@ -122,7 +112,7 @@ export default {
   watch: {
     currentPage: {
       immediate: true,
-      handler(val, oldval) {
+      handler (val, oldval) {
         if (val === -1 || val === 0) return
 
         this.loading = true
@@ -132,12 +122,12 @@ export default {
           this.total = response.total
         }).catch(error => {
         }).finally(_ => {
-           this.loading = false
+          this.loading = false
         })
       }
     },
 
-    active(val) {
+    active (val) {
       if (val) this.refresh()
     }
   }

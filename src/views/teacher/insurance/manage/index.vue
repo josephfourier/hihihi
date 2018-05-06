@@ -108,7 +108,7 @@ export default {
     searchFilter () {
       this.query.dataStatus = this.dataStatus
       this.query.applyYear = this.applyYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.currentPage = 1
       this.refresh()
     },

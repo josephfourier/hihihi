@@ -1,7 +1,8 @@
 <template>
   <div class="zjy-tabs">
     <el-tabs type="border-card" v-model="current" @tab-click="tabClick">
-      <template v-if="hasPermission('swms:notice-tea:read')">
+      <!--<template v-if="hasPermission('swms:notice-tea:read')">-->
+      <template>
         <el-tab-pane label="学费减免名单" name="list">
           <list class="zjy-tab__item" v-if="active.list"></list>
         </el-tab-pane>
@@ -9,13 +10,13 @@
           <file class="zjy-tab__item" v-if="active.file"></file>
         </el-tab-pane>
       </template>
-       <el-tab-pane
-        label="无权限"
-        name="default"
-        v-else
-       >
-        <span style="font-size:12px;color:#666;padding:15px;">无查看权限</span>
-      </el-tab-pane>
+       <!--<el-tab-pane-->
+        <!--label="无权限"-->
+        <!--name="default"-->
+        <!--v-else-->
+       <!--&gt;-->
+        <!--<span style="font-size:12px;color:#666;padding:15px;">无查看权限</span>-->
+      <!--</el-tab-pane>-->
     </el-tabs>
   </div>
 </template>
@@ -27,7 +28,8 @@ import File from './File'
 export default {
   data () {
     return {
-      current: '',
+      // current: '',
+      current: 'list',
       active: {
         'list': true,
         'file': false
@@ -46,17 +48,14 @@ export default {
   components: {
     List,
     File
-  },
-  mounted() {
-    if (this.hasPermission('swms:notice-tea:read')) {
-      this.current = 'list'
-      this.active.list = true
-    }  else {
-      this.current = 'default'
-    }
-   }
+  }
+  // mounted () {
+  //   if (this.hasPermission('swms:notice-tea:read')) {
+  //     this.current = 'list'
+  //     this.active.list = true
+  //   }  else {
+  //     this.current = 'default'
+  //   }
+  // }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

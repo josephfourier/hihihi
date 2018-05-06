@@ -1,6 +1,6 @@
 <template>
   <div class="zjy-app">
-    <zjy-table-operator>
+    <zjy-table-operator v-if="hasPermission('swms:honorary-set:create')">
       <operator-item clz="create" @click="visible=true">新增</operator-item>
       <!--<operator-item @click="batchRemove" clz="delete">删除</operator-item>-->
     </zjy-table-operator>
@@ -93,7 +93,7 @@ export default {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
         settingAPI.update(formData.honorarysettingUid, formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.update.success'))

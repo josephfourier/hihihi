@@ -25,7 +25,7 @@
 
     <div class="zjy-footer" v-else>
       <zjy-button type="plain" @click="$emit('update:visible', false)">取消</zjy-button>
-      <zjy-button type="primary" @click="$emit('submit', data)">撤消</zjy-button>
+      <zjy-button type="primary" @click="$emit('submit', data)" v-if="hasPermission('swms:punish-tea:update')">撤消</zjy-button>
     </div>
   </div>
 </template>

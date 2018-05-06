@@ -163,7 +163,7 @@ export default {
       fileName: '导入文件',
 
       myfile: '',
-      baseModel: 'swmsStayholiday',
+      baseModel: 'swmsStayholiday'
     }
   },
 

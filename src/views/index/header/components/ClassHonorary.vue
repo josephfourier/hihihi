@@ -79,7 +79,7 @@ export default {
           }, 200)
           this.$store.dispatch('setSchedules')
         } else {
-          MSG.success('审批失败')
+          MSG.warning('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

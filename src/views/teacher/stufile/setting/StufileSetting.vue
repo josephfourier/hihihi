@@ -23,7 +23,7 @@ export default {
     let that = this
     let checkExists = (rule, value, callback) => {
       if (!value || value.trim().length === 0) {
-        return callback (new Error('请输入档案名称'))
+        return callback(new Error('请输入档案名称'))
       }
       if (that.list.filter(x => x.stufilesettingUid !== that.formData.stufilesettingUid).find(y => y.stufileName == value.trim())) {
         callback(new Error('档案名称已存在'))
@@ -32,7 +32,7 @@ export default {
     return {
       rules: {
         stufileName: [
-          {required: true, message: '请输入档案名称', trigger: 'change'},
+          {required: true, message: '请输入档案名称', trigger: 'change'}
           // {validator: checkExists, trigger: 'change'}
         ]
       }

@@ -125,7 +125,7 @@ export default {
       api.update(data.punishUid, data).then(response => {
         if (response.code !== 1) {
           console.warn(response.message)
-          MSG.success('撤销失败')
+          MSG.warning('撤销失败')
         } else {
           setTimeout(_ => {
             MSG.success('撤销成功')
@@ -152,7 +152,7 @@ export default {
       api.batchRemove(ids.replace(/^-|-$/g, '')).then(response => {
         if (response.code !== 1) {
           console.warn(response.message)
-          MSG.success(this.$t('zjy.message.delete.error'))
+          MSG.warning(this.$t('zjy.message.delete.error'))
         } else {
           MSG.success(this.$t('zjy.message.delete.success'))
           this.refresh(auto)
@@ -185,7 +185,7 @@ export default {
           this.exportData = []
         })
       }).finally(_ => {
-          this.loading = false
+        this.loading = false
       })
     },
     getExportData () {
@@ -236,7 +236,7 @@ export default {
           this.refresh(auto)
         } else {
           console.warn(response.message)
-          MSG.success(this.$t('zjy.message.delete.error'))
+          MSG.warning(this.$t('zjy.message.delete.error'))
           this.loading = false
         }
       }).catch(error => {
@@ -256,7 +256,7 @@ export default {
           }, 200)
           this.refresh().visible2 = false
         } else {
-          MSG.success(this.$t('zjy.message.create.error'))
+          MSG.warning(this.$t('zjy.message.create.error'))
         }
       }).catch(error => {
         console.log(error)
@@ -270,7 +270,6 @@ export default {
     this.query.studentCode = ''
     this.query.offset = 0
   },
-
 
   components: {
     ZjyTableSearch,

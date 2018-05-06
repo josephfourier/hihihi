@@ -1,4 +1,3 @@
-<!-- 学生档案管理(教师) -->
 <template>
   <div class="zjy-app">
     <div class="zjy-table">
@@ -86,7 +85,7 @@ export default {
       stufileAPI.delete(row.stufilesettingUid).then(response => {
         if (response.code === 1) {
           setTimeout(_ => {
-             MSG.success(this.$t('zjy.message.delete.success'))
+            MSG.success(this.$t('zjy.message.delete.success'))
           }, 200)
           this.refresh()
         } else {

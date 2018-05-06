@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="zjy-header">
     <div class="wrapper">

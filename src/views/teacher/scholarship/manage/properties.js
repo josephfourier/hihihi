@@ -93,6 +93,6 @@ export default {
     studentCode: ''
   },
   header: ['学号', '学生姓名', '院系', '申请日期', '奖学金名称', '金额',  '申请年份', '状态'],
-  filter: ['studentCode', 'studentName', 'facultyName', 'scholarshipName', 'holidayName', 'money', 'applyYear', 'dataStatusName'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'scholarshipName', 'money', 'applyYear', 'dataStatusName'],
   excelName: '奖学金'
 }

@@ -1,3 +1,5 @@
+// import { hasPermission } from '@/utils'
+
 const openFormat = cellValue => {
   return ['否', '是'][+cellValue]
 }
@@ -21,6 +23,7 @@ export default {
       operators: [
         {
           label: '查看',
+          // render: _ => hasPermission('swms:notice-stu:read'),
           cmd: 'view'
         }
       ]

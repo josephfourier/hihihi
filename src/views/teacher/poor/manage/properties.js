@@ -60,6 +60,10 @@ export default {
       prop: 'gradHeadteacher'
     },
     {
+      label: '学生姓名',
+      prop: 'studentName'
+    },
+    {
       label: '手机号码',
       prop: 'phone'
     },
@@ -89,7 +93,7 @@ export default {
     applyYear: '',
     dataStatus: ''
   },
-  header: ['院系', '专业', '班级', '班主任', '手机号码', '申请日期', '状态'],
-  filter: ['facultyName', 'specialtyName', 'className', 'gradHeadteacher', 'phone', 'applyDate', 'dataStatus'],
+  header: ['院系', '专业', '班级', '班主任', '学生姓名', '手机号码', '申请日期', '状态'],
+  filter: ['facultyName', 'specialtyName', 'className', 'gradHeadteacher', 'studentName', 'phone', 'applyDate', 'dataStatus'],
   excelName: '困难生'
 }

@@ -1,3 +1,5 @@
+import { hasPermission } from "@/utils";
+
 export default {
   query: {
     offset: 0,
@@ -19,10 +21,12 @@ export default {
       operators: [
         {
           label: '编辑',
+          render: _ => hasPermission('swms:honorary-set:update'),
           cmd: 'edit'
         },
         {
           label: '删除',
+          render: _ => hasPermission('swms:honorary-set:delete'),
           cmd: 'delete'
         }
       ]

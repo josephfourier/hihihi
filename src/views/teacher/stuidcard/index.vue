@@ -7,7 +7,7 @@
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
-    <template v-if="hasPermission('swms:stuidcard-tea:update')">
+    <template v-if="hasPermission('swms:stuidcard-tea:delete')">
       <div class="zjy-line"></div>
       <zjy-table-operator>
         <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
@@ -96,21 +96,21 @@ export default {
       this.currentPage = 1
       this.query.dataStatus = this.dataStatus
       this.query.enterYear = this.enterYear
-      this.query.studentCode = this.studentCode
+      this.query.studentCode = this.studentCode.trim()
       this.refresh()
     },
 
     handleSubmit (data, steps) {
       cardAPI.approved(this.data, steps).then(response => {
         if (response.code === 1) {
-          setTimeout(_ => { MSG.success('审批成功') }, 200)
+          setTimeout(_ => { MSG.success(this.$t('zjy.message.approve.success')) }, 200)
           this.refresh()
           this.visible = false
           //  待办状态刷新
           this.$store.dispatch('setSchedules')
           // this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
         } else {
-          MSG.success('审批失败')
+          MSG.warning(this.$t('zjy.message.approve.error'))
         }
       }).catch(error => { })
     },
@@ -199,7 +199,7 @@ export default {
         this.query.offset = this.query.limit * (val - 1)
         cardAPI.queryForList(this.query).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            this.$MSG.warning(response.message)
           } else {
             this.list = response.rows
             this.total = response.total

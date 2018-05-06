@@ -1,3 +1,5 @@
+import { hasPermission } from '@/utils'
+
 const statusFormatALL = (cellValue) => {
   return ['可申请', '申请中'][+cellValue]
 }
@@ -52,7 +54,7 @@ export default {
       index: true
     }, {
       label: '奖学金名称',
-      prop: 'scholarshipName',
+      prop: 'scholarshipName'
     }, {
       label: '人数限制',
       prop: 'numberLimit'
@@ -82,10 +84,10 @@ export default {
         },
         {
           label: '申请',
-          render: row =>  row.applyStatus === '0',
+          render: row =>  row.applyStatus === '0' && hasPermission('swms:scholarship-stu:create'),
           cmd: 'create'
         }
       ]
     }
-  ],
+  ]
 }

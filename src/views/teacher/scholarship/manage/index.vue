@@ -175,7 +175,7 @@ export default {
           this.exportData = []
         })
       }).finally(_ => {
-          this.loading = false
+        this.loading = false
       })
     },
     getExportData () {
@@ -243,7 +243,7 @@ export default {
           this.$store.dispatch('setSchedules')
           // this.$store.dispatch('removeFromTodoList', data.scholarshipUid)
         } else {
-          MSG.success(this.$t('zjy.message.approve.error'))
+          MSG.warning(this.$t('zjy.message.approve.error'))
         }
       }).catch(error => {
         console.log(error)

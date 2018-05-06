@@ -58,8 +58,10 @@ export default {
   },
   created () {
     api.queryObjectOfStudentHonorary(this.uid).then(response => {
-      if (response.code !== 1) {
-        this.$alert('获取信息失败')
+      if (response.code !== 1 || !response.data) {
+        MSG.warning('获取信息失败')
+        this.$store.dispatch('setSchedules')
+        this.$emit('update:visible', false)
       } else {
         const sid = response.data.studentId
         selfMerge(response.data, this.data)

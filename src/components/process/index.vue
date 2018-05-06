@@ -84,7 +84,8 @@
       </div>
     </el-dialog>
     <div v-if="reason && isFinished" class="refused" style="margin-top: -20px;">
-      <p>拒绝原因</p>{{ reason }}</div>
+      <p>拒绝原因</p>{{ reason }}
+    </div>
   </div>
 
 </template>

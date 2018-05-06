@@ -69,6 +69,7 @@ export default {
       operators: [
         {
           label: '查看',
+          render: _ => hasPermission('swms:stuidcard-tea:update'),
           cmd: 'view'
         },
         {

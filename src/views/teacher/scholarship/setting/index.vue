@@ -113,7 +113,7 @@ export default {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
         settingAPI.update(formData.scholarshipsettingUid, formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.update.success'))

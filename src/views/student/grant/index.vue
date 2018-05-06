@@ -1,11 +1,11 @@
 <template>
   <div class="zjy-app">
-   
+
     <div class="zjy-table">
-      <zjy-table 
-        :data="list" 
-        :loading="loading" 
-        :columns="columns" 
+      <zjy-table
+        :data="list"
+        :loading="loading"
+        :columns="columns"
         @view="handleView"
       >
       </zjy-table>
@@ -37,11 +37,10 @@ import ImageView from './ImageView'
 import ZjyButton from '@/components/button'
 import api from './api'
 
-import { _refresh } from '@/utils'
 import properties from './properties'
 
 export default {
-  data() {
+  data () {
     return {
       list: [],
 
@@ -54,7 +53,7 @@ export default {
     }
   },
   methods: {
-    refresh() {
+    refresh () {
       this.loading = true
       api.queryFileList(1).then(response => {
         if (response.code !== 1) {
@@ -69,13 +68,12 @@ export default {
       })
     },
 
-    handleView(row) {
+    handleView (row) {
       this.isImageView = this.isImage(row.filePath)
       this.src = row.filePath
       this.visible = true
     },
 
-   
     isImage (filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
@@ -88,7 +86,7 @@ export default {
     ImageView
   },
 
-  created() {
+  created () {
     this.refresh()
   },
 
@@ -96,15 +94,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.AppHeaderPanel {
-  display: none;
-}
-.WACFrameWord.cui-exth {
-  margin-top: -88px;
-}
-.cui-toolbar-buttondock.alignright {
-  display: none;
-}
-</style>

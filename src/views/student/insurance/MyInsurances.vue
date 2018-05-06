@@ -8,7 +8,8 @@
       </zjy-pagination>
     </div>
 
-    <el-dialog title="审批进度" :visible.sync="visible" width="800px">
+    <!--修复正在获取二维码时关闭窗口-->
+    <el-dialog title="审批进度" :visible.sync="visible" width="800px" @close="loading2=false;abort=true;">
       <process-view v-loading="loading2" element-loading-text="正在获取支付二维码" :data="data" v-model="value" v-if="visible" :visible.sync="visible">
         <template slot-scope="props" slot="header">
           <view-apply :data="props.formData" :visible.sync="visible" @submit="handleSubmit"></view-apply>
@@ -40,7 +41,7 @@ import ViewApply from './ViewApply'
 import qrcode from './qrcode'
 import properties from './properties'
 export default {
-  data() {
+  data () {
     return {
       data: {},
       value: {},
@@ -54,91 +55,95 @@ export default {
       loading2: false,
       visible: false,
       visible2: false,
+      abort: true,
       columns: properties.columnsMY
     }
   },
 
   methods: {
-    pay(data) {
+    pay (data) {
       this.loading2 = true
+      this.abort = false
       api.pay(data.insuranceUid).then(response => {
-        if (response.code !== 1) {
+        if (response.code !== 1 && !this.abort) {
           MSG.warning('获取支付二维码失败')
         } else {
-          this.visible = false
-          this.visible2 = true
-          this.url = response.data
+          if (!this.abort) {
+            this.visible = false
+            this.visible2 = true
+            this.url = response.data
+          }
         }
       }).finally(_ => {
         this.loading2 = false
       })
     },
 
-    handleSubmit(data) {
+    handleSubmit (data) {
       api.assert(data).then(response => {
         if (response.code !== 1) {
-        MSG.warning('提交失败')
-      } else {
-        this.refresh()
-        this.visible = false
-        setTimeout(_ => {
-          MSG.success('提交成功')
-        }, 200)
-      }
-    })
-  },
+          MSG.warning('提交失败')
+        } else {
+          this.refresh()
+          this.visible = false
+          setTimeout(_ => {
+            MSG.success('提交成功')
+          }, 200)
+        }
+      })
+    },
 
-  view(row) {
-    commonAPI.queryApprovalProcess(row.studentId, row.insuranceUid).then(response => {
-      this.data = row
-      this.value = response.data
-      this.visible = true
-    })
-  },
+    view (row) {
+      commonAPI.queryApprovalProcess(row.studentId, row.insuranceUid).then(response => {
+        this.data = row
+        this.value = response.data
+        this.visible = true
+      })
+    },
 
-  currentChange(pageNumber) {
-    this.currentPage = pageNumber
-  },
+    currentChange (pageNumber) {
+      this.currentPage = pageNumber
+    },
 
-  refresh() {
-    _refresh.call(this)
-  }
-},
-components: {
-  ViewApply,
+    refresh () {
+      _refresh.call(this)
+    }
+  },
+  components: {
+    ViewApply,
     ZjyPagination,
     ProcessView,
     ZjyFooter,
 
     ZjyTable,
     qrcode
-},
-
-props: {
-  active: Boolean
-},
-watch: {
-  currentPage: {
-    immediate: true,
-      handler(val, oldval) {
-      if (val === -1 || val === 0) return
-
-      this.loading = true
-      this.query.offset = this.query.limit * (val - 1)
-      api.queryForList(this.query).then(response => {
-        this.list = response.rows
-        this.total = response.total
-        this.loading = false
-      }).catch(error => {
-        this.loading = false
-      })
-    }
   },
 
-  active(val) {
-    if (val) this.refresh()
+  props: {
+    active: Boolean
+  },
+  watch: {
+    currentPage: {
+      immediate: true,
+      handler (val, oldval) {
+        if (val === -1 || val === 0) return
+
+        this.loading = true
+        this.query.offset = this.query.limit * (val - 1)
+        api.queryForList(this.query).then(response => {
+          this.list = response.rows
+          this.total = response.total
+          this.loading = false
+        }).catch(error => {
+          this.loading = false
+        })
+      }
+    },
+
+    active (val) {
+      if (val) this.refresh()
+    }
   }
-}
 }
 </script>
 <style lang='scss' scoped>

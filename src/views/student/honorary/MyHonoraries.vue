@@ -95,7 +95,7 @@ export default {
             }, 200)
             this.refresh().visible = false
           } else {
-            this.$alert(response.message)
+            this.$MSG.warning(response.message)
           }
         }).catch(error => {
 
@@ -110,7 +110,7 @@ export default {
           }, 200)
           this.refresh().visible = false
         } else {
-          this.$alert(response.message)
+          this.$MSG.warning(response.message)
         }
       }).catch(error => {
 

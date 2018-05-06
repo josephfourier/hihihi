@@ -7,8 +7,7 @@ export default {
   },
   columns: [
     {
-      index: true,
-      select: true
+      index: true
     },
     {
       label: '违纪类型',

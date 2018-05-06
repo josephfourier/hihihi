@@ -56,7 +56,7 @@ export default {
   created () {
     api.queryObjectOfStuidcard(this.uid).then(response => {
       if (response.code !== 1) {
-        this.$alert('获取信息失败')
+        MSG.warning('获取信息失败')
       } else {
         const sid = response.data.studentId
         selfMerge(response.data, this.data)
@@ -80,7 +80,7 @@ export default {
           // 提交成功后不再发送请求
           // this.$store.dispatch('removeFromTodoList', data.stuidcardUid)
         } else {
-          MSG.success('审批失败')
+          MSG.warning('审批失败')
         }
       }).catch(error => {
       }).finally(() => {

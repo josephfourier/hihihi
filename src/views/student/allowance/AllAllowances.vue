@@ -23,14 +23,13 @@ import ZjyButton from '@/components/button'
 import StudentProcess from '@/components/process/StudentProcess'
 import ViewApply from './ViewApply'
 import ViewSetting from './ViewSetting'
-import axios from 'axios'
 import properties from './properties'
 import ZjyTable from '@/components/table'
 
 import { mapGetters } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       data: {},    // 设置详情
       value: {},   // 对应审批
@@ -47,7 +46,7 @@ export default {
   },
 
   methods: {
-    makeFormData(data, steps) {
+    makeFormData (data, steps) {
       // 优化
       // studentId不应该前台传入，最好后台解析出
       Object.assign(data, {
@@ -59,7 +58,7 @@ export default {
       return data
     },
 
-    handleSubmit(data, steps) {
+    handleSubmit (data, steps) {
       // console.log(data)
       // return
       if (!this.applyReason) {
@@ -68,11 +67,11 @@ export default {
         api.create(this.makeFormData(data, steps)).then(response => {
           if (response.code === 1) {
             setTimeout(_ => {
-               MSG.success('申请成功')
+              MSG.success('申请成功')
             }, 200)
             this.refresh().visible = false
           } else {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           }
         }).catch(error => {
 
@@ -80,13 +79,13 @@ export default {
       }
     },
 
-    view(row) {
+    view (row) {
       this.type = +this.$t('zjy.operator.VIEW')
       this.data = row
       this.visible = true
     },
 
-    create(row) {
+    create (row) {
       this.type = +this.$t('zjy.operator.CREATE')
 
       commonAPI.queryInitial(getPermissionId(this.$route)).then(response => {
@@ -100,7 +99,7 @@ export default {
       })
     },
 
-    refresh() {
+    refresh () {
       api.queryForList().then(response => {
         if (response.code !== 1) {
           MSG.warning('获取数据失败')
@@ -128,7 +127,7 @@ export default {
 
   computed: {
     ...mapGetters(['user']),
-    title() {
+    title () {
       return this.type === +this.$t('zjy.operator.CREATE') ? '困难补助申请' : '困难补助详情'
     }
   },
@@ -138,11 +137,11 @@ export default {
   },
 
   watch: {
-    active(val) {
+    active (val) {
       if (val) this.refresh()
     },
 
-    visible(val) {
+    visible (val) {
       if (!val) {
         this.applyReason = ''
         this.hasError = false

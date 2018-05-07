@@ -9,7 +9,6 @@ const download = (data, fileName) => {
   link.href = url
   link.setAttribute('download', fileName)
   document.body.appendChild(link)
-
   link.click()
 }
 export default {
@@ -68,8 +67,12 @@ export default {
         data: data,
         responseType: 'blob'
       }).then(res => {
-        if (res.type === 'application/x-xls') {
-          download(res, fileName)
+        if (res.type.indexOf('application/x-xls') > -1) {
+          if (window.navigator.msSaveOrOpenBlob) {
+            navigator.msSaveBlob(res, fileName)
+          } else {
+            download(res, fileName)
+          }
           resolve()
         } else {
           reject(new Error(res))

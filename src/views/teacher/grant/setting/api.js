@@ -80,8 +80,12 @@ export default {
         data: data,
         responseType: 'blob'
       }).then(res => {
-        if (res.type === 'application/x-xls') {
-          download(res, fileName)
+        if (res.type.indexOf('application/x-xls') > -1) {
+          if (window.navigator.msSaveOrOpenBlob) {
+            navigator.msSaveBlob(res, fileName)
+          } else {
+            download(res, fileName)
+          }
           resolve()
         } else {
           reject(new Error(res))

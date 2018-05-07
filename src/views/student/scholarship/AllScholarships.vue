@@ -94,7 +94,7 @@ export default {
             this.visible = false
             this.refresh()
           } else {
-            this.$MSG.warning(response.message)
+            MSG.warning(response.message)
           }
         }).catch(error => {
 

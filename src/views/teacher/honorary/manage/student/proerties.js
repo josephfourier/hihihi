@@ -83,7 +83,7 @@ export default {
     applyYear: '',
     studentCode: ''
   },
-  header: ['学号', '学生姓名', '院系', '申请日期', '奖学金名称', '状态'],
-  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'honoraryName', 'dataStatusName'],
-  excelName: '个人荣誉称号'
+  header: ['学号', '学生姓名', '院系', '申请日期', '奖学金名称', '状态', '申请原因'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'honoraryName', 'dataStatusName', 'applyReson'],
+  excelName: '个人荣誉称号申请名单'
 }

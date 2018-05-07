@@ -162,7 +162,7 @@ export default {
     dataStatus: '',
     applyYear: ''
   },
-  header: ['申请人', '班级名称', '申请日期', '荣誉称号名称', '申请年份', '状态'],
-  filter: ['teacherName', 'className', 'applyDate', 'honoraryName', 'applyYear', 'dataStatusName'],
-  excelName: '班级荣誉称号'
+  header: ['申请人', '班级名称', '申请日期', '荣誉称号名称', '申请年份', '状态', '申请原因'],
+  filter: ['teacherName', 'className', 'applyDate', 'honoraryName', 'applyYear', 'dataStatusName', 'applyReson'],
+  excelName: '班级荣誉称号申请名单'
 }

@@ -92,7 +92,7 @@ export default {
     applyYear: '',
     studentCode: ''
   },
-  header: ['学号', '学生姓名', '院系', '申请日期', '奖学金名称', '金额',  '申请年份', '状态'],
-  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'scholarshipName', 'money', 'applyYear', 'dataStatusName'],
-  excelName: '奖学金'
+  header: ['学号', '学生姓名', '院系', '专业', '班级', '申请日期', '奖学金名称', '金额',  '申请年份', '状态', '申请原因'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'facultyName', 'specialtyName', 'applyDate', 'scholarshipName', 'money', 'applyYear', 'dataStatusName', 'applyReson'],
+  excelName: '奖学金申请名单'
 }

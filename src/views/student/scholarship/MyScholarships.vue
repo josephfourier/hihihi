@@ -92,7 +92,7 @@ export default {
 
             this.refresh().visible = false
           } else {
-            this.$MSG.warning(response.message)
+            MSG.warning(response.message)
           }
         }).catch(error => {
 
@@ -108,7 +108,7 @@ export default {
 
           this.refresh().visible = false
         } else {
-          this.$MSG.warning(response.message)
+          MSG.warning(response.message)
         }
       }).catch(error => {
 

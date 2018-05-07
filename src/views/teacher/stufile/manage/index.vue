@@ -521,7 +521,7 @@ export default {
             this.list = response.rows
             this.total = response.total
           } else {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           }
         }).catch(error => {
         }).finally(() => {

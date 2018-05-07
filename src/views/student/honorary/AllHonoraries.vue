@@ -71,7 +71,7 @@ export default {
             }, 200)
             this.refresh().visible = false
           } else {
-            this.$MSG.warning(response.message)
+            MSG.warning(response.message)
           }
         }).catch(error => {
 

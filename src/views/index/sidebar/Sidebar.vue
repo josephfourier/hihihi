@@ -116,9 +116,11 @@ export default {
   position: fixed;
   left: 0;
   bottom: 0;
+  padding-bottom: 60px;
   top: 0;
   /*overflow-y: auto;*/
-  /*overflow-x: hidden;*/
+  overflow-x: hidden;
+  overflow-y: hidden;
   .zjy-el-menu {
     background-color: #1e2a3c;
     position: relative;

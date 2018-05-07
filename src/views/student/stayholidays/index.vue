@@ -119,7 +119,7 @@ export default {
         commonAPI.queryStudent()
       ]).then(axios.spread((r1, r3) => {
         if (r1.code !== 1  || r3.code !== 1) {
-          this.$MSG.warning('获取数据失败')
+          MSG.warning('获取数据失败')
         } else {
           this.value = r1.data   // 流程数据传入组件即可
           // 添加业务数据
@@ -139,7 +139,7 @@ export default {
         const arg = this.makeFormData(data, steps)
         stayholidaysAPI.create(arg).then(response => {
           if (response.code !== 1) {
-            this.$MSG.warning(response.message)
+            MSG.warning(response.message)
           } else {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.apply.success'))
@@ -187,7 +187,7 @@ export default {
       } else {
         stayholidaysAPI.update(data).then(response => {
           if (response.code !== 1) {
-            this.$MSG.warning(response.message)
+            MSG.warning(response.message)
           } else {
             setTimeout(_ => {
               MSG.success(this.$t('zjy.message.update.success'))
@@ -204,7 +204,7 @@ export default {
     _delete (data) {
       stayholidaysAPI.delete(data.stayholidayUid).then(response => {
         if (response.code !== 1) {
-          this.$MSG.warning(response.message)
+          MSG.warning(response.message)
         } else {
           setTimeout(_ => {
             MSG.success(this.$t('zjy.message.delete.success'))

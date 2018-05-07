@@ -92,7 +92,7 @@ export default {
     applyYear: '',
     studentCode: ''
   },
-  header: ['学号', '学生姓名', '院系', '申请日期', '申请年份', '假期名称', '电话', '状态'],
-  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'applyYear', 'holidayName', 'phone', 'dataStatus'],
-  excelName: '假期留校'
+  header: ['学号', '学生姓名', '院系', '专业', '班级', '申请日期', '申请年份', '假期名称', '电话', '状态', '留校原因'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'specialtyName', 'className', 'applyDate', 'applyYear', 'holidayName', 'phone', 'dataStatus', 'stayReason'],
+  excelName: '假期留校申请名单'
 }

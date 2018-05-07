@@ -127,11 +127,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.inline {
-  .el-input {
-    width: 250px;
-  }
-}
-</style>

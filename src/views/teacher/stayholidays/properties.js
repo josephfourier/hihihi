@@ -38,9 +38,7 @@ export default {
       value: 3
     }
   ],
-  //  --------------- 初始化select END ---------------
 
-  //  表格数据
   columns: [
     {
       index: true,

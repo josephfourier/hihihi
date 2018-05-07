@@ -21,7 +21,36 @@
           添加步骤</a>
       </div>
       <div class="workflow-body" v-loading="loading2">
-        <transition-group name="list" tag="table">
+          <table v-if="ieVersion">
+          <tr :key="'-1'" class="workflow-body__item">
+            <th>步骤序号</th>
+            <th>审批人职务 / 教师</th>
+            <th>操作</th>
+          </tr>
+          <tr v-for="(item,index) in workflow" :key="item.ctime + item.permissionId" class="workflow-body__item" v-if="hasWorkflow">
+            <td>{{ item.approvalStep }}</td>
+            <td v-if="item.approvalType === '2'">{{ item.teacherName }}</td>
+            <td v-else>{{ item.postName }}</td>
+            <td>
+              <div class="zjy-link-group">
+                <a href="javascript:" class="zjy-link-config" @click="configWorkflow(item, index)" v-if="hasPermission('swms:approvaltempate-set:update')">
+                  <i class="zjy-link-icon zjy-icon-config"></i>
+                  配置</a>
+                <a href="javascript:" class="zjy-link-delete" v-if="index === workflow.length - 1 && hasPermission('swms:approvaltempate-set:delete')" @click="deleteWorkflow(item, index)">
+                  <i class="zjy-link-icon zjy-icon-delete"></i>
+                  删除</a>
+              </div>
+            </td>
+          </tr>
+          <tr :key="'-2'" class="workflow-body__item" v-if="!hasWorkflow">
+            <td colspan="3" :key="0" class="warning">
+              <i></i>
+              <span>请添加步骤</span>
+            </td>
+          </tr>
+        </table>
+
+         <transition-group name="list" tag="table" v-else>
           <tr :key="'-1'" class="workflow-body__item">
             <th>步骤序号</th>
             <th>审批人职务 / 教师</th>
@@ -49,7 +78,6 @@
             </td>
           </tr>
         </transition-group>
-        <!-- </table> -->
 
       </div>
     </div>
@@ -149,7 +177,9 @@ export default {
         return <span>{item.label}</span>
       },
       postList: [],
-      teacherList: []
+      teacherList: [],
+
+      ieVersion: document.documentMode
     }
   },
 

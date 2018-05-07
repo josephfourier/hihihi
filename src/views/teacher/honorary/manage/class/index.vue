@@ -61,7 +61,7 @@ export default {
       this.active.manage = true
     } else if (this.hasPermission('swms:clahonorary-tea-apptab:read')) {
       this.current = 'clz'
-      this.active.fac = true
+      this.active.clz = true
     } else {
       this.current = 'default'
     }

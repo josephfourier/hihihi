@@ -79,7 +79,7 @@
       <zjy-table 
         :data="list" 
         :loading="loading" 
-        :columns="columns" 
+        :columns="columns"
         @view="view" 
         @edit="edit" 
         @selection-change="handleSelectionChange"

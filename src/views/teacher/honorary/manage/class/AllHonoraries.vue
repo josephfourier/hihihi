@@ -101,7 +101,7 @@ export default {
             // bus.$emit('applied')
           } else {
             console.warn(response.message)
-            MSG.success(this.$t('zjy.message.apply.error'))
+            MSG.warning(this.$t('zjy.message.apply.error'))
           }
         }).catch(error => {})
       }

@@ -4,7 +4,7 @@ import { selfMerge } from '@/utils'
 export default {
   // 助学金名单
   queryList (query) {
-    return ajax.get('/manage/swmsStulist/setting', {
+    return ajax.get('/manage/swmsStulist/teacher', {
       params: query,
       transformResponse: data => {
         const json = JSON.parse(data)
@@ -29,6 +29,6 @@ export default {
   },
   // 1 助学金 2 学费减免
   queryFileList (funcationClass) {
-    return ajax.get('/manage/swmsNotice/setting/' + funcationClass)
+    return ajax.get('/manage/swmsNotice/swmsNoticeReadScope/' + funcationClass)
   }
 }

@@ -11,6 +11,13 @@
       </zjy-table>
     </div>
 
+     <div class="search">
+      <span style="margin-right:10px">本学期减免情况</span>
+      <zjy-button type="primary" @click="handleClick">查询</zjy-button>
+      <span style="color: #F09861" v-if="have">祝贺你，你本学期有享受免学费的资格</span>
+      <span style="color: #F09861" v-if="notHave">你本学期不能享受免学费，如果你已经提出申请，请到资助中心了解原因</span>
+    </div>
+
     <div class="zjy-dialog zjy-preview">
       <el-dialog title="学费减免文件查看" :visible.sync="visible" width="800px">
         <image-view :src="src" v-if="isImageView">
@@ -50,15 +57,27 @@ export default {
       src: '',
       loading: false,
       visible: false,
-      columns: properties.columnsFile
+      columns: properties.columnsFile,
+
+      have: '',
+      notHave: ''
     }
   },
   methods: {
+     handleClick () {
+      api.queryMy(2).then(response => {
+        if (response.data) {
+          this.have = true
+        } else {
+          this.notHave = true
+        }
+      })
+    },
     refresh () {
       this.loading = true
       api.queryFileList(2).then(response => {
         if (response.code !== 1) {
-          alert(response.message)
+          MSG.warning(response.message)
         } else {
           this.list = response.data
         }
@@ -96,14 +115,13 @@ export default {
 }
 </script>
 
-<style>
-.AppHeaderPanel {
-  display: none;
-}
-.WACFrameWord.cui-exth {
-  margin-top: -88px;
-}
-.cui-toolbar-buttondock.alignright {
-  display: none;
-}
+<style lang="scss" scoped>
+  .search {
+    margin-top: 20px;
+    background-color: #FAF4DD;
+    padding: 10px;
+    &>span {
+      font-size: 14px;
+    }
+  }
 </style>

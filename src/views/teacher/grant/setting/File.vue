@@ -77,7 +77,7 @@ export default {
       this.loading = true
       api.queryFileList(1).then(response => {
         if (response.code !== 1) {
-          alert(response.message)
+           MSG.warning(response.message)
         } else {
           this.list = response.data
         }

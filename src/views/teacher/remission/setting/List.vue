@@ -358,7 +358,7 @@ export default {
         this.query.offset = this.query.limit * (val - 1)
         api.queryList(this.query).then(response => {
           if (response.code !== 1) {
-            alert(response.message)
+             MSG.warning(response.message)
           } else {
             this.list = response.rows
             this.total = response.total

@@ -7,58 +7,53 @@
         <span>学工系统</span>
       </div>
 
-      <el-dropdown class="user-info">
-        <span class="el-dropdown-link">
-          <i class="zjy-icon zjy-icon-user"></i>
-          <span>{{ user.fullName }}</span>
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
-            <a @click="back">返回个人中心</a>
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <a @click="logout">退出系统</a>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <div class="right">
 
-      <div class="badge-wrap">
-        <!-- 通过size可以为el-dropdown-menu添加不同的class -->
-        <el-dropdown
-          class="badge"
-          popper-class="your"
-          size="header"
-          v-if="user.usertypeId === +$t('zjy.userType.teacher')"
-        >
-          <el-badge :value="todoValue" class="item todo" :max="5">
-            <span class="el-dropdown-link">待办</span>
-          </el-badge>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-if="todoValue == 0">
-              暂无
-            </el-dropdown-item>
-            <el-dropdown-item class="clearfix" v-for="item in todoList" :key="item.dataUid" v-else>
-              <my-list :data="item" @click="handleClick"></my-list>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <div class="badge-wrap">
+          <!-- 通过size可以为el-dropdown-menu添加不同的class -->
+          <el-dropdown class="badge" popper-class="your" size="header" v-if="user.usertypeId === +$t('zjy.userType.teacher')">
+            <el-badge :value="todoValue" class="item todo" :max="5">
+              <span class="el-dropdown-link">待办</span>
+            </el-badge>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-if="todoValue == 0">
+                暂无
+              </el-dropdown-item>
+              <el-dropdown-item class="clearfix" v-for="item in todoList" :key="item.dataUid" v-else>
+                <my-list :data="item" @click="handleClick"></my-list>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
 
-        <el-dropdown
-          class="badge"
-          size="header"
-        >
-          <el-badge :value="noticeValue" class="item notice" :max="5">
-            <span class="el-dropdown-link">
-              通知
-            </span>
-          </el-badge>
+          <el-dropdown class="badge" size="header">
+            <el-badge :value="noticeValue" class="item notice" :max="5">
+              <span class="el-dropdown-link">
+                通知
+              </span>
+            </el-badge>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-if="noticeValue == 0">
+                暂无
+              </el-dropdown-item>
+              <el-dropdown-item class="clearfix" v-for="item in noticeList" :key="item.noticeUid" v-else>
+                <notice-list :data="item" @click="handleNotice"></notice-list>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+
+        <el-dropdown class="user-info">
+          <span class="el-dropdown-link">
+            <i class="zjy-icon zjy-icon-user"></i>
+            <span>{{ user.fullName }}</span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-if="noticeValue == 0">
-              暂无
+            <el-dropdown-item>
+              <a @click="back">返回个人中心</a>
             </el-dropdown-item>
-            <el-dropdown-item class="clearfix" v-for="item in noticeList" :key="item.noticeUid" v-else>
-              <notice-list :data="item" @click="handleNotice"></notice-list>
+            <el-dropdown-item>
+              <a @click="logout">退出系统</a>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -115,7 +110,7 @@ import ImageView from './ImageView'
 import ZjyButton from '@/components/button'
 
 export default {
-  data () {
+  data() {
     return {
       visible: false,
       visible2: false,
@@ -147,7 +142,7 @@ export default {
   },
 
   methods: {
-    handleNotice (data) {
+    handleNotice(data) {
       this.visible2 = true
       this.src = data.filePath
       this.noticeTitle = data.fileName
@@ -156,21 +151,21 @@ export default {
         MSG.warning('阅读失败')
       })
     },
-    handleClick (uid, pid) {
+    handleClick(uid, pid) {
       this.uid = uid
       this.active = this.approves.find(i => i.permissionId === pid)
       this.visible = true
     },
 
-    handleRefresh () {
+    handleRefresh() {
       this.$store.dispatch('refresh')
     },
 
-    back () {
+    back() {
       window.location.href = process.env.SSO_URL
     },
 
-    logout () {
+    logout() {
       MSG.success('正在退出中...', 5000)
       this.$store.dispatch('logout').then(_ =>
         window.location.href = process.env.SSO_URL
@@ -178,29 +173,36 @@ export default {
         MSG.warning('退出失败')
       })
     },
-    isImage (filePath) {
+    isImage(filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
   },
 
   computed: {
     ...mapGetters(['user', 'approves', 'todoList', 'noticeList']),
-    todoValue () {
+    todoValue() {
       return this.todoList.length
     },
-    noticeValue () {
+    noticeValue() {
       return this.noticeList.length
     },
-    componentName () {
+    componentName() {
       return this.active.approvalUri
     },
-    title () {
+    title() {
       return this.active.name
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.right {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 .wrapper {
   position: absolute;
   line-height: 60px;
@@ -216,9 +218,6 @@ export default {
   }
 
   .user-info {
-    position: absolute;
-    top: 0;
-    right: 15px;
     height: 60px;
     margin-right: 35px;
     line-height: 60px;
@@ -227,13 +226,12 @@ export default {
     .zjy-icon-user {
       width: 20px;
       height: 20px;
-      background: url('./zjy-icon-user.png') no-repeat 0 0;
+      background: url("./zjy-icon-user.png") no-repeat 0 0;
     }
   }
 
   .badge-wrap {
-    float: right;
-    /*margin-right: 50px;*/
+    margin-right: 50px;
   }
 }
 .el-dropdown-menu.el-popper {
@@ -245,25 +243,27 @@ export default {
   display: block;
   color: #606266;
   font-size: 14px;
-  position: absolute;
-  right: 200px;
-  top: 14px;
+  // position: absolute;
+  // right: 200px;
+  // top: 14px;
   line-height: 34px;
 }
 .badge + .badge {
   margin-left: 35px;
 }
 .badge {
+  height: 100%;
+  line-height: 60px;
   .item {
     cursor: pointer;
     outline: none;
   }
   .todo {
-    background: url('./ic_deal.png') 0px 9px no-repeat;
+    background: url("./ic_deal.png") 0px center no-repeat;
     padding-left: 20px;
   }
   .notice {
-    background: url('./ic_notice.png') 0 9px no-repeat;
+    background: url("./ic_notice.png") 0 center no-repeat;
     padding-left: 20px;
   }
 }

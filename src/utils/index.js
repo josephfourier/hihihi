@@ -112,6 +112,13 @@ let export2excel = (header, filter, data, filename, formatter) => {
   })
 }
 
+let poorTypeFormat = val => {
+  if (!val) return
+  const arr = val.split(',')
+  return arr.map(i => {
+    return ['', '单亲', '孤儿', '军烈属', '自然灾害', '父母患重病', '父母双下岗', '残疾人家庭', '其它'][i]
+  }).join(',')
+}
 let ieVersion = () => document.documentMode
 
 function refresh (auto)  {
@@ -140,5 +147,6 @@ export {
   refresh as _refresh,
   statusFormat as _statusFormat,
   export2excel,
-  ieVersion
+  ieVersion,
+  poorTypeFormat
 }

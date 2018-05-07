@@ -81,7 +81,7 @@ export default {
         },
         {
           label: '删除',
-          render: (row) => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:scholarship:delete'),
+          render: (row) => hasPermission('swms:scholarship:delete') && (row.dataStatus === '1' || row.dataStatus === '2'),
           cmd: 'delete'
         }
       ]

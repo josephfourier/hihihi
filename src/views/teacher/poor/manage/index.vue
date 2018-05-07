@@ -110,7 +110,7 @@ import ZjyProcess from '@/components/process'
 import ZjyProgress from '@/components/progress'
 
 import ZjyForm from './form'
-import { _refresh, export2excel, dateFormat as _dateFormat, _statusFormat } from '@/utils'
+import { _refresh, export2excel, dateFormat as _dateFormat, _statusFormat, poorTypeFormat } from '@/utils'
 import properties from './properties'
 import { mapGetters } from 'vuex'
 
@@ -264,6 +264,8 @@ export default {
               return _dateFormat(v[j])
             } else if (j === 'dataStatus') {
               return _statusFormat(v[j])
+            } else if (j === 'poorType') {
+              return poorTypeFormat(v[j])
             } else return v[j]
           }))
         }).finally(_ => {

@@ -134,7 +134,7 @@ export default {
           this.visible2 = false
           this.refresh()
           setTimeout(_ => {
-            MSG.warning(this.$t('zjy.message.create.success'))
+            MSG.success(this.$t('zjy.message.create.success'))
           }, 200)
           this.$store.dispatch('setNoticeList')
         }

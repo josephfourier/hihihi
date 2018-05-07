@@ -93,7 +93,7 @@ export default {
     classId: '',
     studentCode: ''
   },
-  header: ['学号', '姓名', '院系', '专业', '班级', '建档日期', '入学年份'],
-  filter: ['studentCode', 'studentName', 'facultyName', 'specialtyName', 'className', 'stufileDate', 'enterYear'],
+  header: ['学号', '姓名', '院系', '专业', '班级', '建档日期', '入学年份', '档案编号', '档案材料'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'specialtyName', 'className', 'stufileDate', 'enterYear', 'stufileNo', 'stufileListList'],
   excelName: '学生档案'
 }

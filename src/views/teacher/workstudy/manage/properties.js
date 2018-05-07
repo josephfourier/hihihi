@@ -82,7 +82,7 @@ export default {
         },
         {
           label: '删除',
-          render: (row) => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:workstudy:delete'),
+          render: (row) => hasPermission('swms:workstudy:delete') && (row.dataStatus === '1' || row.dataStatus === '2'),
           cmd: 'delete'
         }
       ]
@@ -93,7 +93,7 @@ export default {
     applyYear: '',
     studentCode: ''
   },
-  header: ['学号', '学生姓名', '院系', '申请日期',  '岗位名称', '薪资', '申请年份', '状态'],
-  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'postName', 'salary', 'applyYear', 'dataStatus'],
-  excelName: '勤工助学'
+  header: ['学号', '学生姓名', '院系', '申请日期',  '岗位名称', '薪资', '申请年份', '状态', '申请原因'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'postName', 'salary', 'applyYear', 'dataStatus', 'applyReson'],
+  excelName: '勤工助学申请名单'
 }

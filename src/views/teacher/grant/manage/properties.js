@@ -87,5 +87,5 @@ export default {
   },
   header: ['学号', '姓名', '院系', '专业', '班级', '电话', '申请年份'],
   filter: ['studentCode', 'studentName', 'facultyName', 'specialtyName', 'className', 'phone', 'applyYear'],
-  excelName: '助学金申请'
+  excelName: '助学金申请名单'
 }

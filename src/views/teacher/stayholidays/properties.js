@@ -80,7 +80,7 @@ export default {
         },
         {
           label: '删除',
-          render: row => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:stayholidays:delete'),
+          render: row => hasPermission('swms:stayholidays:delete') && (row.dataStatus === '1' || row.dataStatus === '2'),
           cmd: 'delete'
         }
       ]

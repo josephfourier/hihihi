@@ -81,7 +81,7 @@ export default {
         },
         {
           label: '删除',
-          render: (row) => row.dataStatus === '1' || row.dataStatus === '2' && hasPermission('swms:allowance:delete'),
+          render: (row) =>  hasPermission('swms:allowance:delete') && (row.dataStatus === '1' || row.dataStatus === '2'),
           cmd: 'delete'
         }
       ]
@@ -92,7 +92,7 @@ export default {
     applyYear: '',
     studentCode: ''
   },
-  header: ['学号', '学生姓名', '院系', '申请日期',  '困难补助名称', '金额', '申请年份', '状态'],
-  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'allowanceName', 'money', 'applyYear', 'dataStatus'],
-  excelName: '困难补助申请'
+  header: ['学号', '学生姓名', '院系', '申请日期',  '困难补助名称', '金额', '申请年份', '状态', '申请原因'],
+  filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'allowanceName', 'money', 'applyYear', 'dataStatus', 'applyReason'],
+  excelName: '困难补助申请名单'
 }

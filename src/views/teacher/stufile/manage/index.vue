@@ -297,6 +297,17 @@ export default {
       })
     },
 
+    fileListFormat (fileList) {
+      let result = '';
+      fileList.forEach(x => {
+        if (x.swmsStufileSetting) {
+          result += x.swmsStufileSetting.stufileName
+          result += ','
+        }
+      })
+      return result.replace(/,$/gi, '')
+    },
+
     _export () {
       this.loading = true
       this.getExportData().then(response => {
@@ -315,6 +326,8 @@ export default {
           return data.map(v => filter.map(j => {
             if (j === 'stufileDate') {
               return _dateFormat(v[j])
+            } else if (j === 'stufileListList') {
+              return this.fileListFormat(v[j])
             } else return v[j]
           }))
         }).finally(_ => {

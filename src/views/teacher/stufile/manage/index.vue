@@ -42,7 +42,6 @@
               :auto-upload="false"
               :show-file-list="false"
               accept="
-                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
               "
             >

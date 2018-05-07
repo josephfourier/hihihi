@@ -87,7 +87,6 @@ export default {
 
     create (row) {
       this.type = +this.$t('zjy.operator.CREATE')
-      // 优化
       axios.all([commonAPI.queryInitial(getPermissionId(this.$route))]).then(
         axios.spread((r1) => {
           this.value = r1.data

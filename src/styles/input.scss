@@ -70,3 +70,9 @@
 .upload-file__input.el-input.is-disabled .el-input__inner {
   background-color: #fff;
 }
+.upload-file {
+  .el-button--primary:focus, .el-button--primary:hover {
+    background-color:#36c6d3;
+    border-color: #36c6d3;
+  }
+}

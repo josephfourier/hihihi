@@ -96,8 +96,23 @@
           <span v-if="optionsHandler.length > 0">{{ optionsHandler[0].dictName }}：
           </span>
           <el-radio-group v-model="handler" @change="handlerChecked">
-            <el-radio v-for="item in optionsHandler" :key="item.valueId" :label="item.valueKey">
+            <!-- <el-radio 
+              v-for="item in optionsHandler" 
+              :key="item.valueId" 
+              :label="item.valueKey"
+            >
               {{ item.valueName }}
+            </el-radio> -->
+            <el-radio 
+              :label="'1'"
+            >
+             职务
+            </el-radio>
+            <el-radio  
+              :label="'2'"
+              v-show="level==1"
+            >
+             个人
             </el-radio>
           </el-radio-group>
         </div>
@@ -114,7 +129,10 @@
             @option-checked="postChecked"
             empty="无匹配项"
           />
+
+          <transition name="el-zoom-in-center">
           <search-panel
+            v-if="level==1"
             class="teacher"
             title="选择个人"
             type="radio"
@@ -126,6 +144,7 @@
             @option-checked="teacherChecked"
             empty="无匹配项"
           />
+          </transition>
           <div class="zjy-footer clearfix">
             <zjy-button type="plain" @click="visible = false">取消</zjy-button>
             <zjy-button type="primary" @click="submit">提交</zjy-button>
@@ -522,6 +541,12 @@ export default {
             console.log(error)
           })
         }
+      }
+    },
+
+    level (val) {
+      if (val !== '1') {
+        this.handler = '1'
       }
     },
 

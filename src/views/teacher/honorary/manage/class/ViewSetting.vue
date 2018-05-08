@@ -4,10 +4,9 @@
       <tr>
         <td>荣誉称号名称：{{ data.honoraryName }}</td>
         <td>人数限制：{{ data.numberLimit }}</td>
-        <td>开始时间：{{ data.startDate | dateFormat }}</td>
+        <td>申请时间：{{ data.startDate | dateFormat }} 至 {{ data.endDate | dateFormat }}</td>
       </tr>
       <tr>
-        <td>结束时间：{{ data.endDate | dateFormat }}</td>
         <td>申请状态：{{ data.applyStatusName }}</td>
       </tr>
     </table>

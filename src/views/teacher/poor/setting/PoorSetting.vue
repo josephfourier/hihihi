@@ -2,7 +2,7 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="80px">
       <el-form-item label="申请学年" prop="applyYear" class="inline">
-        <el-select v-model="formData.applyYear" :disabled="isEdit">
+        <el-select v-model="formData.applyYear">
           <el-option
             v-for="item in optionsYears"
             :key="item.value"
@@ -44,7 +44,6 @@ export default {
   data () {
     const checkYear = (rule, value, callback) => {
       if (!this.formData.applyYear) return
-      if (this.isEdit) callback()
 
       api.checkYear(this.formData.applyYear).then(response => {
         if (response.data) {
@@ -113,12 +112,6 @@ export default {
           return false
         }
       })
-    }
-  },
-
-  computed: {
-    isEdit () {
-      return this.type === +this.$t('zjy.operator.EDIT')
     }
   },
   props: {

@@ -9,7 +9,7 @@
       <tr>
         <td>金额：{{ data.money }}</td>
         <td>发放对象：{{ data.grantObject }}</td>
-        <td>申请时间：{{ data.startDate | dateFormat }} </td>
+        <td>申请时间：{{ data.startDate | dateFormat }} 至 {{ data.endDate | dateFormat }}</td>
       </tr>
     </table>
     <div class="process-item">

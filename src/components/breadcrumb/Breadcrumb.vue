@@ -21,17 +21,17 @@
 export default {
   data () {
     return {
-      breadcrumbList: null
+      breadcrumbList: []
     }
   },
   watch: {
-    $route () {
+    $route (val) {
       this.updateBreadcrumb()
     }
   },
   methods: {
     updateBreadcrumb () {
-      const matched = this.$route.matched.filter(item => item.name)
+      let matched = this.$route.matched.filter(item => item.name)
       this.breadcrumbList = matched
     }
   },

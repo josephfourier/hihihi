@@ -5,7 +5,7 @@
     <el-form :model="data" :rules="rules" ref="data" label-width="80px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="学号:" prop="studentCode" class="inline">
+          <el-form-item label="学号" prop="studentCode" class="inline">
             <el-input v-model="studentCode" disabled :class="['search-input']">
               <div class="search" slot="append">
                 <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
@@ -14,25 +14,29 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="学生姓名:" prop="studentName" class="inline pull-right">
+          <el-form-item label="学生姓名" prop="studentName" class="inline pull-right">
             <el-input v-model="data.studentName" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="班级:" prop="className" class="inline">
+      <el-form-item label="班级" prop="className" class="inline">
         <el-input v-model="data.className" disabled></el-input>
       </el-form-item>
-      <el-form-item label="院系:" prop="facultyName" class="inline pull-right">
+      <el-form-item label="院系" prop="facultyName" class="inline pull-right">
         <el-input v-model="data.facultyName" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="档案编号" prop="stufileNo" class="inline pull-left">
         <el-input type="text" v-model="data.stufileNo" disabled></el-input>
       </el-form-item>
-      <span class="concat">+ 学号 +</span>
+
+       <el-form-item label="建档日期" prop="stufileDate" class="inline pull-right">
+           <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" disabled></el-date-picker>
+          </el-form-item>
+      <!-- <span class="concat">+ 学号 +</span>
       <el-form-item  class="inline pull-right append" prop="append">
         <el-input type="text" v-model="data.append" disabled></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-row>
         <el-col :span="12">
           <el-form-item label="接收人" prop="recipient" class="inline pull-left">
@@ -40,11 +44,11 @@
           </el-form-item>
 
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="建档日期" prop="stufileDate" class=" pull-right">
+        <!-- <el-col :span="12">
+          <el-form-item label="建档日期" prop="stufileDate" class="pull-right">
            <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" disabled></el-date-picker>
           </el-form-item>
-        </el-col>
+        </el-col> -->
       </el-row>
 
     </el-form>
@@ -191,9 +195,10 @@ export default {
             this.data.className = this.data.ucenterStudent.className
             this.data.facultyName = this.data.ucenterStudent.facultyName
             this.data.studentCode = this.data.ucenterStudent.studentCode
-           const splite = val.stufileNo.split(this.studentCode)
-            this.data.stufileNo = splite[0]
-            this.data.append = splite[1]
+            this.data.stufileNo = val.stufileNo
+            // const splite = val.stufileNo.split(this.studentCode)
+            // this.data.stufileNo = splite[0]
+            // this.data.append = splite[1]
           }
         } catch (e) {
         }

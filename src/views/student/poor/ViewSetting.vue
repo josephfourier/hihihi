@@ -3,8 +3,7 @@
     <table class="process-table">
       <tr>
         <td>申请学年：{{ data.applyYear }}</td>
-        <td>申请时间：{{ data.startDate | dateFormat }}</td>
-        <td>结束时间：{{ data.endDate | dateFormat}}</td>
+        <td>申请时间：{{ data.startDate | dateFormat }} 至 {{ data.endDate | dateFormat }}</td>
       </tr>
     </table>
     <div class="process-item">

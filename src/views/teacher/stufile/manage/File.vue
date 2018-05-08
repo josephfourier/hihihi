@@ -9,7 +9,7 @@
     <el-form :model="data" :rules="rules" ref="data" label-width="80px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="学号:" prop="studentCode" class="inline is-required" v-if="type === 2">
+          <el-form-item label="学号" prop="studentCode" class="inline is-required" v-if="type === 2">
             <el-input @change="handleChange" v-model="data.studentCode" :class="['search-input']">
               <div class="search" slot="append" @click="check">
                 <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
@@ -17,7 +17,7 @@
             </el-input>
           </el-form-item>
 
-          <el-form-item label="学号:" class="inline" v-else>
+          <el-form-item label="学号" class="inline" v-else>
             <el-input :value="data.studentCode" :class="['search-input']" disabled>
               <div class="search" slot="append" @click="check">
                 <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
@@ -27,15 +27,15 @@
 
         </el-col>
         <el-col :span="12">
-          <el-form-item label="学生姓名:" prop="studentName" class="inline pull-right">
+          <el-form-item label="学生姓名" prop="studentName" class="inline pull-right">
             <el-input :value="student.studentName || data.studentName" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="班级:" class="inline">
+      <el-form-item label="班级" class="inline">
         <el-input :value="student.className || data.className" disabled></el-input>
       </el-form-item>
-      <el-form-item label="院系:" class="inline pull-right">
+      <el-form-item label="院系" class="inline pull-right">
         <el-input :value="student.facultyName || data.facultyName" disabled></el-input>
       </el-form-item>
 

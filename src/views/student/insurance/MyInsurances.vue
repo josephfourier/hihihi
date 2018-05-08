@@ -119,9 +119,6 @@ export default {
     qrcode
   },
 
-  props: {
-    active: Boolean
-  },
   watch: {
     currentPage: {
       immediate: true,
@@ -138,14 +135,7 @@ export default {
           this.loading = false
         })
       }
-    },
-
-    active (val) {
-      if (val) this.refresh()
     }
   }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

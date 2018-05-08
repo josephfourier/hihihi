@@ -131,14 +131,7 @@ export default {
 
     ZjyTable
   },
-
-  props: {
-    active: Boolean
-  },
   watch: {
-    active (val) {
-      if (val) this.refresh()
-    },
     visible (val) {
       if (!val) {
         this.applyReason = ''

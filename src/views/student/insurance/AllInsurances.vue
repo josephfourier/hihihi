@@ -105,9 +105,6 @@ export default {
     ZjyTable
   },
 
-  props: {
-    active: Boolean
-  },
 
   watch: {
     currentPage: {
@@ -126,13 +123,6 @@ export default {
         })
       }
     },
-
-    active (val) {
-      if (val) this.refresh()
-    }
   }
 }
 </script>
-<style lang='scss' scoped>
-
-</style>

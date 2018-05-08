@@ -8,10 +8,18 @@ import NProgress from '@/utils/nprogress'
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
-  if (!getToken() && to.query.token ||
-    to.query.token && to.query.token !== getToken()) {
-    store.dispatch('setToken', to.query.token)
-    setToken(to.query.token)
+  let token = getToken()
+  if (to.query.token) {
+    if (!token || token !== to.query.token) {
+      token = to.query.token
+      store.dispatch('setToken', to.query.token)
+      setToken(to.query.token)
+    }
+  }
+
+  if (!token) {
+    window.location.href = process.env.SSO_URL
+    return
   }
 
   // if (whiteList.indexOf(to.path) > -1) {
@@ -19,11 +27,6 @@ router.beforeEach((to, from, next) => {
   //   next()
   //   return
   // }
-
-  if (!getToken()) {
-    window.location.href = process.env.SSO_URL
-    return
-  }
 
   if (store.getters.accessed.length === 0) {
     store.dispatch('getAccessed').then(response => {

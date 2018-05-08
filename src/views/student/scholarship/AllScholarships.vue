@@ -140,10 +140,6 @@ export default {
     ZjyTable
   },
 
-  props: {
-    active: Boolean
-  },
-
   computed: {
     title () {
       return this.type === +this.$t('zjy.operator.CREATE') ? '奖学金申请' : '奖学金详情'
@@ -168,9 +164,6 @@ export default {
       }
     },
 
-    active (val) {
-      if (val) this.refresh()
-    },
     visible (val) {
       if (!val) {
         this.applyReason = ''

@@ -116,10 +116,6 @@ export default {
     ZjyTable
   },
 
-  props: {
-    active: Boolean
-  },
-
   computed: {
     title () {
       return this.type === +this.$t('zjy.operator.CREATE') ? '荣誉称号申请' : '荣誉称号详情'
@@ -143,10 +139,6 @@ export default {
           this.loading = false
         })
       }
-    },
-
-    active (val) {
-      if (val) this.refresh()
     },
 
     visible (val) {

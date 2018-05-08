@@ -199,7 +199,7 @@ export default {
       this.loading = true
       commonAPI.queryApprovalList().then(response => {
         if (response.code !== 1) {
-          this.$alert(response.message)
+          MSG.warning(response.message)
         } else {
           this.menus = response.data.map(x => {
             return {
@@ -319,7 +319,7 @@ export default {
             }, 200)
             this.refresh()
           } else {
-            MSG.success(this.$t('zjy.message.delete.error'))
+            MSG.warning(this.$t('zjy.message.delete.error'))
           }
         }).catch(error => {
           console.log(error)
@@ -449,9 +449,9 @@ export default {
 
     submit () {
       if (!this.checkedPost) {
-        MSG.success('未选择职务')
+        MSG.warning('未选择职务')
       } else if (this.handler === '2' && !this.checkedTeacher) {
-        MSG.success('未选择教师')
+        MSG.warning('未选择教师')
       } else {
         const d = this.makeFormData()
         if (d.templateUid) {

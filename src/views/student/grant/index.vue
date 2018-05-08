@@ -12,10 +12,10 @@
     </div>
 
     <div class="search">
-      <span style="margin-right:10px">本学期助学金</span>
+      <span style="margin-right:10px">本学年助学金</span>
       <zjy-button type="primary" @click="handleClick">查询</zjy-button>
-      <span style="color: #F09861" v-if="have">祝贺你，你本学期具有享受贫困助学金的资格</span>
-      <span style="color: #F09861" v-if="notHave">你本学期不能享受贫困助学金，如果你已经提出申请，请到资助中心了解原因</span>
+      <span style="color: #F09861" v-if="have">祝贺你，你本学年具有享受贫困助学金的资格</span>
+      <span style="color: #F09861" v-if="notHave">你本学年不能享受贫困助学金，如果你已经提出申请，请到资助中心了解原因</span>
     </div>
 
     <div class="zjy-dialog zjy-preview">

@@ -143,9 +143,6 @@ export default {
     ZjyTable
   },
 
-  props: {
-    active: Boolean
-  },
   watch: {
     currentPage: {
       immediate: true,
@@ -162,9 +159,6 @@ export default {
       }
     },
 
-    active (val) {
-      if (val) this.refresh()
-    },
     visible (val) {
       if (!val) {
         this.applyReason = ''

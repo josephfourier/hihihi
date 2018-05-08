@@ -119,10 +119,6 @@ export default {
     ZjyTable
   },
 
-  props: {
-    active: Boolean
-  },
-
   computed: {
     ...mapGetters(['user']),
     title () {
@@ -135,9 +131,6 @@ export default {
   },
 
   watch: {
-    active (val) {
-      if (val) this.refresh()
-    },
 
     visible (val) {
       if (!val) {

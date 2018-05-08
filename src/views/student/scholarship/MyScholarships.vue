@@ -141,9 +141,6 @@ export default {
     ZjyTable
   },
 
-  props: {
-    active: Boolean
-  },
   watch: {
     currentPage: {
       immediate: true,
@@ -158,10 +155,6 @@ export default {
           this.loading = false
         }).catch(error => { this.loading = false })
       }
-    },
-
-    active (val) {
-      if (val) this.refresh()
     },
     visible (val) {
       if (!val) {

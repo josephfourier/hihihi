@@ -2,10 +2,10 @@
   <div class="zjy-tabs">
     <el-tabs type="border-card" v-model="current" @tab-click="tabClick">
       <el-tab-pane label="我的荣誉称号" name="my">
-        <my-honoraries class="zjy-tab__item" :active="!active"></my-honoraries>
+        <my-honoraries class="zjy-tab__item" v-if="active.my"></my-honoraries>
       </el-tab-pane>
       <el-tab-pane label="全部荣誉称号" name="all">
-        <all-honoraries class="zjy-tab__item" :active="active"></all-honoraries>
+        <all-honoraries class="zjy-tab__item" v-if="active.all"></all-honoraries>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -19,12 +19,18 @@ export default {
   data () {
     return {
       current: 'my',
-      active: false // 组件通信
+       active: {
+        'my': true,
+        'all': false,
+      }
     }
   },
   methods: {
     tabClick (tab, event) {
-      this.active = !this.active
+       for (let key in this.active) {
+        this.active[key] = false
+      }
+      this.active[tab.name] = true
     }
   },
   components: {

@@ -4,7 +4,7 @@
       <tr>
         <td>岗位名称: {{ data.postName }}</td>
         <td>人数限制: {{ data.numberLimit }}</td>
-        <td>专业要求：{{ data.specialtyName }}</td>
+        <td>专业要求：{{ data.requriedSpec }}</td>
       </tr>
       <tr>
         <td>薪资待遇：{{ data.salary }}</td>

@@ -10,7 +10,7 @@
       </el-form-item>
 
       <el-form-item label="金额" prop="money" class="inline pull-right">
-        <el-input v-model="formData.money" :maxlength="11"></el-input>
+        <el-input v-model="formData.money" :maxlength="6"></el-input>
       </el-form-item>
 
        <el-form-item label="发放方式" prop="grantWay" class="inline">

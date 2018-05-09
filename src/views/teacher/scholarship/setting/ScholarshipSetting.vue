@@ -25,13 +25,13 @@
 
       </el-form-item>
       <el-form-item label="发放对象" prop="grantObject" class="inline pull-right">
-        <el-input v-model="formData.grantObject" :maxlegth="256"></el-input>
+        <el-input v-model="formData.grantObject" :maxlength="256"></el-input>
       </el-form-item>
       <el-form-item label="资金来源" prop="fundsSource" class="inline">
-        <el-input type="input" v-model="formData.fundsSource" :maxlegth="256"></el-input>
+        <el-input type="input" v-model="formData.fundsSource" :maxlength="256"></el-input>
       </el-form-item>
       <el-form-item label="金额" prop="money" class="inline pull-right">
-        <el-input type="input" v-model="formData.money" :maxlegth="11"></el-input>
+        <el-input type="input" v-model="formData.money" :maxlength="6"></el-input>
       </el-form-item>
       <el-form-item label="申请时间" required>
           <el-form-item prop="startDate" class="inline">

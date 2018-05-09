@@ -59,6 +59,11 @@ export default {
         this.$emit('update:visible', false)
       } else {
         const sid = response.data.studentId
+       
+        if (response.data.ucenterStudent.specialtyName) {
+          delete response.data.ucenterStudent.specialtyName
+        }
+        console.log(response.data)
         selfMerge(response.data, this.data)
         api.queryApprovalProcess(sid, this.uid).then(response => {
           this.value = response.data

@@ -16,10 +16,10 @@
         </el-form-item>
 
         <el-form-item label="家庭年收入" prop="annualIncome" class="inline">
-          <el-input v-model="data.annualIncome" type="input" :maxlength="11"></el-input> 元
+          <el-input v-model="data.annualIncome" type="input" :maxlength="6"></el-input> 元
         </el-form-item>
         <el-form-item label="人均月收入" prop="pcmIncome" class="inline">
-          <el-input v-model="data.pcmIncome" type="input" :maxlength="11"></el-input> 元
+          <el-input v-model="data.pcmIncome" type="input" :maxlength="6"></el-input> 元
         </el-form-item>
         <el-form-item label="家庭困难类型" prop="poorType" class="checkbox">
           <el-checkbox-group v-model="data.poorType">

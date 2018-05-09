@@ -151,7 +151,7 @@ export default {
 
   created () {
     this.loading = true
-    axios.all([api.queryFacultyList(), api.queryForSettingList()])
+    axios.all([api.queryFacultyList(), api.querySettings()])
       .then(axios.spread((r1, r2) => {
         if (r1.code !== 1 || r2.code !== 1) {
           MSG.success('获取数据失败')
@@ -163,16 +163,17 @@ export default {
             }
           })
 
-          this.insuranceSettingList = r2.rows.map(x => {
+          this.insuranceSettingList = r2.data.rows.map(x => {
             return {
               label: x.insuranceName,
               value: x.inssettingUid
             }
           })
         }
-        this.loading = false
       })).catch(error => {
         console.log(error)
+      }).finally(_ => {
+        this.loading = false
       })
   },
 

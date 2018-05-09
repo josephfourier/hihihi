@@ -14,7 +14,7 @@
         <el-input v-model="formData.insuranceLimit" maxlength="5"></el-input>
       </el-form-item>
       <el-form-item label="保险费用" prop="insuranceCost" class="inline pull-right">
-        <el-input v-model="formData.insuranceCost" maxlength="11"></el-input>
+        <el-input v-model="formData.insuranceCost" maxlength="6"></el-input>
       </el-form-item>
       <el-form-item label="详细条款" prop="detailedTerms">
         <el-input type="textarea" v-model="formData.detailedTerms" :maxlength="5000"></el-input>

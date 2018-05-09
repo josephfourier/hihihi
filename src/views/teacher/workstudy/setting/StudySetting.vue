@@ -22,7 +22,7 @@
       </el-form-item>
 
        <el-form-item label="薪资待遇" prop="salary" class="inline block">
-        <el-input v-model="formData.salary" :maxlength="11"></el-input>
+        <el-input v-model="formData.salary" :maxlength="6"></el-input>
       </el-form-item>
 
       <el-form-item label="申请时间" required>

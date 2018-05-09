@@ -81,5 +81,9 @@ export default {
   },
   querySpecialtyByFaculty (code) {
     return ajax.get('/manage/insurance/specialty/' + code)
+  },
+
+  querySettings () {
+    return ajax.get('/manage/insurance-setting/open')
   }
 }

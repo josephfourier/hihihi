@@ -31,13 +31,12 @@
       <el-form-item label="申请时间" prop="applyDate" class="inline">
        <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="formData.applyDate" style="width: 100%"></el-date-picker>
       </el-form-item>
-
       <el-form-item label="专业" prop="specialtyCode" class="inline pull-right">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input v-model="student.specialtyName" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="政治面貌" prop="specialtyCode" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input :value="student.politics | politicsFormat" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="申请原因" prop="applyReason">

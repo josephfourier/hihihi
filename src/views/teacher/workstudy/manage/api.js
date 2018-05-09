@@ -16,6 +16,14 @@ export default {
 
         for (let i = 0; i < json.data.rows.length; ++i) {
           let row = {}
+          console.log(json.data.rows[i])
+          let spec = json.data.rows[i].swmsWorkstudySetting.specialtyName
+          if (spec) {
+            delete json.data.rows[i].swmsWorkstudySetting.specialtyName
+            Object.assign(json.data.rows[i].swmsWorkstudySetting, {
+              requriedSpec: spec
+            })
+          }
           selfMerge(json.data.rows[i], row)
           rows.push(row)
         }

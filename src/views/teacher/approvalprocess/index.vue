@@ -545,7 +545,7 @@ export default {
     },
 
     level (val) {
-      if (val !== '1') {
+      if (val && val !== '1') {
         this.handler = '1'
       }
     },

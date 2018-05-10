@@ -1,6 +1,6 @@
 <template>
   <div class="zjy-search-panel">
-    <p class="zjy-search-panel__header">
+    <p class="zjy-search-panel__header" v-if="title">
       <span>{{ title }}</span>
     </p>
     <div class="zjy-search-panel__body">

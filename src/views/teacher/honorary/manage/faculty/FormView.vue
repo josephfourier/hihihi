@@ -4,7 +4,7 @@
       <tr>
         <td>荣誉称号名称：{{ data.honoraryName }}</td>
         <td>申请人：{{ user.fullName }}</td>
-        <td>申请班级：{{ innerFac.facultyName }}</td>
+        <td>申请院系：{{ innerFac.facultyName }}</td>
       </tr>
     </table>
 

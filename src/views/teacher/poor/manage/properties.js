@@ -93,6 +93,6 @@ export default {
     dataStatus: ''
   },
   header: ['院系', '专业', '班级', '班主任', '学生姓名', '手机号码', '申请日期', '家庭总人口', '家庭年收入', '人均月收入', '家庭困难类型', '家庭困难情况', '曾受资助情况', '状态'],
-  filter: ['facultyName', 'specialtyName', 'className', 'gradHeadteacher', 'studentName', 'phone', 'applyDate', 'totalPopulation', 'annualIncome', 'pcmIncome', 'poorType', 'poorDescription', 'receivedFunding', 'dataStatus'],
+  filter: ['facultyName', 'specialtyName', 'className', 'description', 'studentName', 'phone', 'applyDate', 'totalPopulation', 'annualIncome', 'pcmIncome', 'poorType', 'poorDescription', 'receivedFunding', 'dataStatus'],
   excelName: '困难生申请名单'
 }

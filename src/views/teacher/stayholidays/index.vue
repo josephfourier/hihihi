@@ -12,7 +12,7 @@
     <zjy-table-operator>
       <operator-item @click="_export" clz="export">导出</operator-item>
       <operator-item @click="_import" clz="import" v-if="hasPermission('swms:stayholidays-tea:create')">导入</operator-item>
-      <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:stayholidays:delete')">批量删除</operator-item>
+      <!-- <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:stayholidays:delete')">批量删除</operator-item> -->
     </zjy-table-operator>
 
     <transition name="slide-fade">

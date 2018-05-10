@@ -32,7 +32,6 @@ export default {
     }, {
       label: '已拒绝',
       value: 2
-
     }, {
       label: '审批中',
       value: 3
@@ -57,7 +56,7 @@ export default {
       prop: 'className'
     }, {
       label: '班主任',
-      prop: 'gradHeadteacher'
+      prop: 'description'
     },
     {
       label: '学生姓名',

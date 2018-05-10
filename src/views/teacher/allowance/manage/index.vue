@@ -11,7 +11,7 @@
 
   <zjy-table-operator>
     <operator-item @click="create" clz="create" v-if="hasPermission('swms:allowance-tea:create')">新增</operator-item>
-    <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:allowance:delete')">批量删除</operator-item>
+    <!-- <operator-item @click="batchRemove" clz="delete" v-if="hasPermission('swms:allowance:delete')">批量删除</operator-item> -->
     <operator-item @click="_export" clz="export">导出</operator-item>
   </zjy-table-operator>
 

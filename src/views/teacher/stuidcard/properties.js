@@ -42,8 +42,7 @@ export default {
   ],
   columns: [
     {
-      index: true,
-      select: true
+      index: true
     }, {
       label: '学号',
       prop: 'studentCode'

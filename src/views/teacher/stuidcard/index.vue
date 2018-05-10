@@ -7,11 +7,11 @@
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
-    <template v-if="hasPermission('swms:stuidcard-tea:delete')">
-      <div class="zjy-line"></div>
+    <template v-if="false && hasPermission('swms:stuidcard-tea:delete')">
+       <div class="zjy-line"></div>
       <zjy-table-operator>
-        <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
-      </zjy-table-operator>
+          <operator-item @click="batchRemove" clz="delete">批量删除</operator-item>
+        </zjy-table-operator>
     </template>
 
     <div class="zjy-table">

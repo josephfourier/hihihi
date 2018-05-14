@@ -1,8 +1,9 @@
 <template>
   <!-- 针对 保险 如果状态是5 则为待付款才会显示操作 -->
-  <div class="zjy-footer" v-if="data.dataStatus === '5'">
-    <zjy-button type="plain" @click="$emit('update:visible', false)">取 消</zjy-button>
-    <zjy-button type="primary" @click="handleClick">立即支付</zjy-button>
+  <div class="zjy-footer" v-if="data.dataStatus === '5' || data.dataStatus === '0'">
+      <zjy-button type="plain" @click="$emit('update:visible', false)">取 消</zjy-button>
+      <zjy-button type="primary" @click="handleClick" v-if="data.dataStatus === '5'">立即支付</zjy-button>
+      <zjy-button type="primary" @click="$emit('delete', data)" v-else>删除申请</zjy-button>
   </div>
 </template>
 

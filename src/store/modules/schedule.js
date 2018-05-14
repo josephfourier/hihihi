@@ -9,7 +9,10 @@ const mutations = {
     state.todoList = todoList
   },
   [types.REMOVE_FROM_LIST] (state, id) {
-    state.todoList.splice(state.todoList.findIndex(i => i.dataUid === id), 1)
+    const idx = state.todoList.findIndex(i => i.dataUid === id)
+    if (idx >= 0) {
+      state.todoList.splice(state.todoList.findIndex(i => i.dataUid === id), 1)
+    }
   }
 }
 

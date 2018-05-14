@@ -82,8 +82,6 @@ export default {
   padding: 20px;
   background-color: #f5f5f5;
   margin-bottom: 15px;
-  max-height: 100px;
-  overflow: auto;
  .process-item__content {
    font-size: 12px;
  }

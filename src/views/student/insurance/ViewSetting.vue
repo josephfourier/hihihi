@@ -9,7 +9,7 @@
       <tr>
         <td>保险费用：{{ data.insuranceCost }}</td>
         <td>保险期限：{{ data.insuranceLimit }}</td>
-        <td>保险状态：未申请</td>
+        <td>保险状态：{{ data.applyStatusName }}</td>
       </tr>
     </table>
     <div class="process-item detail">
@@ -40,8 +40,6 @@ export default {
   padding: 20px;
   background-color: #f5f5f5;
   margin-bottom: 15px;
-  max-height: 100px;
-  overflow: auto;
   .process-item__content {
     font-size: 12px;
   }

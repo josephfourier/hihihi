@@ -436,20 +436,22 @@ export default {
   watch: {
     formData: {
       immediate: true,
-      handler (val) {
-        this.data = val
-        try {
-          if (this.data.ucenterStudent.studentCode) {
-            this.studentCode = this.data.ucenterStudent.studentCode
-            this.data.studentName = this.data.ucenterStudent.studentName
-            this.data.className = this.data.ucenterStudent.className
-            this.data.facultyName = this.data.ucenterStudent.facultyName
-            this.data.studentCode = this.data.ucenterStudent.studentCode
-            const splite = val.stufileNo.split(this.studentCode)
-            this.data.stufileNo = splite[0]
-            this.data.append = splite[1]
+      handler (val, oldVal) {
+        if (!oldVal) {
+          this.data = val
+          try {
+            if (this.data.ucenterStudent.studentCode) {
+              this.studentCode = this.data.ucenterStudent.studentCode
+              this.data.studentName = this.data.ucenterStudent.studentName
+              this.data.className = this.data.ucenterStudent.className
+              this.data.facultyName = this.data.ucenterStudent.facultyName
+              this.data.studentCode = this.data.ucenterStudent.studentCode
+              const splite = val.stufileNo.split(this.studentCode)
+              this.data.stufileNo = splite[0]
+              this.data.append = splite[1]
+            }
+          } catch (e) {
           }
-        } catch (e) {
         }
       }
     },

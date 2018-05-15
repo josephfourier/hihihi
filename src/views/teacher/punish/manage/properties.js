@@ -35,7 +35,8 @@ export default {
   ],
   columns: [
     {
-      index: true
+      index: true,
+      select: true
     },
     {
       label: '学号',

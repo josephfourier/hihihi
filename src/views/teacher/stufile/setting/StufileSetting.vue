@@ -52,6 +52,9 @@ export default {
           if (this.type === 1) {
             stufileAPI.update(this.formData.stufilesettingUid, this.formData).then(response => {
               if (response.code === 1) {
+                setTimeout(_ => {
+                  MSG.success(this.$t('zjy.message.update.success'))
+                }, 200)
                 this.$emit('close', 1)
               } else {
                 MSG.warning(response.message)
@@ -61,6 +64,9 @@ export default {
             stufileAPI.create(this.formData).then(response => {
               if (response.code === 1) {
                 this.$emit('close', 1)
+                setTimeout(_ => {
+                  MSG.success(this.$t('zjy.message.create.success'))
+                }, 200)
               } else {
                 MSG.warning(response.message)
               }

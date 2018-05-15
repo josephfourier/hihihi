@@ -160,7 +160,7 @@ export default {
             worksettingUid: this.formData.worksettingUid,
             applyDate: this.formData.applyDate,
             studentId: this.student.studentId,
-            applyReason: this.formData.applyReason
+            applyReson: this.formData.applyReason
           })
         } else {
           return false

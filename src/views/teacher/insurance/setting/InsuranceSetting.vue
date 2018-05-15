@@ -52,6 +52,8 @@ export default {
     const isInsuranceLimit = (rule, value, callback) => {
       if (!validator.isNumber(+value) || !/^\d{1,3}\.?\d?$/.test(value)) {
         return callback(new Error('请输入合法数字,如1.5'))
+      } else if (+value > 999) {
+        return callback(new Error('最大不能超过999'))
       }
       callback()
     }

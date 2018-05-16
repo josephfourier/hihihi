@@ -111,8 +111,8 @@ export default {
       switch (this.query.category) {
         case 1: return '获得奖学金人数占比'
         case 2: return '获得个人荣誉称号人数占比'
-        case 3: return '获得班级荣誉称号人数占比'
-        case 4: return '获得院系荣誉称号人数占比'
+        case 3: return '获得班级荣誉称号班级占比'
+        case 4: return '获得院系荣誉称号院系占比'
         case 5: return '违纪处分人数占比'
         default: return ''
       }
@@ -122,8 +122,8 @@ export default {
       switch (this.query.category) {
         case 1: return '各类奖学金人数占比'
         case 2: return '各类个人荣誉称号人数占比'
-        case 3: return '各类班级荣誉称号人数占比'
-        case 4: return '各类院系荣誉称号人数占比'
+        case 3: return '各类班级荣誉称号班级占比'
+        case 4: return '各类院系荣誉称号院系占比'
         case 5: return '各类违纪处分人数占比'
         default: return ''
       }

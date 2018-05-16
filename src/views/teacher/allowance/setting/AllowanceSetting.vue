@@ -62,7 +62,7 @@ export default {
   name: 'allowance-setting',
   data () {
     const limited = (rule, value, callback) => {
-      if (!validator.isInteger(+value)) {
+      if (!validator.isInteger(+value) || +value < 0 || +value < 0) {
         return callback(new Error('请输入合法数字,如15'))
       }
       callback()

@@ -68,7 +68,7 @@ export default {
   name: 'scholarship-setting',
   data () {
     const validateLimit = (rule, value, callback) => {
-      if (!validator.isInteger(+value)) {
+      if (!validator.isInteger(+value) || +value < 0) {
         return callback(new Error('请输入合法数字,如15'))
       }
       callback()

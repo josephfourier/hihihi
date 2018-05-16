@@ -92,6 +92,10 @@ export default {
       this.isImageView = this.isImage(row.filePath)
       this.src = row.filePath
       this.visible = true
+      this.$store.dispatch('removeFromNoticeList', row.noticeUid).then(response => {
+      }).catch(error => {
+        MSG.warning('阅读失败')
+      })
     },
 
     isImage (filePath) {

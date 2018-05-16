@@ -78,7 +78,7 @@ export default {
         if (!this.doQuery) return
         api.queryStudent(this.formData.allsettingUid, value).then(response => {
           if (response.code !== 1) {
-            callback(new Error(response.data))
+            callback(new Error(response.message))
           } else {
             this.student = response.data
             callback()

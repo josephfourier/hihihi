@@ -49,11 +49,11 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
-              <a @click="back">返回个人中心</a>
+            <el-dropdown-item  @click.native="back">
+              <a>返回个人中心</a>
             </el-dropdown-item>
-            <el-dropdown-item>
-              <a @click="logout">退出系统</a>
+            <el-dropdown-item @click.native="logout">
+              <a>退出系统</a>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>

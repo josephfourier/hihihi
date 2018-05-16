@@ -17,7 +17,13 @@
 
         <!-- 因审批进度中可能会出现付款因此需要自定义操作 -->
         <template slot-scope="props" slot="footer">
-          <zjy-footer :data="props.data" :steps="props.steps" @submit="pay" :visible.sync="visible"></zjy-footer>
+          <zjy-footer 
+            :data="props.data" 
+            :steps="props.steps" 
+            @submit="pay"
+            @delete="handleDelete"
+            :visible.sync="visible"
+          ></zjy-footer>
         </template>
       </process-view>
     </el-dialog>
@@ -61,6 +67,18 @@ export default {
   },
 
   methods: {
+    handleDelete(data) {
+      api.delete(data.insuranceUid).then(response => {
+        if (response.code === 1) {
+          setTimeout(_ => {
+            MSG.success(this.$t('zjy.message.delete.success'))
+          }, 200)
+          this.refresh().visible = false
+        } else {
+          MSG.warning(response.message)
+        }
+      })
+    },
     pay (data) {
       this.loading2 = true
       this.abort = false
@@ -107,6 +125,7 @@ export default {
 
     refresh () {
       _refresh.call(this)
+      return this;
     }
   },
   components: {

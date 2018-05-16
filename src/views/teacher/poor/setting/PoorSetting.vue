@@ -44,7 +44,9 @@ export default {
   data () {
     const checkYear = (rule, value, callback) => {
       if (!this.formData.applyYear) return
-
+      if (this.type === +this.$t('zjy.operator.EDIT') && this.ingore === this.formData.applyYear) {
+        callback()
+      }
       api.checkYear(this.formData.applyYear).then(response => {
         if (response.data) {
           callback(new Error('该学年已经添加,请重新选择'))
@@ -57,6 +59,7 @@ export default {
     }
     return {
       formData: {},
+      ingore: '',
       optionsYears: [
         {
           label: '2017年',
@@ -127,6 +130,9 @@ export default {
       immediate: true,
       handler (val) {
         this.formData = {...val}
+        if (this.type === +this.$t('zjy.operator.EDIT')) {
+          this.ingore = this.formData.applyYear
+        }
       }
     }
   }

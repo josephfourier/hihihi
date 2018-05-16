@@ -31,5 +31,9 @@ export default {
   },
   assert (arg) {
     return ajax.put('/manage/insurance/' + arg.insuranceUid, arg)
+  },
+
+  delete (insuranceId) {
+    return ajax.delete('/manage/insurance/' + insuranceId)
   }
 }

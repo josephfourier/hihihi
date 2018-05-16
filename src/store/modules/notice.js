@@ -9,7 +9,10 @@ const mutations = {
     state.noticeList = list
   },
   [types.REMOVE_FROM_LIST] (state, id) {
-    state.noticeList.splice(state.noticeList.findIndex(i => i.noticeUid === id), 1)
+    const idx = state.noticeList.findIndex(i => i.noticeUid === id)
+    if (idx >= 0) {
+      state.noticeList.splice(state.noticeList.findIndex(i => i.noticeUid === id), 1)
+    }
   }
 }
 

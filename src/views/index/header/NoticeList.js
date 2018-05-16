@@ -9,12 +9,15 @@ export default {
   },
   render (h) {
     const data = {
+      'class': {
+        'list-item': true
+      },
       on: {
         click: this.handleClick
       }
     }
     return (
-      <p {...data}>{this.data.fileName}</p>
+      <div {...data}><p>{this.data.fileName}</p></div>
     )
   }
 }

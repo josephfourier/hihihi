@@ -12,31 +12,39 @@
         <div class="badge-wrap">
           <!-- 通过size可以为el-dropdown-menu添加不同的class -->
           <el-dropdown class="badge" popper-class="your" size="header" v-if="user.usertypeId === +$t('zjy.userType.teacher')">
-            <el-badge :value="todoValue" class="item todo" :max="5">
+            <el-badge :value="todoValue" class="item todo" :max="15">
               <span class="el-dropdown-link">待办</span>
             </el-badge>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="todoValue == 0">
-                暂无
+                <div class="list-item">
+                  <p style="border:0">暂无</p>
+                </div>
               </el-dropdown-item>
-              <el-dropdown-item class="clearfix" v-for="item in todoList" :key="item.dataUid" v-else>
-                <my-list :data="item" @click="handleClick"></my-list>
+              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: todoList.length > 5 ? '1px' : '', maxHeight:'230px', height: todoList.length === 1 ? '39px' : todoList.length * 37 + (todoList.length < 5 ? 5 : 10) + 'px'}">
+                <el-scrollbar class="scrollbar">
+                  <my-list :data="item" @click="handleClick" v-for="item in todoList" :key="item.dataUid"></my-list>
+                </el-scrollbar>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
 
-          <el-dropdown class="badge" size="header">
-            <el-badge :value="noticeValue" class="item notice" :max="5">
+          <el-dropdown class="badge" size="header" trigger="click">
+            <el-badge :value="noticeValue" class="item notice" :max="15">
               <span class="el-dropdown-link">
                 通知
               </span>
             </el-badge>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="noticeValue == 0">
-                暂无
+                <div class="list-item">
+                  <p style="border:0">暂无</p>
+                </div>
               </el-dropdown-item>
-              <el-dropdown-item class="clearfix" v-for="item in noticeList" :key="item.noticeUid" v-else>
-                <notice-list :data="item" @click="handleNotice"></notice-list>
+              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: noticeList.length > 5 ? '1px' : '', paddingBottom: '1px',maxHeight:'230px', height: noticeList.length === 1 ? '39px' : noticeList.length * 37 + (noticeList.length < 5 ? 5 : 10) + 'px'}">
+                 <el-scrollbar class="scrollbar">
+                   <notice-list :data="item" @click="handleNotice" v-for="item in noticeList" :key="item.noticeUid"></notice-list>
+                 </el-scrollbar>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -222,14 +230,12 @@ export default {
     margin-right: 35px;
     line-height: 60px;
     cursor: pointer;
-
     .zjy-icon-user {
       width: 20px;
       height: 20px;
       background: url("./zjy-icon-user.png") no-repeat 0 0;
     }
   }
-
   .badge-wrap {
     margin-right: 50px;
   }
@@ -243,9 +249,6 @@ export default {
   display: block;
   color: #606266;
   font-size: 14px;
-  // position: absolute;
-  // right: 200px;
-  // top: 14px;
   line-height: 34px;
 }
 .badge + .badge {
@@ -267,4 +270,5 @@ export default {
     padding-left: 20px;
   }
 }
+.scrollbar{height: 100%;}
 </style>

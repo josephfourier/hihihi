@@ -1,5 +1,5 @@
 <template>
-  <p @click="handleClick">{{data.permissionName}}</p>
+  <div @click="handleClick" class="list-item"><p>{{data.permissionName}}</p></div>
 </template>
 
 <script>

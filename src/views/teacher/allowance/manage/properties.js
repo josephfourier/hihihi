@@ -12,17 +12,6 @@ export default {
     applyYear: '',
     studentCode: ''
   },
-  optionsYear: [
-    {
-      label: '2017年',
-      value: 2017
-    },
-    {
-      label: '2018年',
-      value: 2018
-    }
-  ],
-
   optionsStatus: [
     {
       label: '待审批',

@@ -1,5 +1,3 @@
-import { hasPermission } from '@/utils'
-
 const openFormat = cellValue => {
   return ['否', '是'][+cellValue]
 }
@@ -9,19 +7,9 @@ export default {
     offset: 0,
     limit: 10,
     functionClass: '1',
-    applyYear: '',
+    applyYear: new Date().getFullYear().toString(),
     studentCode: ''
   },
-  yearList: [
-    {
-      label: '2017年',
-      value: 2017
-    },
-    {
-      label: '2018年',
-      value: 2018
-    }
-  ],
   columns: [
     {
       index: true,

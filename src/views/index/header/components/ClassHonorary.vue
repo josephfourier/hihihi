@@ -51,7 +51,6 @@ export default {
       if (response.code !== 1) {
         this.$alert('获取信息失败')
       } else {
-        console.log(response.data)
         const cid = response.data.classId
         // const uid = response.data.clahonoraryUid
         selfMerge(response.data, this.data)

@@ -1,8 +1,8 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
+      <search-date label="申请年份" :value.sync="applyYear"></search-date>
       <search-select label="申请状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
-      <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
@@ -70,6 +70,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
+import SearchDate from '@/components/table-search/search-date'
 import ZjyPagination from '@/components/pagination'
 
 import ZjyTable from '@/components/table'
@@ -96,12 +97,11 @@ export default {
       query: properties.query,
       currentPage: 1,
       dataStatus: '',
-      applyYear: '',
+      applyYear: new Date().getFullYear().toString(),
       selectedRows: [],
       loading: false,
       visible: false,
       visible2: false,
-      optionsYears: properties.optionsYears,
       optionsStatus: properties.optionsStatus,
       columns: properties.columnsMANAGE,
 
@@ -283,6 +283,7 @@ export default {
     SearchInput,
     SearchButton,
     SearchSelect,
+    SearchDate,
 
     ZjyTableOperator,
     OperatorItem,
@@ -298,7 +299,7 @@ export default {
   },
 
   destroyed () {
-    this.query.applyYear = ''
+    this.query.applyYear = new Date().getFullYear().toString()
     this.query.dataStatus = ''
     this.query.offset = 0
   },

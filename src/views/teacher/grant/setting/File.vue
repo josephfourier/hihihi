@@ -123,7 +123,6 @@ export default {
     handleCreate (formData) {
       api.saveFile(formData).then(response => {
         if (response.code !== 1) {
-          console.log(response.message)
           MSG.warning(this.$t('zjy.message.create.error'))
         } else {
           this.visible2 = false

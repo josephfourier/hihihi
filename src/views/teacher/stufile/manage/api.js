@@ -24,7 +24,6 @@ export default {
         //   return res
         // }
       }).then(res => {
-        console.log(res)
         if (res.type.indexOf('application/x-xls') > -1) {
           if (window.navigator.msSaveOrOpenBlob) {
             navigator.msSaveBlob(res, fileName)

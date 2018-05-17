@@ -7,20 +7,9 @@ export default {
     offset: 0,
     limit: 10,
     dataStatus: '',
-    applyYear: '',
+    applyYear: new Date().getFullYear().toString(),
     studentCode: ''
   },
-
-  optionsYear: [
-    {
-      label: '2017年',
-      value: 2017
-    },
-    {
-      label: '2018年',
-      value: 2018
-    }
-  ],
 
   optionsStatus: [
     {

@@ -1,8 +1,8 @@
 <template>
 <div class="zjy-app">
   <zjy-table-search>
+     <search-date label="处分年份" :value.sync="punishYear"></search-date>
     <search-select label="处分状态" :options="optionsStatus" :value.sync="punishStatus"></search-select>
-    <search-select label="申请年份" :options="optionsYears" :value.sync="punishYear"></search-select>
     <search-input label="学号" :value.sync="studentCode"></search-input>
     <search-button @query="searchFilter"></search-button>
   </zjy-table-search>
@@ -65,6 +65,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
+import SearchDate from '@/components/table-search/search-date'
 import ZjyPagination from '@/components/pagination'
 
 import ZjyTable from '@/components/table'
@@ -89,14 +90,13 @@ export default {
       query: properties.query,
       currentPage: 1,
       punishStatus: '',
-      punishYear: '',
+      punishYear: new Date().getFullYear().toString(),
       studentCode: '',
 
       selectedRows: [],
       loading: false,
       visible: false,
       visible2: false,
-      optionsYears: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
       columns: properties.columns,
 
@@ -266,7 +266,7 @@ export default {
 
   destroyed () {
     this.query.punishStatus = ''
-    this.query.punishYear = ''
+    this.query.punishYear = new Date().getFullYear().toString()
     this.query.studentCode = ''
     this.query.offset = 0
   },
@@ -276,6 +276,7 @@ export default {
     SearchInput,
     SearchButton,
     SearchSelect,
+    SearchDate,
 
     ZjyTableOperator,
     OperatorItem,

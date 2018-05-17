@@ -16,7 +16,6 @@ export default {
 
         for (let i = 0; i < json.data.rows.length; ++i) {
           let row = {}
-          console.log(json.data.rows[i])
           let spec = json.data.rows[i].swmsWorkstudySetting.specialtyName
           if (spec) {
             delete json.data.rows[i].swmsWorkstudySetting.specialtyName

@@ -1,7 +1,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="申请年份" :options="yearList" :value.sync="applyYear"></search-select>
+      <search-date label="申请年份" :value.sync="applyYear"></search-date>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
@@ -28,6 +28,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
+import SearchDate from '@/components/table-search/search-date'
 
 import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
@@ -41,14 +42,12 @@ import properties from './properties'
 export default {
   data () {
     return {
-      applyYear: '',
+      applyYear: new Date().getFullYear().toString(),
       studentCode: '',
       query: properties.query,
       currentPage: 1,
       total: 0,
       loading: false,
-      yearList: properties.yearList,
-
       list: [],
       columns: properties.columns,
 
@@ -130,6 +129,8 @@ export default {
     SearchInput,
     SearchButton,
     SearchSelect,
+    SearchDate,
+
     ZjyTable,
     ZjyTableOperator,
     OperatorItem,

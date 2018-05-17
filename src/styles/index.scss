@@ -482,3 +482,29 @@ input[type="file"]>input[type="button"]::-moz-focus-inner {
 .el-dropdown-menu__item>a {
     display: block;
 }
+// 时间选择器
+.el-year-table td {
+    padding: 10px 3px;
+}
+.zjy-table-search__item {
+    .el-date-editor.el-input, .el-date-editor.el-input__inner {
+        width: 178px;
+    }
+    .el-input__prefix, .el-input__suffix {
+        top: -2px;
+    }
+    .el-input__inner {
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    // .el-date-editor--year {
+    //     .el-input__suffix {
+    //         display: none;
+    //     }
+    // }
+}
+.el-year-table td .cell:hover, .el-year-table td.current:not(.disabled) .cell,
+.el-date-picker__header-label.active, .el-date-picker__header-label:hover {
+    color: #37c6d4 ;
+}

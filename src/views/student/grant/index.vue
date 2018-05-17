@@ -87,7 +87,6 @@ export default {
     },
 
     handleView (row) {
-      console.log(row)
       this.isImageView = this.isImage(row.filePath)
       this.src = row.filePath
       this.visible = true

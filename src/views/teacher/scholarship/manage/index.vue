@@ -1,8 +1,8 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
+      <search-date label="申请年份" :value.sync="applyYear"></search-date>
       <search-select label="审批状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
-      <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
@@ -49,6 +49,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
+import SearchDate from '@/components/table-search/search-date'
 import ZjyPagination from '@/components/pagination'
 
 import ZjyTable from '@/components/table'
@@ -75,13 +76,12 @@ export default {
       currentPage: 1,
       total: 0,
       dataStatus: '',
-      applyYear: '',
+      applyYear: new Date().getFullYear().toString(),
       studentCode: '',
       selectedRows: [],
       loading: false,
       visible: false,
       visible2: false,
-      optionsYears: properties.optionsYear,
       optionsStatus: properties.optionsStatus,
       columns: properties.columns,
 
@@ -208,10 +208,13 @@ export default {
     },
 
     handleView (row) {
+      this.loading = true
       commonAPI.queryApprovalProcess(row.studentId, row.scholarshipUid).then(response => {
         this.setting = row
         this.value = response.data
         this.visible = true
+      }).finally(_ => {
+        this.loading = false
       })
     },
     handleDelete (row) {
@@ -252,7 +255,7 @@ export default {
   },
 
   destroyed () {
-    this.query.applyYear = ''
+    this.query.applyYear = new Date().getFullYear().toString()
     this.query.dataStatus = ''
     this.query.studentCode = ''
     this.query.offset = 0
@@ -263,6 +266,7 @@ export default {
     SearchInput,
     SearchButton,
     SearchSelect,
+    SearchDate,
 
     ZjyTableOperator,
     OperatorItem,

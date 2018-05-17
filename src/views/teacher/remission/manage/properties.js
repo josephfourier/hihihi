@@ -7,7 +7,7 @@ export default {
     offset: 0,
     limit: 10,
     functionClass: '2',
-    applyYear: '',
+    applyYear: new Date().getFullYear().toString(),
     studentCode: ''
   },
   yearList: [

@@ -2,7 +2,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="年级" :options="years" :value.sync="year"></search-select>
+      <search-date label="年级" :value.sync="year"></search-date>
       <search-select label="院系" :options="myFacultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-select label="专业" :options="mySpecialtyList" :value.sync="specialtyCode" @focus="handleInit"></search-select>
       <!--<search-input label="学号" :value.sync="studentCode"></search-input>-->
@@ -32,6 +32,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
+import SearchDate from '@/components/table-search/search-date'
 
 import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
@@ -51,12 +52,11 @@ export default {
       query: properties.query,
       specialtyCode: '',
       facultyCode: '',
-      year: '',
+      year: new Date().getFullYear().toString(),
       list: [],
       currentPage: 1,
       total: 0,
       loading: false,
-      years: properties.optionsYears,
       columns: properties.columns,
       visible: false,
 
@@ -184,7 +184,7 @@ export default {
 
   destroyed () {
     this.query.specialtyCode = ''
-    this.query.year = ''
+    this.query.year = new Date().getFullYear().toString()
     this.query.studentCode = ''
     this.query.facultyCode = ''
     this.query.offset = 0
@@ -195,6 +195,8 @@ export default {
     SearchInput,
     SearchButton,
     SearchSelect,
+    SearchDate,
+    
     ZjyTable,
     ZjyTableOperator,
     OperatorItem,

@@ -9,21 +9,11 @@ export default {
     offset: 0,
     limit: 10,
     functionClass: '2',
-    applyYear: '',
+    applyYear: new Date().getFullYear().toString(),
     facultyCode: '',
     classId: '',
     studentCode: ''
   },
-  yearList: [
-    {
-      label: '2017年',
-      value: 2017
-    },
-    {
-      label: '2018年',
-      value: 2018
-    }
-  ],
   columns: [
     {
       index: true,

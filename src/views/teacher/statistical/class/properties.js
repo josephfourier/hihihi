@@ -3,20 +3,10 @@ export default {
     offset: 0,
     limit: 10,
     specialtyCode: '',
-    year: '',
+    year: new Date().getFullYear().toString(),
     studentCode: '',
     facultyCode: ''
   },
-  optionsYears: [
-    {
-      label: '2017年',
-      value: 2017
-    },
-    {
-      label: '2018年',
-      value: 2018
-    }
-  ],
   columns: [
     {
       index: true,

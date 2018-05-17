@@ -1,7 +1,7 @@
 <template>
   <div class="zjy-table-search__item">
     <label class="search-label" v-if="label || $slots.label" v-bind:style="labelStyle">
-      <slot name="label"> {{ label }}</slot>
+      <slot name="label">{{ label }}</slot>
     </label>
     <!--<el-select-->
       <!--v-model="inner"-->

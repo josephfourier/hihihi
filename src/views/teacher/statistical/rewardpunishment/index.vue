@@ -143,7 +143,7 @@ export default {
   destroyed () {
     this.query.facultyCode = ''
     this.query.category = ''
-    this.query.applyYear = 0
+    this.query.applyYear = new Date().getFullYear().toString()
   }
 }
 </script>

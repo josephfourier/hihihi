@@ -135,7 +135,6 @@ export default {
     },
 
     handleChange (file, fileList) {
-      console.log(file)
     },
 
     handleSuccess (response, file, fileList) {

@@ -1,7 +1,7 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="入学年份" :options="years" :value.sync="enterYear"></search-select>
+      <search-date label="入学年份" :value.sync="enterYear"></search-date>
       <search-select label="班级" :options="myClassList" :value.sync="classId" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-input label="学号" :value.sync="studentCode"></search-input>
       <search-button @query="searchFilter"></search-button>
@@ -115,6 +115,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
+import SearchDate from '@/components/table-search/search-date'
 
 import ZjyTable from '@/components/table'
 import ZjyTableOperator from '@/components/table-operator'
@@ -153,7 +154,7 @@ export default {
       myFileList: [
         // {name: 'test.jpeg', url: ''}
       ],
-      enterYear: '',
+      enterYear: new Date().getFullYear().toString(),
       classId: '',
       studentCode: '',
       query: properties.query,
@@ -161,9 +162,6 @@ export default {
       currentPage: 1,
       total: 0,
       loading: false,
-
-      years: properties.years,
-
       columns: properties.columns,
       visible: false,
       visible2: false,
@@ -218,7 +216,6 @@ export default {
       return /\.(xls|xlsx)$/gi.test(file.name)
     },
     handleChange (file, fileList) {
-      console.log(file)
       // 成功时也会调用，添加show修复此问题
       if (this.hasError || !this.show) return
       if (!this.isAcceptedFile(file)) {
@@ -484,7 +481,7 @@ export default {
   },
 
   destroyed () {
-    this.query.enterYear = ''
+    this.query.enterYear = new Date().getFullYear().toString()
     this.query.classId = ''
     this.query.studentCode = ''
     this.query.offset = 0
@@ -510,6 +507,7 @@ export default {
     SearchInput,
     SearchButton,
     SearchSelect,
+    SearchDate,
     ZjyTable,
     ZjyTableOperator,
     OperatorItem,

@@ -1,10 +1,10 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
+      <search-date label="申请年份" :value.sync="applyYear"></search-date>
       <search-select label="院系" :options="myFacultyList" :value.sync="facultyCode" :loading="isLoading" @focus="handleFocus"></search-select>
       <search-select label="专业" :options="mySpecialtyList" :value.sync="specialtyCode" @focus="handleInit" :loading="isLoading2"></search-select>
       <search-select label="申请状态" :options="optionsStatus" :value.sync="dataStatus"></search-select>
-      <search-select label="申请年份" :options="optionsYears" :value.sync="applyYear"></search-select>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
@@ -98,6 +98,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchInput from '@/components/table-search/search-input'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
+import SearchDate from '@/components/table-search/search-date'
 import ZjyPagination from '@/components/pagination'
 
 import ZjyTable from '@/components/table'
@@ -124,7 +125,7 @@ export default {
 
       facultyCode: '',
       specialtyCode: '',
-      applyYear: '',
+      applyYear: new Date().getFullYear().toString(),
       dataStatus: '',
 
       loading: false,
@@ -134,7 +135,6 @@ export default {
       visible: false,
 
       mySpecialtyList: [],
-      optionsYears: properties.optionsYears,
       optionsStatus: properties.optionsStatus,
       columns: properties.columns,
       selectedRows: [],
@@ -392,7 +392,7 @@ export default {
   },
 
   destroyed () {
-    this.query.applyYear = ''
+    this.query.applyYear = new Date().getFullYear().toString()
     this.query.dataStatus = ''
     this.query.facultyCode = ''
     this.query.specialtyCode = ''
@@ -404,6 +404,7 @@ export default {
     SearchInput,
     SearchButton,
     SearchSelect,
+    SearchDate,
     ZjyTable,
     ZjyPagination,
     ZjyProcess,

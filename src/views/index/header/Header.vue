@@ -21,7 +21,7 @@
                   <p style="border:0">暂无</p>
                 </div>
               </el-dropdown-item>
-              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: todoList.length > 5 ? '1px' : '0', maxHeight:'220px', height: todoList.length === 1 ? '39px' : todoList.length * 37 + (todoList.length <= 5 ? 5 : 10) + 'px'}">
+              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: todoList.length >= 5 ? '1px' : '0', maxHeight:'220px', height: todoList.length === 1 ? '39px' : todoList.length * 37 + (todoList.length <= 5 ? 5 : 10) + 'px'}">
                 <el-scrollbar class="scrollbar">
                   <my-list
                     :data="item"
@@ -47,7 +47,7 @@
                   <p style="border:0">暂无</p>
                 </div>
               </el-dropdown-item>
-              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: noticeList.length > 5 ? '1px' : '0',maxHeight:'220px', height: noticeList.length === 1 ? '39px' : noticeList.length * 37 + (noticeList.length <= 5 ? 5 : 10) + 'px'}">
+              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: noticeList.length >= 5 ? '1px' : '0',maxHeight:'220px', height: noticeList.length === 1 ? '39px' : noticeList.length * 37 + (noticeList.length <= 5 ? 5 : 10) + 'px'}">
                  <el-scrollbar class="scrollbar">
                    <notice-list
                      :data="item"

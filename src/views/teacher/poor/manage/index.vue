@@ -83,6 +83,7 @@
     <div class="zjy-dialog">
       <el-dialog title="困难生申请审批" :visible.sync="visible" width="800px">
         <zjy-process v-if="visible" :data="setting" v-model="value" @close="visible = false" @submit="handleSubmit">
+          <p slot="warning" class="warning">教师添加无审批流程</p>
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>

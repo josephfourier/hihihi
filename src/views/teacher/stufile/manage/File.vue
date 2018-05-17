@@ -44,7 +44,7 @@
       </el-form-item>
       <span class="concat">+ 学号 +</span>
       <el-form-item  class="inline pull-right append" prop="append">
-        <el-input type="text" v-model="data.append" maxlength="6" 
+        <el-input type="text" v-model="data.append" maxlength="6"
         @keyup.native="handleKeyup1"></el-input>
       </el-form-item>
       <el-row>
@@ -112,7 +112,7 @@
               <div v-if="fileList[scope.$index].stufilePath">
 
                 <div class="table-oper-group">
-                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download">
+                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download" download>
                     <i class="zjy-icon"></i>
                     <span>下载</span>
                   </a>
@@ -227,11 +227,11 @@ export default {
   },
 
   methods: {
-    handleKeyup({ target }) {
+    handleKeyup ({ target }) {
       target.value = target.value.replace(/[^a-z0-9A-Z)]/, '')
       this.data.stufileNo = target.value.replace(/[^a-z0-9A-Z)]/, '')
     },
-    handleKeyup1({ target }) {
+    handleKeyup1 ({ target }) {
       target.value = target.value.replace(/[^a-z0-9A-Z)]/, '')
       this.data.append = target.value.replace(/[^a-z0-9A-Z)]/, '')
     },

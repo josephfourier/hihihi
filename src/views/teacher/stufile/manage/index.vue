@@ -75,12 +75,12 @@
     </transition>
 
     <div class="zjy-table">
-      <zjy-table 
-        :data="list" 
-        :loading="loading" 
+      <zjy-table
+        :data="list"
+        :loading="loading"
         :columns="columns"
-        @view="view" 
-        @edit="edit" 
+        @view="view"
+        @edit="edit"
         @selection-change="handleSelectionChange"
       >
       </zjy-table>
@@ -93,12 +93,12 @@
 
     <el-dialog :title="title" :visible.sync="visible" width="800px">
       <zjy-file
-        v-if="visible" 
-        :formData="file" 
-        v-model="settings" 
+        v-if="visible"
+        :formData="file"
+        v-model="settings"
         :type="type"
-        :visible.sync="visible" 
-        :list="fileList" 
+        :visible.sync="visible"
+        :list="fileList"
         @refresh="handleRefresh"
       ></zjy-file>
     </el-dialog>
@@ -297,7 +297,7 @@ export default {
     },
 
     fileListFormat (fileList) {
-      let result = '';
+      let result = ''
       fileList.forEach(x => {
         if (x.swmsStufileSetting) {
           result += x.swmsStufileSetting.stufileName

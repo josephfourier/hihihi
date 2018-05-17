@@ -451,7 +451,7 @@ input[type="file"]>input[type="button"]::-moz-focus-inner {
                     border: 0 !important;
                 }
             }
-            &:nth-last-of-type(2) {
+            &.is-last{
                 p {
                     border-bottom: 1px solid #edf0f5;
                   //  margin-bottom: 5px;

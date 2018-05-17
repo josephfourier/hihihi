@@ -90,7 +90,7 @@
               <div v-if="fileList[scope.$index].stufilePath">
 
                 <div class="table-oper-group">
-                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download">
+                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download" download>
                     <i class="zjy-icon"></i>
                     <span>下载</span>
                   </a>
@@ -138,7 +138,7 @@ import { mapGetters } from 'vuex'
 import ZjyUpload from '@/components/upload/index'
 
 export default {
-  data() {
+  data () {
     return {
       data: {},
       action: process.env.BASE_URL + 'upload/stufileUpload',
@@ -186,7 +186,7 @@ export default {
   watch: {
     formData: {
       immediate: true,
-      handler(val, oldVal) {
+      handler (val, oldVal) {
         this.data = val
         try {
           if (this.data.ucenterStudent.studentCode) {
@@ -207,7 +207,7 @@ export default {
 
     list: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.fileList = val.filter(i => i.stufilePath)
       }
     }

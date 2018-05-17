@@ -21,15 +21,21 @@
                   <p style="border:0">暂无</p>
                 </div>
               </el-dropdown-item>
-              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: todoList.length > 5 ? '1px' : '', maxHeight:'230px', height: todoList.length === 1 ? '39px' : todoList.length * 37 + (todoList.length < 5 ? 5 : 10) + 'px'}">
+              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: todoList.length > 5 ? '1px' : '0', maxHeight:'220px', height: todoList.length === 1 ? '39px' : todoList.length * 37 + (todoList.length <= 5 ? 5 : 10) + 'px'}">
                 <el-scrollbar class="scrollbar">
-                  <my-list :data="item" @click="handleClick" v-for="item in todoList" :key="item.dataUid"></my-list>
+                  <my-list
+                    :data="item"
+                    @click="handleClick"
+                    v-for="(item,index) in todoList"
+                    :key="item.dataUid"
+                    :class="{'is-last': todoList.length === index + 1}"
+                  ></my-list>
                 </el-scrollbar>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
 
-          <el-dropdown class="badge" size="header" trigger="click">
+          <el-dropdown class="badge" size="header">
             <el-badge :value="noticeValue" class="item notice" :max="15">
               <span class="el-dropdown-link">
                 通知
@@ -41,9 +47,15 @@
                   <p style="border:0">暂无</p>
                 </div>
               </el-dropdown-item>
-              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: noticeList.length > 5 ? '1px' : '', paddingBottom: '1px',maxHeight:'230px', height: noticeList.length === 1 ? '39px' : noticeList.length * 37 + (noticeList.length < 5 ? 5 : 10) + 'px'}">
+              <el-dropdown-item class="clearfix" v-else :style="{paddingBottom: noticeList.length > 5 ? '1px' : '0',maxHeight:'220px', height: noticeList.length === 1 ? '39px' : noticeList.length * 37 + (noticeList.length <= 5 ? 5 : 10) + 'px'}">
                  <el-scrollbar class="scrollbar">
-                   <notice-list :data="item" @click="handleNotice" v-for="item in noticeList" :key="item.noticeUid"></notice-list>
+                   <notice-list
+                     :data="item"
+                     @click="handleNotice"
+                     v-for="(item,index) in noticeList"
+                     :key="item.noticeUid"
+                     :class="{'is-last': noticeList.length === index + 1}"
+                   ></notice-list>
                  </el-scrollbar>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -118,7 +130,7 @@ import ImageView from './ImageView'
 import ZjyButton from '@/components/button'
 
 export default {
-  data() {
+  data () {
     return {
       visible: false,
       visible2: false,
@@ -150,7 +162,7 @@ export default {
   },
 
   methods: {
-    handleNotice(data) {
+    handleNotice (data) {
       this.visible2 = true
       this.src = data.filePath
       this.noticeTitle = data.fileName
@@ -159,21 +171,21 @@ export default {
         MSG.warning('阅读失败')
       })
     },
-    handleClick(uid, pid) {
+    handleClick (uid, pid) {
       this.uid = uid
       this.active = this.approves.find(i => i.permissionId === pid)
       this.visible = true
     },
 
-    handleRefresh() {
+    handleRefresh () {
       this.$store.dispatch('refresh')
     },
 
-    back() {
+    back () {
       window.location.href = process.env.SSO_URL
     },
 
-    logout() {
+    logout () {
       MSG.success('正在退出中...', 5000)
       this.$store.dispatch('logout').then(_ =>
         window.location.href = process.env.SSO_URL
@@ -181,23 +193,23 @@ export default {
         MSG.warning('退出失败')
       })
     },
-    isImage(filePath) {
+    isImage (filePath) {
       return /\.(jpg|png|jpeg)$/ig.test(filePath)
     }
   },
 
   computed: {
     ...mapGetters(['user', 'approves', 'todoList', 'noticeList']),
-    todoValue() {
+    todoValue () {
       return this.todoList.length
     },
-    noticeValue() {
+    noticeValue () {
       return this.noticeList.length
     },
-    componentName() {
+    componentName () {
       return this.active.approvalUri
     },
-    title() {
+    title () {
       return this.active.name
     }
   }

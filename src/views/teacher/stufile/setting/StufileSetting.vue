@@ -32,7 +32,7 @@ export default {
     return {
       rules: {
         stufileName: [
-          {required: true, message: '请输入档案名称', trigger: 'change'}
+          {required: true, whitespace: true, message: '请输入档案名称', trigger: 'change'}
           // {validator: checkExists, trigger: 'change'}
         ]
       }

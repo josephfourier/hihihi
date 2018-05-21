@@ -31,6 +31,12 @@
       :loading="loading"
       :loading-text="loadingText"
     >
+     <el-option
+        v-if="all"
+        key="-1"
+        :label="initText ? initText : '不限'"
+        value="">
+     </el-option>
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -59,6 +65,10 @@ export default {
     options: Array,
     loading: Boolean,
     initText: String,
+    all: {
+        type: Boolean,
+        default: true
+      },
     loadingText: {
       type: String,
       default () {

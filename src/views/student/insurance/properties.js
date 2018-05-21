@@ -1,4 +1,4 @@
-import { hasPermission } from '@/utils'
+import { hasPermission, dateFormat } from '@/utils'
 
 const statusFormatALL = (cellValue) => {
   return ['可申请', '申请中'][+cellValue]
@@ -69,7 +69,13 @@ export default {
     }, {
       label: '保险期限',
       prop: 'insuranceLimit'
-    }, {
+    },
+    {
+      label: '申请时间',
+      prop: 'applyDate',
+      formatter: dateFormat
+    },
+    {
       label: '状态',
       prop: 'dataStatus',
       formatter: statusFormatMY

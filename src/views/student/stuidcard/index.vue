@@ -99,7 +99,7 @@
       </div>
     </div>
     <div v-else>
-      {{ empty }}
+       <p class="warning">{{ empty || $t('zjy.process.none') }}</p>
     </div>
   </div>
 </template>
@@ -174,9 +174,14 @@ export default {
       }
       // 查询初始流程信息
       cardAPI.queryInitial(getPermissionId(this.$route)).then(response => {
-        this.steps = response.data.swmsApprovals.sort((x, y) => x.approvalStep - y.approvalStep)
-        this.step = 1
-        this.approverList = response.data[Object.keys(response.data).filter(x => Number(x) == x)]
+        if (response.data.swmsApprovals) {
+          this.steps = response.data.swmsApprovals.sort((x, y) => x.approvalStep - y.approvalStep)
+          this.step = 1
+          this.approverList = response.data[Object.keys(response.data).filter(x => Number(x) == x)]
+        } else {
+          this.steps = []
+          this.empty = this.$t('zjy.process.none')
+        }
       }).catch(error => {
         console.log(error)
       })
@@ -305,6 +310,12 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.warning {
+    color: #ED7734;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+  }
 .stuidcard {
   font-size: 12px;
   color: #333333;

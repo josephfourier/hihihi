@@ -15,7 +15,7 @@
         <td>险种类别：{{ data.insuranceCategory }}</td>
       </tr>
       <tr>
-        <td>保险费用：{{ data.insuranceCost }}</td>
+        <td>保险费用：{{ data.insuranceCost }}元</td>
         <td>保险期限：{{ data.insuranceLimit }}</td>
         <td>保险状态：{{ data.dataStatusName || '未申请' }}</td>
       </tr>
@@ -23,6 +23,11 @@
     <div class="process-item detail">
       <p class="process-item__title">详细条款</p>
       <div class="process-item__content">{{ data.detailedTerms }}</div>
+    </div>
+
+    <div class="process-item detail">
+      <p class="process-item__title">保险责任</p>
+      <div class="process-item__content">{{ data.insuranceLiability }}</div>
     </div>
 
     <div class="zjy-form" v-if="data.dataStatus === '4'">

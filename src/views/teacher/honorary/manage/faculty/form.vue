@@ -8,7 +8,6 @@
       </tr>
       <tr>
         <td>申请时间：{{ data.applyDate | dateFormat }}</td>
-        <td>年级：{{ data.year }}</td>
         <td>院系：{{ data.facultyName }}</td>
       </tr>
     </table>

@@ -26,8 +26,8 @@ export default {
       prop: 'applyDate',
       formatter: dateFormat
     }, {
-      label: '申请年份',
-      prop: 'applyYear'
+      label: '年级',
+      prop: 'year'
     }, {
       label: '假期名称',
       prop: 'holidayName'

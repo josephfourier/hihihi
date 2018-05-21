@@ -16,6 +16,10 @@
       <p class="process-item__title">详细条款</p>
       <div class="process-item__content">{{ data.detailedTerms }}</div>
     </div>
+     <div class="process-item detail">
+      <p class="process-item__title">保险责任</p>
+      <div class="process-item__content">{{ data.insuranceLiability }}</div>
+    </div>
     <div class="zjy-footer" slot="footer">
       <zjy-button type="primary" @click="$emit('update:visible', false)">关闭</zjy-button>
     </div>

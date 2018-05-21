@@ -71,9 +71,9 @@ export default {
         this.doQuery = false
         return callback(new Error('请先选择困难补助名称'))
       }
-      if (!value) {
+      if (!value.trim()) {
         this.doQuery = false
-        return callback(new Error('请输入学号'))
+        return callback(new Error('请输入学生学号'))
       } else {
         if (!this.doQuery) return
         api.queryStudent(this.formData.allsettingUid, value).then(response => {
@@ -110,7 +110,7 @@ export default {
           { required: true, message: '请选择申请日期', trigger: 'change' }
         ],
         applyReason: [
-          { required: true, message: '请填写申请原因', trigger: 'change' }
+          { required: true, whitespace: true, message: '请填写申请原因', trigger: 'change' }
         ]
       },
       optionsYears: [

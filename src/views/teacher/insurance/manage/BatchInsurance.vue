@@ -2,7 +2,7 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="80px" v-loading="loading">
       <el-form-item label="投保年级" prop="enterYear" class="inline">
-        <el-select v-model="formData.enterYear">
+        <!-- <el-select v-model="formData.enterYear">
           <el-option
             v-for="item in optionsYears"
             :key="item.value"
@@ -10,7 +10,18 @@
             :value="item.value"
           >
           </el-option>
-        </el-select>
+        </el-select> -->
+
+         <el-date-picker
+          v-model="formData.enterYear"
+          type="year"
+          format="yyyy"
+          :editable="false"
+          value-format="yyyy"
+          :clearable="false"
+          placeholder="请选择"
+        >
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="投保院系" prop="factoryCode" class="inline pull-right">
         <el-select v-model="formData.factoryCode">
@@ -198,14 +209,5 @@ export default {
       }
     }
   }
-
 }
 </script>
-
-<style lang="scss" scoped>
-  .inline {
-    .el-input {
-      width: 250px;
-    }
-  }
-</style>

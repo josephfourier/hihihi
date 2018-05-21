@@ -147,7 +147,7 @@ export default {
         this.hasError = true
       } else if (response.code === 90003) {
         this.hasError = true
-        MSG.warning('导入数据异常')
+        MSG.warning(response.message)
       } else if (response.code === 90001) {
         MSG.success('导入数据成功')
         this.show = false

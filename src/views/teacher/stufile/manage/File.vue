@@ -102,7 +102,7 @@
                 上传附件
               </el-button>
             </zjy-upload>
-            <p v-else class="file-name">{{ fileList[scope.$index].stufileName }}</p>
+            <p v-else class="file-name">{{ fileList[scope.$index].stufileOldname || fileList[scope.$index].stufileName}}</p>
           </template>
         </el-table-column>
 
@@ -163,11 +163,12 @@ import { mapGetters } from 'vuex'
 import ZjyUpload from '@/components/upload/index'
 
 export default {
+  name: 'zjy-file',
   data () {
     var checkStudent = (rule, value, callback) => {
-      if (!value) {
+      if (!value.trim()) {
         this.doQuery = false
-        return callback(new Error('请输入学号'))
+        return callback(new Error('请输入学生学号'))
       } else {
         if (!this.doQuery) return
         this.checkLoading = true
@@ -195,13 +196,13 @@ export default {
           { validator: checkStudent, trigger: 'change' }
         ],
         stufileNo: [
-          { required: true, message: '请输入档案编号', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入档案编号', trigger: 'change' }
         ],
         append: [
-          { required: true, message: '请输入档案编号', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入档案编号', trigger: 'change' }
         ],
         recipient: [
-          { required: true, message: '请输入接收人', trigger: 'change' }
+          { required: true,whitespace: true,  message: '请输入接收人', trigger: 'change' }
         ],
         stufileDate: [
           { required: true, message: '请选择建档日期', trigger: 'change' }
@@ -251,6 +252,7 @@ export default {
     deleteFile (index) {
       this.fileList[index].stufilePath = ''
       this.fileList[index].stufileName = ''
+      this.fileList[index].stufileOldname = ''
     },
 
     handleUpload (index, row) {
@@ -360,6 +362,7 @@ export default {
             if (item.stufilePath) {
               stufileListList.push({
                 listUid: item.listUid,
+                stufileOldname: item.stufileName,
                 stufileUid: item.stufileUid,
                 stufilePath: item.stufilePath,
                 swmsStufileSetting: item.swmsStufileSetting,
@@ -382,7 +385,7 @@ export default {
                 this.$emit('update:visible', false)
                 this.$emit('refresh')
               } else {
-                this.$alert(response.message)
+                MSG.warning(response.message)
               }
             }).catch(error => {
               console.log(error)

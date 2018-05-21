@@ -69,7 +69,7 @@ export default {
         this.doQuery = false
         return callback(new Error('请先选择荣誉称号名称'))
       }
-      if (!value) {
+      if (!value.trim()) {
         this.doQuery = false
         return callback(new Error('请输入学生学号'))
       } else {
@@ -98,7 +98,7 @@ export default {
       formData: {},
       rules: {
         studentCode: [
-          { required: true, message: '请输入学生学号', trigger: 'blur' },
+          { required: true, whitespace: true, message: '请输入学生学号', trigger: 'blur' },
           { validator: checkStudent, trigger: 'change' }
         ],
         honorarysettingUid: [
@@ -110,7 +110,7 @@ export default {
           { required: true, message: '请选择申请日期', trigger: 'change' }
         ],
         applyReson: [
-          { required: true, message: '请填写申请原因', trigger: 'change' }
+          { required: true, whitespace: true, message: '请填写申请原因', trigger: 'change' }
         ]
       }
     }

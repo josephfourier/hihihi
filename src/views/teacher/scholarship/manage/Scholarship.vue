@@ -72,9 +72,9 @@ export default {
         this.doQuery = false
         return callback(new Error('请先选择奖学金名称'))
       }
-      if (!value) {
+      if (!value.trim()) {
         this.doQuery = false
-        return callback(new Error('请输入学号'))
+        return callback(new Error('请输入学生学号'))
       } else {
         if (!this.doQuery) return
         api.queryStudent(value, this.formData.scholarshipsettingUid).then(response => {
@@ -100,7 +100,7 @@ export default {
       formData: {},
       rules: {
         studentCode: [
-          { required: true, message: '请输入学生学号', trigger: 'blur' },
+          { required: true, whitespace: true, message: '请输入学生学号', trigger: 'blur' },
           { validator: checkStudent, trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
@@ -113,7 +113,7 @@ export default {
           { required: true, message: '请选择申请日期', trigger: 'change' }
         ],
         applyReson: [
-          { required: true, message: '请填写申请原因', trigger: 'change' }
+          { required: true, whitespace: true, message: '请填写申请原因', trigger: 'change' }
         ]
       },
       optionsYears: [

@@ -67,28 +67,28 @@ export default {
       formData: {},
       rules: {
         insuranceName: [
-          { required: true, message: '请输入保险名称', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入保险名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change' }
         ],
         insuranceCompany: [
-          { required: true, message: '请输入保险公司名称', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入保险公司名称', trigger: 'change' }
         ],
         insuranceCategory: [
-          { required: true, message: '请输入险种类别', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入险种类别', trigger: 'change' }
         ],
         insuranceLimit: [
-          { required: true, message: '请输入保险期限', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入保险期限', trigger: 'change' },
           { validator: isInsuranceLimit, trigger: 'change' }
         ],
         insuranceCost: [
-          { required: true, message: '请输入保险费用', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入保险费用', trigger: 'change' },
           { validator: isInsuranceCost, trigger: 'change' }
         ],
         detailedTerms: [
-          { required: true, message: '请输入详细条款', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入详细条款', trigger: 'change' }
         ],
         insuranceLiability: [
-          { required: true, message: '请输入保险责任', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入保险责任', trigger: 'change' }
         ],
         isOpen: [
           { required: true, message: '请选择是否开放申请', trigger: 'change' }

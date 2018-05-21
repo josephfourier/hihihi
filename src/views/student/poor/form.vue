@@ -72,26 +72,26 @@ export default {
       innerVisible: true,
       rules: {
         totalPopulation: [
-          { required: true, message: '请输入家庭总人口数', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入家庭总人口数', trigger: 'change' },
           { validator: limited, trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change' }
         ],
         annualIncome: [
-          { required: true, message: '请输入家庭年收入', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入家庭年收入', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
         pcmIncome: [
-          { required: true, message: '请输入人均月收入', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入人均月收入', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
         poorType: [
           { type: 'array', required: true, message: '请至少选择一种家庭困难类型', trigger: 'change' }
         ],
         poorDescription: [
-          { required: true, message: '请输入家庭困难情况', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入家庭困难情况', trigger: 'change' }
         ],
         receivedFunding: [
-          { required: true, message: '请输入曾受资助情况', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入曾受资助情况', trigger: 'change' }
         ]
       }
     }

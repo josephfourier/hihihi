@@ -6,7 +6,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="学号" prop="studentCode" class="inline">
-            <el-input v-model="studentCode" disabled :class="['search-input']">
+            <el-input v-model="studentCode" readonly :class="['search-input']">
               <div class="search" slot="append">
                 <img src="@/assets/imgs/zjy-icon-search.png" alt="搜索">
               </div>
@@ -15,38 +15,38 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="学生姓名" prop="studentName" class="inline pull-right">
-            <el-input v-model="data.studentName" disabled></el-input>
+            <el-input v-model="data.studentName" readonly></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="班级" prop="className" class="inline">
-        <el-input v-model="data.className" disabled></el-input>
+        <el-input v-model="data.className" readonly></el-input>
       </el-form-item>
       <el-form-item label="院系" prop="facultyName" class="inline pull-right">
-        <el-input v-model="data.facultyName" disabled></el-input>
+        <el-input v-model="data.facultyName" readonly></el-input>
       </el-form-item>
 
       <el-form-item label="档案编号" prop="stufileNo" class="inline pull-left">
-        <el-input type="text" v-model="data.stufileNo" disabled></el-input>
+        <el-input type="text" v-model="data.stufileNo" readonly></el-input>
       </el-form-item>
 
        <el-form-item label="建档日期" prop="stufileDate" class="inline pull-right">
-           <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" disabled></el-date-picker>
+           <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" readonly></el-date-picker>
           </el-form-item>
       <!-- <span class="concat">+ 学号 +</span>
       <el-form-item  class="inline pull-right append" prop="append">
-        <el-input type="text" v-model="data.append" disabled></el-input>
+        <el-input type="text" v-model="data.append" readonly></el-input>
       </el-form-item> -->
       <el-row>
         <el-col :span="12">
           <el-form-item label="接收人" prop="recipient" class="inline pull-left">
-            <el-input type="text" v-model="data.recipient" disabled></el-input>
+            <el-input type="text" v-model="data.recipient" readonly></el-input>
           </el-form-item>
 
         </el-col>
         <!-- <el-col :span="12">
           <el-form-item label="建档日期" prop="stufileDate" class="pull-right">
-           <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" disabled></el-date-picker>
+           <el-date-picker type="date" :editable="false" placeholder="选择日期" v-model="data.stufileDate" style="width: 100%;position:absolute;" readonly></el-date-picker>
           </el-form-item>
         </el-col> -->
       </el-row>
@@ -80,7 +80,7 @@
                 上传附件
               </el-button>
             </zjy-upload>
-            <p v-else class="file-name">{{ fileList[scope.$index].stufileName }}</p>
+            <p v-else class="file-name">{{ fileList[scope.$index].stufileOldname }}</p>
           </template>
         </el-table-column>
 
@@ -122,7 +122,7 @@
     </div>
     <template v-if="data.stufileDescription">
       <p class="zjy-form__title">档案说明</p>
-      <zjy-input type="textarea" v-model="data.stufileDescription" disabled></zjy-input>
+      <zjy-input type="textarea" v-model="data.stufileDescription" readonly></zjy-input>
     </template>
 
     <div class="zjy-footer">
@@ -138,6 +138,7 @@ import { mapGetters } from 'vuex'
 import ZjyUpload from '@/components/upload/index'
 
 export default {
+  name: 'zjy-file-view',
   data () {
     return {
       data: {},

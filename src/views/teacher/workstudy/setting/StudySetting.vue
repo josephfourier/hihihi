@@ -81,7 +81,7 @@ export default {
       },
       rules: {
         postName: [
-          { required: true, message: '请输入岗位名称', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入岗位名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         specialtyId: [
@@ -89,12 +89,12 @@ export default {
         ],
 
         numberLimit: [
-          { required: true, message: '请输入名额限制', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入名额限制', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
 
         salary: [
-          { required: true, message: '请输入薪资待遇', trigger: 'change' },
+          { required: true,whitespace: true,  message: '请输入薪资待遇', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
         startDate: [

@@ -1,9 +1,9 @@
 <template>
   <div class="zjy-app">
     <zjy-table-search>
-      <search-select label="类别" :options="types" :value.sync="category"></search-select>
+      <search-date label="年份" :value.sync="applyYear"></search-date>
+      <search-select label="类别" :options="types" :value.sync="category" :all="false"></search-select>
       <search-select label="范围" :options="myFacultyList" :value.sync="facultyCode"></search-select>
-      <search-select label="年份" :options="years" :value.sync="applyYear"></search-select>
       <search-button @query="searchFilter"></search-button>
     </zjy-table-search>
 
@@ -32,7 +32,7 @@ import ZjyTableSearch from '@/components/table-search'
 import SearchButton from '@/components/table-search/search-button'
 import SearchSelect from '@/components/table-search/search-select'
 import PieChart from '@/components/echart/pieChart'
-
+import SearchDate from '@/components/table-search/search-date'
 import properties from './properties'
 import api from './api'
 import { mapGetters } from 'vuex'
@@ -46,8 +46,7 @@ export default {
       category: '',
       // facultyList: [],
       facultyCode: '',
-      years: properties.optionsYears,
-      applyYear: '',
+      applyYear: new Date().getFullYear().toString(),
       query: properties.query,
 
       loading: false,
@@ -143,6 +142,7 @@ export default {
     ZjyTableSearch,
     SearchButton,
     SearchSelect,
+    SearchDate,
 
     PieChart
   },

@@ -2,7 +2,7 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="120px">
       <el-form-item label="困难补助名称" prop="allowanceName" class="block">
-        <el-input v-model="formData.allowanceName" :maxlength="128"></el-input>
+        <el-input v-model="formData.allowanceName" :maxlength="128" v-notnull @change="handleChange"></el-input>
       </el-form-item>
 
       <el-form-item label="名额限制" prop="numberLimit" class="inline">
@@ -85,24 +85,24 @@ export default {
       },
       rules: {
         allowanceName: [
-          { required: true, message: '请输入困难补助名称', trigger: 'change' }
+          { required: true,  whitespace: true, message: '请输入困难补助名称', trigger: 'change' },
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         grantWay: [
           { required: true, message: '请选择发放方式', trigger: 'change' }
         ],
         money: [
-          { required: true, message: '请输入金额', trigger: 'change' },
+          { required: true,  whitespace: true, message: '请输入金额', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
 
         numberLimit: [
-          { required: true, message: '请输入名额限制', trigger: 'change' },
+          { required: true,  whitespace: true, message: '请输入名额限制', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
 
         grantObject: [
-          { required: true, message: '请输入发放对象', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入发放对象', trigger: 'change' },
         ],
         startDate: [
           { required: true, message: '请选择起始日期', trigger: 'change' }
@@ -117,7 +117,17 @@ export default {
     }
   },
 
+  directives: {
+    notnull: {
+      update (el) {
+      }
+    }
+  },
+
   methods: {
+    handleChange(val) {
+      console.log(val)
+    },
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

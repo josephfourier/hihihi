@@ -111,31 +111,31 @@ export default {
       // optionsWays: [],
       rules: {
         scholarshipName: [
-          { required: true, message: '请输入奖学金名称', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入奖学金名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change' }
         ],
         grantWay: [
           { required: true, message: '请选择发放方式', trigger: 'change' }
         ],
         insuranceCategory: [
-          { required: true, message: '请输入险种类别', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入险种类别', trigger: 'change' }
         ],
         numberLimit: [
-          { required: true, message: '请输入名额限制', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入名额限制', trigger: 'change' },
           { validator: validateLimit, trigger: 'change' }
         ],
         grantObject: [
-          { required: true, message: '请输入发放对象', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入发放对象', trigger: 'change' }
         ],
         scholarshipLevel: [
-          { required: true, message: '请输入奖学金级别', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入奖学金级别', trigger: 'change' }
         ],
         money: [
-          { required: true, message: '请输入金额', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入金额', trigger: 'change' },
           { validator: validateLimit, trigger: 'change' }
         ],
         description: [
-          { required: true, message: '请输入申请说明', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入申请说明', trigger: 'change' }
         ],
         startDate: [
           // { validator: validateStartDate, trigger: 'change' },

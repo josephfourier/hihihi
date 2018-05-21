@@ -94,7 +94,7 @@ export default {
       ],
       rules: {
         honoraryName: [
-          { required: true, message: '请输入荣誉称号名称', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入荣誉称号名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change' }
         ],
         honoraryCategory: [
@@ -102,12 +102,12 @@ export default {
         ],
 
         numberLimit: [
-          { required: true, message: '请输入名额限制', trigger: 'change' },
+          { required: true, whitespace: true, message: '请输入名额限制', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
 
         honoraryIntroduction: [
-          { required: true, message: '请输入荣誉称号简介', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入荣誉称号简介', trigger: 'change' }
         ],
         startDate: [
           { required: true, message: '请选择起始日期', trigger: 'change' }

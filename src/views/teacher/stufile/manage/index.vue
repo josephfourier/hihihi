@@ -192,7 +192,7 @@ export default {
         this.hasError = true
       } else if (response.code === 90003) {
         this.hasError = true
-        MSG.warning('导入数据异常')
+        MSG.warning(response.message)
       } else if (response.code === 90001) {
         MSG.success('导入数据成功')
         this.show = false
@@ -393,6 +393,7 @@ export default {
           for (let i = 0; i < this.fileList.length; ++i) {
             for (let j = 0; j < _.length; ++j) {
               if (_[j].swmsStufileSetting && this.fileList[i].stufilesettingUid == _[j].swmsStufileSetting.stufilesettingUid) {
+                this.fileList[i].stufileOldname = _[j].stufileOldname
                 this.fileList[i].stufileName = _[j].swmsStufileSetting.stufileName
                 this.fileList[i].stufilePath = _[j].stufilePath
                 this.fileList[i].listUid = _[j].listUid
@@ -451,9 +452,11 @@ export default {
           }
 
           for (let i = 0; i < this.fileList.length; ++i) {
+            // this.fileList[i].stufileName = this.fileList[i].stufileOldname
             for (let j = 0; j < _.length; ++j) {
               if (_[j].swmsStufileSetting && this.fileList[i].stufilesettingUid == _[j].swmsStufileSetting.stufilesettingUid) {
                 this.fileList[i].stufileName = _[j].swmsStufileSetting.stufileName
+                this.fileList[i].stufileOldname = _[j].stufileOldname
                 this.fileList[i].stufilePath = _[j].stufilePath
                 this.fileList[i].listUid = _[j].listUid
               }

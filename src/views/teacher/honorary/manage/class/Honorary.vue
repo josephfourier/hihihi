@@ -78,7 +78,7 @@ export default {
           { required: true, message: '请选择申请日期', trigger: 'change' }
         ],
         applyReson: [
-          { required: true, message: '请填写申请原因', trigger: 'change' }
+          { required: true, whitespace: true, message: '请填写申请原因', trigger: 'change' }
         ]
       }
     }

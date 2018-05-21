@@ -102,11 +102,13 @@ export default {
 
     edit (row) {
       this.formData = row
+      this.formData.applyYear = this.formData.applyYear.toString()
       this.visible = true
     },
 
     view (row) {
       this.formData = row
+      this.formData.applyYear = this.formData.applyYear.toString()
       this.visible2 = true
     },
 
@@ -114,18 +116,22 @@ export default {
       if (this.type === +this.$t('zjy.operator.EDIT')) {
         api.update(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('修改成功')
+            setTimeout(_ => {
+              MSG.success('修改成功')
+            }, 200)
             this.refresh().visible = false
           }
         })
       } else {
         api.create(formData).then(response => {
           if (response.code !== 1) {
-            this.$alert(response.message)
+            MSG.warning(response.message)
           } else {
-            MSG.success('新建成功')
+            setTimeout(_ => {
+              MSG.success('新建成功')
+            }, 200)
             this.refresh().visible = false
           }
         })

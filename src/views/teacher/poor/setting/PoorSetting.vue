@@ -2,15 +2,16 @@
   <div class="zjy-form">
     <el-form :model="formData" :rules="rules" ref="formData" label-width="80px">
       <el-form-item label="申请学年" prop="applyYear" class="inline">
-        <el-select v-model="formData.applyYear">
-          <el-option
-            v-for="item in optionsYears"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >{{ item.label }}
-          </el-option>
-        </el-select>
+        <el-date-picker
+          v-model="formData.applyYear"
+          type="year"
+          format="yyyy"
+          :editable="false"
+          value-format="yyyy"
+          :clearable="false"
+          placeholder="请选择"
+        >
+        </el-date-picker>
       </el-form-item>
 
       <el-form-item label="申请时间" required>
@@ -60,20 +61,6 @@ export default {
     return {
       formData: {},
       ingore: '',
-      optionsYears: [
-        {
-          label: '2017年',
-          value: 2017
-        },
-        {
-          label: '2018年',
-          value: 2018
-        },
-        {
-          label: '2019年',
-          value: 2019
-        }
-      ],
       startOption: {
         disabledDate: (time) => {
           const endDate = this.formData.endDate
@@ -94,7 +81,7 @@ export default {
           { validator: checkYear, trigger: 'change' }
         ],
         applyDescription: [
-          { required: true, message: '请输入申请说明', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入申请说明', trigger: 'change' }
         ],
         startDate: [
           { required: true, message: '请选择起始日期', trigger: 'change' }

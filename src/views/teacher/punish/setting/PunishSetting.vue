@@ -27,11 +27,11 @@ export default {
       formData: {},
       rules: {
         punishName: [
-          { required: true, message: '请输入违纪名称', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入违纪名称', trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         punishtDescription: [
-          { required: true, message: '请输入违纪说明', trigger: 'change' }
+          { required: true, whitespace: true, message: '请输入违纪说明', trigger: 'change' }
         ]
       }
     }

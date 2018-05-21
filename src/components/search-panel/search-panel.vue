@@ -18,7 +18,7 @@
           <option-content :option="item"></option-content>
         </el-radio>
       </el-radio-group>
-      
+
       <p class="zjy-search-panel__empty" v-show="hasNoMatch">{{ empty }}
       </p>
       <p class="zjy-search-panel__footer" v-if="hasFooter">
@@ -33,7 +33,7 @@ export default {
   name: 'search-panel',
   componentName: 'search-panel',
 
-  data() {
+  data () {
     return {
       inputHover: false,
       query: '',
@@ -56,7 +56,7 @@ export default {
     },
     defaultChecked: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -66,18 +66,18 @@ export default {
     },
     data: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     }
   },
 
   computed: {
-    labelProp() { return this.props['label'] || 'label' },
+    labelProp () { return this.props['label'] || 'label' },
 
-    keyProp() { return this.props['key'] || 'key' },
+    keyProp () { return this.props['key'] || 'key' },
 
-    filteredData() {
+    filteredData () {
       return this.data.filter(x => {
         if (typeof this.filterMethod === 'function') {
           return this.filterMethod(this.query, x)
@@ -88,17 +88,17 @@ export default {
       })
     },
 
-    hasNoMatch() {
+    hasNoMatch () {
       return this.query.length > 0 && this.filteredData.length === 0
     },
 
-    hasFooter() {
+    hasFooter () {
       return !!this.$slots.default
     }
   },
 
   methods: {
-    handleChecked(item) {
+    handleChecked (item) {
       if (this.checked.find(x => x[this.keyProp] === item[this.keyProp])) return false
       else {
         this.checked.splice(0, this.checked.length)
@@ -107,7 +107,7 @@ export default {
       }
     },
 
-    handleChange(key) {
+    handleChange (key) {
       const item = this.filteredData.find(x => x[this.keyProp] === key)
       this.$emit('option-checked', item)
     }
@@ -119,7 +119,7 @@ export default {
         option: Object
       },
 
-      render(h) {
+      render (h) {
         const getParent = vm => {
           if (vm.$options.componentName === 'search-panel') {
             return vm
@@ -139,7 +139,7 @@ export default {
   watch: {
     defaultChecked: {
       immediate: true,
-      handler(val, oldVal) {
+      handler (val, oldVal) {
         // if (oldVal && val.length === oldVal.length && val.every(x => oldVal.indexOf(x) > -1)) return
         if (this.type === 'radio') {
           val.forEach(x => { if (x < this.filteredData.length) this.radio = this.filteredData[x][this.keyProp] })
@@ -153,7 +153,7 @@ export default {
       }
     },
 
-    clearChecked(val) {
+    clearChecked (val) {
       if (val) {
         this.checked = []
         this.radio = ''

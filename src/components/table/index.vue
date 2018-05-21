@@ -45,6 +45,7 @@
                 :label="child.label"
                 :render="child.render"
                 :cmd="child.cmd"
+                :classFormatter="child.classFormatter"
                 :formatter="child.formatter"
                 @operator="$emit(child.cmd, scope.row)"
               >
@@ -52,12 +53,15 @@
             </div>
           </template>
           <template v-else>
-          <span v-if="item.formatter">
-            {{ item.formatter(scope.row[item.prop]) }}
-          </span>
-            <span v-else>
-            {{ scope.row[item.prop] }}
-          </span>
+            <dom-render v-if="item.domRender" :option="scope.row" :func="item.domRender"></dom-render>
+            <template v-else>
+              <span v-if="item.formatter">
+                {{ item.formatter(scope.row[item.prop]) }}
+              </span>
+              <span v-else>
+                {{ scope.row[item.prop] }}
+              </span>
+            </template>
           </template>
         </template>
       </el-table-column>
@@ -121,12 +125,22 @@ export default {
   },
 
   components: {
+    DomRender: {
+      props: {
+        option: Object,
+        func: Function
+      },
+      render (h) {
+        return this.func(h, this.option)
+      }
+    },
     OperatorContent: {
       props: {
         data: Object,
         label: String,
         render: Function,
         cmd: String,
+        classFormatter: Function,
         formatter: Function
       },
 
@@ -153,7 +167,8 @@ export default {
 
       render (h) {
         const data = {
-          class: ['zjy-btn-' + this.cmd],
+          // class: ['zjy-btn-' + this.cmd, this.clz],
+          class: this.classFormatter ? this.classFormatter(this.data) : 'zjy-btn-' + this.cmd,
           on: {
             click: this.handleClick
           }
@@ -168,7 +183,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

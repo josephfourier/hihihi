@@ -1,4 +1,4 @@
-import { hasPermission, dateFormat } from '@/utils'
+import { dateFormat } from '@/utils'
 
 const statusFormat = (cellValue) => {
   return ['待审批', '已通过', '已拒绝', '审批中'][+cellValue]
@@ -27,7 +27,7 @@ export default {
       formatter: dateFormat
     }, {
       label: '年级',
-      prop: 'year'
+      prop: 'enterYear'
     }, {
       label: '假期名称',
       prop: 'holidayName'

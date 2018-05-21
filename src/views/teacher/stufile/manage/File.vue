@@ -102,7 +102,7 @@
                 上传附件
               </el-button>
             </zjy-upload>
-            <p v-else class="file-name">{{ fileList[scope.$index].stufileOldname || fileList[scope.$index].stufileName}}</p>
+            <p v-else class="file-name">{{ fileList[scope.$index].stufileOldname}}</p>
           </template>
         </el-table-column>
 
@@ -202,7 +202,7 @@ export default {
           { required: true, whitespace: true, message: '请输入档案编号', trigger: 'change' }
         ],
         recipient: [
-          { required: true,whitespace: true,  message: '请输入接收人', trigger: 'change' }
+          { required: true, whitespace: true,  message: '请输入接收人', trigger: 'change' }
         ],
         stufileDate: [
           { required: true, message: '请选择建档日期', trigger: 'change' }
@@ -282,6 +282,7 @@ export default {
 
       this.fileList[this.activeFileIndex].index = this.activeFileIndex
       this.fileList[this.activeFileIndex].stufileName = file.name
+      this.fileList[this.activeFileIndex].stufileOldname = file.name
       this.fileList[this.activeFileIndex].uid = file.uid
       this.fileList[this.activeFileIndex].stufilesettingUid = this.activeSettingId
 
@@ -362,7 +363,7 @@ export default {
             if (item.stufilePath) {
               stufileListList.push({
                 listUid: item.listUid,
-                stufileOldname: item.stufileName,
+                stufileOldname: item.stufileOldname,
                 stufileUid: item.stufileUid,
                 stufilePath: item.stufilePath,
                 swmsStufileSetting: item.swmsStufileSetting,
@@ -400,7 +401,7 @@ export default {
                 this.$emit('update:visible', false)
                 this.$emit('refresh')
               } else {
-                this.$alert(response.message)
+                MSG.warning(response.message)
               }
             }).catch(error => {
               console.log(error)

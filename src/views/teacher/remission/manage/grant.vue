@@ -31,7 +31,7 @@
               </div>
             </transition>
           </div>
-          <div slot="tip" class="upload__tip">只能上传excel,word,ppt及图片格式文件</div>
+          <div slot="tip" class="upload__tip">请上传doc,docx,pdf,xls,xlsx,ppt,pptx,jpg,png,jpeg格式文件</div>
         </el-upload>
       </el-form-item>
 

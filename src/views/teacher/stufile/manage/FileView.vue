@@ -55,8 +55,12 @@
     <p class="zjy-form__title" v-if="fileList.length > 0">档案材料清单</p>
 
     <div class="zjy-table" v-if="fileList.length > 0">
-      <el-table :data="fileList" style="width: 100%" :show-header="false" border element-loading-background="rgba(0, 0, 0, 0.2)">
-
+      <el-table 
+        :data="fileList"
+        :show-header="false" 
+        border 
+        element-loading-background="rgba(0, 0, 0, 0.2)"
+      >
         <el-table-column label="材料名称" width="250">
           <template slot-scope="scope">
             <p class="setting-name">{{ scope.row.stufileName }}</p>
@@ -84,11 +88,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="268">
           <template slot-scope="scope">
             <transition name="breadcrumb1">
               <div v-if="fileList[scope.$index].stufilePath">
-
                 <div class="table-oper-group">
                   <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download" download>
                     <i class="zjy-icon"></i>

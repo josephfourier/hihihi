@@ -22,6 +22,17 @@
           :on-error="handleError"
           :on-progress="handleProgress"
           :show-file-list="false"
+          accept="
+                image/jpeg,
+                image/png,
+                application/msword,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                application/vnd.ms-excel,
+                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                application/vnd.ms-powerpoint,
+                application/pdf
+              "
         >
           <div class="upload-wrapper" style="display:flex;flex-direction:row"> 
             <el-button size="small" type="primary" class="upload-btn" @click="handleClick">上传附件</el-button>
@@ -31,7 +42,7 @@
               </div>
             </transition>
           </div>
-          <div slot="tip" class="upload__tip">只能上传excel,word,ppt及图片格式文件</div>
+          <div slot="tip" class="upload__tip">请上传doc,docx,pdf,xls,xlsx,ppt,pptx,jpg,png,jpeg格式文件</div>
         </el-upload>
       </el-form-item>
 
@@ -111,7 +122,14 @@ export default {
   methods: {
     handleClick () {
     },
+      isAcceptedFile (file) {
+      return /\.(jpeg|jpg|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/gi.test(file.name)
+    },
     handleBeforeUpload(file) {
+      if (!this.isAcceptedFile(file)) {
+        MSG.warning('不支持的文件格式')
+        return false
+      }
       this.done = false
       this.showPercent = true
     },

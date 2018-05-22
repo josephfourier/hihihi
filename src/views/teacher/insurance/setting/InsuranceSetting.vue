@@ -50,6 +50,7 @@ import validator from '@/utils/validator'
 export default {
   data () {
     const isInsuranceLimit = (rule, value, callback) => {
+     
       if (!validator.isNumber(+value) || !/^\d{1,3}\.?\d?$/.test(value)) {
         return callback(new Error('请输入合法数字,如1.5'))
       } else if (+value > 999) {
@@ -58,7 +59,7 @@ export default {
       callback()
     }
     const isInsuranceCost = (rule, value, callback) => {
-      if (!validator.isInteger(+value) || +value < 0) {
+      if (!validator.isInteger(value) || +value < 0) {
         return callback(new Error('请输入合法数字,如15'))
       }
       callback()
@@ -77,11 +78,11 @@ export default {
           { required: true, whitespace: true, message: '请输入险种类别', trigger: 'change' }
         ],
         insuranceLimit: [
-          { required: true, whitespace: true, message: '请输入保险期限', trigger: 'change' },
+          { required: true, message: '请输入保险期限', trigger: 'change' },
           { validator: isInsuranceLimit, trigger: 'change' }
         ],
         insuranceCost: [
-          { required: true, whitespace: true, message: '请输入保险费用', trigger: 'change' },
+          { required: true, message: '请输入保险费用', trigger: 'change' },
           { validator: isInsuranceCost, trigger: 'change' }
         ],
         detailedTerms: [

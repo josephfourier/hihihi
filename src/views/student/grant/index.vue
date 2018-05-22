@@ -58,18 +58,23 @@ export default {
       visible: false,
       columns: properties.columnsFile,
       have: '',
-      notHave: ''
+      notHave: '',
+      done: false
     }
   },
   methods: {
     handleClick () {
-      api.queryMy(1).then(response => {
-        if (response.data) {
-          this.have = true
-        } else {
-          this.notHave = true
-        }
-      })
+      if (!this.done)
+        api.queryMy(1).then(response => {
+          if (response.data) {
+            this.have = true
+            this.notHave = false
+          } else {
+            this.notHave = true
+            this.have = false
+          }
+          // this.done = true
+        })
     },
     refresh () {
       this.loading = true

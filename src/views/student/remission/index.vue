@@ -60,16 +60,20 @@ export default {
       columns: properties.columnsFile,
 
       have: '',
-      notHave: ''
+      notHave: '',
+      done: false
     }
   },
   methods: {
      handleClick () {
+      if (!this.done)
       api.queryMy(2).then(response => {
         if (response.data) {
           this.have = true
+          this.notHave = false
         } else {
           this.notHave = true
+          this.have = false
         }
       })
     },

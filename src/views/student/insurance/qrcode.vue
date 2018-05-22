@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" v-if="url">
     <img src="./img_zf.png" alt="" class="img img1">
-    <img :src="url" alt="" class="img img2">
+    <img :src="url" alt="支付二维码" class="img img2">
     <p class="tip">请扫描二维码支付</p>
   </div>
 </template>

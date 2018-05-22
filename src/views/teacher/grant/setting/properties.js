@@ -9,7 +9,7 @@ export default {
     offset: 0,
     limit: 10,
     functionClass: '1',
-    applyYear: '',
+    applyYear: new Date().getFullYear().toString(),
     facultyCode: '',
     classId: '',
     studentCode: ''

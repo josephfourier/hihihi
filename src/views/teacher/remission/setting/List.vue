@@ -222,7 +222,7 @@ export default {
 
     clearSearch () {
       this.query.classId = ''
-      this.query.applyYear = ''
+      this.query.applyYear = new Date().getFullYear().toString()
       this.query.facultyCode = ''
       this.query.studentCode = ''
     },

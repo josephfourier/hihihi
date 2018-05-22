@@ -3,6 +3,9 @@ const isNumber = value => {
   return typeof value === 'number'
 }
 const isInteger = value => {
+  if (typeof value === 'string' && value.trim() === '') return false
+  if (typeof value === 'string' && value.indexOf(' ') > -1) return false
+  value = +value
   return isNumber(value) && parseInt(value, 10) === value
 }
 const isFloat = value => {

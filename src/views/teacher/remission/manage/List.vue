@@ -59,7 +59,7 @@ export default {
 
   methods: {
     clearSearch () {
-      this.query.applyYear = ''
+      this.query.applyYear = new Date().getFullYear().toString()
       this.query.studentCode = ''
     },
     searchFilter () {
@@ -138,7 +138,7 @@ export default {
   },
   created () {
     // 重新渲染时先清除搜索条件
-    this.clearSearch()
+    // this.clearSearch()
   },
 
   watch: {

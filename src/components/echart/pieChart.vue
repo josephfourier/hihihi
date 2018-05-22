@@ -17,7 +17,7 @@ export default {
           // {a} series - name
           // formatter: '{a} <br/>{b}: {c} ({d}%)'
           formatter: (params) => {
-            return params.name.replace(/[0-9.%]/gi, '') + params.data.value + ' (' + params.percent + ')%'
+            return params.name + ' ' + params.data.value + ' (' + params.percent + ')%'
           }
         },
         color: this.innerColor,
@@ -33,15 +33,17 @@ export default {
           }
         },
         legend: {
-          bottom: 0,
-          left: 'center',
+          x: 'center',
+          y: 'bottom',
+          itemHeight: 10,
           data: this.legendData
         },
         series: [
           {
             name: '',
             type: 'pie',
-            radius: ['65%', '70%'],
+            center: ['50%', '45%'],
+            radius: ['60%', '65%'],
             avoidLabelOverlap: false,
             label: {
               normal: {
@@ -82,7 +84,7 @@ export default {
     },
     height: {
       type: String,
-      default: '350px'
+      default: '380px'
     },
     title: {
       type: String,

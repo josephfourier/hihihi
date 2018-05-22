@@ -68,7 +68,7 @@ export default {
   name: 'scholarship-setting',
   data () {
     const validateLimit = (rule, value, callback) => {
-      if (!validator.isInteger(+value) || +value < 0) {
+      if (!validator.isInteger(value) || +value < 0) {
         return callback(new Error('请输入合法数字,如15'))
       }
       callback()
@@ -121,8 +121,11 @@ export default {
           { required: true, whitespace: true, message: '请输入险种类别', trigger: 'change' }
         ],
         numberLimit: [
-          { required: true, whitespace: true, message: '请输入名额限制', trigger: 'change' },
+          { required: true, message: '请输入名额限制', trigger: 'change' },
           { validator: validateLimit, trigger: 'change' }
+        ],
+        fundsSource: [
+          { required: true, whitespace: true, message: '请输入资金来源', trigger: 'change' },
         ],
         grantObject: [
           { required: true, whitespace: true, message: '请输入发放对象', trigger: 'change' }
@@ -131,7 +134,7 @@ export default {
           { required: true, whitespace: true, message: '请输入奖学金级别', trigger: 'change' }
         ],
         money: [
-          { required: true, whitespace: true, message: '请输入金额', trigger: 'change' },
+          { required: true, message: '请输入金额', trigger: 'change' },
           { validator: validateLimit, trigger: 'change' }
         ],
         description: [

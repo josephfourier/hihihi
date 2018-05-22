@@ -66,7 +66,7 @@ export default {
 
   data () {
     const limited = (rule, value, callback) => {
-      if (!validator.isInteger(+value) || +value < 0) {
+      if (!validator.isInteger(value) || +value < 0) {
         return callback(new Error('请输入合法数字,如15'))
       }
       callback()
@@ -76,16 +76,16 @@ export default {
       innerVisible: true,
       rules: {
         totalPopulation: [
-          { required: true, whitespace: true, message: '请输入家庭总人口数', trigger: 'change' },
+          { required: true, message: '请输入家庭总人口数', trigger: 'change' },
           { validator: limited, trigger: 'change' }
           // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         annualIncome: [
-          { required: true, whitespace: true, message: '请输入家庭年收入', trigger: 'change' },
+          { required: true,  message: '请输入家庭年收入', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
         pcmIncome: [
-          { required: true, whitespace: true, message: '请输入人均月收入', trigger: 'change' },
+          { required: true,  message: '请输入人均月收入', trigger: 'change' },
           { validator: limited, trigger: 'change' }
         ],
         poorType: [

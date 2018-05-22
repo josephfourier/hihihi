@@ -41,6 +41,7 @@
           @close="visible = false"
           @submit="handleSubmit"
         >
+        <p slot="warning" class="warning">教师添加无审批流程</p>
           <template slot-scope="props" slot="header">
             <zjy-form :data="props.formData"></zjy-form>
           </template>
@@ -51,6 +52,7 @@
         <batch-insurance
           v-if="visible2"
           :visible.sync="visible2"
+          @refresh="handleRefresh"
         >
         </batch-insurance>
       </el-dialog>
@@ -121,6 +123,10 @@ export default {
 
     refresh () {
       _refresh.call(this)
+    },
+
+    handleRefresh () {
+      this.refresh()
     },
 
     handleSubmit (data, steps) {

@@ -63,7 +63,7 @@
 
     </el-form>
     <div class="zjy-form__title" v-if="fileList.length > 0">
-      <p>档案材料清单<span class="warning">上传附件格式仅限为pdf、word、excel、jpg格式</span></p>
+      <p>档案材料清单<span class="warning">上传附件格式仅限为word、excel、jpg格式</span></p>
     </div>
 
     <div class="zjy-table" v-if="fileList.length > 0">
@@ -86,7 +86,6 @@
                 application/msword,
                 application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-                application/pdf
               "
               :action="action + '?index=' + scope.$index"
               :headers="{'Zjy-Token': token}"
@@ -271,7 +270,7 @@ export default {
     },
 
     isValidatedFile (file) {
-      return /\.(jpeg|jpg|doc|docx|xls|xlsx|pdf)$/gi.test(file.name)
+      return /\.(jpeg|jpg|gif|doc|docx|xls|xlsx)$/gi.test(file.name)
     },
 
     handleBeforeUpload (file) {

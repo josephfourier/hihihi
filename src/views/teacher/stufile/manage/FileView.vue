@@ -93,7 +93,7 @@
             <transition name="breadcrumb1">
               <div v-if="fileList[scope.$index].stufilePath">
                 <div class="table-oper-group">
-                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download" download>
+                  <a :href="fileList[scope.$index].stufilePath" target="_blank" class="zjy-btn-download"  download>
                     <i class="zjy-icon"></i>
                     <span>下载</span>
                   </a>

@@ -141,6 +141,7 @@ export default {
                 MSG.success('投保成功')
               }, 200)
               this.$emit('update:visible', false)
+              this.$emit('refresh')
             }
           }).catch(error => {
             console.log(error)

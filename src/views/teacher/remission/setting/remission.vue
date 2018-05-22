@@ -31,7 +31,6 @@
                 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
                 application/vnd.openxmlformats-officedocument.presentationml.presentation,
                 application/vnd.ms-powerpoint,
-                application/pdf
               "
         >
           <div class="upload-wrapper" style="display:flex;flex-direction:row">
@@ -42,7 +41,7 @@
               </div>
             </transition>
           </div>
-          <div slot="tip" class="upload__tip">请上传doc,docx,pdf,xls,xlsx,ppt,pptx,jpg,png,jpeg格式文件</div>
+          <div slot="tip" class="upload__tip">请上传doc,docx,xls,xlsx,ppt,pptx,jpg,png,jpeg格式文件</div>
         </el-upload>
       </el-form-item>
 
@@ -124,7 +123,7 @@ export default {
       // }
     },
     isAcceptedFile (file) {
-      return /\.(jpeg|jpg|png|doc|docx|xls|xlsx|pdf|ppt|pptx)$/gi.test(file.name)
+      return /\.(jpeg|jpg|png|doc|docx|xls|xlsx|ppt|pptx)$/gi.test(file.name)
     },
     handleBeforeUpload (file) {
       if (!this.isAcceptedFile(file)) {

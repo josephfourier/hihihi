@@ -134,13 +134,14 @@ export default {
       if (response.code !== 1) {
         MSG.success('获取奖学金设置失败')
       } else {
-        this.settingList = response.data.rows.map(i => {
+        this.settingList = response.data.rows.filter(j => j.isOpen === '1').map(i => {
           return {
-            label: i.scholarshipName,
-            value: i.scholarshipsettingUid,
-            grantWay: i.grantWay,
-            money: i.money,
-            scholarshipLevel: i.scholarshipLevel
+
+              label: i.scholarshipName,
+              value: i.scholarshipsettingUid,
+              grantWay: i.grantWay,
+              money: i.money,
+              scholarshipLevel: i.scholarshipLevel
           }
         })
       }

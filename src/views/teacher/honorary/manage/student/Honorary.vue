@@ -21,7 +21,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-
       <el-form-item label="申请人学号:" prop="studentCode" class="inline">
         <el-input v-model="formData.studentCode"></el-input>
         <a href="javascript:;" class="search-button" @click="query"></a>
@@ -32,17 +31,17 @@
       </el-form-item>
 
       <el-form-item label="入学年份" prop="enterYear" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input v-model="student.enterYear" disabled></el-input>
       </el-form-item>
       <el-form-item label="院系" prop="factoryCode" class="inline pull-right">
         <el-input v-model="student.facultyName" disabled></el-input>
       </el-form-item>
       <el-form-item label="专业" prop="specialtyCode" class="inline">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input v-model="student.specialtyName" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="政治面貌" prop="specialtyCode" class="inline pull-right">
-        <el-input v-model="student.facultyName" disabled></el-input>
+        <el-input :value="student.politics | politicsFormat" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="申请原因" prop="applyReson">

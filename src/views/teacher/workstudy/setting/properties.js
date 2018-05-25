@@ -27,7 +27,7 @@ export default {
       formatter: dateFormat
     },
     {
-      label: '薪资待遇',
+      label: '薪资(元)',
       prop: 'salary'
     },
     {

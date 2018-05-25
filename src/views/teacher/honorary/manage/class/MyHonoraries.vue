@@ -13,7 +13,7 @@
       </zjy-pagination>
     </div>
 
-    <el-dialog title="审批进度" :visible.sync="visible" width="800px">
+    <el-dialog title="审批进度" :visible.sync="visible" width="800px" append-to-body>
       <process-view
         :data="data"
         v-model="value"

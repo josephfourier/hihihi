@@ -9,7 +9,13 @@
     </div>
 
     <!--修复正在获取二维码时关闭窗口-->
-    <el-dialog title="审批进度" :visible.sync="visible" width="800px" @close="loading2=false;abort=true;">
+    <el-dialog 
+    title="审批进度" 
+    :visible.sync="visible" 
+    width="800px" 
+    @close="loading2=false;abort=true;"
+    append-to-body
+    >
       <process-view v-loading="loading2" element-loading-text="正在获取支付二维码" :data="data" v-model="value" v-if="visible" :visible.sync="visible">
         <template slot-scope="props" slot="header">
           <view-apply :data="props.formData" :visible.sync="visible" @submit="handleSubmit"></view-apply>
@@ -84,7 +90,7 @@ export default {
       this.abort = false
       api.pay(data.insuranceUid).then(response => {
         if (response.code !== 1 && !this.abort) {
-          MSG.warning('获取支付二维码失败')
+          MSG.warning(response.message)
         } else {
           if (!this.abort) {
             this.visible = false
@@ -113,8 +119,10 @@ export default {
 
     view (row) {
       commonAPI.queryApprovalProcess(row.studentId, row.insuranceUid).then(response => {
+        console.log(row)
         this.data = row
         this.value = response.data
+        console.log(this.value)
         this.visible = true
       })
     },

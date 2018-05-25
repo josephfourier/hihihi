@@ -17,7 +17,8 @@
       <tr>
         <td>保险费用：{{ data.insuranceCost }}元</td>
         <td>保险期限：{{ data.insuranceLimit }}</td>
-        <td>保险状态：{{ data.dataStatusName || '未申请' }}</td>
+        <td v-if="data.dataStatus">保险状态：{{ data.dataStatus | statusFormat }}</td>
+        <td v-else>保险状态：{{ data.applyStatusName }}</td>
       </tr>
     </table>
     <div class="process-item detail">
@@ -75,6 +76,9 @@ export default {
         }
       })
     }
+  },
+  filters: {
+
   },
   components: {
     ZjyButton

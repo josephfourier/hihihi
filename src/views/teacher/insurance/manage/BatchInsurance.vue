@@ -105,7 +105,6 @@ export default {
       rules: {
         enterYear: [
           {required: true, message: '请选择投保年级', trigger: 'change'}
-
         ],
         factoryCode: [
           {required: true, message: '请选择投保院系', trigger: 'change'}
@@ -200,7 +199,7 @@ export default {
             this.specialtyList = response.data.map(x => {
               return {
                 label: x.specialtyName,
-                value: x.specialtyNo
+                value: x.specialtyCode
               }
             })
           }

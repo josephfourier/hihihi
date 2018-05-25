@@ -7,7 +7,7 @@
         <td>奖学金级别：{{ data.scholarshipLevel }}</td>
       </tr>
       <tr>
-        <td>金额：{{ data.money }}</td>
+        <td>金额：{{ data.money }}元</td>
         <td>申请人：{{ data.studentName }}</td>
         <td>申请时间：{{ data.applyDate | dateFormat }}</td>
       </tr>

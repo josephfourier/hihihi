@@ -26,7 +26,7 @@ export default {
       label: '奖学金级别',
       prop: 'scholarshipLevel'
     }, {
-      label: '金额',
+      label: '金额(元)',
       prop: 'money'
     }, {
       label: '发放对象',
@@ -62,7 +62,7 @@ export default {
       label: '奖学金级别',
       prop: 'scholarshipLevel'
     }, {
-      label: '金额',
+      label: '金额(元)',
       prop: 'money'
     }, {
       label: '发放对象',

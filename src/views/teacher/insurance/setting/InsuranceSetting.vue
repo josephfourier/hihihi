@@ -1,6 +1,6 @@
 <template>
   <div class="zjy-form">
-    <el-form :model="formData" :rules="rules" ref="formData" label-width="80px">
+    <el-form :model="formData" :rules="rules" ref="formData" label-width="105px">
       <el-form-item label="保险名称" prop="insuranceName" class="block">
         <el-input v-model="formData.insuranceName" maxlength="128"></el-input>
       </el-form-item>
@@ -10,10 +10,10 @@
       <el-form-item label="险种类别" prop="insuranceCategory" class="inline pull-right">
         <el-input v-model="formData.insuranceCategory" maxlength="64"></el-input>
       </el-form-item>
-      <el-form-item label="保险期限" prop="insuranceLimit" class="inline">
+      <el-form-item label="保险期限(年)" prop="insuranceLimit" class="inline">
         <el-input v-model="formData.insuranceLimit" maxlength="5"></el-input>
       </el-form-item>
-      <el-form-item label="保险费用" prop="insuranceCost" class="inline pull-right">
+      <el-form-item label="保险费用(元)" prop="insuranceCost" class="inline pull-right">
         <el-input v-model="formData.insuranceCost" maxlength="6"></el-input>
       </el-form-item>
       <el-form-item label="详细条款" prop="detailedTerms">

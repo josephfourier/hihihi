@@ -1,7 +1,6 @@
 import { dateFormat, hasPermission } from '@/utils'
 const operFormat = (row, cellValue) => '查看'
-const statusFormat = (cellValue) => ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款'][+cellValue]
-
+const statusFormat = (cellValue) => ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款', '未缴费', '预缴费', '已缴费', '待退费', '已退费'][+cellValue]
 export default {
   query: {
     offset: 0,
@@ -53,7 +52,7 @@ export default {
       label: '险种名称',
       prop: 'insuranceName'
     }, {
-      label: '保险费用',
+      label: '保险费用(元)',
       prop: 'insuranceCost'
     }, {
       label: '状态',

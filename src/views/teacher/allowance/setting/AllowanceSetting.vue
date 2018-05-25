@@ -9,7 +9,7 @@
         <el-input v-model="formData.numberLimit" :maxlength="6"></el-input>
       </el-form-item>
 
-      <el-form-item label="金额" prop="money" class="inline pull-right">
+      <el-form-item label="金额(元)" prop="money" class="inline pull-right">
         <el-input v-model="formData.money" :maxlength="6"></el-input>
       </el-form-item>
 

@@ -12,7 +12,7 @@
     </div>
 
     <div class="zjy-dialog zjy-preview">
-      <el-dialog title="助学金文件查看" :visible.sync="visible" width="800px">
+      <el-dialog title="助学金文件查看" :visible.sync="visible" width="800px" append-to-body>
         <image-view :src="src" v-if="isImageView">
           <div class="zjy-footer">
             <zjy-button type="primary" @click="handleClick">关闭</zjy-button>

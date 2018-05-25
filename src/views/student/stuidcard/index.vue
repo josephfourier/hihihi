@@ -135,7 +135,7 @@ export default {
 
   methods: {
     submit () {
-      if (!this.reissued.applyReason) {
+      if (!this.reissued.applyReason.trim()) {
         this.error = '请填写申请原因'
         return
       }

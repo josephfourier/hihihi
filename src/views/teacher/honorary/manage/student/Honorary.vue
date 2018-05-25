@@ -21,7 +21,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="申请人学号:" prop="studentCode" class="inline">
+      <el-form-item label="申请人学号" prop="studentCode" class="inline">
         <el-input v-model="formData.studentCode"></el-input>
         <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>

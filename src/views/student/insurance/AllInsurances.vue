@@ -8,7 +8,7 @@
       </zjy-pagination>
     </div>
 
-    <el-dialog :title="title" :visible.sync="visible" width="800px">
+    <el-dialog :title="title" :visible.sync="visible" width="800px" append-to-body>
       <student-process v-if="type === +$t('zjy.operator.CREATE')" :data="data" v-model="value" :visible.sync="visible" @submit="handleSubmit">
         <template slot-scope="props" slot="header">
           <view-apply :data="props.formData"></view-apply>

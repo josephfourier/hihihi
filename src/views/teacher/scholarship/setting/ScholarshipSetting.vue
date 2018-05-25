@@ -30,7 +30,7 @@
       <el-form-item label="资金来源" prop="fundsSource" class="inline">
         <el-input type="input" v-model="formData.fundsSource" :maxlength="256"></el-input>
       </el-form-item>
-      <el-form-item label="金额" prop="money" class="inline pull-right">
+      <el-form-item label="金额(元)" prop="money" class="inline pull-right">
         <el-input type="input" v-model="formData.money" :maxlength="6"></el-input>
       </el-form-item>
       <el-form-item label="申请时间" required>

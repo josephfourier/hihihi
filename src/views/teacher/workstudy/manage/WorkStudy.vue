@@ -15,11 +15,11 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="薪资:" class="inline pull-right">
+      <el-form-item label="薪资(元)" class="inline pull-right">
         <el-input v-model="setting.salary" disabled></el-input>
       </el-form-item>
 
-     <el-form-item label="学号:" prop="studentCode" class="inline is-required">
+     <el-form-item label="学号" prop="studentCode" class="inline is-required">
         <el-input v-model="formData.studentCode"></el-input>
         <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>

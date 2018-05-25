@@ -19,13 +19,13 @@
         <el-input :value="setting.grantWay | scholarshipGrantWayFormat" disabled></el-input>
       </el-form-item>
 
-      <el-form-item label="奖学金级别:" class="inline">
+      <el-form-item label="奖学金级别" class="inline">
         <el-input v-model="setting.scholarshipLevel" disabled></el-input>
       </el-form-item>
-      <el-form-item label="金额:" class="inline pull-right">
+      <el-form-item label="金额(元)" class="inline pull-right">
         <el-input v-model="setting.money" disabled></el-input>
       </el-form-item>
-      <el-form-item label="学号:" prop="studentCode" class="inline">
+      <el-form-item label="学号" prop="studentCode" class="inline">
         <el-input v-model="formData.studentCode"></el-input>
         <a href="javascript:;" class="search-button" @click="query"></a>
       </el-form-item>

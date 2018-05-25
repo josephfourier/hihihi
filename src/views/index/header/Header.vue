@@ -171,6 +171,7 @@ export default {
         MSG.warning('阅读失败')
       })
     },
+
     handleClick (uid, pid) {
       this.uid = uid
       this.active = this.approves.find(i => i.permissionId === pid)

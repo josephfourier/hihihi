@@ -51,7 +51,7 @@ export default {
       label: '岗位名称',
       prop: 'postName'
     }, {
-      label: '薪资',
+      label: '薪资(元)',
       prop: 'salary'
     }, {
       label: '申请年份',

@@ -8,7 +8,7 @@
         <td>奖学金级别：{{ data.scholarshipLevel}}</td>
       </tr>
       <tr>
-        <td>金额：{{ data.money }}</td>
+        <td>金额：{{ data.money }}元</td>
         <td>人数限制：{{ data.numberLimit }}</td>
         <td>发放对象：{{ data.grantObject }}</td>
       </tr>

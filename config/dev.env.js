@@ -8,4 +8,6 @@ module.exports = merge(prodEnv, {
   // SSO_URL: '"http://localhost:9999/sso/login"'
   BASE_URL: '"http://120.131.10.233:30012"',
   SSO_URL: '"http://120.131.10.233:30004"'
+  // BASE_URL: '"http://swms-server.zhijiaoyun.net"',
+  // SSO_URL: '"http://web.zhijiaoyun.net"'
 })

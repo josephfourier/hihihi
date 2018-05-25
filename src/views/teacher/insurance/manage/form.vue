@@ -22,12 +22,12 @@
       <tr>
         <td>申请日期：{{ data.applyDate | dateFormat }}</td>
         <td>保险名称：{{ data.insuranceName }}</td>
-        <td>保险金额：{{ data.insuranceCost }}</td>
+        <td>保险金额：{{ data.insuranceCost }}元</td>
       </tr>
       <tr>
         <td>险种类别：{{ data.insuranceCategory }}</td>
         <td>保险期限：{{ data.insuranceLimit }}</td>
-        <td>保险状态：{{ data.dataStatusName }}</td>
+        <td>保险状态：{{  data.dataStatus | statusFormat }}</td>
       </tr>
     </table>
     <div class="process-item detail">

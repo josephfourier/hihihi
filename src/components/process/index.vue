@@ -178,7 +178,7 @@ export default {
     },
 
     innerYes () {
-      if (!this.reason) {
+      if (!this.reason.trim()) {
         this.hasNoReason = true
         return
       }

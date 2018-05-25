@@ -21,7 +21,7 @@
         <el-input v-model="formData.numberLimit" :maxlength="6"></el-input>
       </el-form-item>
 
-       <el-form-item label="薪资待遇" prop="salary" class="inline block">
+       <el-form-item label="薪资(元)" prop="salary" class="inline block">
         <el-input v-model="formData.salary" :maxlength="6"></el-input>
       </el-form-item>
 

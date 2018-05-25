@@ -20,8 +20,12 @@
       </zjy-table>
     </div>
 
-    <div class="zjy-pagination">
-      <zjy-pagination :currentPage="currentPage" :total="total" @current-change="pageChanged">
+    <div class="zjy-pagination" v-if="list.length !== 0">
+      <zjy-pagination 
+        :currentPage="currentPage" 
+        :total="total" 
+        @current-change="pageChanged"
+      >
       </zjy-pagination>
     </div>
 

@@ -17,7 +17,7 @@
     </div>
 
     <div class="zjy-dialog zjy-preview">
-      <el-dialog title="学费减免文件查看" :visible.sync="visible" width="800px">
+      <el-dialog title="学费减免文件查看" :visible.sync="visible" width="800px" append-to-body>
         <image-view :src="src" v-if="isImageView">
           <div class="zjy-footer">
             <zjy-button type="primary" @click="handleClick">关闭</zjy-button>
@@ -32,13 +32,13 @@
     </div>
 
     <div class="zjy-dialog">
-      <el-dialog title="新增文件" :visible.sync="visible2" width="800px">
+      <el-dialog title="新增文件" :visible.sync="visible2" width="800px" append-to-body>
         <zjy-remission v-if="visible2" :post="postList" :visible.sync="visible2" @submit="handleCreate"></zjy-remission>
       </el-dialog>
     </div>
 
     <div class="zjy-dialog">
-      <el-dialog title="编辑文件" :visible.sync="visible3" width="800px">
+      <el-dialog title="编辑文件" :visible.sync="visible3" width="800px" append-to-body>
         <remission-update v-if="visible3" :data="data" :post="postList" :visible.sync="visible3" @submit="handleUpdate"></remission-update>
       </el-dialog>
     </div>

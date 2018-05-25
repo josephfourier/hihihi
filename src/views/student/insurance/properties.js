@@ -4,9 +4,7 @@ const statusFormatALL = (cellValue) => {
   return ['可申请', '申请中'][+cellValue]
 }
 
-const statusFormatMY = (cellValue) => {
-  return ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款'][+cellValue]
-}
+const statusFormatMY = (cellValue) => ['待审批', '已通过', '已拒绝', '审批中', '待确认', '待付款', '未缴费', '预缴费', '已缴费', '待退费', '已退费'][+cellValue]
 
 export default {
   query: {

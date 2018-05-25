@@ -15,7 +15,7 @@ export default {
       prop: 'numberLimit'
     },
     {
-      label: '金额',
+      label: '金额(元)',
       prop: 'money'
     },
     {

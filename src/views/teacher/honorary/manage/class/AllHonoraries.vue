@@ -18,7 +18,7 @@
       </zjy-pagination>
     </div>
 
-    <el-dialog :title="title" :visible.sync="visible" width="800px">
+    <el-dialog :title="title" :visible.sync="visible" width="800px" append-to-body>
       <student-process
         v-if="visible && type === +$t('zjy.operator.CREATE')"
         :data="data"

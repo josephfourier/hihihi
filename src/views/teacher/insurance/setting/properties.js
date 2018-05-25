@@ -23,13 +23,12 @@ export default {
       prop: 'insuranceCategory'
     },
     {
-      label: '保险费用',
+      label: '保险费用(元)',
       prop: 'insuranceCost'
     },
     {
       label: '保险期限',
-      prop: 'insuranceLimit',
-      width: 80
+      prop: 'insuranceLimit'
     },
     {
       label: '操作',

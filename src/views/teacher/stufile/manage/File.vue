@@ -165,7 +165,7 @@ export default {
   name: 'zjy-file',
   data () {
     var checkStudent = (rule, value, callback) => {
-      if (!value.trim()) {
+      if (!value || !value.trim()) {
         this.doQuery = false
         return callback(new Error('请输入学生学号'))
       } else {
@@ -192,7 +192,7 @@ export default {
       action: process.env.BASE_URL + '/upload/stufileUpload',
       rules: {
         studentCode: [
-          { validator: checkStudent, trigger: 'change' }
+          { validator: checkStudent, trigger: 'blur' }
         ],
         stufileNo: [
           { required: true, whitespace: true, message: '请输入档案编号', trigger: 'change' }

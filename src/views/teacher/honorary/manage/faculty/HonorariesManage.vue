@@ -35,7 +35,7 @@
     </div>
 
     <div class="zjy-dialog">
-      <el-dialog title="院系荣誉称号审批" :visible.sync="visible" width="800px">
+      <el-dialog title="院系荣誉称号审批" :visible.sync="visible" width="800px" append-to-body>
         <zjy-process
           v-if="visible"
           :data="data"

@@ -50,7 +50,7 @@ export default {
       label: '困难补助名称',
       prop: 'allowanceName'
     }, {
-      label: '金额',
+      label: '金额(元)',
       prop: 'money'
     }, {
       label: '申请年份',
@@ -81,7 +81,7 @@ export default {
     applyYear: '',
     studentCode: ''
   },
-  header: ['学号', '学生姓名', '院系', '申请日期',  '困难补助名称', '金额', '申请年份', '状态', '申请原因'],
+  header: ['学号', '学生姓名', '院系', '申请日期',  '困难补助名称', '金额(元)', '申请年份', '状态', '申请原因'],
   filter: ['studentCode', 'studentName', 'facultyName', 'applyDate', 'allowanceName', 'money', 'applyYear', 'dataStatus', 'applyReason'],
   excelName: '困难补助申请名单'
 }

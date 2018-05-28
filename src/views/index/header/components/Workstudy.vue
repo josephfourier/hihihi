@@ -7,7 +7,7 @@
           <td>专业要求：{{ data.specialtyName }}</td>
         </tr>
         <tr>
-          <td>薪资待遇：{{ data.salary }}</td>
+          <td>薪资待遇：{{ data.salary }}元</td>
           <td>申请时间：{{ data.startDate | dateFormat }} 至 {{ data.endDate | dateFormat }}</td>
         </tr>
       </table>

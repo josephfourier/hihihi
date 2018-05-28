@@ -26,7 +26,7 @@
       </tr>
       <tr>
         <td>险种类别：{{ data.insuranceCategory }}</td>
-        <td>保险期限：{{ data.insuranceLimit }}</td>
+        <td>保险期限：{{ data.insuranceLimit }}年</td>
         <td>保险状态：{{  data.dataStatus | statusFormat }}</td>
       </tr>
     </table>

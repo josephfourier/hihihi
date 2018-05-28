@@ -24,7 +24,7 @@ export default {
       prop: 'specialtyName'
     },
     {
-      label: '薪资待遇',
+      label: '待遇(元)',
       prop: 'salary'
     },
     {
@@ -70,7 +70,7 @@ export default {
       prop: 'specialtyName'
     },
     {
-      label: '薪资待遇',
+      label: '薪资待遇(元)',
       prop: 'salary'
     },
     {

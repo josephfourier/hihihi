@@ -118,7 +118,7 @@
         </div>
         <div class="panel-wrapper">
           <search-panel
-            class="post"
+            :class="['post', {single: level !== '1'}]"
             title="选择职务"
             :data="postList"
             :props="props"
@@ -131,19 +131,19 @@
           />
 
           <transition name="el-zoom-in-center">
-          <search-panel
-            v-if="level==1"
-            class="teacher"
-            title="选择个人"
-            type="radio"
-            :data="teacherList"
-            :filterable="true"
-            :props="props"
-            :defaultChecked="defaultTeacher"
-            :clearChecked="isClearTeacher"
-            @option-checked="teacherChecked"
-            empty="无匹配项"
-          />
+            <search-panel
+              v-if="level==1"
+              class="teacher"
+              title="选择个人"
+              type="radio"
+              :data="teacherList"
+              :filterable="true"
+              :props="props"
+              :defaultChecked="defaultTeacher"
+              :clearChecked="isClearTeacher"
+              @option-checked="teacherChecked"
+              empty="无匹配项"
+            />
           </transition>
           <div class="zjy-footer clearfix">
             <zjy-button type="plain" @click="visible = false">取消</zjy-button>
@@ -699,5 +699,10 @@ export default {
 
 .zjy-footer {
   clear: both;
+}
+
+.single {
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 </style>

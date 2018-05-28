@@ -45,7 +45,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .err-container {
   min-width: 1200px;
   background-color: #02203a;

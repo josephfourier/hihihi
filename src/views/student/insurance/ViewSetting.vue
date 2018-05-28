@@ -7,8 +7,8 @@
         <td>险种类别：{{ data.insuranceCategory }}</td>
       </tr>
       <tr>
-        <td>保险费用：{{ data.insuranceCost }}</td>
-        <td>保险期限：{{ data.insuranceLimit }}</td>
+        <td>保险费用：{{ data.insuranceCost }}元</td>
+        <td>保险期限：{{ data.insuranceLimit }}年</td>
         <td>保险状态：{{ data.applyStatusName }}</td>
       </tr>
     </table>

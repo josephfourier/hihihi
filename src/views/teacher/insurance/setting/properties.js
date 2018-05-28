@@ -27,7 +27,7 @@ export default {
       prop: 'insuranceCost'
     },
     {
-      label: '保险期限',
+      label: '保险期限(年)',
       prop: 'insuranceLimit'
     },
     {

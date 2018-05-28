@@ -24,10 +24,10 @@ export default {
       label: '险种类别',
       prop: 'insuranceCategory'
     }, {
-      label: '保险费用',
+      label: '保险费用(元)',
       prop: 'insuranceCost'
     }, {
-      label: '保险期限',
+      label: '保险期限(年)',
       prop: 'insuranceLimit'
     }, {
       label: '状态',
@@ -62,10 +62,10 @@ export default {
       label: '险种类别',
       prop: 'insuranceCategory'
     }, {
-      label: '保险费用',
+      label: '保险费用(元)',
       prop: 'insuranceCost'
     }, {
-      label: '保险期限',
+      label: '保险期限(年)',
       prop: 'insuranceLimit'
     },
     {

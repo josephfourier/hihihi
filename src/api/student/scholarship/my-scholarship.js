@@ -13,11 +13,17 @@ export default {
         const code = json.code
         let rows = []
 
+        if (json.data.ucenterStudent) {
+          delete json.data.ucenterStudent.creator
+          delete json.data.ucenterStudent.ctime
+        }
+
         for (let i = 0; i < json.data.rows.length; ++i) {
           let row = {}
           selfMerge(json.data.rows[i], row)
           rows.push(row)
         }
+        console.log(rows)
         return {
           code,
           total,

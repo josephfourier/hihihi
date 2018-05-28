@@ -15,6 +15,12 @@ export default {
 
         for (let i = 0; i < json.data.rows.length; ++i) {
           let row = {}
+          if (json.data.rows[i].ucenterStudent) {
+            try {
+              delete json.data.rows[i].ucenterStudent.creator
+              delete json.data.rows[i].ucenterStudent.ctime
+            } catch (e) {}
+          }
           selfMerge(json.data.rows[i], row)
           rows.push(row)
         }

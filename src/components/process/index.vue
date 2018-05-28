@@ -69,7 +69,7 @@
     </div>
 
     <el-dialog class="inner" width="30%" title="请输入拒绝原因" :visible.sync="innerVisible" append-to-body>
-      <zjy-input class="zjy-process--textarea" type="textarea" v-model="reason" :maxlength="256"></zjy-input>
+      <zjy-input class="zjy-process--textarea" type="textarea" v-model.trim="reason" :maxlength="256"></zjy-input>
       <transition name="el-zoom-in-top">
         <div class="tip-box">
           <transition name="el-zoom-in-top">

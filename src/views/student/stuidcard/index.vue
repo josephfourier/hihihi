@@ -32,7 +32,7 @@
       </div>
       <div class="form-item block">
         <span>申请原因</span>
-        <zjy-input type="textarea" v-model="reissued.applyReason" :disabled="isProcessing" :maxlength="256"></zjy-input>
+        <zjy-input type="textarea" v-model.trim="reissued.applyReason" :disabled="isProcessing" :maxlength="256"></zjy-input>
       </div>
       <div class="tip-box">
         <transition name="el-zoom-in-top">

@@ -1,10 +1,10 @@
 <template>
   <div class="process" v-loading="loading">
     <table class="process-table">
-      <tr>
+            <tr>
         <td>学号：<span>{{ data.studentCode }}</span></td>
         <td>学生姓名：<span>{{ data.studentName }}</span></td>
-        <td>年级：<span>{{ data.facultyName }}</span></td>
+        <td>年级：<span>{{ data.year }}</span></td>
         <td>院系：<span>{{ data.facultyName }}</span></td>
       </tr>
       <tr>

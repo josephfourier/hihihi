@@ -32,7 +32,7 @@
     <div class="process-item" v-else style="margin-bottom: 0;">
       <p class="process-item__title">留校原因</p>
       <div class="process-item__content">
-        <zjy-input type="textarea" v-model="innerReason" @change="$emit('update:reason', innerReason)"
+        <zjy-input type="textarea" v-model.trim="innerReason" @change="$emit('update:reason', innerReason)"
                    :maxlength="1024"></zjy-input>
         <div class="tip-box">
           <transition name="el-zoom-in-top">

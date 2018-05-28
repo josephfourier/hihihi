@@ -30,7 +30,7 @@
     <div class="process-item" style="margin-bottom: 0;margin-top: -18px;">
       <p class="process-item__title">留校原因</p>
       <div class="process-item__content">
-        <zjy-input type="textarea" v-model="innerReason" @change="$emit('update:reason', innerReason)" :maxlength="1024"></zjy-input>
+        <zjy-input type="textarea" v-model.trim="innerReason" @change="$emit('update:reason', innerReason)" :maxlength="1024"></zjy-input>
         <div class="tip-box">
           <transition name="el-zoom-in-top">
             <span class="tip reason" v-if="hasError && !innerReason" style="position: relative;top: -3px;">请填写申请原因</span>

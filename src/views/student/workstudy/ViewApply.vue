@@ -27,7 +27,7 @@
           <span v-if="data.dataStatus && data.dataStatus !== '0'">{{ innerApplyReason }}</span>
           <zjy-input
             type="textarea"
-            v-model="innerApplyReason"
+            v-model.trim="innerApplyReason"
             @change="$emit('update:applyReason', innerApplyReason)"
             v-else
             :maxlength="1024"

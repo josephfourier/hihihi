@@ -20,7 +20,7 @@
       <div class="process-item" style="margin-bottom: 0;">
         <p class="process-item__title">申请原因</p>
         <div class="process-item__content">
-          <zjy-input type="textarea" v-model="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :maxlength="1024"></zjy-input>
+          <zjy-input type="textarea" v-model.trim="innerApplyReason" @change="$emit('update:applyReason', innerApplyReason)" :maxlength="1024"></zjy-input>
           <div class="tip-box">
             <transition name="el-zoom-in-top">
               <span class="tip reason" v-if="hasError && !innerApplyReason" style="position: relative;top: -3px;">请填写申请原因</span>

@@ -8,11 +8,11 @@
       </tr>
       <tr>
         <td>院系：{{ data.facultyName }}</td>
-        <td>家庭总人口：{{ data.totalPopulation }}</td>
-        <td>家庭年收入：{{ data.annualIncome }}</td>
+        <td>家庭总人口：{{ data.totalPopulation }}人</td>
+        <td>家庭年收入：{{ data.annualIncome }}元</td>
       </tr>
       <tr>
-        <td>人均月收入：{{ data.pcmIncome }}</td>
+        <td>人均月收入：{{ data.pcmIncome }}元</td>
         <td>家庭困难类型：{{ data.poorType | poorTypeFormat }}</td>
       </tr>
     </table>

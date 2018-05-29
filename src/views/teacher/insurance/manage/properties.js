@@ -30,6 +30,21 @@ export default {
     }, {
       label: '待付款',
       value: 5
+    }, {
+      label: '未缴费',
+      value: 6
+    }, {
+      label: '预缴费',
+      value: 7
+    }, {
+      label: '已缴费',
+      value: 8
+    }, {
+      label: '待退费',
+      value: 9
+    }, {
+      label: '已退费',
+      value: 10
     }
   ],
   columns: [

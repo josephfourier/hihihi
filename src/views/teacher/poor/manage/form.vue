@@ -8,7 +8,7 @@
       </tr>
       <tr>
         <td>院系：{{ data.facultyName }}</td>
-        <td>家庭总人口：{{ data.totalPopulation }}人/td>
+        <td>家庭总人口：{{ data.totalPopulation }}人</td>
         <td>家庭年收入：{{ data.annualIncome }}元</td>
       </tr>
       <tr>
